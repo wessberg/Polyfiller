@@ -91,7 +91,7 @@ Retrieves a bundle of polyfills.
 	<td><code>features</code></td>
 	<td>
 		A comma-separated string of all the <code>feature</code>s you want to include in your bundle (if required by the browser).
-		Each <code>feature</code> may receive zero or more <code>option</code>s. Some options are supported for all <code>feature</code>s while others only support specific <code>feature</code>s.
+		Each <code>feature</code> may receive zero or more <code>option</code>s. Some <code>option</code>s are supported for all <code>feature</code>s while others only support specific <code>feature</code>s.
 		<h4>Example</h4>
 		<code>es2015,shadow-dom|force,animation,intl|locales=en</code>
 	</td>
@@ -100,11 +100,11 @@ Retrieves a bundle of polyfills.
 
 #### `feature`
 
-A *feature* has a *name* and may receive zero or more `option`s.
+A `feature` has a *name* and may receive zero or more `option`s.
 
 For example, `intl` is a feature name, and so is `custom-elements`.
 
-See the [Feature name](#feature_names) section for the full list of possible `feature` names.
+See the [Feature name](#feature-names) section for the full list of possible `feature` names.
 
 #### `Option`
 
@@ -253,7 +253,7 @@ Note that if these will be deduplicated. For example, if you request `es2015.obj
 - mutation-observer
 - custom-elements
 - shadow-dom
-- template;
+- template
 
 ## Difference from [polyfill.io](https://github.com/Financial-Times/polyfill-service)
 

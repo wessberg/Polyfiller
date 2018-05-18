@@ -151,6 +151,7 @@ This will return a bundle of `Intl` along with locale data for `en` (English), `
 
 Here's a full list of all possible `feature` *names*.
 Note that these will be deduplicated. For example, if you request `es2015.object`, but also request `es2015`, `es2015.object` will only be included once as part of `es2015`.
+And, if you request `performance.now`, `date.now` will also be included since the polyfill depends on it. You don't have to worry about dependencies.
 
 - es2015
 - es2015.object

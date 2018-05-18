@@ -1,3 +1,12 @@
+<a name="0.0.3"></a>
+## <small>0.0.3 (2018-05-18)</small>
+
+* 0.0.3 ([3e64b4b](https://github.com/wessberg/polyfiller/commit/3e64b4b))
+* Bumped version ([5aecfdb](https://github.com/wessberg/polyfiller/commit/5aecfdb))
+* Updated README with link to Patreon ([67ee5db](https://github.com/wessberg/polyfiller/commit/67ee5db))
+
+
+
 <a name="0.0.2"></a>
 ## <small>0.0.2 (2018-05-18)</small>
 

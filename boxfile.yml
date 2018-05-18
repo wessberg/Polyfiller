@@ -1,0 +1,16 @@
+run.config:
+  engine: nodejs
+  extra_packages:
+      - nginx
+  engine.config:
+    runtime: nodejs-9.3
+    dep_manager: npm
+    python_version: python-2.7
+
+web.service:
+  start:
+    nginx: nginx -c /app/config/nginx.conf
+    node: npm run serve:production
+
+  routes:
+    - '/'

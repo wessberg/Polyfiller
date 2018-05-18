@@ -1,0 +1,6 @@
+{
+	"extends": "./node_modules/@wessberg/ts-config/tslint/tslint.json",
+	"rules": {
+		"no-trailing-whitespace": false
+	}
+}

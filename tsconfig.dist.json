@@ -1,0 +1,10 @@
+{
+	"extends": "./tsconfig.json",
+	"include": [
+		"src/**/*.*",
+		"typings/**/*.*"
+	],
+	"compilerOptions": {
+		"declaration": true
+	}
+}

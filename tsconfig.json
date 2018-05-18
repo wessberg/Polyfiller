@@ -1,0 +1,12 @@
+{
+	"extends": "./node_modules/@wessberg/ts-config/tsconfig/tsconfig.json",
+	"include": [
+		"src/**/*.*"
+	],
+	"exclude": ["test/server/**/*"],
+	"compilerOptions": {
+		"paths": {
+			"tslib": ["node_modules/tslib/tslib.d.ts"]
+		}
+	}
+}

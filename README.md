@@ -114,7 +114,7 @@ For example, here's how to associate the `force` option with a `feature`:
 
 `animation|force`.
 
-Some `option`s apply to all `feature`s while others only apply to specific polyfills. For example:
+Some `option`s apply to all `feature`s while others only apply to specific `feature`s. For example:
 
 `intl|locales=en`
 

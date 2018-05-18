@@ -26,14 +26,44 @@ When a browser (or robot) visits your site, `Polyfiller` evaluates the user agen
 
 It is up to you to decide which polyfills you need, but the web service will automatically make sure to include every dependency of those polyfills, but only if the browser doesn't already support them.
 
-## Difference from [polyfill.io](https://github.com/Financial-Times/polyfill-service)
+## Examples
 
-These two services are very much alike. In fact, `Polyfiller` depends on the library behind [polyfill.io](https://github.com/Financial-Times/polyfill-service) for some of the polyfills!
+### Example 1:
 
-`Polyfiller` exists for two reasons:
+In this example:
 
-- A wider range of available polyfills such as Web Components, PointerEvents and Proxies
-- Deep integration with `Caniuse`. If you use something like `babel-preset-env` with a `browserslist` and you generate this automatically based on the features you want to support with a tool such as [browserslist-generator](https://www.npmjs.com/package/@wessberg/browserslist-generator), both syntax detection for transpiling, and feature detection for polyfilling will be seamlessly based on your `browserslist`.
+- `es2015` is polyfilled if the browser doesn't support it.
+- `intersection-observer` is polyfilled, *even if the browser supports it*, because it has the `force` option.
+- `intl` is polyfilled if the browser doesn't support it, and the `en` locale data is included.
+
+```html
+<script src="https://polyfill.app/api/polyfill?features=es2015,intersection-observer|force,intl|locales=en"></script>
+```
+
+### Example 2:
+
+This example shows how you can add support for [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components):
+
+- `template` polyfills the `HTMLTemplateElement` if the browser doesn't support it.
+- `shadow-dom` polyfills the `Shadow DOM` v1 specification if the browser doesn't support it.
+- `custom-elements` polyfills the `Custom Elements` v1 specification if the browser doesn't support it.
+
+```html
+<script src="https://polyfill.app/api/polyfill?features=template,shadow-dom,custom-elements"></script>
+```
+
+### Example 3:
+
+For your convenience, a few libraries are included that isn't strictly polyfills but are closely related to compatibility:
+
+In this example:
+
+- `systemjs` Adds the [`SystemJS`](https://github.com/systemjs/systemjs) ES module loader. Useful if you target a browser that doesn't support ES-modules and want to use something like dynamic imports and code-splitting.
+- `regenerator-runtime` is added, which is what [babel](https://github.com/babel/) transpiles async functions and generator functions into if you don't target browsers that supports it.
+
+```html
+<script src="https://polyfill.app/api/polyfill?features=systemjs|regenerator-runtime"></script>
+```
 
 ## Web Service API Reference
 
@@ -214,6 +244,15 @@ Note that if these will be deduplicated. For example, if you request `es2015.obj
 - custom-elements
 - shadow-dom
 - template;
+
+## Difference from [polyfill.io](https://github.com/Financial-Times/polyfill-service)
+
+These two services are very much alike. In fact, `Polyfiller` depends on the library behind [polyfill.io](https://github.com/Financial-Times/polyfill-service) for some of the polyfills!
+
+`Polyfiller` exists for two reasons:
+
+- A wider range of available polyfills such as Web Components, PointerEvents and Proxies
+- Deep integration with `Caniuse`. If you use something like `babel-preset-env` with a `browserslist` and you generate this automatically based on the features you want to support with a tool such as [browserslist-generator](https://www.npmjs.com/package/@wessberg/browserslist-generator), both syntax detection for transpiling, and feature detection for polyfilling will be seamlessly based on your `browserslist`.
 
 ## Hosting
 

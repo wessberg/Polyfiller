@@ -2,12 +2,11 @@
 [![NPM version][npm-version-image]][npm-version-url]
 [![License-mit][license-mit-image]][license-mit-url]
 
+<a href="https://www.patreon.com/bePatron?u=11315442"><img height="30" src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" /></a>
+
 [license-mit-url]: https://opensource.org/licenses/MIT
-
 [license-mit-image]: https://img.shields.io/badge/License-MIT-yellow.svg
-
 [npm-version-url]: https://www.npmjs.com/package/@wessberg/polyfiller
-
 [npm-version-image]: https://badge.fury.io/js/%40wessberg%2Fpolyfiller.svg
 > Never worry about polyfills again.
 
@@ -271,3 +270,7 @@ These two services are very much alike. In fact, `Polyfiller` depends on the lib
 The server is built with support for both HTTP2 and HTTP. The environment variable `HTTP2=[true|false]` decides whether a HTTP2 server will be hosted or not.
 
 If you use a load balancer and something like `nginx` in a reverse proxy setup, please know that `nginx` doesn't support HTTP2 via its proxy module, so you have to use HTTP1.1 there. Thankfully, it is as easy as setting `HTTP2=false` before launching the server
+
+## Backers
+
+[Become a backer](https://www.patreon.com/bePatron?c=1770586) and get your name, logo, and link to your site listed here. I pay for the maintenance and uptime of the web service from my own pocket, so your help is greatly appreciated!

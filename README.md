@@ -150,7 +150,7 @@ This will return a bundle of `Intl` along with locale data for `en` (English), `
 ### Feature names
 
 Here's a full list of all possible `feature` *names*.
-Note that if these will be deduplicated. For example, if you request `es2015.object`, but also request `es2015`, `es2015.object` will only be included once as part of `es2015`.
+Note that these will be deduplicated. For example, if you request `es2015.object`, but also request `es2015`, `es2015.object` will only be included once as part of `es2015`.
 
 - es2015
 - es2015.object

@@ -1,3 +1,12 @@
+<a name="0.0.7"></a>
+## <small>0.0.7 (2018-05-19)</small>
+
+* 0.0.7 ([76274c3](https://github.com/wessberg/polyfiller/commit/76274c3))
+* Bumped version ([18dae72](https://github.com/wessberg/polyfiller/commit/18dae72))
+* Removed console.log statement from production ([35d3e96](https://github.com/wessberg/polyfiller/commit/35d3e96))
+
+
+
 <a name="0.0.6"></a>
 ## <small>0.0.6 (2018-05-19)</small>
 

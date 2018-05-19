@@ -12,6 +12,8 @@ import {Marshaller} from "@wessberg/marshaller";
 import {createHash} from "crypto";
 import {constant} from "../../constant/constant";
 import {userAgentSupportsFeatures} from "@wessberg/browserslist-generator";
+import * as URLNamespace from "url";
+const {URL} = URLNamespace;
 
 const marshaller = new Marshaller();
 

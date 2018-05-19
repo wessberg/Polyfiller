@@ -12,8 +12,6 @@ import {Marshaller} from "@wessberg/marshaller";
 import {createHash} from "crypto";
 import {constant} from "../../constant/constant";
 import {userAgentSupportsFeatures} from "@wessberg/browserslist-generator";
-import * as URLNamespace from "url";
-const {URL} = URLNamespace;
 
 const marshaller = new Marshaller();
 
@@ -25,10 +23,6 @@ const marshaller = new Marshaller();
  * @returns {IPolyfillRequest}
  */
 export function getPolyfillRequestFromUrl (url: URL, userAgent: string, encoding?: ContentEncodingKind): IPolyfillRequest {
-	// Replace all literal "+" with its literal encoded variant
-	url.search = url.search.replace(/\+/g, "%2B");
-	// Replace the URL reference with a new instance with the encoded '+' sign
-	url = new URL(url.toString());
 
 	const featuresRaw = url.searchParams.get("features");
 	let force: boolean = false;

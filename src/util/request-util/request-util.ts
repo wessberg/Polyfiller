@@ -36,6 +36,11 @@ function splitStringifiedListHeader (header: string|string[]): Set<string> {
  * @returns {Request}
  */
 export function getRequestFromIncomingHeaders (headers: IncomingHttpHeaders, http2: boolean): Request {
+	let path = headers[":path"];
+	if (typeof path === "string") {
+		// Replace all literal "+" with its literal encoded variant
+		path = path.replace(/\+/g, "%2B");
+	}
 	return <Request> {
 		http2,
 		method: <Request["method"]> headers[":method"]!,
@@ -50,7 +55,7 @@ export function getRequestFromIncomingHeaders (headers: IncomingHttpHeaders, htt
 			: splitStringifiedListHeader(headers["accept-language"]!),
 		userAgent: <string> headers["user-agent"]!,
 		// @ts-ignore
-		url: new URL(<string> headers[":path"], `${headers[":scheme"]}://${headers[":authority"]}`)
+		url: new URL(path, `${headers[":scheme"]}://${headers[":authority"]}`)
 	};
 }
 

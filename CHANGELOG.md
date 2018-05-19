@@ -1,3 +1,12 @@
+<a name="0.0.5"></a>
+## <small>0.0.5 (2018-05-19)</small>
+
+* 0.0.5 ([13292bc](https://github.com/wessberg/polyfiller/commit/13292bc))
+* Added missing URL constructor ([01bf9e2](https://github.com/wessberg/polyfiller/commit/01bf9e2))
+* Bumped version ([715afda](https://github.com/wessberg/polyfiller/commit/715afda))
+
+
+
 <a name="0.0.4"></a>
 ## <small>0.0.4 (2018-05-19)</small>
 

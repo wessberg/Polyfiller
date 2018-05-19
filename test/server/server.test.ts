@@ -22,7 +22,7 @@ test("Delegates requests to '/' to the StaticController", async t => {
 		method: "GET",
 		host: config.host,
 		port: config.port,
-		path: <string> constant.endpoint.index
+		path: <string> (Array.isArray(constant.endpoint.index) ? constant.endpoint.index[0] : constant.endpoint.index)
 	});
 
 	console.log("body length:", result.body.length);
@@ -38,7 +38,7 @@ test("Delegates requests to '/polyfill' to the PolyfillController", async t => {
 		method: "GET",
 		host: config.host,
 		port: config.port,
-		path: `${constant.endpoint.polyfill}?features=es2015|force,intl|force`,
+		path: `${constant.endpoint.polyfill}?features=es2016+.object|force,intl|force`,
 		acceptEncoding: new Set([ContentEncodingKind.BROTLI])
 	});
 

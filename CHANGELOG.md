@@ -1,3 +1,12 @@
+<a name="0.0.6"></a>
+## <small>0.0.6 (2018-05-19)</small>
+
+* 0.0.6 ([d68bd93](https://github.com/wessberg/polyfiller/commit/d68bd93))
+* Bumped version ([c801088](https://github.com/wessberg/polyfiller/commit/c801088))
+* Moved redundant logic inside request-util ([9ded5d8](https://github.com/wessberg/polyfiller/commit/9ded5d8))
+
+
+
 <a name="0.0.5"></a>
 ## <small>0.0.5 (2018-05-19)</small>
 

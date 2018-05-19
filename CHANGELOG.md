@@ -1,3 +1,12 @@
+<a name="0.0.4"></a>
+## <small>0.0.4 (2018-05-19)</small>
+
+* 0.0.4 ([fbf7f85](https://github.com/wessberg/polyfiller/commit/fbf7f85))
+* Bumped version ([5be1c97](https://github.com/wessberg/polyfiller/commit/5be1c97))
+* Fixed an issue where '+' inside a search path of a URL would be mistakenly treated as whitespace ([f1308f5](https://github.com/wessberg/polyfiller/commit/f1308f5))
+
+
+
 <a name="0.0.3"></a>
 ## <small>0.0.3 (2018-05-18)</small>
 

@@ -4,7 +4,7 @@ import {Request} from "../../server/i-request";
 import {Response} from "../../server/i-response";
 import {GET} from "../../server/decorator/get";
 import {constants} from "http2";
-import {OK, INTERNAL_SERVER_ERROR} from "http-status-codes";
+import {OK, INTERNAL_SERVER_ERROR, NOT_MODIFIED} from "http-status-codes";
 import {constant} from "../../constant/constant";
 import {getPolyfillRequestFromUrl} from "../../util/polyfill/polyfill-util";
 import {IPolyfillBl} from "../../bl/polyfill/i-polyfill-bl";
@@ -32,16 +32,28 @@ export class PolyfillController extends Controller implements IPolyfillControlle
 
 		// Generate polyfill bundle
 		try {
-			const bundle = await this.polyfillBl.getPolyfills(polyfillRequest);
+			const {buffer, checksum} = await this.polyfillBl.getPolyfills(polyfillRequest);
+
+			// If the cached checksum (ETag) is identical, respond with NOT_MODIFIED
+			if (request.cachedChecksum != null && request.cachedChecksum === checksum) {
+				return {
+					statusCode: request.http2
+						? constants.HTTP_STATUS_NOT_MODIFIED
+						: NOT_MODIFIED,
+					cacheControl: "public,max-age=31536000,immutable"
+				};
+			}
+
 			// Return an OK
 			return {
 				contentType: "application/javascript",
 				statusCode: request.http2
 					? constants.HTTP_STATUS_OK
 					: OK,
-				body: bundle,
-				cacheControl: "immutable",
-				contentEncoding: polyfillRequest.encoding
+				body: buffer,
+				cacheControl: "public,max-age=31536000,immutable",
+				contentEncoding: polyfillRequest.encoding,
+				checksum
 			};
 		} catch (ex) {
 			// Respond with error code 500

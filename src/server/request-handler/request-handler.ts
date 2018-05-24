@@ -3,15 +3,16 @@ import {Response} from "../i-response";
 import {printRequest} from "../../util/request-util/request-util";
 import {RequestHandlerOptions} from "./request-handler-options";
 import {constants} from "http2";
-import {NOT_FOUND} from "http-status-codes";
 import {RegisteredControllers} from "../../controller/controller/registered-controllers";
+import {IStaticController} from "../../controller/static/i-static-controller";
 
 /**
  * A handler that can handle requests
  */
 export class RequestHandler implements IRequestHandler {
 
-	constructor (private readonly controllers: RegisteredControllers) {
+	constructor (private readonly controllers: RegisteredControllers,
+							 private readonly staticController: IStaticController) {
 	}
 
 	/**
@@ -50,13 +51,7 @@ export class RequestHandler implements IRequestHandler {
 			}
 		}
 
-		// Fall back to returning a 404 request
-		return {
-			body: `No resource exists at '${options.request.url.pathname}'`,
-			statusCode: options.request.http2
-				? constants.HTTP_STATUS_NOT_FOUND
-				: NOT_FOUND,
-			contentType: "text/plain"
-		};
+		// Fall back to the index route
+		return await this.staticController.onIndexRequested(options.request);
 	}
 }

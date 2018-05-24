@@ -11,6 +11,7 @@ import {PolyfillName} from "../../../polyfill/polyfill-name";
 import {gt, coerce} from "semver";
 import {ICacheRegistryServiceUpdatePackageVersionMapOptions} from "./i-cache-registry-service-update-package-version-map-options";
 import {IConfig} from "../../../config/i-config";
+import {IRegistryGetResult} from "../polyfill-registry/i-registry-get-result";
 
 /**
  * A class that can cache generated Polyfills on disk
@@ -27,9 +28,9 @@ export class CacheRegistryService implements ICacheRegistryService {
 	 * Gets the contents for the polyfill with the given name and with the given encoding
 	 * @param {IPolyfillFeature|Set<IPolyfillFeature>} name
 	 * @param {ContentEncodingKind} [encoding]
-	 * @returns {Promise<Buffer?>}
+	 * @returns {Promise<IRegistryGetResult?>}
 	 */
-	public async get (name: IPolyfillFeature|Set<IPolyfillFeature>, encoding?: ContentEncodingKind): Promise<Buffer|undefined> {
+	public async get (name: IPolyfillFeature|Set<IPolyfillFeature>, encoding?: ContentEncodingKind): Promise<IRegistryGetResult|undefined> {
 		// Attempt to fetch it from the in-memory registry
 		const memoryHit = await this.memoryRegistry.get(name, encoding);
 		if (memoryHit != null) return memoryHit;
@@ -42,8 +43,7 @@ export class CacheRegistryService implements ICacheRegistryService {
 		if (buffer == null) return undefined;
 
 		// Otherwise, store it in the memory registry and return the Buffer
-		await this.memoryRegistry.set(name, buffer, encoding);
-		return buffer;
+		return await this.memoryRegistry.set(name, buffer, encoding);
 	}
 
 	/**
@@ -61,17 +61,15 @@ export class CacheRegistryService implements ICacheRegistryService {
 	 * @param {IPolyfillFeature|Set<IPolyfillFeature>} name
 	 * @param {Buffer} contents
 	 * @param {ContentEncodingKind} [encoding]
-	 * @returns {Promise<void>}
+	 * @returns {Promise<IRegistryGetResult>}
 	 */
-	public async set (name: IPolyfillFeature|Set<IPolyfillFeature>, contents: Buffer, encoding?: ContentEncodingKind): Promise<void> {
+	public async set (name: IPolyfillFeature|Set<IPolyfillFeature>, contents: Buffer, encoding?: ContentEncodingKind): Promise<IRegistryGetResult> {
 		// Add it to the memory cache as well as the disk cache
-		await Promise.all([
-			this.memoryRegistry.set(name, contents, encoding),
-			this.writeToCache(
-				this.getCachePath(name, encoding),
-				contents
-			)
-		]);
+		await this.writeToCache(
+			this.getCachePath(name, encoding),
+			contents
+		);
+		return await this.memoryRegistry.set(name, contents, encoding);
 	}
 
 	/**

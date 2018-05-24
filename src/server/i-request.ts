@@ -20,6 +20,7 @@ export interface IRequest {
 	accept?: Set<string>;
 	acceptEncoding?: Set<string>;
 	acceptLanguage?: Set<string>;
+	cachedChecksum?: string;
 }
 
 export interface IGetRequest extends IRequest {

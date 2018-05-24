@@ -2,6 +2,7 @@ import {IMemoryRegistryService} from "./i-memory-registry-service";
 import {ContentEncodingKind} from "../../../encoding/content-encoding-kind";
 import {IPolyfillFeature} from "../../../polyfill/i-polyfill-feature";
 import {getPolyfillIdentifier} from "../../../util/polyfill/polyfill-util";
+import {IRegistryGetResult} from "./i-registry-get-result";
 
 /**
  * A Registry of polyfills living in-memory
@@ -17,13 +18,13 @@ export class MemoryRegistryService implements IMemoryRegistryService {
 	 * Gets the contents for the polyfill with the given name and with the given encoding
 	 * @param {IPolyfillFeature|Set<IPolyfillFeature>} name
 	 * @param {ContentEncodingKind} [encoding]
-	 * @returns {Promise<Buffer?>}
+	 * @returns {Promise<IRegistryGetResult?>}
 	 */
-	public async get (name: IPolyfillFeature|Set<IPolyfillFeature>, encoding?: ContentEncodingKind): Promise<Buffer|undefined> {
+	public async get (name: IPolyfillFeature|Set<IPolyfillFeature>, encoding?: ContentEncodingKind): Promise<IRegistryGetResult|undefined> {
+		const checksum = getPolyfillIdentifier(name, encoding);
+		const buffer = this.registeredPolyfills.get(checksum);
 
-		return this.registeredPolyfills.get(
-			getPolyfillIdentifier(name, encoding)
-		);
+		return buffer == null ? undefined : {buffer, checksum };
 	}
 
 	/**
@@ -41,15 +42,15 @@ export class MemoryRegistryService implements IMemoryRegistryService {
 	/**
 	 * Sets the contents for the polyfill with the given name and of the given encoding
 	 * @param {IPolyfillFeature|Set<IPolyfillFeature>} name
-	 * @param {Buffer} contents
+	 * @param {Buffer} buffer
 	 * @param {ContentEncodingKind} [encoding]
-	 * @returns {Promise<void>}
+	 * @returns {Promise<IRegistryGetResult>}
 	 */
-	public async set (name: IPolyfillFeature|Set<IPolyfillFeature>, contents: Buffer, encoding?: ContentEncodingKind): Promise<void> {
-		this.registeredPolyfills.set(
-			getPolyfillIdentifier(name, encoding),
-			contents
-		);
+	public async set (name: IPolyfillFeature|Set<IPolyfillFeature>, buffer: Buffer, encoding?: ContentEncodingKind): Promise<IRegistryGetResult> {
+		const checksum = getPolyfillIdentifier(name, encoding);
+
+		this.registeredPolyfills.set(checksum, buffer);
+		return {buffer, checksum};
 	}
 
 }

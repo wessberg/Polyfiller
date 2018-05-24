@@ -25,7 +25,9 @@ test("Delegates requests to '/' to the StaticController", async t => {
 		path: <string> (Array.isArray(constant.endpoint.index) ? constant.endpoint.index[0] : constant.endpoint.index)
 	});
 
-	console.log("body length:", result.body.length);
+	if ("body" in result) {
+		console.log("body length:",  result.body.length);
+	}
 
 	t.true(result.statusCode === constants.HTTP_STATUS_OK);
 });
@@ -42,6 +44,9 @@ test("Delegates requests to '/polyfill' to the PolyfillController", async t => {
 		acceptEncoding: new Set([ContentEncodingKind.BROTLI])
 	});
 
-	console.log("body length:", result.body.length);
+	if ("body" in result) {
+		console.log("checksum:", result.checksum);
+		console.log("body length:",  result.body.length);
+	}
 	t.true(result.statusCode === constants.HTTP_STATUS_OK);
 });

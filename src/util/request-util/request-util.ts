@@ -1,7 +1,7 @@
 import {IncomingHttpHeaders, IncomingMessage, request as requestHttp, RequestOptions as HttpRequestOptions} from "http";
 import {request as requestHttps} from "https";
 import {IRawRequest, Request} from "../../server/i-request";
-import {Response} from "../../server/i-response";
+import {IOKResponse, Response} from "../../server/i-response";
 import chalk from "chalk";
 import {connect, ClientHttp2Stream, ClientHttp2Session} from "http2";
 import {ContentEncodingKind} from "../../encoding/content-encoding-kind";
@@ -55,7 +55,8 @@ export function getRequestFromIncomingHeaders (headers: IncomingHttpHeaders, htt
 			: splitStringifiedListHeader(headers["accept-language"]!),
 		userAgent: <string> headers["user-agent"]!,
 		// @ts-ignore
-		url: new URL(path, `${headers[":scheme"]}://${headers[":authority"]}`)
+		url: new URL(path, `${headers[":scheme"]}://${headers[":authority"]}`),
+		cachedChecksum: headers["if-none-match"]
 	};
 }
 
@@ -96,16 +97,18 @@ export function printRequest ({method, url}: Request): void {
  */
 export async function sendRequest (rawRequest: IRawRequest): Promise<Response> {
 	return new Promise<Response>(async resolve => {
-		const response: Response = {
+		const response: IOKResponse = {
 			contentType: "text/plain",
 			statusCode: 0,
-			body: ""
+			body: "",
+			checksum: ""
 		};
 
 		let contentType: string|undefined;
 		let cacheControl: string|undefined;
 		let statusCode: number|undefined;
 		let contentEncoding: string|undefined;
+		let checksum: string|undefined;
 
 		const setResponseHeaders = () => {
 			if (statusCode != null) {
@@ -122,6 +125,10 @@ export async function sendRequest (rawRequest: IRawRequest): Promise<Response> {
 
 			if (contentEncoding != null) {
 				response.contentEncoding = <ContentEncodingKind> contentEncoding;
+			}
+
+			if (checksum != null) {
+				response.checksum = checksum;
 			}
 		};
 
@@ -158,6 +165,7 @@ export async function sendRequest (rawRequest: IRawRequest): Promise<Response> {
 				contentType = rawResponse.headers["content-type"];
 				cacheControl = rawResponse.headers["cache-control"];
 				contentEncoding = rawResponse.headers["content-encoding"];
+				checksum = <string|undefined> rawResponse.headers.etag;
 				setResponseHeaders();
 				onResponse(rawResponse);
 			};
@@ -181,6 +189,7 @@ export async function sendRequest (rawRequest: IRawRequest): Promise<Response> {
 				contentType = headers["content-type"];
 				cacheControl = headers["cache-control"];
 				contentEncoding = headers["content-encoding"];
+				checksum = <string|undefined> headers.etag;
 				setResponseHeaders();
 			});
 

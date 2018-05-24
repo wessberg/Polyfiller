@@ -3,11 +3,18 @@
 import {ContentEncodingKind} from "../encoding/content-encoding-kind";
 
 export interface IResponse {
-	contentType: string;
 	statusCode: number;
+}
+
+export interface IOKResponse extends IResponse {
+	contentType: string;
 	cacheControl?: string;
 	contentEncoding?: ContentEncodingKind;
 	body: any;
+	checksum: string;
 }
 
-export declare type Response = IResponse;
+export interface INotModifiedResponse extends IResponse {
+}
+
+export declare type Response = IOKResponse|INotModifiedResponse;

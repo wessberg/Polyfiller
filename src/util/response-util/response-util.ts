@@ -11,7 +11,10 @@ import {Response} from "../../server/i-response";
  * @returns {void}
  */
 export function respondToRequest (rawResponse: HttpServerResponse|Http2ServerResponse, response: Response): void {
-	rawResponse.setHeader("Content-Type", response.contentType);
+
+	if ("contentType" in response) {
+		rawResponse.setHeader("Content-Type", response.contentType);
+	}
 
 	if ("body" in response) {
 		rawResponse.setHeader("Content-Length", Buffer.byteLength(response.body));
@@ -25,9 +28,16 @@ export function respondToRequest (rawResponse: HttpServerResponse|Http2ServerRes
 		rawResponse.setHeader("Content-Encoding", response.contentEncoding);
 	}
 
+	if ("checksum" in response && response.checksum != null) {
+		rawResponse.setHeader("ETag", response.checksum);
+	}
+
 	// Allow any origin
 	rawResponse.setHeader("Access-Control-Allow-Origin", "*");
 
+	// Set the status code
 	rawResponse.statusCode = response.statusCode;
+
+	// Submit the response
 	(<any>rawResponse).end("body" in response ? response.body : undefined);
 }

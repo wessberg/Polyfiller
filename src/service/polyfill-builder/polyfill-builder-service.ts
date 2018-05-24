@@ -6,7 +6,6 @@ import {PolyfillName} from "../../polyfill/polyfill-name";
 import {constant} from "../../constant/constant";
 import {ILoaderService} from "../loader/i-loader-service";
 import {IPolyfillBuildDictEntry, IPolyfillCustomDictEntry, IPolyfillLibraryDictEntry, PolyfillDictEntry} from "../../polyfill/polyfill-dict";
-import {ContentEncodingKind} from "../../encoding/content-encoding-kind";
 import {Buffer} from "buffer";
 import {IMinifyService} from "../minify/i-minify-service";
 import {IPolyfillFeature} from "../../polyfill/i-polyfill-feature";
@@ -158,9 +157,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 	private async hasPolyfill (feature: IPolyfillFeature, currentVersion: string): Promise<boolean> {
 		return (
 			!(await this.registry.needsUpdate(feature.name, currentVersion)) &&
-			await this.registry.has(feature) &&
-			await this.registry.has(feature, ContentEncodingKind.BROTLI) &&
-			await this.registry.has(feature, ContentEncodingKind.GZIP)
+			await this.registry.has(feature)
 		);
 	}
 

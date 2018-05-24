@@ -1,3 +1,12 @@
+<a name="0.0.8"></a>
+## <small>0.0.8 (2018-05-24)</small>
+
+* 0.0.8 ([10b4950](https://github.com/wessberg/polyfiller/commit/10b4950))
+* Added correct immutable headers as well as support for ETags ([683fcbb](https://github.com/wessberg/polyfiller/commit/683fcbb))
+* Bumped version ([a4df9fa](https://github.com/wessberg/polyfiller/commit/a4df9fa))
+
+
+
 <a name="0.0.7"></a>
 ## <small>0.0.7 (2018-05-19)</small>
 

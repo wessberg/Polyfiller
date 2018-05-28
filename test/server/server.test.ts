@@ -40,7 +40,7 @@ test("Delegates requests to '/polyfill' to the PolyfillController", async t => {
 		method: "GET",
 		host: config.host,
 		port: config.port,
-		path: `${constant.endpoint.polyfill}?features=es2016+.object|force,intl|force`,
+		path: `${constant.endpoint.polyfill}?features=object-fit|force`,
 		acceptEncoding: new Set([ContentEncodingKind.BROTLI])
 	});
 

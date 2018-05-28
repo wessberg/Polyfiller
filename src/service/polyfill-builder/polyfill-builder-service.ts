@@ -228,7 +228,11 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 	private async addStandardPolyfill (polyfill: IPolyfillFeature, dict: IPolyfillLibraryDictEntry, packageVersionMapUpdates: Map<PolyfillName, string>): Promise<void> {
 		const loaderResults: ILoaderServiceResult[] = await Promise.all(dict.relativePaths.map(async entry => await this.loader.load({module: dict.library, entry})));
 		// Merge all content of the loaderResults
-		const content = loaderResults.map(result => result.content).join("\n");
+		const loaderResultsContent = loaderResults.map(result => result.content).join("\n");
+
+		// Also take the given extra content if given, otherwise just use the loader results
+		const content = dict.extraContent != null ? `${loaderResultsContent}\n${dict.extraContent}` : loaderResultsContent;
+
 		// Take the package directory of the first result. They will always be identical
 		const packageDirectory = loaderResults[0].packageDirectory;
 

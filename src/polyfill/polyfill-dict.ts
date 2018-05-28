@@ -10,6 +10,7 @@ export interface IPolyfillDictEntryBase {
 export interface IPolyfillLibraryDictEntry extends IPolyfillDictEntryBase {
 	library: string;
 	relativePaths: string[];
+	extraContent?: string;
 }
 
 export interface IPolyfillBuildDictEntry extends IPolyfillDictEntryBase {

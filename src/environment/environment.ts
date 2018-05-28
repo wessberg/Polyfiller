@@ -1,7 +1,7 @@
 import {environmentDefaults} from "./environment-defaults";
 import {uppercaseKeys} from "../util/uppercase-keys/uppercase-keys";
 
-export const environment = {
+export const environment = uppercaseKeys({
 	...environmentDefaults,
-	...uppercaseKeys(process.env)
-};
+	...process.env
+});

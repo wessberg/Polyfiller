@@ -100,4 +100,8 @@ export declare type PolyfillName =
 	|"mutation-observer"
 	|"custom-elements"
 	|"shadow-dom"
-	|"template";
+	|"template"
+	|"zone"
+	|"class-list"
+	|"object-fit"
+	|"console";

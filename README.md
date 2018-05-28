@@ -254,6 +254,10 @@ And, if you request `performance.now`, `date.now` will also be included since th
 - custom-elements
 - shadow-dom
 - template
+- zone
+- class-list
+- object-fit
+- console
 
 ## Difference from [polyfill.io](https://github.com/Financial-Times/polyfill-service)
 

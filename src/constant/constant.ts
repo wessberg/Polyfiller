@@ -4,6 +4,7 @@ import {DOM_ITERABLE_CANIUSE_FEATURE_NAMES, ES2015_CANIUSE_FEATURE_NAMES, ES2016
 // @ts-ignore
 import * as tempDir from "temp-dir";
 import {join} from "path";
+import {OBJECT_FIT_HOOK} from "../polyfill/lib/object-fit/object-fit-hook";
 
 export const constant: IConstant = {
 	endpoint: {
@@ -29,6 +30,13 @@ export const constant: IConstant = {
 			version: environment.NPM_PACKAGE_DEPENDENCIES_SYSTEMJS,
 			dependencies: []
 		},
+		zone: {
+			library: "zone.js",
+			relativePaths: ["dist/zone.min.js"],
+			caniuseFeatures: [],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_ZONE_JS,
+			dependencies: ["performance.now", "requestanimationframe", "mutation-observer", "es2015.promise", "xhr"]
+		},
 		"performance.now": {
 			library: "perfnow",
 			relativePaths: ["perfnow.min.js"],
@@ -42,6 +50,21 @@ export const constant: IConstant = {
 			caniuseFeatures: ["url", "urlsearchparams"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_URL_POLYFILL,
 			dependencies: ["es2015.object.define-properties", "es2015.array.for-each"]
+		},
+		"object-fit": {
+			library: "object-fit-images",
+			relativePaths: ["dist/ofi.min.js"],
+			extraContent: OBJECT_FIT_HOOK,
+			caniuseFeatures: ["object-fit"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_OBJECT_FIT_IMAGES,
+			dependencies: ["get-computed-style", "es2015.object.define-property"]
+		},
+		console: {
+			library: "console-polyfill",
+			relativePaths: ["index.js"],
+			caniuseFeatures: ["console-basic", "console-time"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_CONSOLE_POLYFILL,
+			dependencies: []
 		},
 		base64: {
 			library: "Base64",
@@ -631,6 +654,13 @@ export const constant: IConstant = {
 			relativePaths: ["polyfills/Document/polyfill.js"],
 			// If 'addEventListener' isn't found, the Document interface shouldn't exist on the window
 			caniuseFeatures: ["addeventlistener"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			dependencies: []
+		},
+		"class-list": {
+			library: "polyfill-service",
+			relativePaths: ["polyfills/Element/prototype/classList/polyfill.js"],
+			caniuseFeatures: ["classlist"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
 			dependencies: []
 		},

@@ -1,3 +1,12 @@
+<a name="0.0.9"></a>
+## <small>0.0.9 (2018-05-28)</small>
+
+* 0.0.9 ([1ab0a17](https://github.com/wessberg/polyfiller/commit/1ab0a17))
+* Added new polyfills: zone.js, object-fit, class-list, and console ([4fe85e0](https://github.com/wessberg/polyfiller/commit/4fe85e0))
+* Bumped version ([0be5e87](https://github.com/wessberg/polyfiller/commit/0be5e87))
+
+
+
 <a name="0.0.8"></a>
 ## <small>0.0.8 (2018-05-24)</small>
 

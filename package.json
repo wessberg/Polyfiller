@@ -1,6 +1,6 @@
 {
 	"name": "@wessberg/polyfiller",
-	"version": "0.0.8",
+	"version": "0.0.9",
 	"description": "Never worry about polyfills again.",
 	"scripts": {
 		"changelog:generate": "conventional-changelog --outfile CHANGELOG.md --release-count 0",

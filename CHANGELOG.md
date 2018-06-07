@@ -1,4 +1,12 @@
-<a name="0.0.9"></a>
+## <small>0.0.10 (2018-06-07)</small>
+
+* 0.0.10 ([899169d](https://github.com/wessberg/polyfiller/commit/899169d))
+* Bumped deps ([afd2f59](https://github.com/wessberg/polyfiller/commit/afd2f59))
+* Bumped deps ([2602398](https://github.com/wessberg/polyfiller/commit/2602398))
+* Bumped version ([883e759](https://github.com/wessberg/polyfiller/commit/883e759))
+
+
+
 ## <small>0.0.9 (2018-05-28)</small>
 
 * 0.0.9 ([1ab0a17](https://github.com/wessberg/polyfiller/commit/1ab0a17))
@@ -7,7 +15,6 @@
 
 
 
-<a name="0.0.8"></a>
 ## <small>0.0.8 (2018-05-24)</small>
 
 * 0.0.8 ([10b4950](https://github.com/wessberg/polyfiller/commit/10b4950))
@@ -16,7 +23,6 @@
 
 
 
-<a name="0.0.7"></a>
 ## <small>0.0.7 (2018-05-19)</small>
 
 * 0.0.7 ([76274c3](https://github.com/wessberg/polyfiller/commit/76274c3))
@@ -25,7 +31,6 @@
 
 
 
-<a name="0.0.6"></a>
 ## <small>0.0.6 (2018-05-19)</small>
 
 * 0.0.6 ([d68bd93](https://github.com/wessberg/polyfiller/commit/d68bd93))
@@ -34,7 +39,6 @@
 
 
 
-<a name="0.0.5"></a>
 ## <small>0.0.5 (2018-05-19)</small>
 
 * 0.0.5 ([13292bc](https://github.com/wessberg/polyfiller/commit/13292bc))
@@ -43,7 +47,6 @@
 
 
 
-<a name="0.0.4"></a>
 ## <small>0.0.4 (2018-05-19)</small>
 
 * 0.0.4 ([fbf7f85](https://github.com/wessberg/polyfiller/commit/fbf7f85))
@@ -52,7 +55,6 @@
 
 
 
-<a name="0.0.3"></a>
 ## <small>0.0.3 (2018-05-18)</small>
 
 * 0.0.3 ([3e64b4b](https://github.com/wessberg/polyfiller/commit/3e64b4b))
@@ -61,7 +63,6 @@
 
 
 
-<a name="0.0.2"></a>
 ## <small>0.0.2 (2018-05-18)</small>
 
 * 0.0.2 ([433ae52](https://github.com/wessberg/polyfiller/commit/433ae52))
@@ -74,7 +75,6 @@
 
 
 
-<a name="0.0.1"></a>
 ## <small>0.0.1 (2018-05-18)</small>
 
 * 0.0.1 ([9d64079](https://github.com/wessberg/polyfiller/commit/9d64079))

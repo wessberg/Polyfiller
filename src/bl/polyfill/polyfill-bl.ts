@@ -33,6 +33,7 @@ export class PolyfillBl implements IPolyfillBl {
 				.filter(feature => feature.name in constant.polyfill)),
 			request.userAgent
 		);
+		console.log(polyfillSet);
 
 		// Check if a Set has already been registered for this combination
 		const existingSet = await this.cacheRegistry.get(polyfillSet, request.encoding);

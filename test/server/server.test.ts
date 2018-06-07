@@ -50,3 +50,22 @@ test("Delegates requests to '/polyfill' to the PolyfillController", async t => {
 	}
 	t.true(result.statusCode === constants.HTTP_STATUS_OK);
 });
+
+test("Will not generate polyfills for 'Element' on Chrome 69 for a Galaxy S5", async t => {
+	const result = await sendRequest({
+		http2: config.http2,
+		tls: true,
+		userAgent: "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3450.0 Mobile Safari/537.36",
+		method: "GET",
+		host: config.host,
+		port: config.port,
+		path: `${constant.endpoint.polyfill}?features=intersection-observer,zone,es2015,es2016+`,
+		acceptEncoding: new Set([ContentEncodingKind.BROTLI])
+	});
+
+	if ("body" in result) {
+		console.log("checksum:", result.checksum);
+		console.log("body length:",  result.body.length);
+	}
+	t.true(result.statusCode === constants.HTTP_STATUS_OK);
+});

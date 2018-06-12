@@ -1,3 +1,11 @@
+## <small>0.0.11 (2018-06-12)</small>
+
+* 0.0.11 ([fd0d626](https://github.com/wessberg/polyfiller/commit/fd0d626))
+* Bumped version ([98deeb8](https://github.com/wessberg/polyfiller/commit/98deeb8))
+* Removed an arrow function in favor of a traditional anonymous function ([234c8f4](https://github.com/wessberg/polyfiller/commit/234c8f4))
+
+
+
 ## <small>0.0.10 (2018-06-07)</small>
 
 * 0.0.10 ([899169d](https://github.com/wessberg/polyfiller/commit/899169d))

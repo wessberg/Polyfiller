@@ -1,3 +1,11 @@
+## <small>0.0.18 (2018-06-12)</small>
+
+* 0.0.18 ([777181a](https://github.com/wessberg/polyfiller/commit/777181a))
+* Bumped version ([58963fd](https://github.com/wessberg/polyfiller/commit/58963fd))
+* Fixed iterables ([4135cf2](https://github.com/wessberg/polyfiller/commit/4135cf2))
+
+
+
 ## <small>0.0.17 (2018-06-12)</small>
 
 * 0.0.17 ([a9a02ca](https://github.com/wessberg/polyfiller/commit/a9a02ca))

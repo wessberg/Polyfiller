@@ -541,17 +541,10 @@ export const constant: IConstant = {
 			dependencies: ["es2015.symbol"]
 		},
 		"dom.iterable": {
-			library: "polyfill-service",
-			relativePaths: [
-				"polyfills/_Iterator/polyfill.js",
-				"polyfills/_ArrayIterator/polyfill.js",
-				"polyfills/NodeList/prototype/@@iterator/polyfill.js"
-			],
+			coreJsModules: ["web.dom.iterable"],
 			caniuseFeatures: DOM_ITERABLE_CANIUSE_FEATURE_NAMES,
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
-			dependencies: [
-				"es2015"
-			]
+			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+			dependencies: ["es2015"]
 		},
 		"pointer-event": {
 			library: "pepjs",

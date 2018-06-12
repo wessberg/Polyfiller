@@ -1,3 +1,11 @@
+## <small>0.0.17 (2018-06-12)</small>
+
+* 0.0.17 ([a9a02ca](https://github.com/wessberg/polyfiller/commit/a9a02ca))
+* Bumped version ([eaeeba6](https://github.com/wessberg/polyfiller/commit/eaeeba6))
+* Fixed a bug ([82f5393](https://github.com/wessberg/polyfiller/commit/82f5393))
+
+
+
 ## <small>0.0.16 (2018-06-12)</small>
 
 * 0.0.16 ([16bec59](https://github.com/wessberg/polyfiller/commit/16bec59))

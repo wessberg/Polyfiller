@@ -101,7 +101,12 @@ export function getPolyfillIdentifier (name: IPolyfillFeature|Set<IPolyfillFeatu
  * @returns {Set<IPolyfillFeature>}
  */
 export function getOrderedPolyfillsWithDependencies (polyfillSet: Set<IPolyfillFeatureInput>, userAgent: string): Set<IPolyfillFeatureInput> {
+	const tailPolyfills: Set<IPolyfillFeatureInput> = new Set();
 	const orderedPolyfillSet: Set<IPolyfillFeatureInput> = new Set();
+
+	// Some polyfills must come after others, even if they have no dependencies. Zone is one example of such polyfills
+	const shouldBePlacedLast = (polyfill: IPolyfillFeature) => polyfill.name === "zone";
+
 	const has = (polyfill: IPolyfillFeature) => [...orderedPolyfillSet].some(existingOrderedPolyfill => {
 
 		// Don't allow adding subsets of broader polyfill collections that are already included
@@ -123,15 +128,23 @@ export function getOrderedPolyfillsWithDependencies (polyfillSet: Set<IPolyfillF
 				.forEach(orderedPolyfill => {
 					// Only add the polyfill if it isn't included already
 					if (!has(orderedPolyfill)) {
-						orderedPolyfillSet.add(orderedPolyfill);
+						if (shouldBePlacedLast(orderedPolyfill)) tailPolyfills.add(orderedPolyfill);
+						else orderedPolyfillSet.add(orderedPolyfill);
 					}
 				});
 		});
 		// Only add the polyfill if it isn't included already and if the user agent doesn't already support the feature
 		if (!has(polyfill) && (polyfill.force || caniuseFeatures.length < 1 || (caniuseFeatures.some(caniuseFeature => !userAgentSupportsFeatures(userAgent, caniuseFeature))))) {
-			orderedPolyfillSet.add(polyfill);
+			if (shouldBePlacedLast(polyfill)) tailPolyfills.add(polyfill);
+			else orderedPolyfillSet.add(polyfill);
 		}
 	});
 
+	// Add all tail polyfills to the ordered polyfills
+	for (const tailPolyfill of tailPolyfills) {
+		if (!has(tailPolyfill)) {
+			orderedPolyfillSet.add(tailPolyfill);
+		}
+	}
 	return orderedPolyfillSet;
 }

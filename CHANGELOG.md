@@ -1,3 +1,12 @@
+## <small>0.0.12 (2018-06-12)</small>
+
+* 0.0.12 ([0565666](https://github.com/wessberg/polyfiller/commit/0565666))
+* Added a dom-token-list polyfill ([97ff011](https://github.com/wessberg/polyfiller/commit/97ff011))
+* Bumped version ([354fdb9](https://github.com/wessberg/polyfiller/commit/354fdb9))
+* Changed const to var ([65dd334](https://github.com/wessberg/polyfiller/commit/65dd334))
+
+
+
 ## <small>0.0.11 (2018-06-12)</small>
 
 * 0.0.11 ([fd0d626](https://github.com/wessberg/polyfiller/commit/fd0d626))

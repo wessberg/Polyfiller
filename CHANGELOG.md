@@ -1,3 +1,11 @@
+## <small>0.0.13 (2018-06-12)</small>
+
+* 0.0.13 ([81a5b83](https://github.com/wessberg/polyfiller/commit/81a5b83))
+* Bumped version ([89853e3](https://github.com/wessberg/polyfiller/commit/89853e3))
+* Fixed DOMTokenList ([56e2f9e](https://github.com/wessberg/polyfiller/commit/56e2f9e))
+
+
+
 ## <small>0.0.12 (2018-06-12)</small>
 
 * 0.0.12 ([0565666](https://github.com/wessberg/polyfiller/commit/0565666))

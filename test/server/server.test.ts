@@ -69,3 +69,24 @@ test("Will not generate polyfills for 'Element' on Chrome 69 for a Galaxy S5", a
 	}
 	t.true(result.statusCode === constants.HTTP_STATUS_OK);
 });
+
+test.only("Will generate correct polyfills for IE11", async t => {
+	console.log(config.http2);
+	const result = await sendRequest({
+		http2: config.http2,
+		tls: true,
+		userAgent: "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko",
+		method: "GET",
+		host: config.host,
+		port: config.port,
+		path: `${constant.endpoint.polyfill}?features=es2015,es2016+.array,es2016+.reflect,zone,class-list,event,url,fetch,object-fit,intersection-observer,animation,regenerator-runtime,intl|locales=en`,
+		acceptEncoding: undefined
+	});
+
+	if ("body" in result) {
+		console.log(result.body);
+		console.log("checksum:", result.checksum);
+		console.log("body length:",  result.body.length);
+	}
+	t.true(result.statusCode === constants.HTTP_STATUS_OK);
+});

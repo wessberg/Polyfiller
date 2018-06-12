@@ -10,7 +10,6 @@ import {ILoggerService} from "../../service/logger/i-logger-service";
 import {ContentEncodingKind} from "../../encoding/content-encoding-kind";
 import {ICompressorService} from "../../service/compression/i-compressor-service";
 import {IRegistryGetResult} from "../../service/registry/polyfill-registry/i-registry-get-result";
-import {config} from "../../config/config";
 
 /**
  * Business logic for polyfills
@@ -35,7 +34,6 @@ export class PolyfillBl implements IPolyfillBl {
 			request.userAgent
 		);
 
-		console.log(config.debug);
 		this.logger.debug(polyfillSet);
 
 		// Check if a Set has already been registered for this combination

@@ -170,8 +170,11 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 	 * @returns {Promise<void>}
 	 */
 	private async compressAndAddPolyfill (polyfill: IPolyfillFeature, content: Buffer, version: string, packageVersionMapUpdates: Map<PolyfillName, string>): Promise<void> {
+		// Make sure that all polyfills end with a newline
+		const contentWithNewline = `${content}\n`;
+
 		// Minify it
-		const minified = Buffer.from(this.minifier.minify({code: content}));
+		const minified = Buffer.from(this.minifier.minify({code: contentWithNewline}));
 
 		// Add the polyfills to the registry
 		await this.registry.set(polyfill, minified);

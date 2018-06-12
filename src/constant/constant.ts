@@ -662,6 +662,13 @@ export const constant: IConstant = {
 			relativePaths: ["polyfills/Element/prototype/classList/polyfill.js"],
 			caniuseFeatures: ["classlist"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			dependencies: ["dom-token-list"]
+		},
+		"dom-token-list": {
+			library: "polyfill-service",
+			relativePaths: ["polyfills/DOMTokenList/polyfill.js"],
+			caniuseFeatures: ["rellist"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
 			dependencies: []
 		},
 		element: {

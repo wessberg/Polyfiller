@@ -256,6 +256,7 @@ And, if you request `performance.now`, `date.now` will also be included since th
 - template
 - zone
 - class-list
+- dom-token-list
 - object-fit
 - console
 

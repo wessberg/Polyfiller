@@ -103,5 +103,6 @@ export declare type PolyfillName =
 	|"template"
 	|"zone"
 	|"class-list"
+	|"dom-token-list"
 	|"object-fit"
 	|"console";

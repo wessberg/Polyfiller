@@ -1,5 +1,6 @@
 import {ILoggerService} from "./i-logger-service";
 import chalk from "chalk";
+import {IConfig} from "../../config/i-config";
 
 // tslint:disable:no-any
 
@@ -34,6 +35,11 @@ export class LoggerService implements ILoggerService {
 	 * @type {boolean}
 	 */
 	private _verbose: boolean = false;
+
+	constructor (config: IConfig) {
+		this.setDebug(config.debug);
+		this.setVerbose(config.verbose);
+	}
 
 	/**
 	 * Sets whether or not debugging is active

@@ -1,3 +1,11 @@
+## <small>0.0.15 (2018-06-12)</small>
+
+* 0.0.15 ([0cf4300](https://github.com/wessberg/polyfiller/commit/0cf4300))
+* Bumped version ([db94feb](https://github.com/wessberg/polyfiller/commit/db94feb))
+* Made Zone be applied as the last polyfill at all times ([c00fb59](https://github.com/wessberg/polyfiller/commit/c00fb59))
+
+
+
 ## <small>0.0.14 (2018-06-12)</small>
 
 * 0.0.14 ([b7943cc](https://github.com/wessberg/polyfiller/commit/b7943cc))

@@ -101,50 +101,56 @@ export function getPolyfillIdentifier (name: IPolyfillFeature|Set<IPolyfillFeatu
  * @returns {Set<IPolyfillFeature>}
  */
 export function getOrderedPolyfillsWithDependencies (polyfillSet: Set<IPolyfillFeatureInput>, userAgent: string): Set<IPolyfillFeatureInput> {
-	const tailPolyfills: Set<IPolyfillFeatureInput> = new Set();
 	const orderedPolyfillSet: Set<IPolyfillFeatureInput> = new Set();
+	let zoneMatch: IPolyfillFeatureInput|null = null;
 
-	// Some polyfills must come after others, even if they have no dependencies. Zone is one example of such polyfills
-	const shouldBePlacedLast = (polyfill: IPolyfillFeature) => polyfill.name === "zone";
+	/**
+	 * The recursive step of the order function
+	 * @param _polyfillSet
+	 * @param _userAgent
+	 */
+	function recursiveStep (_polyfillSet: Set<IPolyfillFeatureInput>, _userAgent: string): Set<IPolyfillFeatureInput> {
+		const has = (polyfill: IPolyfillFeature) => [...orderedPolyfillSet].some(existingOrderedPolyfill => {
 
-	const has = (polyfill: IPolyfillFeature) => [...orderedPolyfillSet].some(existingOrderedPolyfill => {
+			// Don't allow adding subsets of broader polyfill collections that are already included
+			if (polyfill.name.startsWith("es2015.") && existingOrderedPolyfill.name === "es2015") return true;
+			if (polyfill.name.startsWith("es2016+.") && existingOrderedPolyfill.name === "es2016+") return true;
+			if (polyfill.name.startsWith("es2015.date.") && existingOrderedPolyfill.name === "es2015.date") return true;
+			if (polyfill.name.startsWith("es2015.object.") && existingOrderedPolyfill.name === "es2015.object") return true;
+			if (polyfill.name.startsWith("es2015.array.") && existingOrderedPolyfill.name === "es2015.array") return true;
+			if (polyfill.name.startsWith("es2016+.object.") && existingOrderedPolyfill.name === "es2016+.object") return true;
+			if (polyfill.name.startsWith("es2016+.array.") && existingOrderedPolyfill.name === "es2016+.array") return true;
 
-		// Don't allow adding subsets of broader polyfill collections that are already included
-		if (polyfill.name.startsWith("es2015.") && existingOrderedPolyfill.name === "es2015") return true;
-		if (polyfill.name.startsWith("es2016+.") && existingOrderedPolyfill.name === "es2016+") return true;
-		if (polyfill.name.startsWith("es2015.date.") && existingOrderedPolyfill.name === "es2015.date") return true;
-		if (polyfill.name.startsWith("es2015.object.") && existingOrderedPolyfill.name === "es2015.object") return true;
-		if (polyfill.name.startsWith("es2015.array.") && existingOrderedPolyfill.name === "es2015.array") return true;
-		if (polyfill.name.startsWith("es2016+.object.") && existingOrderedPolyfill.name === "es2016+.object") return true;
-		if (polyfill.name.startsWith("es2016+.array.") && existingOrderedPolyfill.name === "es2016+.array") return true;
-
-		return existingOrderedPolyfill.name === polyfill.name;
-	});
-
-	polyfillSet.forEach(polyfill => {
-		const {dependencies, caniuseFeatures} = constant.polyfill[polyfill.name];
-		dependencies.forEach(dependency => {
-			getOrderedPolyfillsWithDependencies(new Set([{name: dependency, meta: {}, force: false}]), userAgent)
-				.forEach(orderedPolyfill => {
-					// Only add the polyfill if it isn't included already
-					if (!has(orderedPolyfill)) {
-						if (shouldBePlacedLast(orderedPolyfill)) tailPolyfills.add(orderedPolyfill);
-						else orderedPolyfillSet.add(orderedPolyfill);
-					}
-				});
+			return existingOrderedPolyfill.name === polyfill.name;
 		});
-		// Only add the polyfill if it isn't included already and if the user agent doesn't already support the feature
-		if (!has(polyfill) && (polyfill.force || caniuseFeatures.length < 1 || (caniuseFeatures.some(caniuseFeature => !userAgentSupportsFeatures(userAgent, caniuseFeature))))) {
-			if (shouldBePlacedLast(polyfill)) tailPolyfills.add(polyfill);
-			else orderedPolyfillSet.add(polyfill);
-		}
-	});
 
-	// Add all tail polyfills to the ordered polyfills
-	for (const tailPolyfill of tailPolyfills) {
-		if (!has(tailPolyfill)) {
-			orderedPolyfillSet.add(tailPolyfill);
-		}
+		_polyfillSet.forEach(polyfill => {
+			const isZone = polyfill.name === "zone";
+			// Store a reference to the matched Zone polyfill
+			if (isZone) zoneMatch = polyfill;
+
+			const {dependencies, caniuseFeatures} = constant.polyfill[polyfill.name];
+			dependencies.forEach(dependency => {
+				recursiveStep(new Set([{name: dependency, meta: {}, force: false}]), _userAgent)
+					.forEach(orderedPolyfill => {
+						// Only add the polyfill if it isn't included already
+						if (!has(orderedPolyfill)) {
+							orderedPolyfillSet.add(orderedPolyfill);
+						}
+					});
+			});
+			// Only add the polyfill if it isn't included already and if the user agent doesn't already support the feature
+			if (!isZone && !has(polyfill) && (polyfill.force || caniuseFeatures.length < 1 || (caniuseFeatures.some(caniuseFeature => !userAgentSupportsFeatures(_userAgent, caniuseFeature))))) {
+				orderedPolyfillSet.add(polyfill);
+			}
+		});
+
+		return orderedPolyfillSet;
 	}
-	return orderedPolyfillSet;
+
+	// Perform the recursive step
+	const orderedPolyfills = recursiveStep(polyfillSet, userAgent);
+	// Make sure to apply zone as the last polyfill - if it was matched
+	if (zoneMatch != null) orderedPolyfills.add(zoneMatch);
+	return orderedPolyfills;
 }

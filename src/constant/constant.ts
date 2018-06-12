@@ -32,7 +32,9 @@ export const constant: IConstant = {
 		},
 		zone: {
 			library: "zone.js",
-			relativePaths: ["dist/zone.min.js"],
+			relativePaths: [
+				"dist/zone.min.js"
+			],
 			caniuseFeatures: [],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_ZONE_JS,
 			dependencies: ["performance.now", "requestanimationframe", "mutation-observer", "es2015.promise", "xhr"]
@@ -539,10 +541,17 @@ export const constant: IConstant = {
 			dependencies: ["es2015.symbol"]
 		},
 		"dom.iterable": {
-			coreJsModules: ["web.dom.iterable"],
+			library: "polyfill-service",
+			relativePaths: [
+				"polyfills/_Iterator/polyfill.js",
+				"polyfills/_ArrayIterator/polyfill.js",
+				"polyfills/NodeList/prototype/@@iterator/polyfill.js"
+			],
 			caniuseFeatures: DOM_ITERABLE_CANIUSE_FEATURE_NAMES,
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
-			dependencies: ["es2015"]
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			dependencies: [
+				"es2015"
+			]
 		},
 		"pointer-event": {
 			library: "pepjs",

@@ -16,6 +16,25 @@ import {userAgentSupportsFeatures} from "@wessberg/browserslist-generator";
 const marshaller = new Marshaller();
 
 /**
+ * Traces all polyfill names that matches the given name. It may be an alias, and it may refer to additional aliases
+ * within the given features
+ * @param {PolyfillName} name
+ * @returns {PolyfillName[]}
+ */
+export function traceAllPolyfillNamesForPolyfillName (name: PolyfillName): PolyfillName[] {
+	// Get the PolyfillDict that matches the given name
+	const match = constant.polyfill[name];
+	// If none exists, return an empty array
+	if (match == null) return [];
+
+	// If the PolyfillDict is not an alias, return the name of the polyfill itself
+	if (!("polyfills" in match)) return [name];
+
+	// Otherwise, recursively trace all polyfill names for each of the polyfill names
+	return [].concat.apply([], match.polyfills.map(polyfillName => traceAllPolyfillNamesForPolyfillName(polyfillName)));
+}
+
+/**
  * Generates an IPolyfillRequest from the given URL
  * @param {URL} url
  * @param {string} userAgent
@@ -25,7 +44,6 @@ const marshaller = new Marshaller();
 export function getPolyfillRequestFromUrl (url: URL, userAgent: string, encoding?: ContentEncodingKind): IPolyfillRequest {
 
 	const featuresRaw = url.searchParams.get("features");
-	let force: boolean = false;
 
 	// Prepare a Set of features
 	const featureSet: Set<IPolyfillFeatureInput> = new Set();
@@ -36,6 +54,7 @@ export function getPolyfillRequestFromUrl (url: URL, userAgent: string, encoding
 		const splitted = featuresRaw.split(polyfillRawSeparator);
 
 		for (const part of splitted) {
+			let force: boolean = false;
 			const meta: IPolyfillFeatureMeta = {};
 
 			// The first part will be the polyfill name
@@ -62,12 +81,15 @@ export function getPolyfillRequestFromUrl (url: URL, userAgent: string, encoding
 				}
 			}
 
-			// Add it to the set of polyfillable features
-			featureSet.add({
-				name: <PolyfillName>name,
-				force,
-				meta
-			});
+			// Trace all polyfill names referenced by the identifier for this polyfill and add all of them to the feature set
+			for (const polyfillName of traceAllPolyfillNamesForPolyfillName(<PolyfillName> name)) {
+				// Add it to the set of polyfillable features
+				featureSet.add({
+					name: polyfillName,
+					force,
+					meta
+				});
+			}
 		}
 	}
 
@@ -81,11 +103,11 @@ export function getPolyfillRequestFromUrl (url: URL, userAgent: string, encoding
 
 /**
  * Returns a stringified key as a function of the given polyfill name(s) and encoding
- * @param {IPolyfillFeature | Set<IPolyfillFeature>} name
+ * @param {IPolyfillFeature | IPolyfillFeatureInput | Set<IPolyfillFeature> | Set<IPolyfillFeatureInput>} name
  * @param {ContentEncodingKind} [encoding]
  * @returns {string}
  */
-export function getPolyfillIdentifier (name: IPolyfillFeature|Set<IPolyfillFeature>, encoding?: ContentEncodingKind): string {
+export function getPolyfillIdentifier (name: IPolyfillFeature|IPolyfillFeatureInput|Set<IPolyfillFeature>|Set<IPolyfillFeatureInput>, encoding?: string): string {
 	const shasum = createHash("sha1");
 	const normalizedName = name instanceof Set ? name : new Set([name]);
 	const sortedName = [...normalizedName].sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
@@ -95,62 +117,76 @@ export function getPolyfillIdentifier (name: IPolyfillFeature|Set<IPolyfillFeatu
 }
 
 /**
+ * Returns a stringified key as a function of the given Set of polyfill feature inputs
+ * @param {Set<IPolyfillFeatureInput>} polyfills
+ * @param {string} userAgent
+ * @returns {string}
+ */
+export function getPolyfillSetIdentifier (polyfills: Set<IPolyfillFeatureInput>, userAgent: string): string {
+	const shasum = createHash("sha1");
+	const sortedName = [...polyfills].sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+	const namePart = sortedName.map(part => `${part.name}${JSON.stringify(part.meta)}${JSON.stringify(part.force)}`).join(",");
+	shasum.update(`[${namePart}].${userAgent}`);
+	return shasum.digest("hex");
+}
+
+/**
  * Orders the polyfills given in the Set, including their dependencies
  * @param {Set<IPolyfillFeature>} polyfillSet
  * @param {string} userAgent
  * @returns {Set<IPolyfillFeature>}
  */
-export function getOrderedPolyfillsWithDependencies (polyfillSet: Set<IPolyfillFeatureInput>, userAgent: string): Set<IPolyfillFeatureInput> {
-	const orderedPolyfillSet: Set<IPolyfillFeatureInput> = new Set();
+export async function getOrderedPolyfillsWithDependencies (polyfillSet: Set<IPolyfillFeatureInput>, userAgent: string): Promise<Set<IPolyfillFeature>> {
 	let zoneMatch: IPolyfillFeatureInput|null = null;
 
 	/**
-	 * The recursive step of the order function
-	 * @param _polyfillSet
-	 * @param _userAgent
+	 * The inner recursive step of the function
+	 * @param polyfill
 	 */
-	function recursiveStep (_polyfillSet: Set<IPolyfillFeatureInput>, _userAgent: string): Set<IPolyfillFeatureInput> {
-		const has = (polyfill: IPolyfillFeature) => [...orderedPolyfillSet].some(existingOrderedPolyfill => {
+	async function recursiveStep (polyfill: IPolyfillFeatureInput): Promise<IPolyfillFeatureInput[]> {
+		const orderedPolyfills: IPolyfillFeatureInput[] = [];
+		const isZone = polyfill.name === "zone";
 
-			// Don't allow adding subsets of broader polyfill collections that are already included
-			if (polyfill.name.startsWith("es2015.") && existingOrderedPolyfill.name === "es2015") return true;
-			if (polyfill.name.startsWith("es2016+.") && existingOrderedPolyfill.name === "es2016+") return true;
-			if (polyfill.name.startsWith("es2015.date.") && existingOrderedPolyfill.name === "es2015.date") return true;
-			if (polyfill.name.startsWith("es2015.object.") && existingOrderedPolyfill.name === "es2015.object") return true;
-			if (polyfill.name.startsWith("es2015.array.") && existingOrderedPolyfill.name === "es2015.array") return true;
-			if (polyfill.name.startsWith("es2016+.object.") && existingOrderedPolyfill.name === "es2016+.object") return true;
-			if (polyfill.name.startsWith("es2016+.array.") && existingOrderedPolyfill.name === "es2016+.array") return true;
+		// Store a reference to the matched Zone polyfill
+		if (isZone) zoneMatch = polyfill;
 
-			return existingOrderedPolyfill.name === polyfill.name;
-		});
+		const match = constant.polyfill[polyfill.name];
 
-		_polyfillSet.forEach(polyfill => {
-			const isZone = polyfill.name === "zone";
-			// Store a reference to the matched Zone polyfill
-			if (isZone) zoneMatch = polyfill;
+		// Skip aliases. There should be none by this point
+		if ("polyfills" in match) return [];
 
-			const {dependencies, caniuseFeatures} = constant.polyfill[polyfill.name];
-			dependencies.forEach(dependency => {
-				recursiveStep(new Set([{name: dependency, meta: {}, force: false}]), _userAgent)
-					.forEach(orderedPolyfill => {
-						// Only add the polyfill if it isn't included already
-						if (!has(orderedPolyfill)) {
-							orderedPolyfillSet.add(orderedPolyfill);
-						}
-					});
-			});
-			// Only add the polyfill if it isn't included already and if the user agent doesn't already support the feature
-			if (!isZone && !has(polyfill) && (polyfill.force || caniuseFeatures.length < 1 || (caniuseFeatures.some(caniuseFeature => !userAgentSupportsFeatures(_userAgent, caniuseFeature))))) {
-				orderedPolyfillSet.add(polyfill);
-			}
-		});
+		const {dependencies, features} = match;
+		await Promise.all(dependencies.map(async dependency => {
+			const tracedDependencies = traceAllPolyfillNamesForPolyfillName(dependency);
+			await Promise.all(tracedDependencies.map(async tracedDependency => {
+				orderedPolyfills.push(...(await recursiveStep({name: tracedDependency, meta: {}, force: polyfill.force})));
+			}));
+		}));
 
-		return orderedPolyfillSet;
+		// Only add the polyfill if it isn't included already and if the user agent doesn't already support the feature
+		if (!isZone && (polyfill.force || features.length < 1 || !userAgentSupportsFeatures(userAgent, ...features))) {
+			orderedPolyfills.push(polyfill);
+		}
+		return orderedPolyfills;
 	}
 
 	// Perform the recursive step
-	const orderedPolyfills = recursiveStep(polyfillSet, userAgent);
+	const result = await Promise.all([...polyfillSet].map(recursiveStep));
+
+	const orderedPolyfillSet: Set<IPolyfillFeatureInput> = new Set();
+	const seenPolyfillNames: Set<PolyfillName> = new Set();
+	const has = (polyfill: IPolyfillFeature) => seenPolyfillNames.has(polyfill.name);
+
+	for (const nestedArray of result) {
+		for (const polyfill of nestedArray) {
+			if (!has(polyfill)) {
+				orderedPolyfillSet.add(polyfill);
+				seenPolyfillNames.add(polyfill.name);
+			}
+		}
+	}
+
 	// Make sure to apply zone as the last polyfill - if it was matched
-	if (zoneMatch != null) orderedPolyfills.add(zoneMatch);
-	return orderedPolyfills;
+	if (zoneMatch != null) orderedPolyfillSet.add(zoneMatch);
+	return orderedPolyfillSet;
 }

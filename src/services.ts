@@ -6,14 +6,10 @@ import {ILoggerService} from "./service/logger/i-logger-service";
 import {LoggerService} from "./service/logger/logger-service";
 import {ICompressorService} from "./service/compression/i-compressor-service";
 import {CompressorService} from "./service/compression/compressor-service";
-import {ILoaderService} from "./service/loader/i-loader-service";
-import {LoaderService} from "./service/loader/loader-service";
 import {IMinifyService} from "./service/minify/i-minify-service";
 import {MinifyService} from "./service/minify/minify-service";
 import {IConfig} from "./config/i-config";
 import {config} from "./config/config";
-import {IBabelMinifyOptions} from "./service/minify/i-babel-minify-options";
-import {babelMinifyOptions} from "./service/minify/babel-minify-options";
 import {brotliCompressionOptions} from "./service/compression/brotli-compression-options";
 import {BrotliEncodeParams} from "iltorb";
 import {ZlibOptions} from "zlib";
@@ -48,7 +44,6 @@ DIContainer.registerSingleton<IMarshaller, Marshaller>();
 // Services
 DIContainer.registerSingleton<ILoggerService, LoggerService>();
 DIContainer.registerSingleton<ICompressorService, CompressorService>();
-DIContainer.registerSingleton<ILoaderService, LoaderService>();
 DIContainer.registerSingleton<IMinifyService, MinifyService>();
 DIContainer.registerSingleton<IMemoryRegistryService, MemoryRegistryService>();
 DIContainer.registerSingleton<ICacheRegistryService, CacheRegistryService>();
@@ -57,7 +52,6 @@ DIContainer.registerSingleton<IApiService, ApiService>();
 
 // Configuration
 DIContainer.registerSingleton<IConfig, IConfig>(() => config);
-DIContainer.registerSingleton<IBabelMinifyOptions, IBabelMinifyOptions>(() => babelMinifyOptions);
 DIContainer.registerSingleton<BrotliEncodeParams, BrotliEncodeParams>(() => brotliCompressionOptions);
 DIContainer.registerSingleton<ZlibOptions, ZlibOptions>(() => zlibCompressionOptions);
 

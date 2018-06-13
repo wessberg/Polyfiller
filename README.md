@@ -26,8 +26,9 @@ Place a `<script>` tag inside your `index.html` file with a `src` pointing at `h
 In the following example, polyfills for `ES2015` and `Shadow DOM` are requested:
 
 ```html
-<!-- An example of requesting polyfills for an ES2015 environment as well as Shadow DOM support -->
-<script src="https://polyfill.app/api/polyfill?features=es2015,shadow-dom"></script>
+<!-- An example of requesting polyfills for an ES2015 environment as well as Shadow DOM support
+-->
+<script src="https://polyfill.app/api/polyfill?features=es,shadow-dom"></script>
 ```
 
 A targeted bundle will be returned that **only contains the specific polyfills the browser needs**!
@@ -40,19 +41,17 @@ It is up to you to decide which polyfills you need, but the web service will aut
 ### Example 1:
 
 In this example:
-
-- `es2015` is polyfilled if the browser doesn't support it.
+- `es` polyfills those EcmaScript features that the browser doesn't support.
 - `intersection-observer` is polyfilled, *even if the browser supports it*, because it has the `force` option.
 - `intl` is polyfilled if the browser doesn't support it, and the `en` locale data is included.
 
 ```html
-<script src="https://polyfill.app/api/polyfill?features=es2015,intersection-observer|force,intl|locales=en"></script>
+<script src="https://polyfill.app/api/polyfill?features=es,intersection-observer|force,intl|locales=en"></script>
 ```
 
 ### Example 2:
 
 This example shows how you can add support for [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components):
-
 - `template` polyfills the `HTMLTemplateElement` if the browser doesn't support it.
 - `shadow-dom` polyfills the `Shadow DOM` v1 specification if the browser doesn't support it.
 - `custom-elements` polyfills the `Custom Elements` v1 specification if the browser doesn't support it.
@@ -61,12 +60,17 @@ This example shows how you can add support for [Web Components](https://develope
 <script src="https://polyfill.app/api/polyfill?features=template,shadow-dom,custom-elements"></script>
 ```
 
+For your convenience, the `web-components` alias requests those three features.
+
+```html
+<script src="https://polyfill.app/api/polyfill?features=web-components"></script>
+```
+
 ### Example 3:
 
 For your convenience, a few libraries are included that isn't strictly polyfills but are closely related to compatibility:
 
 In this example:
-
 - `systemjs` Adds the [`SystemJS`](https://github.com/systemjs/systemjs) ES module loader. Useful if you target a browser that doesn't support ES-modules and want to use something like dynamic imports and code-splitting.
 - `regenerator-runtime` is added, which is what [babel](https://github.com/babel/) transpiles async functions and generator functions into if you don't target browsers that supports it.
 
@@ -92,7 +96,7 @@ Retrieves a bundle of polyfills.
 		A comma-separated string of all the <code>feature</code>s you want to include in your bundle (if required by the browser).
 		Each <code>feature</code> may receive zero or more <code>option</code>s. Some <code>option</code>s are supported for all <code>feature</code>s while others only support specific <code>feature</code>s.
 		<h4>Example</h4>
-		<code>es2015,shadow-dom|force,animation,intl|locales=en</code>
+		<code>es,shadow-dom|force,animation,intl|locales=en</code>
 	</td>
 </tr>
 </table>
@@ -146,86 +150,311 @@ You can ask for as many you want by separating the locales with the `~` operator
 
 This will return a bundle of `Intl` along with locale data for `en` (English), `da` (Danish), and `fr` (French).
 
+## Difference from [polyfill.io](https://github.com/Financial-Times/polyfill-service)
+
+These two services are very much alike. In fact, `Polyfiller` depends on the library behind [polyfill.io](https://github.com/Financial-Times/polyfill-service) for some of the polyfills!
+
+`Polyfiller` exists for two reasons:
+- A wider range of available polyfills such as Web Components, PointerEvents and Proxies
+- Deep integration with `Caniuse`. If you use something like `babel-preset-env` with a `browserslist` and you generate this automatically based on the features you want to support with a tool such as [browserslist-generator](https://www.npmjs.com/package/@wessberg/browserslist-generator), both syntax detection for transpiling, and feature detection for polyfilling will be seamlessly based on your `browserslist`.
+
+## Hosting
+
+`Polyfiller` is already hosted at `https://polyfill.app/api` as a **free** web service, but feel free to host it yourself.
+The server is built with support for both HTTP2 and HTTP. The environment variable `HTTP2=[true|false]` decides whether a HTTP2 server will be hosted or not.
+
+If you use a load balancer and something like `nginx` in a reverse proxy setup, please know that `nginx` doesn't support HTTP2 via its proxy module, so you have to use HTTP1.1 there. Thankfully, it is as easy as setting `HTTP2=false` before launching the server
+
+## Backers
+
+[Become a backer](https://www.patreon.com/bePatron?c=1770586) and get your name, logo, and link to your site listed here. I pay for the maintenance and uptime of the web service from my own pocket, so your help is greatly appreciated!
+
 ### Feature names
 
 Here's a full list of all possible `feature` *names*.
-Note that these will be deduplicated. For example, if you request `es2015.object`, but also request `es2015`, `es2015.object` will only be included once as part of `es2015`.
+Note that these will be deduplicated. For example, if you request `es.object`, but also request `es`, `es.object` will only be included once as part of `es`.
 And, if you request `performance.now`, `date.now` will also be included since the polyfill depends on it. You don't have to worry about dependencies.
 
+- es
 - es2015
-- es2015.object
-- es2015.object.assign
-- es2015.object.create
-- es2015.object.define-properties
-- es2015.object.define-property
-- es2015.object.freeze
-- es2015.object.get-own-property-descriptor
-- es2015.object.get-own-property-names
-- es2015.object.get-prototype-of
-- es2015.object.is-extensible
-- es2015.object.is-frozen
-- es2015.object.is-sealed
-- es2015.object.is
-- es2015.object.keys
-- es2015.object.prevent-extensions
-- es2015.object.seal
-- es2015.object.set-prototype-of
-- es2015.object.to-string
-- es2015.function
-- es2015.array
-- es2015.array.copy-within
-- es2015.array.every
-- es2015.array.fill
-- es2015.array.filter
-- es2015.array.find-index
-- es2015.array.find
-- es2015.array.for-each
-- es2015.array.from
-- es2015.array.index-of
-- es2015.array.is-array
-- es2015.array.iterator
-- es2015.array.join
-- es2015.array.last-index-of
-- es2015.array.map
-- es2015.array.of
-- es2015.array.reduce-right
-- es2015.array.reduce
-- es2015.array.slice
-- es2015.array.some
-- es2015.array.sort
-- es2015.array.species
-- es2015.string
-- es2015.regexp
-- es2015.number
-- es2015.math
-- es2015.date
-- es2015.date.now
-- es2015.date.to-iso-string
-- es2015.date.to-json
-- es2015.date.to-primitive
-- es2015.date.to-string
-- es2015.promise
-- es2015.symbol
-- es2015.collections
-- es2015.typedarrays
-- es2015.reflect
+- es.object
+- es.object.assign
+- es.object.create
+- es.object.define-properties
+- es.object.define-property
+- es.object.freeze
+- es.object.get-own-property-descriptor
+- es.object.get-own-property-names
+- es.object.get-prototype-of
+- es.object.is-extensible
+- es.object.is-frozen
+- es.object.is-sealed
+- es.object.is
+- es.object.keys
+- es.object.prevent-extensions
+- es.object.seal
+- es.object.set-prototype-of
+- es.object.from-entries
+- es.object.to-string
+- es.object.define-getter
+- es.object.define-setter
+- es.object.entries
+- es.object.get-own-property-descriptors
+- es.object.lookup-getter
+- es.object.lookup-setter
+- es.object.values
+- es.function
+- es.function.bind
+- es.function.name
+- es.array
+- es.array.concat
+- es.array.flat
+- es.array.flat-map
+- es.array.last-index
+- es.array.last-item
+- es.array.copy-within
+- es.array.every
+- es.array.fill
+- es.array.filter
+- es.array.find-index
+- es.array.find
+- es.array.for-each
+- es.array.from
+- es.array.index-of
+- es.array.is-array
+- es.array.iterator
+- es.array.join
+- es.array.last-index-of
+- es.array.map
+- es.array.of
+- es.array.reduce-right
+- es.array.reduce
+- es.array.slice
+- es.array.some
+- es.array.sort
+- es.array.splice
+- es.array.species
+- es.array.includes
+- es.array-buffer
+- es.array-buffer.constructor
+- es.array-buffer.is-view
+- es.array-buffer.slice
+- es.string
+- es.string.at
+- es.string.code-points
+- es.string.match-all
+- es.string.replace-all
+- es.string.trim-start
+- es.string.trim-end
+- es.string.anchor
+- es.string.big
+- es.string.blink
+- es.string.bold
+- es.string.code-point-at
+- es.string.ends-with
+- es.string.fixed
+- es.string.fontcolor
+- es.string.fontsize
+- es.string.from-code-point
+- es.string.includes
+- es.string.italics
+- es.string.iterator
+- es.string.link
+- es.string.match
+- es.string.pad-end
+- es.string.pad-start
+- es.string.raw
+- es.string.repeat
+- es.string.replace
+- es.string.search
+- es.string.small
+- es.string.split
+- es.string.starts-with
+- es.string.strike
+- es.string.sub
+- es.string.sup
+- es.string.trim
+- es.regexp
+- es.regexp.constructor
+- es.regexp.flags
+- es.regexp.to-string
+- es.number
+- es.number.constructor
+- es.number.epsilon
+- es.number.is-finite
+- es.number.is-integer
+- es.number.is-nan
+- es.number.is-safe-integer
+- es.number.max-safe-integer
+- es.number.min-safe-integer
+- es.number.parse-float
+- es.number.parse-int
+- es.number.to-fixed
+- es.number.to-precision
+- es.number.from-string
+- es.math
+- es.map
+- es.map.filter
+- es.map.from
+- es.map.group-by
+- es.map.key-by
+- es.map.map-keys
+- es.map.map-values
+- es.map.merge
+- es.map.of
+- es.weak-map
+- es.weak-map.from
+- es.weak-map.of
+- es.set
+- es.set.add-all
+- es.set.delete-all
+- es.set.difference
+- es.set.every
+- es.set.filter
+- es.set.find
+- es.set.from
+- es.set.intersection
+- es.set.join
+- es.set.map
+- es.set.of
+- es.set.reduce
+- es.set.some
+- es.set.symmetric-difference
+- es.set.union
+- es.weak-set
+- es.weak-set.from
+- es.weak-set.of
+- es.math.acosh
+- es.math.asinh
+- es.math.atanh
+- es.math.cbrt
+- es.math.clz32
+- es.math.cosh
+- es.math.expm1
+- es.math.fround
+- es.math.hypot
+- es.math.imul
+- es.math.log1p
+- es.math.log2
+- es.math.log10
+- es.math.sign
+- es.math.sinh
+- es.math.tanh
+- es.math.trunc
+- es.math.clamp
+- es.math.deg-per-rad
+- es.math.degrees
+- es.math.fscale
+- es.math.iaddh
+- es.math.imulh
+- es.math.isubh
+- es.math.rad-per-deg
+- es.math.radians
+- es.math.scale
+- es.math.signbit
+- es.math.umulh
+- es.data-view
+- es.date
+- es.date.now
+- es.date.to-iso-string
+- es.date.to-json
+- es.date.to-primitive
+- es.date.to-string
+- es.promise
+- es.promise.finally
+- es.promise.constructor
+- es.promise.all-settled
+- es.promise.try
+- es.symbol
+- es.symbol.constructor
+- es.symbol.async-iterator
+- es.symbol.has-instance
+- es.symbol.is-concat-spreadable
+- es.symbol.iterator
+- es.symbol.match
+- es.symbol.replace
+- es.symbol.search
+- es.symbol.species
+- es.symbol.split
+- es.symbol.to-primitive
+- es.symbol.to-string-tag
+- es.symbol.unscopables
+- es.symbol.description
+- es.symbol.pattern-match
+- es.collections
+- es.typed-array
+- es.typed-array.copy-within
+- es.typed-array.every
+- es.typed-array.fill
+- es.typed-array.filter
+- es.typed-array.find
+- es.typed-array.find-index
+- es.typed-array.float32-array
+- es.typed-array.float64-array
+- es.typed-array.for-each
+- es.typed-array.from
+- es.typed-array.includes
+- es.typed-array.index-of
+- es.typed-array.int8-array
+- es.typed-array.int16-array
+- es.typed-array.int32-array
+- es.typed-array.iterator
+- es.typed-array.join
+- es.typed-array.last-index-of
+- es.typed-array.map
+- es.typed-array.of
+- es.typed-array.reduce
+- es.typed-array.reduce-right
+- es.typed-array.reverse
+- es.typed-array.set
+- es.typed-array.slice
+- es.typed-array.some
+- es.typed-array.sort
+- es.typed-array.subarray
+- es.typed-array.to-locale-string
+- es.typed-array.to-string
+- es.typed-array.uint8-array
+- es.typed-array.uint8-clamped-array
+- es.typed-array.uint16-array
+- es.typed-array.uint32-array
+- es.reflect
+- es.reflect.apply
+- es.reflect.construct
+- es.reflect.define-property
+- es.reflect.delete-property
+- es.reflect.get
+- es.reflect.get-own-property-descriptor
+- es.reflect.get-prototype-of
+- es.reflect.has
+- es.reflect.is-extensible
+- es.reflect.own-keys
+- es.reflect.prevent-extensions
+- es.reflect.set
+- es.reflect.set-prototype-of
+- es.reflect.define-metadata
+- es.reflect.delete-metadata
+- es.reflect.get-metadata
+- es.reflect.get-metadata-keys
+- es.reflect.get-own-metadata
+- es.reflect.get-own-metadata-keys
+- es.reflect.has-metadata
+- es.reflect.has-own-metadata
+- es.reflect.metadata
+- esnext
 - es2016+
-- es2016+.array
-- es2016+.array.includes
-- es2016+.collections
-- es2016+.math
-- es2016+.object
-- es2016+.object.define-getter
-- es2016+.object.define-setter
-- es2016+.object.entries
-- es2016+.object.get-own-property-descriptors
-- es2016+.object.lookup-getter
-- es2016+.object.lookup-setter
-- es2016+.object.values
-- es2016+.promise
-- es2016+.reflect
-- es2016+.string
-- es2016+.symbol
+- esnext.array
+- esnext.collections
+- esnext.math
+- esnext.number
+- esnext.promise
+- esnext.object
+- esnext.reflect
+- esnext.string
+- esnext.symbol
+- esnext.map
+- esnext.weak-map
+- esnext.set
+- esnext.weak-set
 - regenerator-runtime
 - systemjs
 - performance.now
@@ -234,7 +463,9 @@ And, if you request `performance.now`, `date.now` will also be included since th
 - url
 - base64
 - xhr
-- dom.iterable
+- dom.collections.iterable
+- dom.collections.iterator
+- dom.collections.for-each
 - fetch
 - intl
 - animation
@@ -259,23 +490,3 @@ And, if you request `performance.now`, `date.now` will also be included since th
 - dom-token-list
 - object-fit
 - console
-
-## Difference from [polyfill.io](https://github.com/Financial-Times/polyfill-service)
-
-These two services are very much alike. In fact, `Polyfiller` depends on the library behind [polyfill.io](https://github.com/Financial-Times/polyfill-service) for some of the polyfills!
-
-`Polyfiller` exists for two reasons:
-
-- A wider range of available polyfills such as Web Components, PointerEvents and Proxies
-- Deep integration with `Caniuse`. If you use something like `babel-preset-env` with a `browserslist` and you generate this automatically based on the features you want to support with a tool such as [browserslist-generator](https://www.npmjs.com/package/@wessberg/browserslist-generator), both syntax detection for transpiling, and feature detection for polyfilling will be seamlessly based on your `browserslist`.
-
-## Hosting
-
-`Polyfiller` is already hosted at `https://polyfill.app/api` as a **free** web service, but feel free to host it yourself.
-The server is built with support for both HTTP2 and HTTP. The environment variable `HTTP2=[true|false]` decides whether a HTTP2 server will be hosted or not.
-
-If you use a load balancer and something like `nginx` in a reverse proxy setup, please know that `nginx` doesn't support HTTP2 via its proxy module, so you have to use HTTP1.1 there. Thankfully, it is as easy as setting `HTTP2=false` before launching the server
-
-## Backers
-
-[Become a backer](https://www.patreon.com/bePatron?c=1770586) and get your name, logo, and link to your site listed here. I pay for the maintenance and uptime of the web service from my own pocket, so your help is greatly appreciated!

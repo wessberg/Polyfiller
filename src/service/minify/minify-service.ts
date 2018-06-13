@@ -1,24 +1,34 @@
 import {IMinifyService} from "./i-minify-service";
 import {IMinifyServiceOptions} from "./i-minify-service-options";
-import {IBabelMinifyOptions} from "./i-babel-minify-options";
 // @ts-ignore
-import minify from "babel-minify";
+import {transform} from "@babel/core";
 
 /**
  * A class that helps with minifying code
  */
 export class MinifyService implements IMinifyService {
-	constructor (private readonly minifyOptions: IBabelMinifyOptions) {
-	}
 
 	/**
 	 * Minifies the given code based on the given options
 	 * @param {IMinifyServiceOptions} options
 	 * @returns {string}
 	 */
-	public minify (options: IMinifyServiceOptions): string {
-		const {code} = minify(options.code.toString(), this.minifyOptions, {sourceMaps: false});
-		return code;
+	public async minify (options: IMinifyServiceOptions): Promise<string> {
+		const result = await transform(options.code, {
+			configFile: false,
+			babelrc: false,
+			babelrcRoots: false,
+			code: true,
+			comments: false,
+			compact: true,
+			filename: "",
+			filenameRelative: "",
+			sourceMaps: false,
+			root: "",
+			presets: [],
+			plugins: []
+		});
+		return result.code;
 	}
 
 }

@@ -1,6 +1,6 @@
+import {IPolyfillFeature} from "../../polyfill/i-polyfill-feature";
+import {ICompressedPolyfillSetResult} from "./i-compressed-polyfill-set-result";
+
 export interface IPolyfillBuilderService {
-	building: boolean;
-	hasBuilt: boolean;
-	build (): Promise<void>;
-	onBuilt (): Promise<void>;
+	buildPolyfillSet (polyfillSet: Set<IPolyfillFeature>): Promise<ICompressedPolyfillSetResult>;
 }

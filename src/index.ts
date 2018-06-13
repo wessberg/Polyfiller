@@ -1,10 +1,11 @@
 import "./services";
 import {DIContainer} from "@wessberg/di";
 import {IApiService} from "./service/api/i-api-service";
+import {ICacheRegistryService} from "./service/registry/cache-registry/i-cache-registry-service";
 
-// Launches the API
-// noinspection JSIgnoredPromiseFromCall
-DIContainer.get<IApiService>().launch();
+// Initializes the Cache Registry and then launches the server
+DIContainer.get<ICacheRegistryService>().initialize()
+	.then(async () => DIContainer.get<IApiService>().launch());
 
 // Exports
 export {PolyfillName} from "./polyfill/polyfill-name";

@@ -1,5 +1,4 @@
 import {IApiService} from "./i-api-service";
-import {IPolyfillBuilderService} from "../polyfill-builder/i-polyfill-builder-service";
 import {IConfig} from "../../config/i-config";
 import {IServer} from "../../server/i-server";
 import {getCertificates} from "../../util/cert/cert-util";
@@ -9,8 +8,7 @@ import {getCertificates} from "../../util/cert/cert-util";
  */
 export class ApiService implements IApiService {
 
-	constructor (private readonly polyfillBuilder: IPolyfillBuilderService,
-							 private readonly server: IServer,
+	constructor (private readonly server: IServer,
 							 private readonly config: IConfig) {
 	}
 
@@ -19,13 +17,6 @@ export class ApiService implements IApiService {
 	 * @returns {Promise<void>}
 	 */
 	public async launch (): Promise<void> {
-		// Build polyfills if necessary
-		if (this.polyfillBuilder.building || this.polyfillBuilder.hasBuilt) {
-			await this.polyfillBuilder.onBuilt();
-		}
-		else {
-			await this.polyfillBuilder.build();
-		}
 
 		// Serve if necessary
 		if (this.server.initializing || this.server.hasInitialized) {

@@ -1,7 +1,11 @@
 import {PolyfillName} from "./polyfill-name";
 
+export interface IPolyfillDictAlias {
+	polyfills: PolyfillName[];
+}
+
 export interface IPolyfillDictEntryBase {
-	caniuseFeatures: string[];
+	features: string[];
 	meta?: {[key: string]: string};
 	version: string;
 	dependencies: PolyfillName[];
@@ -10,19 +14,14 @@ export interface IPolyfillDictEntryBase {
 export interface IPolyfillLibraryDictEntry extends IPolyfillDictEntryBase {
 	library: string;
 	relativePaths: string[];
-	extraContent?: string;
 }
 
-export interface IPolyfillBuildDictEntry extends IPolyfillDictEntryBase {
-	caniuseFeatures: string[];
-	coreJsModules: string[];
+export interface IPolyfillLocalDictEntry extends IPolyfillDictEntryBase {
+	localPaths: string[];
 }
 
-export interface IPolyfillCustomDictEntry extends IPolyfillDictEntryBase {
-	content: string;
-}
-
-export declare type PolyfillDictEntry = IPolyfillLibraryDictEntry|IPolyfillBuildDictEntry|IPolyfillCustomDictEntry;
+export declare type PolyfillDictNormalizedEntry = IPolyfillLibraryDictEntry|IPolyfillLocalDictEntry;
+export declare type PolyfillDictEntry = IPolyfillDictAlias|PolyfillDictNormalizedEntry;
 
 export declare type PolyfillDict = {
 	[Key in PolyfillName]: PolyfillDictEntry;

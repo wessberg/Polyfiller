@@ -1,3 +1,11 @@
+## <small>0.0.20 (2018-06-13)</small>
+
+* 0.0.20 ([ebdb34a](https://github.com/wessberg/polyfiller/commit/ebdb34a))
+* Added additional caching ([b367087](https://github.com/wessberg/polyfiller/commit/b367087))
+* Bumped version ([12b3468](https://github.com/wessberg/polyfiller/commit/12b3468))
+
+
+
 ## <small>0.0.19 (2018-06-13)</small>
 
 * 0.0.19 ([2f8945e](https://github.com/wessberg/polyfiller/commit/2f8945e))

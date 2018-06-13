@@ -1,3 +1,12 @@
+## <small>0.0.19 (2018-06-13)</small>
+
+* 0.0.19 ([2f8945e](https://github.com/wessberg/polyfiller/commit/2f8945e))
+* Added dom.iterable as a required polyfill ([2efa6ad](https://github.com/wessberg/polyfiller/commit/2efa6ad))
+* Bumped version ([7ba1a70](https://github.com/wessberg/polyfiller/commit/7ba1a70))
+* Major refactoring and much more granularity. Caching improvements ([e301952](https://github.com/wessberg/polyfiller/commit/e301952))
+
+
+
 ## <small>0.0.18 (2018-06-12)</small>
 
 * 0.0.18 ([777181a](https://github.com/wessberg/polyfiller/commit/777181a))

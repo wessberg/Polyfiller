@@ -131,6 +131,17 @@ export function getPolyfillSetIdentifier (polyfills: Set<IPolyfillFeatureInput>,
 }
 
 /**
+ * Returns a stringified key as a function of the given array of paths to Core-js files
+ * @param {string[]} paths
+ * @returns {string}
+ */
+export function getCoreJsBundleIdentifier (paths: string[]): string {
+	const shasum = createHash("sha1");
+	shasum.update(`[${paths.sort().join(",")}].corejs`);
+	return shasum.digest("hex");
+}
+
+/**
  * Orders the polyfills given in the Set, including their dependencies
  * @param {Set<IPolyfillFeature>} polyfillSet
  * @param {string} userAgent

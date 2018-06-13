@@ -10,6 +10,8 @@ import {ICompressedPolyfillSetResult} from "./i-compressed-polyfill-set-result";
 // @ts-ignore
 import builder from "core-js-builder";
 import {IPolyfillLibraryDictEntry} from "../../polyfill/polyfill-dict";
+import {ICacheRegistryService} from "../registry/cache-registry/i-cache-registry-service";
+import {ILoggerService} from "../logger/i-logger-service";
 
 /**
  * A service that can load and cache all polyfills
@@ -17,6 +19,8 @@ import {IPolyfillLibraryDictEntry} from "../../polyfill/polyfill-dict";
 export class PolyfillBuilderService implements IPolyfillBuilderService {
 
 	constructor (private readonly minifier: IMinifyService,
+							 private readonly logger: ILoggerService,
+							 private readonly cacheService: ICacheRegistryService,
 							 private readonly compressor: ICompressorService,
 							 private readonly fileLoader: IFileLoader) {
 	}
@@ -41,15 +45,27 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				.replace(".js", ""));
 		}));
 
-		// Build a bundle of the CoreJs paths
-		const coreJsContent = coreJsPaths.length < 1 ? "" : await builder({modules: coreJsPaths});
+		// Check if a bundle has been built previously for the given core js paths
+		let coreJsContent = await this.cacheService.getCoreJsBundle(coreJsPaths);
+
+		// If not, build a bundle and store within the cache
+		if (coreJsContent == null) {
+			// Build a bundle of the CoreJs paths
+			coreJsContent = Buffer.from(coreJsPaths.length < 1 ? "" : await builder({modules: coreJsPaths}));
+			// Store it within the cache
+			await this.cacheService.setCoreJsBundle(coreJsPaths, coreJsContent);
+		}
+
+		else {
+			this.logger.debug(`Matched CoreJS paths in cache!`);
+		}
 
 		for (const polyfillFeature of polyfillSet) {
 			// If this polyfill feature represents Core Js, add its' content to the bundle unless it has been added previously
 			if (this.isCoreJs(polyfillFeature)) {
 				if (!hasAddedCoreJsContent) {
 					hasAddedCoreJsContent = true;
-					content += `\n${coreJsContent}`;
+					content += `\n${coreJsContent.toString()}`;
 				}
 				continue;
 			}

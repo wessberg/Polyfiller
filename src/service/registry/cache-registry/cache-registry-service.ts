@@ -2,7 +2,7 @@ import {ICacheRegistryService} from "./i-cache-registry-service";
 import {IFileSaver} from "@wessberg/filesaver";
 import {IPolyfillFeature, IPolyfillFeatureInput} from "../../../polyfill/i-polyfill-feature";
 import {ContentEncodingKind} from "../../../encoding/content-encoding-kind";
-import {getPolyfillIdentifier, getPolyfillSetIdentifier} from "../../../util/polyfill/polyfill-util";
+import {getCoreJsBundleIdentifier, getPolyfillIdentifier, getPolyfillSetIdentifier} from "../../../util/polyfill/polyfill-util";
 import {join} from "path";
 import {constant} from "../../../constant/constant";
 import {IFileLoader} from "@wessberg/fileloader";
@@ -33,10 +33,9 @@ export class CacheRegistryService implements ICacheRegistryService {
 		// Flush the entire cache if requested
 		if (this.config.clearCache) {
 			await this.flushCache();
-		} else {
-			// Otherwise, update the disk cache
-			await this.updateDiskCache();
 		}
+		// Otherwise, update the disk cache
+		await this.updateDiskCache();
 	}
 
 	/**
@@ -83,6 +82,27 @@ export class CacheRegistryService implements ICacheRegistryService {
 	}
 
 	/**
+	 * Gets the Core-js bundle that matches the given paths
+	 * @param {string[]} paths
+	 * @returns {Promise<Buffer|undefined>}
+	 */
+	public async getCoreJsBundle (paths: string[]): Promise<Buffer|undefined> {
+		// Attempt to fetch it from the in-memory registry
+		const memoryHit = await this.memoryRegistry.getCoreJsBundle(paths);
+		if (memoryHit != null) return memoryHit;
+
+		// Otherwise, attempt to get it from cache
+		const buffer = await this.getFromCache(
+			this.getCachePathForCoreJsBundle(paths)
+		);
+		// If not possible, return undefined
+		if (buffer == null) return undefined;
+
+		// Otherwise, store it in the memory registry and return the Buffer
+		return await this.memoryRegistry.setCoreJsBundle(paths, buffer);
+	}
+
+	/**
 	 * Returns true if a polyfill wil the given name exists
 	 * @param {IPolyfillFeature|Set<IPolyfillFeature>} name
 	 * @param {ContentEncodingKind} [encoding]
@@ -99,6 +119,15 @@ export class CacheRegistryService implements ICacheRegistryService {
 	 */
 	public async hasPolyfillFeatureSet (input: Set<IPolyfillFeatureInput>, userAgent: string): Promise<boolean> {
 		return (await this.getPolyfillFeatureSet(input, userAgent)) != null;
+	}
+
+	/**
+	 * Returns true if there is a Core-js bundle in cache that matches the given paths
+	 * @param {string[]} paths
+	 * @returns {Promise<boolean>}
+	 */
+	public async hasCoreJsBundle (paths: string[]): Promise<boolean> {
+		return (await this.getCoreJsBundle(paths)) != null;
 	}
 
 	/**
@@ -131,6 +160,20 @@ export class CacheRegistryService implements ICacheRegistryService {
 			Buffer.from(JSON.stringify([...polyfillSet]))
 		);
 		return await this.memoryRegistry.setPolyfillFeatureSet(input, polyfillSet, userAgent);
+	}
+
+	/**
+	 * Sets the Core-js bundle that matches the given paths in the cache
+	 * @param {string[]} paths
+	 * @param {Buffer} bundle
+	 */
+	public async setCoreJsBundle (paths: string[], bundle: Buffer): Promise<Buffer> {
+		// Add it to the memory cache as well as the disk cache
+		await this.writeToCache(
+			this.getCachePathForCoreJsBundle(paths),
+			bundle
+		);
+		return await this.memoryRegistry.setCoreJsBundle(paths, bundle);
 	}
 
 	/**
@@ -269,5 +312,14 @@ export class CacheRegistryService implements ICacheRegistryService {
 	 */
 	private getCachePathForPolyfillSet (input: Set<IPolyfillFeatureInput>, userAgent: string): string {
 		return join(constant.path.cacheRoot, getPolyfillSetIdentifier(input, userAgent));
+	}
+
+	/**
+	 * Gets the cache path to the bundle generated for the given Core-js paths
+	 * @param {string[]} paths
+	 * @returns {string}
+	 */
+	private getCachePathForCoreJsBundle (paths: string[]): string {
+		return join(constant.path.cacheRoot, getCoreJsBundleIdentifier(paths));
 	}
 }

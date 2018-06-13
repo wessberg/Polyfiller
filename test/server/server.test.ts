@@ -70,7 +70,7 @@ test("Will not generate polyfills for 'Element' on Chrome 69 for a Galaxy S5", a
 	t.true(result.statusCode === constants.HTTP_STATUS_OK);
 });
 
-test("Will generate correct polyfills for IE11", async t => {
+test.only("Will generate correct polyfills for IE11", async t => {
 	const result = await sendRequest({
 		http2: config.http2,
 		tls: true,
@@ -78,7 +78,7 @@ test("Will generate correct polyfills for IE11", async t => {
 		method: "GET",
 		host: config.host,
 		port: config.port,
-		path: `${constant.endpoint.polyfill}?features=dom.collections.iterable`,
+		path: `${constant.endpoint.polyfill}?features=custom-elements`,
 		acceptEncoding: undefined
 	});
 

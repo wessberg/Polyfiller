@@ -78,7 +78,7 @@ test.only("Will generate correct polyfills for IE11", async t => {
 		method: "GET",
 		host: config.host,
 		port: config.port,
-		path: `${constant.endpoint.polyfill}?features=es`,
+		path: `${constant.endpoint.polyfill}?features=es.set`,
 		acceptEncoding: undefined
 	});
 

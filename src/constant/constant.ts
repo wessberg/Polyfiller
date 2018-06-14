@@ -1471,7 +1471,7 @@ export const constant: IConstant = {
 		"es.map": {
 			library: "core-js",
 			relativePaths: ["modules/es.map.js"],
-			features: ["javascript.builtins.Map"],
+			features: ["javascript.builtins.Map", "javascript.builtins.Map.@@iterator"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: []
 		},
@@ -1565,7 +1565,7 @@ export const constant: IConstant = {
 		"es.set": {
 			library: "core-js",
 			relativePaths: ["modules/es.set.js"],
-			features: ["javascript.builtins.Set"],
+			features: ["javascript.builtins.Set", "javascript.builtins.Set.@@iterator"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: []
 		},
@@ -2317,14 +2317,14 @@ export const constant: IConstant = {
 			relativePaths: ["modules/web.dom-collections.iterator.js"],
 			features: ["api.NodeList.forEach"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
-			dependencies: ["es"]
+			dependencies: ["es.symbol.iterator"]
 		},
 		"dom.collections.for-each": {
 			library: "core-js",
 			relativePaths: ["modules/web.dom-collections.for-each.js"],
 			features: ["api.NodeList.forEach"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
-			dependencies: ["es"]
+			dependencies: ["es.symbol.iterator"]
 		},
 
 		"pointer-event": {

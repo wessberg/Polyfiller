@@ -10,6 +10,7 @@ import {initializeTests} from "./setup";
 // @ts-ignore
 import {chrome, ie} from "useragent-generator";
 import {ContentEncodingKind} from "../../src/encoding/content-encoding-kind";
+import {writeFileSync} from "fs";
 
 const config = DIContainer.get<IConfig>();
 
@@ -78,11 +79,12 @@ test.only("Will generate correct polyfills for IE11", async t => {
 		method: "GET",
 		host: config.host,
 		port: config.port,
-		path: `${constant.endpoint.polyfill}?features=es.set`,
+		path: `${constant.endpoint.polyfill}?features=es.object.assign,es.symbol.iterator,es.array.iterator,es.array.from,es.array.includes,es.array.find,es.string.starts-with,es.string.ends-with,es.string.includes,es.set,es.map,event,fetch,regenerator-runtime,dom.collections.iterable,zone`,
 		acceptEncoding: undefined
 	});
 
 	if ("body" in result) {
+		writeFileSync("/Users/wessberg/desktop/foo.js",result.body);
 		console.log("checksum:", result.checksum);
 		console.log("body length:", result.body.length);
 	}

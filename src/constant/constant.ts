@@ -2474,7 +2474,10 @@ export const constant: IConstant = {
 			dependencies: ["document"]
 		},
 		event: {
-			library: "events-polyfill",
+			localPaths: [
+				"src/polyfill/lib/event/event-constructor.js",
+				"src/polyfill/lib/event/event-listener.js"
+			],
 			relativePaths: ["event-constructor-polyfill.min.js", "event-listener-polyfill.min.js"],
 			features: ["customevent", "dispatchevent", "passive-event-listener", "once-event-listener"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_EVENTS_POLYFILL,

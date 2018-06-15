@@ -1,3 +1,14 @@
+## <small>0.0.21 (2018-06-15)</small>
+
+* 0.0.21 ([bbf66ba](https://github.com/wessberg/polyfiller/commit/bbf66ba))
+* Added checks for iterator support when checking for Set and Map support ([43a1547](https://github.com/wessberg/polyfiller/commit/43a1547))
+* Added much more refined topological sorting of polyfills in an acyclic directed graph ([146ea1f](https://github.com/wessberg/polyfiller/commit/146ea1f))
+* Altered dependencies ([d4c63d9](https://github.com/wessberg/polyfiller/commit/d4c63d9))
+* Altered dependencies ([cf3dfff](https://github.com/wessberg/polyfiller/commit/cf3dfff))
+* Bumped version ([84dc3a9](https://github.com/wessberg/polyfiller/commit/84dc3a9))
+
+
+
 ## <small>0.0.20 (2018-06-13)</small>
 
 * 0.0.20 ([ebdb34a](https://github.com/wessberg/polyfiller/commit/ebdb34a))

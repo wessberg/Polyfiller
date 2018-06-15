@@ -75,11 +75,11 @@ test.only("Will generate correct polyfills for IE11", async t => {
 	const result = await sendRequest({
 		http2: config.http2,
 		tls: true,
-		userAgent: chrome("50"),
+		userAgent: ie("11"),
 		method: "GET",
 		host: config.host,
 		port: config.port,
-		path: `${constant.endpoint.polyfill}?features=event|force,zone,es.promise.finally`,
+		path: `${constant.endpoint.polyfill}?features=event,zone,es.promise.finally`,
 		acceptEncoding: undefined
 	});
 

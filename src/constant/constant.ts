@@ -2468,23 +2468,52 @@ export const constant: IConstant = {
 		element: {
 			library: "polyfill-service",
 			relativePaths: ["polyfills/Element/polyfill.js"],
-			// If 'addEventListener' isn't found, the Document interface shouldn't exist on the window
+			// If 'addEventListener' isn't found, the Element interface shouldn't exist on the window
 			features: ["addeventlistener"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
 			dependencies: ["document"]
 		},
 		event: {
-			localPaths: [
-				"src/polyfill/lib/event/event-constructor.js",
-				"src/polyfill/lib/event/event-listener.js"
-			],
-			relativePaths: ["event-constructor-polyfill.min.js", "event-listener-polyfill.min.js"],
-			features: ["customevent", "dispatchevent", "passive-event-listener", "once-event-listener"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_EVENTS_POLYFILL,
-			dependencies: ["window", "document", "element"],
-			mustComeAfter: [
-				"animation"
+			polyfills: [
+				"event.constructor",
+				"event.focusin",
+				"event.hashchange"
 			]
+		},
+		"event.constructor": {
+			library: "polyfill-service",
+			relativePaths: ["polyfills/Event/polyfill.js"],
+			features: ["api.Event"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			dependencies: ["window", "document", "element", "es.object.define-property"]
+		},
+		"event.focusin": {
+			library: "polyfill-service",
+			relativePaths: ["polyfills/Event/focusin/polyfill.js"],
+			features: ["focusin-focusout-events"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			dependencies: ["event.constructor"]
+		},
+		"event.hashchange": {
+			library: "polyfill-service",
+			relativePaths: ["polyfills/Event/hashchange/polyfill.js"],
+			features: ["hashchange"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			dependencies: ["event.constructor"]
+		},
+		"custom-event": {
+			library: "polyfill-service",
+			relativePaths: ["polyfills/CustomEvent/polyfill.js"],
+			features: ["customevent"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			dependencies: ["event"]
+		},
+		"event-source": {
+			library: "polyfill-service",
+			relativePaths: ["polyfills/EventSource/polyfill.js"],
+			features: ["api.CustomEvent"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			dependencies: []
 		},
 		"get-computed-style": {
 			library: "polyfill-service",

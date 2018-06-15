@@ -30,6 +30,7 @@ export declare type PolyfillName = PolyfillDealiasedName
 	|"esnext.weak-map"
 	|"esnext.set"
 	|"esnext.weak-set"
+	|"event"
 	|"dom.collections.iterable"
 	|"web-components";
 
@@ -297,8 +298,6 @@ export declare type PolyfillDealiasedName =
 	|"intl"
 	|"animation"
 	|"proxy"
-	|"event"
-	|"pointer-event"
 	|"window"
 	|"document"
 	|"element"
@@ -316,4 +315,10 @@ export declare type PolyfillDealiasedName =
 	|"class-list"
 	|"dom-token-list"
 	|"object-fit"
-	|"console";
+	|"console"
+	|"event.constructor"
+	|"event.focusin"
+	|"event.hashchange"
+	|"custom-event"
+	|"event-source"
+	|"pointer-event";

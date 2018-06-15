@@ -2483,7 +2483,7 @@ export const constant: IConstant = {
 		"event.constructor": {
 			library: "polyfill-service",
 			relativePaths: ["polyfills/Event/polyfill.js"],
-			features: ["api.Event"],
+			features: ["api.Event.Event"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
 			dependencies: ["window", "document", "element", "es.object.define-property"]
 		},
@@ -2511,7 +2511,7 @@ export const constant: IConstant = {
 		"event-source": {
 			library: "polyfill-service",
 			relativePaths: ["polyfills/EventSource/polyfill.js"],
-			features: ["api.CustomEvent"],
+			features: ["eventsource"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
 			dependencies: []
 		},

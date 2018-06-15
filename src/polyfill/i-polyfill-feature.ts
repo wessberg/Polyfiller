@@ -1,4 +1,4 @@
-import {PolyfillName} from "./polyfill-name";
+import {PolyfillDealiasedName} from "./polyfill-name";
 
 // tslint:disable:no-any
 
@@ -6,11 +6,11 @@ export interface IPolyfillFeatureMeta {
 	[key: string]: any;
 }
 
-export interface IPolyfillFeatureInput extends IPolyfillFeature {
-	force: boolean;
+export interface IPolyfillFeature {
+	name: PolyfillDealiasedName;
+	meta: IPolyfillFeatureMeta;
 }
 
-export interface IPolyfillFeature {
-	name: PolyfillName;
-	meta: IPolyfillFeatureMeta;
+export interface IPolyfillFeatureInput extends IPolyfillFeature {
+	force: boolean;
 }

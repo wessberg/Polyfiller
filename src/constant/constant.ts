@@ -35,7 +35,8 @@ export const constant: IConstant = {
 			],
 			features: [],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_ZONE_JS,
-			dependencies: []
+			dependencies: [],
+			mustComeAfter: "*"
 		},
 		"performance.now": {
 			library: "perfnow",
@@ -2477,7 +2478,10 @@ export const constant: IConstant = {
 			relativePaths: ["event-constructor-polyfill.min.js", "event-listener-polyfill.min.js"],
 			features: ["customevent", "dispatchevent", "passive-event-listener", "once-event-listener"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_EVENTS_POLYFILL,
-			dependencies: ["window", "document", "element"]
+			dependencies: ["window", "document", "element"],
+			mustComeAfter: [
+				"animation"
+			]
 		},
 		"get-computed-style": {
 			library: "polyfill-service",

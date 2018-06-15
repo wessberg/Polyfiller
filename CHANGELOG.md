@@ -1,3 +1,13 @@
+## <small>0.0.22 (2018-06-15)</small>
+
+* 0.0.22 ([ba7a8e8](https://github.com/wessberg/polyfiller/commit/ba7a8e8))
+* Bumped version ([e9d9834](https://github.com/wessberg/polyfiller/commit/e9d9834))
+* Changed event implementation again ([cda99d7](https://github.com/wessberg/polyfiller/commit/cda99d7))
+* Changed event polyfill implementation to not throw on no support for animationend ([58e8b11](https://github.com/wessberg/polyfiller/commit/58e8b11))
+* Fixed detection for 'new Event' support ([3644ae8](https://github.com/wessberg/polyfiller/commit/3644ae8))
+
+
+
 ## <small>0.0.21 (2018-06-15)</small>
 
 * 0.0.21 ([bbf66ba](https://github.com/wessberg/polyfiller/commit/bbf66ba))

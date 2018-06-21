@@ -1,5 +1,4 @@
 import {DIContainer} from "@wessberg/di";
-import {IMarshaller, Marshaller} from "@wessberg/marshaller";
 import {FileLoader, IFileLoader} from "@wessberg/fileloader";
 import {FileSaver, IFileSaver} from "@wessberg/filesaver";
 import {ILoggerService} from "./service/logger/i-logger-service";
@@ -39,7 +38,6 @@ import {ApiService} from "./service/api/api-service";
 // Utilities
 DIContainer.registerSingleton<IFileLoader, FileLoader>();
 DIContainer.registerSingleton<IFileSaver, FileSaver>();
-DIContainer.registerSingleton<IMarshaller, Marshaller>();
 
 // Services
 DIContainer.registerSingleton<ILoggerService, LoggerService>();

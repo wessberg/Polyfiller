@@ -8,15 +8,12 @@ import {polyfillRawDivider} from "../../polyfill/polyfill-raw-divider";
 import {polyfillOptionKeyValueDivider} from "../../polyfill/polyfill-option-key-value-divider";
 import {polyfillRawForceName} from "../../polyfill/polyfill-raw-force-name";
 import {polyfillOptionValueSeparator} from "../../polyfill/polyfill-option-value-separator";
-import {Marshaller} from "@wessberg/marshaller";
 import {createHash} from "crypto";
 import {constant} from "../../constant/constant";
 import {userAgentSupportsFeatures} from "@wessberg/browserslist-generator";
 // @ts-ignore
 import toposort from "toposort";
 import {IPolyfillLibraryDictEntry, IPolyfillLocalDictEntry} from "../../polyfill/polyfill-dict";
-
-const marshaller = new Marshaller();
 
 /**
  * Traces all polyfill names that matches the given name. It may be an alias, and it may refer to additional aliases
@@ -208,11 +205,12 @@ export function getPolyfillRequestFromUrl (url: URL, userAgent: string, encoding
 
 				// Otherwise, treat it as meta data
 				else {
+
 					meta[key] = splittedValue.length === 0
 						? true
 						: splittedValue.length === 1
-							? marshaller.unmarshal(splittedValue[0])
-							: splittedValue.map(splittedValuePart => marshaller.unmarshal(splittedValuePart));
+							? splittedValue[0]
+							: splittedValue;
 				}
 			}
 

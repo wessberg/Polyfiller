@@ -1,3 +1,11 @@
+## <small>0.0.23 (2018-06-21)</small>
+
+* 0.0.23 ([f1a16fb](https://github.com/wessberg/polyfiller/commit/f1a16fb))
+* Bumped deps and updated to reflect changes ([8f23eff](https://github.com/wessberg/polyfiller/commit/8f23eff))
+* Bumped version ([770704f](https://github.com/wessberg/polyfiller/commit/770704f))
+
+
+
 ## <small>0.0.22 (2018-06-15)</small>
 
 * 0.0.22 ([ba7a8e8](https://github.com/wessberg/polyfiller/commit/ba7a8e8))

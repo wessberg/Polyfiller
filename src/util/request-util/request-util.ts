@@ -135,9 +135,12 @@ export async function sendRequest (rawRequest: IRawRequest): Promise<Response> {
 		const onResponse = (res: IncomingMessage|ClientHttp2Stream, client?: ClientHttp2Session) => {
 			res.setEncoding("utf8");
 			let data: string = "";
-			res.on("data", (chunk) => {
+			// @ts-ignore
+			res.on("data", (chunk: any): void => {
 				data += chunk;
 			});
+
+			// @ts-ignore
 			res.on("end", () => {
 				if (client != null) {
 					client.close();

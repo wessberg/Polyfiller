@@ -2329,11 +2329,24 @@ export const constant: IConstant = {
 		},
 
 		"pointer-event": {
-			library: "pepjs",
-			relativePaths: ["dist/pep.min.js"],
+			library: "@wessberg/pointer-events",
+			relativePaths: ["dist/index.js"],
 			features: ["pointer"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_PEPJS,
-			dependencies: ["event"]
+			version: environment.NPM_PACKAGE_DEPENDENCIES__WESSBERG_POINTER_EVENTS,
+			dependencies: [
+				// TODO: Also relies on "elementFromPoint" which there isn't a polyfill for yet. Add it to the dependencies when the polyfill is ready
+				"es.array.from",
+				"es.array.some",
+				"es.array.every",
+				"es.string.includes",
+				"es.set",
+				"es.map",
+				"es.object.define-properties",
+				"es.object.define-property",
+				"event",
+				"custom-event",
+				"get-computed-style"
+			]
 		},
 		xhr: {
 			library: "xhr-polyfill",

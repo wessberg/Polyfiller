@@ -25,7 +25,7 @@
 		"bs": "npm run build && npm run serve",
 		"bs:watch": "npm run watch & npm run serve",
 		"watch": "npm run rollup:watch",
-		"validate": "npm run lint",
+		"validate": "npm run lint && npm run test",
 		"precommit": "npm run tslint && exit 0",
 		"prepush": "npm run validate && exit 0",
 		"finalize": "NODE_ENV=production npm run validate && NODE_ENV=production npm run build && npm run generate:all && git commit -am \"Bumped version\" || true",

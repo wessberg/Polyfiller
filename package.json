@@ -1,6 +1,6 @@
 {
 	"name": "@wessberg/polyfiller",
-	"version": "0.0.24",
+	"version": "0.0.25",
 	"description": "Never worry about polyfills again.",
 	"scripts": {
 		"generate:readme": "scaffold readme",

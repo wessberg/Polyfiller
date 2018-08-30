@@ -1,23 +1,20 @@
-# Polyfiller
-[![NPM version][npm-version-image]][npm-version-url]
-[![License-mit][license-mit-image]][license-mit-url]
+<a href="https://npmcharts.com/compare/@wessberg/polyfiller?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/%40wessberg%2Fpolyfiller.svg" height="20"></img></a>
+<a href="https://david-dm.org/wessberg/polyfiller"><img alt="Dependencies" src="https://img.shields.io/david/wessberg/polyfiller.svg" height="20"></img></a>
+<a href="https://www.npmjs.com/package/@wessberg/polyfiller"><img alt="NPM Version" src="https://badge.fury.io/js/%40wessberg%2Fpolyfiller.svg" height="20"></img></a>
+<a href="https://github.com/wessberg/polyfiller/graphs/contributors"><img alt="Contributors" src="https://img.shields.io/github/contributors/wessberg%2Fpolyfiller.svg" height="20"></img></a>
+<a href="https://opensource.org/licenses/MIT"><img alt="MIT License" src="https://img.shields.io/badge/License-MIT-yellow.svg" height="20"></img></a>
+<a href="https://www.patreon.com/bePatron?u=11315442"><img alt="Support on Patreon" src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" height="20"></img></a>
 
-<a href="https://www.patreon.com/bePatron?u=11315442"><img height="30" src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" /></a>
+# `@wessberg/polyfiller`
 
-[license-mit-url]: https://opensource.org/licenses/MIT
-[license-mit-image]: https://img.shields.io/badge/License-MIT-yellow.svg
-[npm-version-url]: https://www.npmjs.com/package/@wessberg/polyfiller
-[npm-version-image]: https://badge.fury.io/js/%40wessberg%2Fpolyfiller.svg
 > Never worry about polyfills again.
 
 ## Description
 
-This is a web service that returns a minified and encoded bundle of *only* the polyfills your users need.
-
+This is a web service that returns a minified and encoded bundle of _only_ the polyfills your users need.
 It's like [polyfill.io](https://github.com/Financial-Times/polyfill-service), but it has additional polyfills such as [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components), [Pointer Events](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events), and much more.
 It is also potentially faster since all unique polyfill combinations are cached in memory and returned immediately as requested.
 And, it supports different kinds of encodings for the smallest possible network bandwidth overhead, including [Brotli](https://github.com/google/brotli) and [Gzip](https://en.wikipedia.org/wiki/Gzip).
-
 The web service is hosted and live at `https://polyfill.app/api`. It is **free** to use, and there are no quota limits. See the [Hosting](#hosting) section for details on how to host it yourself, if you want to.
 
 ## Usage
@@ -33,7 +30,6 @@ In the following example, polyfills for `ES2015` and `Shadow DOM` are requested:
 
 A targeted bundle will be returned that **only contains the specific polyfills the browser needs**!
 When a browser (or robot) visits your site, `Polyfiller` evaluates the user agent against [Caniuse](http://caniuse.com/) and decides what is supported and what isn't.
-
 It is up to you to decide which polyfills you need, but the web service will automatically make sure to include every dependency of those polyfills, but only if the browser doesn't already support them.
 
 ## Examples
@@ -41,8 +37,9 @@ It is up to you to decide which polyfills you need, but the web service will aut
 ### Example 1:
 
 In this example:
+
 - `es` polyfills those EcmaScript features that the browser doesn't support.
-- `intersection-observer` is polyfilled, *even if the browser supports it*, because it has the `force` option.
+- `intersection-observer` is polyfilled, _even if the browser supports it_, because it has the `force` option.
 - `intl` is polyfilled if the browser doesn't support it, and the `en` locale data is included.
 
 ```html
@@ -52,6 +49,7 @@ In this example:
 ### Example 2:
 
 This example shows how you can add support for [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components):
+
 - `template` polyfills the `HTMLTemplateElement` if the browser doesn't support it.
 - `shadow-dom` polyfills the `Shadow DOM` v1 specification if the browser doesn't support it.
 - `custom-elements` polyfills the `Custom Elements` v1 specification if the browser doesn't support it.
@@ -69,8 +67,8 @@ For your convenience, the `web-components` alias requests those three features.
 ### Example 3:
 
 For your convenience, a few libraries are included that isn't strictly polyfills but are closely related to compatibility:
-
 In this example:
+
 - `systemjs` Adds the [`SystemJS`](https://github.com/systemjs/systemjs) ES module loader. Useful if you target a browser that doesn't support ES-modules and want to use something like dynamic imports and code-splitting.
 - `regenerator-runtime` is added, which is what [babel](https://github.com/babel/) transpiles async functions and generator functions into if you don't target browsers that supports it.
 
@@ -85,28 +83,16 @@ In this example:
 Retrieves a bundle of polyfills.
 `Polyfiller` will use the incoming `Accept-Encoding` headers of the request to decide if the response should be `Brotli` encoded, `Gzip` encoded or not encoded at all.
 
-<table>
-<tr>
-	<td><strong>Parameter</strong></td>
-	<td><strong>Description</strong></td>
-</tr>
-<tr>
-	<td><code>features</code></td>
-	<td>
-		A comma-separated string of all the <code>feature</code>s you want to include in your bundle (if required by the browser).
-		Each <code>feature</code> may receive zero or more <code>option</code>s. Some <code>option</code>s are supported for all <code>feature</code>s while others only support specific <code>feature</code>s.
-		<h4>Example</h4>
-		<code>es,shadow-dom|force,animation,intl|locales=en</code>
-	</td>
-</tr>
-</table>
+#### Parameter overview
+
+| Parameter  | Description                                                                                                                                                                                                                                                       |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `features` | A comma-separated string of all the `feature`s you want to include in your bundle (if required by the browser). Each `feature` may receive zero or more `option`s. Some `option`s are supported for all `feature`s while others only support specific `feature`s. |
 
 #### `feature`
 
-A `feature` has a *name* and may receive zero or more `option`s.
-
+A `feature` has a _name_ and may receive zero or more `option`s.
 For example, `intl` is a feature name, and so is `custom-elements`.
-
 See the [Feature name](#feature-names) section for the full list of possible `feature` names.
 
 #### `Option`
@@ -114,64 +100,88 @@ See the [Feature name](#feature-names) section for the full list of possible `fe
 An `option` is some data associated with a `feature`.
 It is associated with a feature using the `|` (pipe) operator.
 For example, here's how to associate the `force` option with a `feature`:
-
 `animation|force`.
-
 Some `option`s apply to all `feature`s while others only apply to specific `feature`s. For example:
-
 `intl|locales=en`
 
 #### The `force` option
 
-By default, `feature`s that are already supported by the browser sending the request to the web service *won't* be polyfilled. That would be a waste of network bandwidth and parsing cost for your users.
-*However*, sometimes you may want to *force* a polyfill, even for browsers that support a `feature`.
-
+By default, `feature`s that are already supported by the browser sending the request to the web service _won't_ be polyfilled. That would be a waste of network bandwidth and parsing cost for your users.
+_However_, sometimes you may want to _force_ a polyfill, even for browsers that support a `feature`.
 In order to do so, associate the `force` option with a `feature`. For example:
-
 `animation|force`
-
 This will force-apply a polyfill for `Web Animations`.
 
 #### The `locales` option
 
 **This option only works with `Intl`**.
-
 The `Intl` polyfill relies on locale data for it to work. There are over 600 different locale files shipped with Intl. Sending all of them back over the network would take way too much bandwidth.
 Instead, if you just ask for the `intl` feature, the `intl` polyfill will be returned without any locale data.
-
 To add one or more locales, use the `locales` option. For example:
-
 `intl|locales=en`
-
 This will return a bundle of `Intl` along with locale data for the `en` (English) language code.
 You can ask for as many you want by separating the locales with the `~` operator. For example:
-
 `intl|locales=en~da~fr`
-
 This will return a bundle of `Intl` along with locale data for `en` (English), `da` (Danish), and `fr` (French).
 
-## Difference from [polyfill.io](https://github.com/Financial-Times/polyfill-service)
+## Install
+
+`Polyfiller` is already hosted at `https://polyfill.app/api` as a **free** web service, but you can install it, for example if
+you want to host it yourself. See the [Hosting](#hosting) section for more details on that.
+
+### NPM
+
+```
+$ npm install @wessberg/polyfiller
+```
+
+### Yarn
+
+```
+$ yarn add @wessberg/polyfiller
+```
+
+### Run once with NPX
+
+```
+$ npx @wessberg/polyfiller
+```
+
+## Contributing
+
+Do you want to contribute? Awesome! Please follow [these recommendations](./CONTRIBUTING.md).
+
+## Maintainers
+
+- <a href="https://github.com/wessberg"><img alt="Frederik Wessberg" src="https://avatars2.githubusercontent.com/u/20454213?s=460&v=4" height="11"></img></a> [Frederik Wessberg](https://github.com/wessberg): _Maintainer_
+
+## FAQ
+
+### What's the difference from [polyfill.io](https://github.com/Financial-Times/polyfill-service)
 
 These two services are very much alike. In fact, `Polyfiller` depends on the library behind [polyfill.io](https://github.com/Financial-Times/polyfill-service) for some of the polyfills!
-
 `Polyfiller` exists for two reasons:
+
 - A wider range of available polyfills such as Web Components, PointerEvents and Proxies
 - Deep integration with `Caniuse`. If you use something like `babel-preset-env` with a `browserslist` and you generate this automatically based on the features you want to support with a tool such as [browserslist-generator](https://www.npmjs.com/package/@wessberg/browserslist-generator), both syntax detection for transpiling, and feature detection for polyfilling will be seamlessly based on your `browserslist`.
 
-## Hosting
+### Hosting
 
 `Polyfiller` is already hosted at `https://polyfill.app/api` as a **free** web service, but feel free to host it yourself.
 The server is built with support for both HTTP2 and HTTP. The environment variable `HTTP2=[true|false]` decides whether a HTTP2 server will be hosted or not.
-
 If you use a load balancer and something like `nginx` in a reverse proxy setup, please know that `nginx` doesn't support HTTP2 via its proxy module, so you have to use HTTP1.1 there. Thankfully, it is as easy as setting `HTTP2=false` before launching the server
 
-## Backers
+## Backers 🏅
 
-[Become a backer](https://www.patreon.com/bePatron?c=1770586) and get your name, logo, and link to your site listed here. I pay for the maintenance and uptime of the web service from my own pocket, so your help is greatly appreciated!
+[Become a backer](https://www.patreon.com/bePatron?u=11315442) and get your name, logo, and link to your site listed here.
+
+## License 📄
+
+MIT © [Frederik Wessberg](https://github.com/wessberg)
 
 ### Feature names
 
-Here's a full list of all possible `feature` *names*.
+Here's a full list of all possible `feature` _names_.
 Note that these will be deduplicated. For example, if you request `es.object`, but also request `es`, `es.object` will only be included once as part of `es`.
 And, if you request `performance.now`, `date.now` will also be included since the polyfill depends on it. You don't have to worry about dependencies.
 

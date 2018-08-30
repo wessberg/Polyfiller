@@ -53,7 +53,7 @@ export function getRequestFromIncomingHeaders (headers: IncomingHttpHeaders, htt
 		acceptLanguage: headers["accept-language"] == null
 			? undefined
 			: splitStringifiedListHeader(headers["accept-language"]!),
-		userAgent: <string> headers["user-agent"]!,
+		userAgent: headers["user-agent"]!,
 		// @ts-ignore
 		url: new URL(path, `${headers[":scheme"]}://${headers[":authority"]}`),
 		cachedChecksum: headers["if-none-match"]

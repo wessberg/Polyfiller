@@ -10,6 +10,8 @@ const {URL} = URLNamespace;
 
 // tslint:disable:no-any
 
+// tslint:disable:no-duplicate-string
+
 const GET_COLOR = chalk.green;
 const PUT_COLOR = chalk.yellow;
 const DELETE_COLOR = chalk.red;

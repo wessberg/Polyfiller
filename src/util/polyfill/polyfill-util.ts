@@ -15,6 +15,8 @@ import {userAgentSupportsFeatures} from "@wessberg/browserslist-generator";
 import toposort from "toposort";
 import {IPolyfillLibraryDictEntry, IPolyfillLocalDictEntry} from "../../polyfill/polyfill-dict";
 
+// tslint:disable
+
 /**
  * Traces all polyfill names that matches the given name. It may be an alias, and it may refer to additional aliases
  * within the given features
@@ -70,7 +72,9 @@ export function getPolyfillSetIdentifier (polyfills: Set<IPolyfillFeatureInput>,
  */
 export function getCoreJsBundleIdentifier (paths: string[]): string {
 	const shasum = createHash("sha1");
-	shasum.update(`[${paths.sort().join(",")}].corejs`);
+	const sortedPaths = paths.sort();
+	const joinedPaths = sortedPaths.join(",");
+	shasum.update(`[${joinedPaths}].corejs`);
 	return shasum.digest("hex");
 }
 
@@ -92,7 +96,7 @@ function shouldIncludePolyfill (force: boolean, userAgent: string, features: str
  */
 function getEffectiveDependors (polyfillName: PolyfillDealiasedName, includedPolyfillNames: Set<PolyfillDealiasedName>): PolyfillDealiasedName[] {
 	const allOtherPolyfillNames = [...includedPolyfillNames].filter(name => name !== polyfillName);
-	const allOtherPolyfills: [PolyfillDealiasedName, IPolyfillLocalDictEntry|IPolyfillLibraryDictEntry][] = allOtherPolyfillNames.map(name => <[PolyfillDealiasedName, IPolyfillLocalDictEntry|IPolyfillLibraryDictEntry]> [name, constant.polyfill[name]]);
+	const allOtherPolyfills = allOtherPolyfillNames.map(name => <[PolyfillDealiasedName, IPolyfillLocalDictEntry|IPolyfillLibraryDictEntry]> [name, constant.polyfill[name]]);
 	return allOtherPolyfills
 		.filter(([, dict]) => {
 			const dependsOnPolyfill = dict.dependencies.some(dependency => traceAllPolyfillNamesForPolyfillName(dependency).has(polyfillName));

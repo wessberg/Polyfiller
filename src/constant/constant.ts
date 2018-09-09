@@ -4,6 +4,8 @@ import {environment} from "../environment/environment";
 import * as tempDir from "temp-dir";
 import {join} from "path";
 
+// tslint:disable:no-duplicate-string
+
 export const constant: IConstant = {
 	endpoint: {
 		index: ["/api", "/api/"],

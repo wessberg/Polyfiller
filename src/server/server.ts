@@ -10,6 +10,8 @@ import {ILoggerService} from "../service/logger/i-logger-service";
 import {IRequestHandlerOptions, RequestHandlerOptions} from "./request-handler/request-handler-options";
 import {OnInitializedCallback} from "./on-initialized-callback";
 
+// tslint:disable:no-duplicate-string
+
 /**
  * A HTTP2 Server
  */

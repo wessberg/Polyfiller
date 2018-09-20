@@ -470,6 +470,7 @@ And, if you request `performance.now`, `date.now` will also be included since th
 - performance.now
 - blob
 - requestanimationframe
+- requestidlecallback
 - url
 - base64
 - xhr

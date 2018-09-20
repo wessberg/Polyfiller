@@ -289,6 +289,7 @@ export declare type PolyfillDealiasedName =
 	|"performance.now"
 	|"blob"
 	|"requestanimationframe"
+	|"requestidlecallback"
 	|"url"
 	|"base64"
 	|"xhr"

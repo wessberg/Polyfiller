@@ -84,6 +84,13 @@ export const constant: IConstant = {
 			version: environment.NPM_PACKAGE_DEPENDENCIES_BLOB_POLYFILL,
 			dependencies: ["base64", "url"]
 		},
+		requestidlecallback: {
+			library: "requestidlecallback",
+			relativePaths: ["index.js"],
+			features: ["requestidlecallback"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_REQUESTIDLECALLBACK,
+			dependencies: ["requestanimationframe"]
+		},
 		requestanimationframe: {
 			library: "requestanimationframe",
 			relativePaths: ["app/requestAnimationFrame.js"],

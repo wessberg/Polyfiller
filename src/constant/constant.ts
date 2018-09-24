@@ -2366,7 +2366,7 @@ export const constant: IConstant = {
 		},
 		fetch: {
 			library: "whatwg-fetch",
-			relativePaths: ["fetch.js"],
+			relativePaths: ["dist/fetch.umd.js"],
 			features: ["fetch"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_WHATWG_FETCH,
 			dependencies: ["es.array.for-each", "es.object.get-own-property-names", "es.promise", "xhr"]

@@ -69,7 +69,7 @@
 		"@webcomponents/custom-elements": "^1.2.0",
 		"@webcomponents/shadydom": "^1.2.0",
 		"@webcomponents/template": "^1.4.0",
-		"@wessberg/browserslist-generator": "0.0.44",
+		"@wessberg/browserslist-generator": "0.0.45",
 		"@wessberg/di": "^1.1.0",
 		"@wessberg/fileloader": "^1.1.9",
 		"@wessberg/filesaver": "^1.0.8",

@@ -73,7 +73,7 @@ In this example:
 - `regenerator-runtime` is added, which is what [babel](https://github.com/babel/) transpiles async functions and generator functions into if you don't target browsers that supports it.
 
 ```html
-<script src="https://polyfill.app/api/polyfill?features=systemjs|regenerator-runtime"></script>
+<script src="https://polyfill.app/api/polyfill?features=systemjs,regenerator-runtime"></script>
 ```
 
 ## Web Service API Reference

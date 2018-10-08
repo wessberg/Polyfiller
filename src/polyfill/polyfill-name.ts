@@ -309,6 +309,7 @@ export declare type PolyfillDealiasedName =
 	|"document-fragment"
 	|"intersection-observer"
 	|"mutation-observer"
+	|"resize-observer"
 	|"custom-elements"
 	|"shadow-dom"
 	|"template"

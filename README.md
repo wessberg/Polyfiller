@@ -493,6 +493,7 @@ And, if you request `performance.now`, `date.now` will also be included since th
 - document-fragment
 - intersection-observer
 - mutation-observer
+- resize-observer
 - custom-elements
 - shadow-dom
 - template

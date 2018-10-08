@@ -2557,6 +2557,13 @@ export const constant: IConstant = {
 			features: ["mutationobserver"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_MUTATIONOBSERVER_SHIM,
 			dependencies: []
+		},
+		"resize-observer": {
+			library: "resize-observer",
+			relativePaths: ["dist/resize-observer.min.js"],
+			features: ["resizeobserver"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_RESIZE_OBSERVER,
+			dependencies: ["get-computed-style", "requestanimationframe"]
 		}
 	}
 };

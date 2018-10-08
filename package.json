@@ -98,6 +98,7 @@
 		"regenerator-runtime": "^0.12.1",
 		"requestanimationframe": "0.0.23",
 		"requestidlecallback": "^0.3.0",
+		"resize-observer": "^1.0.0-alpha.1",
 		"semver": "^5.5.1",
 		"systemjs": "^0.21.5",
 		"temp-dir": "^1.0.0",

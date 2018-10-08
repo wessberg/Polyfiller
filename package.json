@@ -100,6 +100,7 @@
 		"requestidlecallback": "^0.3.0",
 		"resize-observer": "^1.0.0-alpha.1",
 		"semver": "^5.5.1",
+		"setimmediate": "^1.0.5",
 		"systemjs": "^0.21.5",
 		"temp-dir": "^1.0.0",
 		"toposort": "^2.0.2",

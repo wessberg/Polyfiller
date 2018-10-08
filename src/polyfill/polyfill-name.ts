@@ -323,4 +323,5 @@ export declare type PolyfillDealiasedName =
 	|"event.hashchange"
 	|"custom-event"
 	|"event-source"
-	|"pointer-event";
+	|"pointer-event"
+	|"setimmediate";

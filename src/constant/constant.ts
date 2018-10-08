@@ -2564,6 +2564,13 @@ export const constant: IConstant = {
 			features: ["resizeobserver"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_RESIZE_OBSERVER,
 			dependencies: ["get-computed-style", "requestanimationframe"]
+		},
+		setimmediate: {
+			library: "setimmediate",
+			relativePaths: ["setImmediate.js"],
+			features: ["setimmediate"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_SETIMMEDIATE,
+			dependencies: []
 		}
 	}
 };

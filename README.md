@@ -1,3 +1,4 @@
+<img alt="Logo for @wessberg/polyfiller" src="./documentation/asset/logo-color-text.png" height="100"></img><br>
 <a href="https://npmcharts.com/compare/@wessberg/polyfiller?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/%40wessberg%2Fpolyfiller.svg" height="20"></img></a>
 <a href="https://david-dm.org/wessberg/polyfiller"><img alt="Dependencies" src="https://img.shields.io/david/wessberg/polyfiller.svg" height="20"></img></a>
 <a href="https://www.npmjs.com/package/@wessberg/polyfiller"><img alt="NPM Version" src="https://badge.fury.io/js/%40wessberg%2Fpolyfiller.svg" height="20"></img></a>
@@ -170,6 +171,10 @@ These two services are very much alike. In fact, `Polyfiller` depends on the lib
 `Polyfiller` is already hosted at `https://polyfill.app/api` as a **free** web service, but feel free to host it yourself.
 The server is built with support for both HTTP2 and HTTP. The environment variable `HTTP2=[true|false]` decides whether a HTTP2 server will be hosted or not.
 If you use a load balancer and something like `nginx` in a reverse proxy setup, please know that `nginx` doesn't support HTTP2 via its proxy module, so you have to use HTTP1.1 there. Thankfully, it is as easy as setting `HTTP2=false` before launching the server
+
+## Logo
+
+All credits go to [Andreas Mehlsen (@andreasbm)](https://github.com/andreasbm/) for the awesome logo design.
 
 ## Backers 🏅
 

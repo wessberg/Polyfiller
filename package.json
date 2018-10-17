@@ -7,7 +7,8 @@
 		"generate:license": "scaffold license",
 		"generate:contributing": "scaffold contributing",
 		"generate:coc": "scaffold coc",
-		"generate:all": "npm run generate:license & npm run generate:contributing & npm run generate:coc & npm run generate:readme",
+		"generate:changelog": "standard-changelog",
+		"generate:all": "npm run generate:license & npm run generate:contributing & npm run generate:coc & npm run generate:readme & npm run generate:changelog",
 		"clean:dist": "rm -rf dist",
 		"clean:compiled": "rm -rf compiled",
 		"clean": "npm run clean:dist && npm run clean:compiled",
@@ -46,8 +47,8 @@
 		"@wessberg/rollup-plugin-di": "^1.0.87",
 		"@wessberg/scaffold": "^1.0.4",
 		"@wessberg/ts-config": "^0.0.30",
-		"conventional-changelog-cli": "^2.0.5",
 		"rollup": "^0.66.2",
+		"standard-changelog": "^2.0.1",
 		"tslint": "^5.11.0",
 		"typescript": "^3.0.3",
 		"useragent-generator": "^1.1.0"
@@ -135,6 +136,7 @@
 	"license": "MIT",
 	"scaffold": {
 		"patreonUserId": "11315442",
+		"logo": "./documentation/asset/logo-color-text.png",
 		"contributorMeta": {
 			"Frederik Wessberg": {
 				"imageUrl": "https://avatars2.githubusercontent.com/u/20454213?s=460&v=4",

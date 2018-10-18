@@ -27,11 +27,11 @@
 		"bs:watch": "npm run watch & npm run serve",
 		"watch": "npm run rollup:watch",
 		"validate": "npm run lint && npm run test",
-		"finalize": "NODE_ENV=production npm run validate && NODE_ENV=production npm run build && npm run generate:all && git commit -am \"Bumped version\" || true",
-		"prepublish:patch": "npm run finalize",
-		"publish:patch": "npm version patch && git push && npm publish",
-		"publish:minor": "npm version minor && git push && npm publish",
-		"publish:major": "npm version minor && git push && npm publish",
+		"publish:pre": "NODE_ENV=production npm run validate && NODE_ENV=production npm run build",
+		"publish:meta": "npm run generate:all && git add . && (git commit -am \"Bumped version\" || true) && git push",
+		"publish:patch": "npm run publish:pre && npm version patch && npm run publish:meta && npm publish",
+		"publish:minor": "npm run publish:pre && npm version minor && npm run publish:meta && npm publish",
+		"publish:major": "npm run publish:pre && npm version minor && npm run publish:meta && npm publish",
 		"deploy": "npm run finalize && nanobox build && nanobox deploy"
 	},
 	"keywords": [

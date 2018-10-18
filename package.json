@@ -32,10 +32,7 @@
 		"publish:patch": "npm run publish:pre && npm version patch && npm run publish:meta && npm publish",
 		"publish:minor": "npm run publish:pre && npm version minor && npm run publish:meta && npm publish",
 		"publish:major": "npm run publish:pre && npm version minor && npm run publish:meta && npm publish",
-		"deploy": "npm run publish:pre && nanobox build && nanobox deploy",
-		"publish_and_deploy:patch": "npm run publish:pre && npm version patch && npm run publish:meta && npm publish && nanobox build && nanobox deploy",
-		"publish_and_deploy:minor": "npm run publish:pre && npm version minor && npm run publish:meta && npm publish && nanobox build && nanobox deploy",
-		"publish_and_deploy:major": "npm run publish:pre && npm version major && npm run publish:meta && npm publish && nanobox build && nanobox deploy"
+		"deploy": "npm run publish:pre && nanobox build && nanobox deploy"
 	},
 	"keywords": [
 		"polyfills",

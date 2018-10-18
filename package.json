@@ -3,7 +3,7 @@
 	"version": "0.0.33",
 	"description": "Never worry about polyfills again.",
 	"scripts": {
-		"generate:readme": "scaffold readme",
+		"generate:readme": "scaffold readme --blacklist intro",
 		"generate:license": "scaffold license",
 		"generate:contributing": "scaffold contributing",
 		"generate:coc": "scaffold coc",

@@ -25,7 +25,11 @@ export const constant: IConstant = {
 	polyfill: {
 		systemjs: {
 			library: "systemjs",
-			relativePaths: ["dist/system-production.js"],
+			relativePaths: ["dist/system.min.js"],
+			meta: {
+				system: "dist/system.min.js",
+				s: "dist/s.min.js"
+			},
 			features: [],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_SYSTEMJS,
 			dependencies: []

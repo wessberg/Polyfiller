@@ -12,6 +12,7 @@ import builder from "core-js-builder";
 import {IPolyfillLibraryDictEntry} from "../../polyfill/polyfill-dict";
 import {ICacheRegistryService} from "../registry/cache-registry/i-cache-registry-service";
 import {ILoggerService} from "../logger/i-logger-service";
+import {ensureArray} from "../../util/ensure-array/ensure-array";
 
 /**
  * A service that can load and cache all polyfills
@@ -83,13 +84,21 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				// Resolve the directory of the package.json file
 				const packageDirectory = join(nodeModulesDirectory, library);
 
-				// For each of the relative paths, compute the absolute path
-				absolutePaths.push(...relativePaths.map(path => join(packageDirectory, path)));
+				// If SystemJS is requested, the variant to use may be provided as metadata. If so, we should use that one, rather than the relativePaths
+				if (polyfillFeature.name === "systemjs" && meta != null && polyfillFeature.meta != null && "variant" in polyfillFeature.meta && (polyfillFeature.meta.variant === "s" || polyfillFeature.meta.variant === "system")) {
+					absolutePaths.push(join(packageDirectory, meta[polyfillFeature.meta.variant]));
+				}
+
+				// Otherwise, use all of the given relativePaths
+				else {
+					// For each of the relative paths, compute the absolute path
+					absolutePaths.push(...relativePaths.map(path => join(packageDirectory, path)));
+				}
 
 				// If the Polyfill is "intl" and a localeDir is associated with it, also resolve the requested locales (if any)
 				if (polyfillFeature.name === "intl" && meta != null && "localeDir" in meta && polyfillFeature.meta.locale != null) {
 					// Normalize the requested locales to make sure we have an array to work with
-					const requestedLocales: string[] = typeof polyfillFeature.meta.locale === "string" ? [polyfillFeature.meta.locale] : polyfillFeature.meta.locale;
+					const requestedLocales: string[] = ensureArray(polyfillFeature.meta.locale);
 
 					// Loop through all of the requested locales in parallel
 					await Promise.all(requestedLocales.map(async requestedLocale => {

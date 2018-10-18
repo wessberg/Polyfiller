@@ -1,4 +1,4 @@
-<img alt="Logo for @wessberg/polyfiller" src="./documentation/asset/logo-color-text.png" height="80"></img><br>
+<img alt="Logo for @wessberg/polyfiller" src="https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/logo-color-text.png" height="80"></img><br>
 <a href="https://npmcharts.com/compare/@wessberg/polyfiller?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/%40wessberg%2Fpolyfiller.svg" height="20"></img></a>
 <a href="https://david-dm.org/wessberg/polyfiller"><img alt="Dependencies" src="https://img.shields.io/david/wessberg/polyfiller.svg" height="20"></img></a>
 <a href="https://www.npmjs.com/package/@wessberg/polyfiller"><img alt="NPM Version" src="https://badge.fury.io/js/%40wessberg%2Fpolyfiller.svg" height="20"></img></a>
@@ -100,6 +100,7 @@ An `option` is some data associated with a `feature`.
 It is associated with a feature using the `|` (pipe) operator.
 For example, here's how to associate the `force` option with a `feature`:
 `animation|force`.
+
 Some `option`s apply to all `feature`s while others only apply to specific `feature`s. For example:
 `intl|locales=en`
 
@@ -111,7 +112,7 @@ In order to do so, associate the `force` option with a `feature`. For example:
 `animation|force`
 This will force-apply a polyfill for `Web Animations`.
 
-#### The `locales` option
+#### The `locales` option for `Intl`
 
 **This option only works with `Intl`**.
 The `Intl` polyfill relies on locale data for it to work. There are over 600 different locale files shipped with Intl. Sending all of them back over the network would take way too much bandwidth.
@@ -122,6 +123,13 @@ This will return a bundle of `Intl` along with locale data for the `en` (English
 You can ask for as many you want by separating the locales with the `~` operator. For example:
 `intl|locales=en~da~fr`
 This will return a bundle of `Intl` along with locale data for `en` (English), `da` (Danish), and `fr` (French).
+
+#### The `variant` option for `SystemJS`
+
+SystemJS comes in two base versions, a [minimal version called *s*](https://github.com/systemjs/systemjs#1-sjs-minimal-loader), and a [more feature-complete version called *system*](https://github.com/systemjs/systemjs#2-systemjs-loader).
+By default, the *system* variant will be used. You can decide which one to use with the `variant` option.
+
+For example: `systemjs|variant=s` selects the *s* variant, while `systemjs|variant=system` selects the *system* variant.
 
 ## Install
 

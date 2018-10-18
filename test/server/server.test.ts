@@ -10,7 +10,10 @@ import {initializeTests} from "./setup";
 // @ts-ignore
 import {chrome, ie} from "useragent-generator";
 import {ContentEncodingKind} from "../../src/encoding/content-encoding-kind";
-import {writeFileSync} from "fs";
+import {getPolyfillRequestFromUrl} from "../../src/util/polyfill/polyfill-util";
+import {URL} from "url";
+
+// tslint:disable:no-identical-functions
 
 const config = DIContainer.get<IConfig>();
 
@@ -25,10 +28,6 @@ test("Delegates requests to '/' to the StaticController", async t => {
 		port: config.port,
 		path: <string> (Array.isArray(constant.endpoint.index) ? constant.endpoint.index[0] : constant.endpoint.index)
 	});
-
-	if ("body" in result) {
-		console.log("body length:", result.body.length);
-	}
 
 	t.true(result.statusCode === constants.HTTP_STATUS_OK);
 });
@@ -45,10 +44,6 @@ test("Delegates requests to '/polyfill' to the PolyfillController", async t => {
 		acceptEncoding: new Set([ContentEncodingKind.BROTLI])
 	});
 
-	if ("body" in result) {
-		console.log("checksum:", result.checksum);
-		console.log("body length:", result.body.length);
-	}
 	t.true(result.statusCode === constants.HTTP_STATUS_OK);
 });
 
@@ -64,10 +59,6 @@ test("Will not generate polyfills for 'Element' on Chrome 69 for a Galaxy S5", a
 		acceptEncoding: new Set([ContentEncodingKind.BROTLI])
 	});
 
-	if ("body" in result) {
-		console.log("checksum:", result.checksum);
-		console.log("body length:", result.body.length);
-	}
 	t.true(result.statusCode === constants.HTTP_STATUS_OK);
 });
 
@@ -83,10 +74,23 @@ test("Will generate correct polyfills for IE11", async t => {
 		acceptEncoding: undefined
 	});
 
-	if ("body" in result) {
-		writeFileSync("/Users/wessberg/desktop/foo.js",result.body);
-		console.log("checksum:", result.checksum);
-		console.log("body length:", result.body.length);
-	}
 	t.true(result.statusCode === constants.HTTP_STATUS_OK);
+});
+
+test("Will correctly parse meta information for SystemJS. #1", async t => {
+
+	const polyfillRequest = getPolyfillRequestFromUrl(
+		new URL("/api/polyfill?features=systemjs|variant=s", "https://polyfill.app"),
+		chrome(70)
+	);
+	t.true([...polyfillRequest.features].some(({meta, name}) => name === "systemjs" && meta != null && meta.variant === "s"));
+});
+
+test("Will correctly parse meta information for SystemJS. #2", async t => {
+
+	const polyfillRequest = getPolyfillRequestFromUrl(
+		new URL("/api/polyfill?features=systemjs|variant=system", "https://polyfill.app"),
+		chrome(70)
+	);
+	t.true([...polyfillRequest.features].some(({meta, name}) => name === "systemjs" && meta != null && meta.variant === "system"));
 });

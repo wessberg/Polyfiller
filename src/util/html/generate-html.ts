@@ -13,6 +13,12 @@ export function generateHtml (message: string): string {
 		<head>
 			<meta charset="UTF-8">
 			<title>${constant.meta.name} v${constant.meta.version}</title>
+			<style>
+				body {
+					background: rgba(0,0,0,.1);
+					font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+				}
+			</style>
 		</head>
 		<body>
 			${message}

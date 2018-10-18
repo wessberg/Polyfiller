@@ -32,7 +32,10 @@ export const constant: IConstant = {
 			},
 			features: [],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_SYSTEMJS,
-			dependencies: []
+			dependencies: [
+				"es.promise",
+				"fetch"
+			]
 		},
 		zone: {
 			library: "zone.js",

@@ -6,7 +6,7 @@ import {GET} from "../../server/decorator/get";
 import {constants} from "http2";
 import {OK, INTERNAL_SERVER_ERROR, NOT_MODIFIED} from "http-status-codes";
 import {constant} from "../../constant/constant";
-import {getPolyfillRequestFromUrl} from "../../util/polyfill/polyfill-util";
+import {encodeFeatureSetForHttpHeader, getPolyfillRequestFromUrl} from "../../util/polyfill/polyfill-util";
 import {IPolyfillBl} from "../../bl/polyfill/i-polyfill-bl";
 import {pickEncoding} from "../../util/request-util/request-util";
 import {generateErrorHtml} from "../../util/html/generate-html";
@@ -32,7 +32,7 @@ export class PolyfillController extends Controller implements IPolyfillControlle
 
 		// Generate polyfill bundle
 		try {
-			const {buffer, checksum} = await this.polyfillBl.getPolyfills(polyfillRequest);
+			const {result: {buffer, checksum}, featureSet} = await this.polyfillBl.getPolyfills(polyfillRequest);
 
 			// If the cached checksum (ETag) is identical, respond with NOT_MODIFIED
 			if (request.cachedChecksum != null && request.cachedChecksum === checksum) {
@@ -40,7 +40,8 @@ export class PolyfillController extends Controller implements IPolyfillControlle
 					statusCode: request.http2
 						? constants.HTTP_STATUS_NOT_MODIFIED
 						: NOT_MODIFIED,
-					cacheControl: "public,max-age=31536000,immutable"
+					cacheControl: "public,max-age=31536000,immutable",
+					polyfillsHeader: encodeFeatureSetForHttpHeader(featureSet)
 				};
 			}
 
@@ -53,7 +54,8 @@ export class PolyfillController extends Controller implements IPolyfillControlle
 				body: buffer,
 				cacheControl: "public,max-age=31536000,immutable",
 				contentEncoding: polyfillRequest.encoding,
-				checksum
+				checksum,
+				polyfillsHeader: encodeFeatureSetForHttpHeader(featureSet)
 			};
 		} catch (ex) {
 			// Respond with error code 500

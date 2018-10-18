@@ -6,6 +6,7 @@ import chalk from "chalk";
 import {connect, ClientHttp2Stream, ClientHttp2Session} from "http2";
 import {ContentEncodingKind} from "../../encoding/content-encoding-kind";
 import * as URLNamespace from "url";
+import {constant} from "../../constant/constant";
 const {URL} = URLNamespace;
 
 // tslint:disable:no-any
@@ -103,7 +104,8 @@ export async function sendRequest (rawRequest: IRawRequest): Promise<Response> {
 			contentType: "text/plain",
 			statusCode: 0,
 			body: "",
-			checksum: ""
+			checksum: "",
+			polyfillsHeader: ""
 		};
 
 		let contentType: string|undefined;
@@ -111,6 +113,7 @@ export async function sendRequest (rawRequest: IRawRequest): Promise<Response> {
 		let statusCode: number|undefined;
 		let contentEncoding: string|undefined;
 		let checksum: string|undefined;
+		let polyfillsHeader: string|undefined;
 
 		const setResponseHeaders = () => {
 			if (statusCode != null) {
@@ -131,6 +134,10 @@ export async function sendRequest (rawRequest: IRawRequest): Promise<Response> {
 
 			if (checksum != null) {
 				response.checksum = checksum;
+			}
+
+			if (polyfillsHeader != null) {
+				response.polyfillsHeader = polyfillsHeader;
 			}
 		};
 
@@ -166,10 +173,12 @@ export async function sendRequest (rawRequest: IRawRequest): Promise<Response> {
 			};
 
 			const incomingMessageHandler = (rawResponse: IncomingMessage) => {
+				console.log(rawResponse);
 				statusCode = rawResponse.statusCode;
 				contentType = rawResponse.headers["content-type"];
 				cacheControl = rawResponse.headers["cache-control"];
 				contentEncoding = rawResponse.headers["content-encoding"];
+				polyfillsHeader = <string|undefined> rawResponse.headers[constant.header.polyfills];
 				checksum = <string|undefined> rawResponse.headers.etag;
 				setResponseHeaders();
 				onResponse(rawResponse);
@@ -194,6 +203,7 @@ export async function sendRequest (rawRequest: IRawRequest): Promise<Response> {
 				contentType = headers["content-type"];
 				cacheControl = headers["cache-control"];
 				contentEncoding = headers["content-encoding"];
+				polyfillsHeader = <string|undefined> headers[constant.header.polyfills];
 				checksum = <string|undefined> headers.etag;
 				setResponseHeaders();
 			});

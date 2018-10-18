@@ -1,6 +1,6 @@
 import {IPolyfillRequest} from "../../polyfill/i-polyfill-request";
-import {IRegistryGetResult} from "../../service/registry/polyfill-registry/i-registry-get-result";
+import {IGetPolyfillsResult} from "./i-get-polyfills-result";
 
 export interface IPolyfillBl {
-	getPolyfills (request: IPolyfillRequest): Promise<IRegistryGetResult>;
+	getPolyfills (request: IPolyfillRequest): Promise<IGetPolyfillsResult>;
 }

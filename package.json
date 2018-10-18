@@ -2,6 +2,9 @@
 	"name": "@wessberg/polyfiller",
 	"version": "0.0.34",
 	"description": "Never worry about polyfills again.",
+	"files": [
+		"dist/**/*.*"
+	],
 	"scripts": {
 		"generate:readme": "scaffold readme --blacklist intro",
 		"generate:license": "scaffold license",
@@ -73,6 +76,7 @@
 		"@wessberg/filesaver": "^1.0.8",
 		"@wessberg/pointer-events": "^1.0.5",
 		"@wessberg/rollup-plugin-ts": "1.0.8",
+		"@wessberg/stringutil": "^1.0.18",
 		"Base64": "^1.0.1",
 		"ava": "^0.25.0",
 		"blob-polyfill": "^3.0.20180112",

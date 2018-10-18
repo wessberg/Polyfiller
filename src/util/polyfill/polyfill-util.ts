@@ -11,9 +11,10 @@ import {polyfillOptionValueSeparator} from "../../polyfill/polyfill-option-value
 import {createHash} from "crypto";
 import {constant} from "../../constant/constant";
 import {userAgentSupportsFeatures} from "@wessberg/browserslist-generator";
+import {truncate} from "@wessberg/stringutil";
+import {IPolyfillLibraryDictEntry, IPolyfillLocalDictEntry} from "../../polyfill/polyfill-dict";
 // @ts-ignore
 import toposort from "toposort";
-import {IPolyfillLibraryDictEntry, IPolyfillLocalDictEntry} from "../../polyfill/polyfill-dict";
 
 // tslint:disable
 
@@ -125,9 +126,7 @@ function getRequiredPolyfillsForUserAgent (polyfillSet: Set<IPolyfillFeatureInpu
 			const existingIndex = polyfillNameToPolyfillIndexMap.get(polyfill.name);
 			if (existingIndex != null) {
 				polyfills[existingIndex].meta = polyfill.meta;
-			}
-
-			else {
+			} else {
 				polyfills.push({name: polyfill.name, meta: polyfill.meta});
 				polyfillNameToPolyfillIndexMap.set(polyfill.name, currentIndex++);
 				polyfillNames.add(polyfill.name);
@@ -236,4 +235,28 @@ export function getPolyfillRequestFromUrl (url: URL, userAgent: string, encoding
 		encoding,
 		features: featureSet
 	};
+}
+
+/**
+ * Encodes a PolyfillSet such that it can be embedded in a HTTP header
+ * @param {Set<IPolyfillFeature>} polyfillSet
+ * @returns {string}
+ */
+export function encodeFeatureSetForHttpHeader (polyfillSet: Set<IPolyfillFeature>): string {
+	return truncate(
+		[...polyfillSet].map(({meta, name}) => {
+			let str = name;
+			if (meta != null) {
+				const metaEntries = Object.entries(meta);
+				if (metaEntries.length > 0) {
+					str += " (";
+					str += metaEntries.map(([key, value]) => `${key}: ${value}`).join(", ");
+					str += `)`;
+				}
+			}
+			return str;
+		}).join(", "),
+		{length: constant.header.maxChars,
+		omission: "...[omitted]"}
+	);
 }

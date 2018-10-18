@@ -1,6 +1,7 @@
 import {Http2ServerResponse} from "http2";
 import {ServerResponse as HttpServerResponse} from "http";
 import {Response} from "../../server/i-response";
+import {constant} from "../../constant/constant";
 
 // tslint:disable:no-any
 
@@ -30,6 +31,10 @@ export function respondToRequest (rawResponse: HttpServerResponse|Http2ServerRes
 
 	if ("checksum" in response && response.checksum != null) {
 		rawResponse.setHeader("ETag", response.checksum);
+	}
+
+	if ("polyfillsHeader" in response && response.polyfillsHeader != null) {
+		rawResponse.setHeader(constant.header.polyfills, response.polyfillsHeader);
 	}
 
 	// Allow any origin

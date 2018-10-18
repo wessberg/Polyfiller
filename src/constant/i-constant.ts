@@ -17,9 +17,15 @@ export interface IPathConstant {
 	cachePackageVersionMap: string;
 }
 
+export interface IHeaderConstant {
+	polyfills: string;
+	maxChars: number;
+}
+
 export interface IConstant {
 	endpoint: IEndpointConstant;
 	meta: IMetaConstant;
 	polyfill: PolyfillDict;
 	path: IPathConstant;
+	header: IHeaderConstant;
 }

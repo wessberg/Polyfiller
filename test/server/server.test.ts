@@ -70,7 +70,7 @@ test("Will generate correct polyfills for IE11", async t => {
 		method: "GET",
 		host: config.host,
 		port: config.port,
-		path: `${constant.endpoint.polyfill}?features=event,custom-event,zone,es.promise.finally,pointer-event|force`,
+		path: `${constant.endpoint.polyfill}?features=event,custom-event,zone,es.promise.finally,pointer-event|force,systemjs|variant=system`,
 		acceptEncoding: undefined
 	});
 
@@ -80,7 +80,7 @@ test("Will generate correct polyfills for IE11", async t => {
 test("Will correctly parse meta information for SystemJS. #1", async t => {
 
 	const polyfillRequest = getPolyfillRequestFromUrl(
-		new URL("/api/polyfill?features=systemjs|variant=s", "https://polyfill.app"),
+		new URL("?features=systemjs|variant=s", `https://my-polyfill-service.app${constant.endpoint.polyfill}`),
 		chrome(70)
 	);
 	t.true([...polyfillRequest.features].some(({meta, name}) => name === "systemjs" && meta != null && meta.variant === "s"));
@@ -89,8 +89,24 @@ test("Will correctly parse meta information for SystemJS. #1", async t => {
 test("Will correctly parse meta information for SystemJS. #2", async t => {
 
 	const polyfillRequest = getPolyfillRequestFromUrl(
-		new URL("/api/polyfill?features=systemjs|variant=system", "https://polyfill.app"),
+		new URL("?features=systemjs|variant=system", `https://my-polyfill-service.app${constant.endpoint.polyfill}`),
 		chrome(70)
 	);
 	t.true([...polyfillRequest.features].some(({meta, name}) => name === "systemjs" && meta != null && meta.variant === "system"));
+});
+
+test("Will set a 'x-applied-polyfills' header on HTTP2 responses with a HTTP-friendly list of all applied polyfills. #1", async t => {
+
+	const result = await sendRequest({
+		http2: config.http2,
+		tls: true,
+		userAgent: ie("11"),
+		method: "GET",
+		host: config.host,
+		port: config.port,
+		path: `${constant.endpoint.polyfill}?features=event,custom-event,zone,es.promise.finally,pointer-event|force,systemjs|variant=system,intl|force|locale=en~da`,
+		acceptEncoding: undefined
+	});
+
+	t.true(result.polyfillsHeader != null);
 });

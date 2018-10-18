@@ -4,11 +4,12 @@ import {ContentEncodingKind} from "../encoding/content-encoding-kind";
 
 export interface IResponse {
 	statusCode: number;
+	cacheControl?: string;
+	polyfillsHeader?: string;
 }
 
 export interface IOKResponse extends IResponse {
 	contentType: string;
-	cacheControl?: string;
 	contentEncoding?: ContentEncodingKind;
 	body: any;
 	checksum: string;

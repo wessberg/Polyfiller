@@ -11,6 +11,10 @@ export const constant: IConstant = {
 		index: ["/api", "/api/"],
 		polyfill: "/api/polyfill"
 	},
+	header: {
+		polyfills: "x-applied-polyfills",
+		maxChars: 600
+	},
 	meta: {
 		name: environment.NPM_PACKAGE_NAME,
 		version: environment.NPM_PACKAGE_VERSION,

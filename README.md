@@ -1,10 +1,21 @@
-<img alt="Logo for @wessberg/polyfiller" src="https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/logo-color-text.png" height="80"></img><br>
+<img alt="Logo for @wessberg/polyfiller" src="https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/logo-color-text.png" height="200"></img><br>
 <a href="https://npmcharts.com/compare/@wessberg/polyfiller?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/%40wessberg%2Fpolyfiller.svg" height="20"></img></a>
 <a href="https://david-dm.org/wessberg/polyfiller"><img alt="Dependencies" src="https://img.shields.io/david/wessberg/polyfiller.svg" height="20"></img></a>
 <a href="https://www.npmjs.com/package/@wessberg/polyfiller"><img alt="NPM Version" src="https://badge.fury.io/js/%40wessberg%2Fpolyfiller.svg" height="20"></img></a>
 <a href="https://github.com/wessberg/polyfiller/graphs/contributors"><img alt="Contributors" src="https://img.shields.io/github/contributors/wessberg%2Fpolyfiller.svg" height="20"></img></a>
 <a href="https://opensource.org/licenses/MIT"><img alt="MIT License" src="https://img.shields.io/badge/License-MIT-yellow.svg" height="20"></img></a>
 <a href="https://www.patreon.com/bePatron?u=11315442"><img alt="Support on Patreon" src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" height="20"></img></a>
+
+# `@wessberg/polyfiller`
+
+> Never worry about polyfills again.
+> <img alt="Logo for @wessberg/polyfiller" src="https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/logo-color-text.png" height="80"></img><br>
+> <a href="https://npmcharts.com/compare/@wessberg/polyfiller?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/%40wessberg%2Fpolyfiller.svg" height="20"></img></a>
+> <a href="https://david-dm.org/wessberg/polyfiller"><img alt="Dependencies" src="https://img.shields.io/david/wessberg/polyfiller.svg" height="20"></img></a>
+> <a href="https://www.npmjs.com/package/@wessberg/polyfiller"><img alt="NPM Version" src="https://badge.fury.io/js/%40wessberg%2Fpolyfiller.svg" height="20"></img></a>
+> <a href="https://github.com/wessberg/polyfiller/graphs/contributors"><img alt="Contributors" src="https://img.shields.io/github/contributors/wessberg%2Fpolyfiller.svg" height="20"></img></a>
+> <a href="https://opensource.org/licenses/MIT"><img alt="MIT License" src="https://img.shields.io/badge/License-MIT-yellow.svg" height="20"></img></a>
+> <a href="https://www.patreon.com/bePatron?u=11315442"><img alt="Support on Patreon" src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" height="20"></img></a>
 
 > Never worry about polyfills again.
 
@@ -126,10 +137,10 @@ This will return a bundle of `Intl` along with locale data for `en` (English), `
 
 #### The `variant` option for `SystemJS`
 
-SystemJS comes in two base versions, a [minimal version called *s*](https://github.com/systemjs/systemjs#1-sjs-minimal-loader), and a [more feature-complete version called *system*](https://github.com/systemjs/systemjs#2-systemjs-loader).
-By default, the *system* variant will be used. You can decide which one to use with the `variant` option.
+SystemJS comes in two base versions, a [minimal version called _s_](https://github.com/systemjs/systemjs#1-sjs-minimal-loader), and a [more feature-complete version called _system_](https://github.com/systemjs/systemjs#2-systemjs-loader).
+By default, the _system_ variant will be used. You can decide which one to use with the `variant` option.
 
-For example: `systemjs|variant=s` selects the *s* variant, while `systemjs|variant=system` selects the *system* variant.
+For example: `systemjs|variant=s` selects the _s_ variant, while `systemjs|variant=system` selects the _system_ variant.
 
 ## Install
 

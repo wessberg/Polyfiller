@@ -15,9 +15,7 @@ export default {
 	plugins: [
 		diPlugin(),
 		typescriptRollupPlugin({
-			tsconfig: process.env.NODE_ENV === "production" ? "tsconfig.dist.json" : "tsconfig.json",
-			include: ["*.ts+(|x)", "**/*.ts+(|x)"],
-			exclude: ["*.d.ts", "**/*.d.ts"]
+			tsconfig: process.env.NODE_ENV === "production" ? "tsconfig.dist.json" : "tsconfig.json"
 		})
 	],
 	external: [

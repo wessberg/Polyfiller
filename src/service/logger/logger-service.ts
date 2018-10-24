@@ -1,5 +1,4 @@
 import {ILoggerService} from "./i-logger-service";
-// @ts-ignore
 import chalk from "chalk";
 import {IConfig} from "../../config/i-config";
 

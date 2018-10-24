@@ -75,7 +75,7 @@
 		"@wessberg/fileloader": "^1.1.9",
 		"@wessberg/filesaver": "^1.0.8",
 		"@wessberg/pointer-events": "^1.0.5",
-		"@wessberg/rollup-plugin-ts": "1.0.9",
+		"@wessberg/rollup-plugin-ts": "1.0.8",
 		"@wessberg/stringutil": "^1.0.18",
 		"Base64": "^1.0.1",
 		"ava": "^0.25.0",

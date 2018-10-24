@@ -13,9 +13,7 @@ export default {
 	plugins: [
 		diPlugin(),
 		typescriptRollupPlugin({
-			tsconfig: "tsconfig.json",
-			include: ["*.ts+(|x)", "**/*.ts+(|x)"],
-			exclude: ["*.d.ts", "**/*.d.ts"]
+			tsconfig: "tsconfig.json"
 		})
 	],
 	external: [

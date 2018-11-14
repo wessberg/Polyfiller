@@ -43,6 +43,9 @@ export const constant: IConstant = {
 		},
 		zone: {
 			library: "zone.js",
+			meta: {
+				error: "dist/zone-error.min.js"
+			},
 			relativePaths: [
 				"dist/zone.min.js"
 			],

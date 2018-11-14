@@ -131,6 +131,10 @@ By default, the _system_ variant will be used. You can decide which one to use w
 
 For example: `systemjs|variant=s` selects the _s_ variant, while `systemjs|variant=system` selects the _system_ variant.
 
+#### The `error` option for `Zone`
+
+[Zone.js](https://github.com/angular/zone.js/) can be configured to produce more readable Stack traces. If you want this, you can give the `error` option: `zone|error`.
+
 ## Install
 
 `Polyfiller` is already hosted at `https://polyfill.app/api` as a **free** web service, but you can install it, for example if

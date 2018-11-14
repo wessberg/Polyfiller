@@ -35,36 +35,38 @@ import {CacheRegistryService} from "./service/registry/cache-registry/cache-regi
 import {IApiService} from "./service/api/i-api-service";
 import {ApiService} from "./service/api/api-service";
 
+export const container = new DIContainer();
+
 // Utilities
-DIContainer.registerSingleton<IFileLoader, FileLoader>();
-DIContainer.registerSingleton<IFileSaver, FileSaver>();
+container.registerSingleton<IFileLoader, FileLoader>();
+container.registerSingleton<IFileSaver, FileSaver>();
 
 // Services
-DIContainer.registerSingleton<ILoggerService, LoggerService>();
-DIContainer.registerSingleton<ICompressorService, CompressorService>();
-DIContainer.registerSingleton<IMinifyService, MinifyService>();
-DIContainer.registerSingleton<IMemoryRegistryService, MemoryRegistryService>();
-DIContainer.registerSingleton<ICacheRegistryService, CacheRegistryService>();
-DIContainer.registerSingleton<IPolyfillBuilderService, PolyfillBuilderService>();
-DIContainer.registerSingleton<IApiService, ApiService>();
+container.registerSingleton<ILoggerService, LoggerService>();
+container.registerSingleton<ICompressorService, CompressorService>();
+container.registerSingleton<IMinifyService, MinifyService>();
+container.registerSingleton<IMemoryRegistryService, MemoryRegistryService>();
+container.registerSingleton<ICacheRegistryService, CacheRegistryService>();
+container.registerSingleton<IPolyfillBuilderService, PolyfillBuilderService>();
+container.registerSingleton<IApiService, ApiService>();
 
 // Configuration
-DIContainer.registerSingleton<IConfig, IConfig>(() => config);
-DIContainer.registerSingleton<BrotliEncodeParams, BrotliEncodeParams>(() => brotliCompressionOptions);
-DIContainer.registerSingleton<ZlibOptions, ZlibOptions>(() => zlibCompressionOptions);
+container.registerSingleton<IConfig>(() => config);
+container.registerSingleton<BrotliEncodeParams>(() => brotliCompressionOptions);
+container.registerSingleton<ZlibOptions>(() => zlibCompressionOptions);
 
 // Server
-DIContainer.registerSingleton<IServer, Server>();
-DIContainer.registerSingleton<IRequestHandler, RequestHandler>();
+container.registerSingleton<IServer, Server>();
+container.registerSingleton<IRequestHandler, RequestHandler>();
 
 // Business Logic
-DIContainer.registerSingleton<IStaticBl, StaticBl>();
-DIContainer.registerSingleton<IPolyfillBl, PolyfillBl>();
+container.registerSingleton<IStaticBl, StaticBl>();
+container.registerSingleton<IPolyfillBl, PolyfillBl>();
 
 // Controller
-DIContainer.registerSingleton<IStaticController, StaticController>();
-DIContainer.registerSingleton<IPolyfillController, PolyfillController>();
-DIContainer.registerSingleton<RegisteredControllers, RegisteredControllers>(() => [
-	DIContainer.get<IStaticController>(),
-	DIContainer.get<IPolyfillController>()
+container.registerSingleton<IStaticController, StaticController>();
+container.registerSingleton<IPolyfillController, PolyfillController>();
+container.registerSingleton<RegisteredControllers>(() => [
+	container.get<IStaticController>(),
+	container.get<IPolyfillController>()
 ]);

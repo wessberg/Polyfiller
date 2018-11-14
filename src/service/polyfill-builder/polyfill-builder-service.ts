@@ -86,7 +86,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 
 				// If Zone is requested, 'zone-error' may be requested which improves the produced Stack trace when using Zone
 				if (polyfillFeature.name === "zone" && meta != null && polyfillFeature.meta != null && polyfillFeature.meta.error === true) {
-					absolutePaths.push(join(packageDirectory, meta[polyfillFeature.meta.error]));
+					absolutePaths.push(join(packageDirectory, meta.error));
 				}
 
 				// If SystemJS is requested, the variant to use may be provided as metadata. If so, we should use that one, rather than the relativePaths

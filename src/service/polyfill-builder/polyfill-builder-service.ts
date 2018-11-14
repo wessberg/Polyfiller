@@ -84,11 +84,6 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				// Resolve the directory of the package.json file
 				const packageDirectory = join(nodeModulesDirectory, library);
 
-				// If Zone is requested, 'zone-error' may be requested which improves the produced Stack trace when using Zone
-				if (polyfillFeature.name === "zone" && meta != null && polyfillFeature.meta != null && polyfillFeature.meta.error === true) {
-					absolutePaths.push(join(packageDirectory, meta.error));
-				}
-
 				// If SystemJS is requested, the variant to use may be provided as metadata. If so, we should use that one, rather than the relativePaths
 				if (polyfillFeature.name === "systemjs" && meta != null && polyfillFeature.meta != null && "variant" in polyfillFeature.meta && (polyfillFeature.meta.variant === "s" || polyfillFeature.meta.variant === "system")) {
 					absolutePaths.push(join(packageDirectory, meta[polyfillFeature.meta.variant]));
@@ -98,6 +93,11 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				else {
 					// For each of the relative paths, compute the absolute path
 					absolutePaths.push(...relativePaths.map(path => join(packageDirectory, path)));
+				}
+
+				// If Zone is requested, 'zone-error' may be requested which improves the produced Stack trace when using Zone
+				if (polyfillFeature.name === "zone" && meta != null && polyfillFeature.meta != null && polyfillFeature.meta.error === true) {
+					absolutePaths.push(join(packageDirectory, meta.error));
 				}
 
 				// If the Polyfill is "intl" and a localeDir is associated with it, also resolve the requested locales (if any)

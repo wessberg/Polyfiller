@@ -34,7 +34,7 @@ export function traceAllPolyfillNamesForPolyfillName (name: PolyfillName): Set<P
 	if (!("polyfills" in match)) return new Set([<PolyfillDealiasedName> name]);
 
 	// Otherwise, recursively trace all polyfill names for each of the polyfill names
-	return new Set([].concat.apply([], match.polyfills.map(polyfillName => [...traceAllPolyfillNamesForPolyfillName(polyfillName)])));
+	return new Set(([] as PolyfillDealiasedName[]).concat.apply([], match.polyfills.map(polyfillName => [...traceAllPolyfillNamesForPolyfillName(polyfillName)])));
 }
 
 /**
@@ -132,7 +132,7 @@ function getRequiredPolyfillsForUserAgent (polyfillSet: Set<IPolyfillFeatureInpu
 				polyfillNames.add(polyfill.name);
 			}
 
-			const resolvedDependencies: PolyfillDealiasedName[] = [].concat.apply([], match.dependencies.map(dependency => [...traceAllPolyfillNamesForPolyfillName(dependency)]));
+			const resolvedDependencies: PolyfillDealiasedName[] = ([] as PolyfillDealiasedName[]).concat.apply([], match.dependencies.map(dependency => [...traceAllPolyfillNamesForPolyfillName(dependency)]));
 			for (const childPolyfill of getRequiredPolyfillsForUserAgent(new Set(resolvedDependencies.map(dependency => ({name: dependency, meta: {}, force: polyfill.force}))), userAgent)[0]) {
 				if (!polyfillNames.has(childPolyfill.name)) {
 					polyfills.push(childPolyfill);

@@ -37,7 +37,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 		let hasAddedCoreJsContent: boolean = false;
 
 		// Take all Core Js paths
-		const coreJsPaths = [].concat.apply([], [...polyfillSet].map(polyfillFeature => {
+		const coreJsPaths = ([] as string[]).concat.apply([], [...polyfillSet].map(polyfillFeature => {
 			if (!this.isCoreJs(polyfillFeature)) return [];
 
 			const match = <IPolyfillLibraryDictEntry> constant.polyfill[polyfillFeature.name];

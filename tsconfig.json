@@ -1,5 +1,5 @@
 {
-	"extends": "./node_modules/@wessberg/ts-config/tsconfig/tsconfig.json",
+	"extends": "@wessberg/ts-config",
 	"include": [
 		"src/**/*.*"
 	],

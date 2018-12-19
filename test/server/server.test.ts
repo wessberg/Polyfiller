@@ -1,6 +1,6 @@
 import {container} from "../../src/services";
 
-import {test} from "ava";
+import test from "ava";
 import {constants} from "http2";
 import {IConfig} from "../../src/config/i-config";
 import {sendRequest} from "../../src/util/request-util/request-util";

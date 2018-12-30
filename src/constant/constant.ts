@@ -216,8 +216,7 @@ export const constant: IConstant = {
 		"es.object.from-entries": {
 			library: "core-js",
 			relativePaths: ["modules/esnext.object.from-entries.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
+			features: ["javascript.builtins.Object.fromEntries"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: []
 		},
@@ -1373,8 +1372,7 @@ export const constant: IConstant = {
 		"es.symbol.description": {
 			library: "core-js",
 			relativePaths: ["modules/esnext.symbol.description.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
+			features: ["javascript.builtins.Symbol.description"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: ["es.symbol.constructor"]
 		},

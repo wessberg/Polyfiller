@@ -2430,11 +2430,14 @@ export const constant: IConstant = {
 			dependencies: ["es"]
 		},
 		"shadow-dom": {
-			library: "@webcomponents/shadydom",
-			relativePaths: ["shadydom.min.js"],
+			localPaths: [
+				"node_modules/@webcomponents/shadydom/shadydom.min.js",
+				"node_modules/@webcomponents/shadycss/entrypoints/scoping-shim.js",
+				"node_modules/@webcomponents/shadycss/entrypoints/custom-style-interface.js"
+			],
 			features: ["shadowdomv1"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES__WEBCOMPONENTS_SHADYDOM,
-			dependencies: ["es", "mutation-observer", "event", "node.contains", "queryselector"]
+			dependencies: ["es", "template", "mutation-observer", "event", "node.contains", "queryselector"]
 		},
 		queryselector: {
 			library: "polyfill-service",

@@ -2432,8 +2432,8 @@ export const constant: IConstant = {
 		"shadow-dom": {
 			localPaths: [
 				"node_modules/@webcomponents/shadydom/shadydom.min.js",
-				"node_modules/@webcomponents/shadycss/entrypoints/scoping-shim.js",
-				"node_modules/@webcomponents/shadycss/entrypoints/custom-style-interface.js"
+				"node_modules/@webcomponents/shadycss/scoping-shim.min.js",
+				"node_modules/@webcomponents/shadycss/custom-style-interface.min.js"
 			],
 			features: ["shadowdomv1"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES__WEBCOMPONENTS_SHADYDOM,

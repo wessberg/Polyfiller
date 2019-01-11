@@ -2462,6 +2462,20 @@ export const constant: IConstant = {
 			version: environment.NPM_PACKAGE_DEPENDENCIES_NODE_PARENTELEMENT,
 			dependencies: ["document"]
 		},
+		"scroll-behavior": {
+			library: "scroll-behavior-polyfill",
+			relativePaths: ["dist/index.js"],
+			features: [
+				"css-scroll-behavior",
+				"scrollintoview"
+			],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_SCROLL_BEHAVIOR_POLYFILL,
+			dependencies: [
+				"es.object.define-property",
+				"es.object.get-own-property-descriptor",
+				"requestanimationframe"
+			]
+		},
 		"node.contains": {
 			library: "polyfill-service",
 			relativePaths: ["polyfills/Node/prototype/contains/polyfill.js"],

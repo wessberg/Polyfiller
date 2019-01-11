@@ -517,3 +517,4 @@ And, if you request `performance.now`, `date.now` will also be included since th
 - dom-token-list
 - object-fit
 - console
+- scroll-behavior

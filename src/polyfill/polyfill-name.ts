@@ -302,6 +302,7 @@ export declare type PolyfillDealiasedName =
 	|"window"
 	|"document"
 	|"element"
+	|"scroll-behavior"
 	|"get-computed-style"
 	|"node.contains"
 	|"node.parentelement"

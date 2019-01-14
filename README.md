@@ -494,6 +494,8 @@ And, if you request `performance.now`, `date.now` will also be included since th
 - dom.collections.for-each
 - fetch
 - intl
+- intl.core
+- intl.relative-time-format
 - animation
 - proxy
 - event

@@ -39,7 +39,7 @@ In this example:
 
 - `es` polyfills those EcmaScript features that the browser doesn't support.
 - `intersection-observer` is polyfilled, _even if the browser supports it_, because it has the `force` option.
-- `intl` is polyfilled if the browser doesn't support it, and the `en` locale data is included.
+- `intl` is polyfilled, with the inclusion of `Intl.RelativeTimeFormat`, if the browser doesn't support it, and the `en` locale data is included.
 
 ```html
 <script src="https://polyfill.app/api/polyfill?features=es,intersection-observer|force,intl|locales=en"></script>
@@ -114,15 +114,17 @@ This will force-apply a polyfill for `Web Animations`.
 
 #### The `locales` option for `Intl`
 
-**This option only works with `Intl`**.
-The `Intl` polyfill relies on locale data for it to work. There are over 600 different locale files shipped with Intl. Sending all of them back over the network would take way too much bandwidth.
-Instead, if you just ask for the `intl` feature, the `intl` polyfill will be returned without any locale data.
+**This option only works with `intl`, `intl.core`, or `intl.relative-time-format`**.
+The `Intl` family of polyfills rely on locale data for them to work. There are over 600 different locale files shipped. Sending all of them back over the network would take way too much bandwidth.
+Instead, if you just ask for the `intl`, `intl.core`, or `intl.relative-time-format` features, they will be returned without any locale data.
+
 To add one or more locales, use the `locales` option. For example:
 `intl|locales=en`
-This will return a bundle of `Intl` along with locale data for the `en` (English) language code.
+
+This will return a bundle of `Intl`-related polyfills along with locale data for the `en` (English) language code.
 You can ask for as many you want by separating the locales with the `~` operator. For example:
 `intl|locales=en~da~fr`
-This will return a bundle of `Intl` along with locale data for `en` (English), `da` (Danish), and `fr` (French).
+This will return a bundle of `Intl`-related polyfills along with locale data for `en` (English), `da` (Danish), and `fr` (French).
 
 #### The `variant` option for `SystemJS`
 

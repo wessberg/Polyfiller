@@ -34,6 +34,8 @@ import {ICacheRegistryService} from "./service/registry/cache-registry/i-cache-r
 import {CacheRegistryService} from "./service/registry/cache-registry/cache-registry-service";
 import {IApiService} from "./service/api/i-api-service";
 import {ApiService} from "./service/api/api-service";
+import {IFlattenerService} from "./service/flattener/i-flattener-service";
+import {FlattenerService} from "./service/flattener/flattener-service";
 
 export const container = new DIContainer();
 
@@ -45,6 +47,7 @@ container.registerSingleton<IFileSaver, FileSaver>();
 container.registerSingleton<ILoggerService, LoggerService>();
 container.registerSingleton<ICompressorService, CompressorService>();
 container.registerSingleton<IMinifyService, MinifyService>();
+container.registerSingleton<IFlattenerService, FlattenerService>();
 container.registerSingleton<IMemoryRegistryService, MemoryRegistryService>();
 container.registerSingleton<ICacheRegistryService, CacheRegistryService>();
 container.registerSingleton<IPolyfillBuilderService, PolyfillBuilderService>();

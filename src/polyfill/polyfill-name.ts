@@ -32,7 +32,8 @@ export declare type PolyfillName = PolyfillDealiasedName
 	|"esnext.weak-set"
 	|"event"
 	|"dom.collections.iterable"
-	|"web-components";
+	|"web-components"
+	|"intl";
 
 export declare type PolyfillDealiasedName =
 	|"es.object.assign"
@@ -296,7 +297,9 @@ export declare type PolyfillDealiasedName =
 	|"dom.collections.iterator"
 	|"dom.collections.for-each"
 	|"fetch"
-	|"intl"
+	|"intl.core"
+	|"intl.relative-time-format"
+	// |"intl.list-format"
 	|"animation"
 	|"proxy"
 	|"window"

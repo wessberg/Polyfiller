@@ -1593,7 +1593,7 @@ export const constant: IConstant = {
 		},
 		"es.set.add-all": {
 			library: "core-js",
-			relativePaths: ["modules/esnext.set.add-all.js"],
+			relativePaths: ["modules/esnext.set.addTime-all.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
@@ -2385,6 +2385,14 @@ export const constant: IConstant = {
 			dependencies: ["es.array.for-each", "es.object.get-own-property-names", "es.promise", "xhr"]
 		},
 		intl: {
+			polyfills: [
+				"intl.core",
+				"intl.relative-time-format"
+				// TODO: Add Intl.ListFormat
+				/*, "intl.list-format" */
+			]
+		},
+		"intl.core": {
 			library: "intl",
 			relativePaths: ["dist/Intl.min.js"],
 			meta: {
@@ -2393,6 +2401,29 @@ export const constant: IConstant = {
 			features: ["internationalization"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_INTL,
 			dependencies: []
+		},
+		"intl.relative-time-format": {
+			library: "intl-relative-time-format",
+			relativePaths: [
+				"dist/index.js"
+			],
+			meta: {
+				localeDir: "locale-data"
+			},
+			features: [
+				"javascript.builtins.Intl.RelativeTimeFormat"
+			],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_INTL_RELATIVE_TIME_FORMAT,
+			dependencies: [
+				"intl.core",
+				"es.array.includes",
+				"es.object.create",
+				"es.object.is",
+				"es.string.includes",
+				"es.string.replace",
+				"es.symbol.to-string-tag",
+				"es.weak-map"
+			]
 		},
 		animation: {
 			library: "web-animations-js",

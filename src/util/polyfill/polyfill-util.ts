@@ -135,7 +135,13 @@ function getRequiredPolyfillsForUserAgent (polyfillSet: Set<IPolyfillFeatureInpu
 			const resolvedDependencies: PolyfillDealiasedName[] = ([] as PolyfillDealiasedName[]).concat.apply([], match.dependencies.map(dependency => [...traceAllPolyfillNamesForPolyfillName(dependency)]));
 			for (const childPolyfill of getRequiredPolyfillsForUserAgent(new Set(resolvedDependencies.map(dependency => ({name: dependency, meta: {}, force: polyfill.force}))), userAgent)[0]) {
 				if (!polyfillNames.has(childPolyfill.name)) {
-					polyfills.push(childPolyfill);
+					polyfills.push({
+						...childPolyfill,
+						meta: {
+							...childPolyfill.meta,
+							...polyfill.meta
+						}
+					});
 					polyfillNameToPolyfillIndexMap.set(childPolyfill.name, currentIndex++);
 					polyfillNames.add(childPolyfill.name);
 				}

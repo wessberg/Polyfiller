@@ -13,6 +13,8 @@ import {IPolyfillLibraryDictEntry} from "../../polyfill/polyfill-dict";
 import {ICacheRegistryService} from "../registry/cache-registry/i-cache-registry-service";
 import {ILoggerService} from "../logger/i-logger-service";
 import {ensureArray} from "../../util/ensure-array/ensure-array";
+import {IFlattenerService} from "../flattener/i-flattener-service";
+import {PolyfillDealiasedName} from "../../polyfill/polyfill-name";
 
 /**
  * A service that can load and cache all polyfills
@@ -20,6 +22,7 @@ import {ensureArray} from "../../util/ensure-array/ensure-array";
 export class PolyfillBuilderService implements IPolyfillBuilderService {
 
 	constructor (private readonly minifier: IMinifyService,
+							 private readonly flattener: IFlattenerService,
 							 private readonly logger: ILoggerService,
 							 private readonly cacheService: ICacheRegistryService,
 							 private readonly compressor: ICompressorService,
@@ -32,7 +35,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 	 * @returns {Promise<ICompressedPolyfillSetResult>}
 	 */
 	public async buildPolyfillSet (polyfillSet: Set<IPolyfillFeature>): Promise<ICompressedPolyfillSetResult> {
-		const input: string[] = [];
+		const input: { polyfillName: PolyfillDealiasedName; paths: string[]; flatten: boolean }[] = [];
 		let content: string = "";
 		let hasAddedCoreJsContent: boolean = false;
 
@@ -40,7 +43,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 		const coreJsPaths = ([] as string[]).concat.apply([], [...polyfillSet].map(polyfillFeature => {
 			if (!this.isCoreJs(polyfillFeature)) return [];
 
-			const match = <IPolyfillLibraryDictEntry> constant.polyfill[polyfillFeature.name];
+			const match = <IPolyfillLibraryDictEntry>constant.polyfill[polyfillFeature.name];
 			return match.relativePaths.map(relativePath => relativePath
 				.replace("modules/", "")
 				.replace(".js", ""));
@@ -77,62 +80,75 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				throw new TypeError(`No aliased polyfill names can be built! These must be resolved before calling ${this.buildPolyfillSet.name}!`);
 			}
 
-			if ("library" in match) {
-				const {library, relativePaths, meta} = match;
-				// Resolve the node modules directory
-				const nodeModulesDirectory = join(__dirname, "../node_modules");
-				// Resolve the directory of the package.json file
-				const packageDirectory = join(nodeModulesDirectory, library);
+			const flatten = match.flatten === true;
 
-				// If SystemJS is requested, the variant to use may be provided as metadata. If so, we should use that one, rather than the relativePaths
-				if (polyfillFeature.name === "systemjs" && meta != null && polyfillFeature.meta != null && "variant" in polyfillFeature.meta && (polyfillFeature.meta.variant === "s" || polyfillFeature.meta.variant === "system")) {
-					absolutePaths.push(join(packageDirectory, meta[polyfillFeature.meta.variant]));
-				}
+			const rootDirectory = "library" in match
+				? join(__dirname, "../node_modules", match.library)
+				: join(__dirname, "../");
+			const localPaths = "library" in match
+				? match.relativePaths
+				: match.localPaths;
 
-				// Otherwise, use all of the given relativePaths
-				else {
-					// For each of the relative paths, compute the absolute path
-					absolutePaths.push(...relativePaths.map(path => join(packageDirectory, path)));
-				}
+			const {meta} = match;
 
-				// If Zone is requested, 'zone-error' may be requested which improves the produced Stack trace when using Zone
-				if (polyfillFeature.name === "zone" && meta != null && polyfillFeature.meta != null && polyfillFeature.meta.error === true) {
-					absolutePaths.push(join(packageDirectory, meta.error));
-				}
-
-				// If the Polyfill is "intl" and a localeDir is associated with it, also resolve the requested locales (if any)
-				if (polyfillFeature.name === "intl" && meta != null && "localeDir" in meta && polyfillFeature.meta.locale != null) {
-					// Normalize the requested locales to make sure we have an array to work with
-					const requestedLocales: string[] = ensureArray(polyfillFeature.meta.locale);
-
-					// Loop through all of the requested locales in parallel
-					await Promise.all(requestedLocales.map(async requestedLocale => {
-						// Resolve the absolute path
-						const localePath = join(packageDirectory, meta.localeDir, `${requestedLocale}.js`);
-						// If it exists, add it to the array of absolute paths
-						if (await this.fileLoader.exists(localePath)) {
-							absolutePaths.push(localePath);
-						}
-					}));
-				}
+			// If SystemJS is requested, the variant to use may be provided as metadata. If so, we should use that one, rather than the relativePaths
+			if (polyfillFeature.name === "systemjs" && meta != null && polyfillFeature.meta != null && "variant" in polyfillFeature.meta && (polyfillFeature.meta.variant === "s" || polyfillFeature.meta.variant === "system")) {
+				absolutePaths.push(join(rootDirectory, meta[polyfillFeature.meta.variant]));
 			}
 
-			else if ("localPaths" in match) {
-				const {localPaths} = match;
-				const rootDirectory = join(__dirname, "../");
-				for (const localPath of localPaths) {
-					const absoluteLocalPath = join(rootDirectory, localPath);
-					absolutePaths.push(absoluteLocalPath);
-				}
+			// Otherwise, use all of the given relativePaths
+			else {
+				// For each of the relative paths, compute the absolute path
+				absolutePaths.push(...localPaths.map(path => join(rootDirectory, path)));
+			}
+
+			// If Zone is requested, 'zone-error' may be requested which improves the produced Stack trace when using Zone
+			if (polyfillFeature.name === "zone" && meta != null && polyfillFeature.meta != null && polyfillFeature.meta.error === true) {
+				absolutePaths.push(join(rootDirectory, meta.error));
+			}
+
+			// If the Polyfill is "intl.core" and a localeDir is associated with it, also resolve the requested locales (if any)
+			if ((polyfillFeature.name === "intl.core" || polyfillFeature.name === "intl.relative-time-format") && meta != null && "localeDir" in meta && polyfillFeature.meta.locale != null) {
+				// Normalize the requested locales to make sure we have an array to work with
+				const requestedLocales: string[] = ensureArray(polyfillFeature.meta.locale);
+
+				// Loop through all of the requested locales in parallel
+				await Promise.all(requestedLocales.map(async requestedLocale => {
+					// Resolve the absolute path
+					const localePath = join(
+						rootDirectory,
+						meta.localeDir,
+						`${requestedLocale}.js`
+					);
+
+					// If it exists, add it to the array of absolute paths
+					if (await this.fileLoader.exists(localePath)) {
+						absolutePaths.push(localePath);
+					}
+				}));
 			}
 
 			// Push all of the absolute paths for this specific polyfill to the input paths
-			input.push(...absolutePaths);
+			input.push({
+				polyfillName: polyfillFeature.name,
+				paths: absolutePaths,
+				flatten
+			});
 		}
 
 		// Load all of the input paths and add them to the generated content
-		for (const path of input) {
-			content += `\n${(await this.fileLoader.load(path)).toString()}`;
+		for (const {paths, flatten} of input) {
+			if (flatten) {
+				content += `\n${await this.flattener.flatten({
+					path: paths
+				})}`;
+			}
+
+			else {
+				for (const path of paths) {
+					content += `\n${(await this.fileLoader.load(path)).toString()}`;
+				}
+			}
 		}
 
 		// Minify the result

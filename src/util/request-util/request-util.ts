@@ -173,7 +173,6 @@ export async function sendRequest (rawRequest: IRawRequest): Promise<Response> {
 			};
 
 			const incomingMessageHandler = (rawResponse: IncomingMessage) => {
-				console.log(rawResponse);
 				statusCode = rawResponse.statusCode;
 				contentType = rawResponse.headers["content-type"];
 				cacheControl = rawResponse.headers["cache-control"];

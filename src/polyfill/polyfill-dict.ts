@@ -10,6 +10,7 @@ export interface IPolyfillDictEntryBase {
 	version: string;
 	dependencies: PolyfillName[];
 	mustComeAfter?: PolyfillName[]|"*";
+	flatten?: boolean;
 }
 
 export interface IPolyfillLibraryDictEntry extends IPolyfillDictEntryBase {

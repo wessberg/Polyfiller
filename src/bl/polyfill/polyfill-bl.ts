@@ -35,6 +35,7 @@ export class PolyfillBl implements IPolyfillBl {
 					.filter(feature => feature.name in constant.polyfill)),
 				request.userAgent
 			);
+
 			// Store them within the cache
 			await this.cacheRegistry.setPolyfillFeatureSet(request.features, featureSet, request.userAgent);
 		} else {

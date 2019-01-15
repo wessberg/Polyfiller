@@ -97,7 +97,7 @@
 		"intl-relative-time-format": "^1.0.4",
 		"memory-fs": "^0.4.1",
 		"mime": "^2.4.0",
-		"mutationobserver-shim": "^0.3.2",
+		"mutationobserver-shim": "^0.3.3",
 		"node.parentelement": "^1.0.2",
 		"nodemon": "^1.18.9",
 		"object-fit-images": "^3.2.4",

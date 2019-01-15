@@ -1711,6 +1711,30 @@ export const constant: IConstant = {
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: ["es.set"]
 		},
+		"es.set.is-disjoint-with": {
+			library: "core-js",
+			relativePaths: ["modules/esnext.set.is-disjoint-with.js"],
+			// TODO: Update when MDN or Caniuse Compatibility is added
+			features: [],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+			dependencies: ["es.set"]
+		},
+		"es.set.is-subset-of": {
+			library: "core-js",
+			relativePaths: ["modules/esnext.set.is-subset-of.js"],
+			// TODO: Update when MDN or Caniuse Compatibility is added
+			features: [],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+			dependencies: ["es.set"]
+		},
+		"es.set.is-superset-of": {
+			library: "core-js",
+			relativePaths: ["modules/esnext.set.is-superset-of.js"],
+			// TODO: Update when MDN or Caniuse Compatibility is added
+			features: [],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+			dependencies: ["es.set"]
+		},
 		"es.weak-set": {
 			library: "core-js",
 			relativePaths: ["modules/es.weak-set.js"],
@@ -2263,7 +2287,10 @@ export const constant: IConstant = {
 				"es.set.reduce",
 				"es.set.some",
 				"es.set.symmetric-difference",
-				"es.set.union"
+				"es.set.union",
+				"es.set.is-disjoint-with",
+				"es.set.is-subset-of",
+				"es.set.is-superset-of"
 			]
 		},
 		"esnext.weak-set": {

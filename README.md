@@ -348,6 +348,9 @@ And, if you request `performance.now`, `date.now` will also be included since th
 - es.set.some
 - es.set.symmetric-difference
 - es.set.union
+- es.set.is-disjoint-with
+- es.set.is-subset-of
+- es.set.is-superset-of
 - es.weak-set
 - es.weak-set.from
 - es.weak-set.of

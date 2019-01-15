@@ -39,7 +39,7 @@ In this example:
 
 - `es` polyfills those EcmaScript features that the browser doesn't support.
 - `intersection-observer` is polyfilled, _even if the browser supports it_, because it has the `force` option.
-- `intl` is polyfilled, with the inclusion of `Intl.RelativeTimeFormat`, if the browser doesn't support it, and the `en` locale data is included.
+- `intl` is polyfilled, with the inclusion of `Intl.ListFormat` and `Intl.RelativeTimeFormat`, if the browser doesn't support it, and the `en` locale data is included.
 
 ```html
 <script src="https://polyfill.app/api/polyfill?features=es,intersection-observer|force,intl|locales=en"></script>

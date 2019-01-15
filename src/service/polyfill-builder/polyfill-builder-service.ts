@@ -108,7 +108,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 			}
 
 			// If the Polyfill is "intl.core" and a localeDir is associated with it, also resolve the requested locales (if any)
-			if ((polyfillFeature.name === "intl.core" || polyfillFeature.name === "intl.relative-time-format") && meta != null && "localeDir" in meta && polyfillFeature.meta.locale != null) {
+			if (polyfillFeature.name.startsWith("intl.") && meta != null && "localeDir" in meta && polyfillFeature.meta.locale != null) {
 				// Normalize the requested locales to make sure we have an array to work with
 				const requestedLocales: string[] = ensureArray(polyfillFeature.meta.locale);
 

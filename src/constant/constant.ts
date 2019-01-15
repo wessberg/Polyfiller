@@ -2387,9 +2387,8 @@ export const constant: IConstant = {
 		intl: {
 			polyfills: [
 				"intl.core",
+				"intl.list-format",
 				"intl.relative-time-format"
-				// TODO: Add Intl.ListFormat
-				/*, "intl.list-format" */
 			]
 		},
 		"intl.core": {
@@ -2420,6 +2419,28 @@ export const constant: IConstant = {
 				"es.object.create",
 				"es.object.is",
 				"es.string.includes",
+				"es.string.replace",
+				"es.symbol.to-string-tag",
+				"es.weak-map"
+			]
+		},
+		"intl.list-format": {
+			library: "intl-list-format",
+			relativePaths: [
+				"dist/index.js"
+			],
+			meta: {
+				localeDir: "locale-data"
+			},
+			features: [
+				// TODO: Add when MDN data gets updated
+				// "javascript.builtins.Intl.ListFormat"
+			],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_INTL_LIST_FORMAT,
+			dependencies: [
+				"intl.core",
+				"es.array.includes",
+				"es.object.create",
 				"es.string.replace",
 				"es.symbol.to-string-tag",
 				"es.weak-map"

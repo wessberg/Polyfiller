@@ -114,9 +114,9 @@ This will force-apply a polyfill for `Web Animations`.
 
 #### The `locales` option for `Intl`
 
-**This option only works with `intl`, `intl.core`, or `intl.relative-time-format`**.
+**This option only works with `intl`, `intl.core`, `intl.list-format`, or `intl.relative-time-format`**.
 The `Intl` family of polyfills rely on locale data for them to work. There are over 600 different locale files shipped. Sending all of them back over the network would take way too much bandwidth.
-Instead, if you just ask for the `intl`, `intl.core`, or `intl.relative-time-format` features, they will be returned without any locale data.
+Instead, if you just ask for the `intl`, `intl.core`, `intl.list-format`, or `intl.relative-time-format` features, they will be returned without any locale data.
 
 To add one or more locales, use the `locales` option. For example:
 `intl|locales=en`
@@ -497,6 +497,7 @@ And, if you request `performance.now`, `date.now` will also be included since th
 - fetch
 - intl
 - intl.core
+- intl.list-format
 - intl.relative-time-format
 - animation
 - proxy

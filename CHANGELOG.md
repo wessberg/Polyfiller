@@ -1,3 +1,12 @@
+## [0.0.49](https://github.com/wessberg/polyfiller/compare/v0.0.48...v0.0.49) (2019-01-15)
+
+
+### Features
+
+* **polyfill:** adds polyfill for Intl.ListFormat ([1dce148](https://github.com/wessberg/polyfiller/commit/1dce148))
+
+
+
 ## [0.0.48](https://github.com/wessberg/polyfiller/compare/v0.0.47...v0.0.48) (2019-01-14)
 
 

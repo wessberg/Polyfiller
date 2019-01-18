@@ -118,3 +118,19 @@ test("Will set a 'x-applied-polyfills' header on HTTP2 responses with a HTTP-fri
 
 	t.true(result.polyfillsHeader != null);
 });
+
+test("Accepts OPTIONS requests. #1", async t => {
+
+	const result = await sendRequest({
+		http2: config.http2,
+		tls: true,
+		userAgent: ie("11"),
+		method: "OPTIONS",
+		host: config.host,
+		port: config.port,
+		path: `${constant.endpoint.polyfill}?features=event,custom-event,zone,es.promise.finally,pointer-event|force,systemjs|variant=system,intl|force|locale=en~da`,
+		acceptEncoding: undefined
+	});
+
+	t.true(result.statusCode === 200);
+});

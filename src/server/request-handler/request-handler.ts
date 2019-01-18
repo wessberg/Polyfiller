@@ -3,7 +3,7 @@ import {Response} from "../i-response";
 import {printRequest} from "../../util/request-util/request-util";
 import {RequestHandlerOptions} from "./request-handler-options";
 import {constants} from "http2";
-import {METHOD_NOT_ALLOWED, NOT_FOUND, OK} from "http-status-codes";
+import {METHOD_NOT_ALLOWED, OK} from "http-status-codes";
 import {RegisteredControllers} from "../../controller/controller/registered-controllers";
 import {IStaticController} from "../../controller/static/i-static-controller";
 
@@ -67,22 +67,10 @@ export class RequestHandler implements IRequestHandler {
 	 */
 	private async handleOptionsRequest (options: RequestHandlerOptions): Promise<Response> {
 
-		// Find the first matched controller
-		for (const controller of this.controllers) {
-			const match = controller.match(options.request);
-			if (match != null) {
-				return {
-					statusCode: options.request.http2
-						? constants.HTTP_STATUS_OK
-						: OK
-				};
-			}
-		}
-
 		return {
 			statusCode: options.request.http2
-				? constants.HTTP_STATUS_NOT_FOUND
-				: NOT_FOUND
+				? constants.HTTP_STATUS_OK
+				: OK
 		};
 	}
 }

@@ -1,3 +1,17 @@
+## [0.0.50](https://github.com/wessberg/polyfiller/compare/v0.0.49...v0.0.50) (2019-01-18)
+
+
+### Bug Fixes
+
+* **server:** fixes issue where OPTIONS requests would return METHOD_NOT_ALLOWED ([0ebc4ef](https://github.com/wessberg/polyfiller/commit/0ebc4ef))
+
+
+### Features
+
+* **polyfill:** adds support for the proposed new Set methods: Set.prototype.isDisjointWith, Set.prototype.isSubsetOf, and Set.prototype.isSupersetOf ([90e98d2](https://github.com/wessberg/polyfiller/commit/90e98d2))
+
+
+
 ## [0.0.49](https://github.com/wessberg/polyfiller/compare/v0.0.48...v0.0.49) (2019-01-15)
 
 

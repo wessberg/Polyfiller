@@ -1,3 +1,12 @@
+## [0.0.51](https://github.com/wessberg/polyfiller/compare/v0.0.50...v0.0.51) (2019-01-18)
+
+
+### Bug Fixes
+
+* **server:** fixes issue where OPTIONS requests would return METHOD_NOT_ALLOWED ([3d6f950](https://github.com/wessberg/polyfiller/commit/3d6f950))
+
+
+
 ## [0.0.50](https://github.com/wessberg/polyfiller/compare/v0.0.49...v0.0.50) (2019-01-18)
 
 

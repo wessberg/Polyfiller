@@ -1,5 +1,5 @@
 {
-	"extends": "./node_modules/@wessberg/ts-config/tslint/tslint.json",
+	"extends": "./node_modules/@wessberg/ts-config/tslint.json",
 	"rules": {
 		"no-trailing-whitespace": false,
 		"completed-docs": false

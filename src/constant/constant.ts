@@ -36,19 +36,14 @@ export const constant: IConstant = {
 			},
 			features: [],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_SYSTEMJS,
-			dependencies: [
-				"es.promise",
-				"fetch"
-			]
+			dependencies: ["es.promise", "fetch"]
 		},
 		zone: {
 			library: "zone.js",
 			meta: {
 				error: "dist/zone-error.min.js"
 			},
-			relativePaths: [
-				"dist/zone.min.js"
-			],
+			relativePaths: ["dist/zone.min.js"],
 			features: [],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_ZONE_JS,
 			dependencies: [],
@@ -69,10 +64,7 @@ export const constant: IConstant = {
 			dependencies: ["es.object.define-properties", "es.array.for-each"]
 		},
 		"object-fit": {
-			localPaths: [
-				"node_modules/object-fit-images/dist/ofi.min.js",
-				"src/polyfill/lib/object-fit/object-fit-hook.js"
-			],
+			localPaths: ["node_modules/object-fit-images/dist/ofi.min.js", "src/polyfill/lib/object-fit/object-fit-hook.js"],
 			features: ["object-fit"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_OBJECT_FIT_IMAGES,
 			dependencies: ["get-computed-style", "es.object.define-property"]
@@ -143,10 +135,7 @@ export const constant: IConstant = {
 			polyfills: ["es"]
 		},
 		"es.promise": {
-			polyfills: [
-				"es.promise.constructor",
-				"es.promise.finally"
-			]
+			polyfills: ["es.promise.constructor", "es.promise.finally"]
 		},
 		"es.promise.constructor": {
 			library: "core-js",
@@ -382,10 +371,7 @@ export const constant: IConstant = {
 			dependencies: []
 		},
 		"es.function": {
-			polyfills: [
-				"es.function.bind",
-				"es.function.name"
-			]
+			polyfills: ["es.function.bind", "es.function.name"]
 		},
 		"es.function.bind": {
 			library: "core-js",
@@ -629,11 +615,7 @@ export const constant: IConstant = {
 			dependencies: []
 		},
 		"es.array-buffer": {
-			polyfills: [
-				"es.array-buffer.constructor",
-				"es.array-buffer.is-view",
-				"es.array-buffer.slice"
-			]
+			polyfills: ["es.array-buffer.constructor", "es.array-buffer.is-view", "es.array-buffer.slice"]
 		},
 		"es.array-buffer.constructor": {
 			library: "core-js",
@@ -930,11 +912,7 @@ export const constant: IConstant = {
 			dependencies: []
 		},
 		"es.regexp": {
-			polyfills: [
-				"es.regexp.constructor",
-				"es.regexp.flags",
-				"es.regexp.to-string"
-			]
+			polyfills: ["es.regexp.constructor", "es.regexp.flags", "es.regexp.to-string"]
 		},
 		"es.regexp.constructor": {
 			library: "core-js",
@@ -1309,13 +1287,7 @@ export const constant: IConstant = {
 			dependencies: []
 		},
 		"es.date": {
-			polyfills: [
-				"es.date.now",
-				"es.date.to-iso-string",
-				"es.date.to-json",
-				"es.date.to-primitive",
-				"es.date.to-string"
-			]
+			polyfills: ["es.date.now", "es.date.to-iso-string", "es.date.to-json", "es.date.to-primitive", "es.date.to-string"]
 		},
 		"es.date.now": {
 			library: "core-js",
@@ -1400,10 +1372,7 @@ export const constant: IConstant = {
 		},
 		"es.symbol.has-instance": {
 			library: "core-js",
-			relativePaths: [
-				"modules/es.symbol.has-instance.js",
-				"modules/es.function.has-instance.js"
-			],
+			relativePaths: ["modules/es.symbol.has-instance.js", "modules/es.function.has-instance.js"],
 			features: ["javascript.builtins.Symbol.hasInstance"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: ["es.symbol.constructor"]
@@ -1466,11 +1435,7 @@ export const constant: IConstant = {
 		},
 		"es.symbol.to-string-tag": {
 			library: "core-js",
-			relativePaths: [
-				"modules/es.symbol.to-string-tag.js",
-				"modules/es.json.to-string-tag.js",
-				"modules/es.math.to-string-tag.js"
-			],
+			relativePaths: ["modules/es.symbol.to-string-tag.js", "modules/es.json.to-string-tag.js", "modules/es.math.to-string-tag.js"],
 			features: ["javascript.builtins.Symbol.toStringTag"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: ["es.symbol.constructor"]
@@ -1483,12 +1448,7 @@ export const constant: IConstant = {
 			dependencies: ["es.symbol.constructor"]
 		},
 		"es.collections": {
-			polyfills: [
-				"es.map",
-				"es.weak-map",
-				"es.set",
-				"es.weak-set"
-			]
+			polyfills: ["es.map", "es.weak-map", "es.set", "es.weak-set"]
 		},
 		"es.map": {
 			library: "core-js",
@@ -1711,9 +1671,9 @@ export const constant: IConstant = {
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: ["es.set"]
 		},
-		"es.set.is-disjoint-with": {
+		"es.set.is-disjoint-from": {
 			library: "core-js",
-			relativePaths: ["modules/esnext.set.is-disjoint-with.js"],
+			relativePaths: ["modules/esnext.set.is-disjoint-from.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
@@ -2216,60 +2176,26 @@ export const constant: IConstant = {
 			dependencies: []
 		},
 		esnext: {
-			polyfills: [
-				"esnext.array",
-				"esnext.collections",
-				"esnext.math",
-				"esnext.number",
-				"esnext.object",
-				"esnext.promise",
-				"esnext.reflect",
-				"esnext.string",
-				"esnext.symbol"
-			]
+			polyfills: ["esnext.array", "esnext.collections", "esnext.math", "esnext.number", "esnext.object", "esnext.promise", "esnext.reflect", "esnext.string", "esnext.symbol"]
 		},
 		// An alias for the alias 'esnext'
 		"es2016+": {
 			polyfills: ["esnext"]
 		},
 		"esnext.array": {
-			polyfills: [
-				"es.array.flat",
-				"es.array.flat-map",
-				"es.array.last-index",
-				"es.array.last-item"
-			]
+			polyfills: ["es.array.flat", "es.array.flat-map", "es.array.last-index", "es.array.last-item"]
 		},
 		"esnext.object": {
-			polyfills: [
-				"es.object.from-entries"
-			]
+			polyfills: ["es.object.from-entries"]
 		},
 		"esnext.collections": {
-			polyfills: [
-				"esnext.map",
-				"esnext.weak-map",
-				"esnext.set",
-				"esnext.weak-set"
-			]
+			polyfills: ["esnext.map", "esnext.weak-map", "esnext.set", "esnext.weak-set"]
 		},
 		"esnext.map": {
-			polyfills: [
-				"es.map.filter",
-				"es.map.from",
-				"es.map.group-by",
-				"es.map.key-by",
-				"es.map.map-keys",
-				"es.map.map-values",
-				"es.map.merge",
-				"es.map.of"
-			]
+			polyfills: ["es.map.filter", "es.map.from", "es.map.group-by", "es.map.key-by", "es.map.map-keys", "es.map.map-values", "es.map.merge", "es.map.of"]
 		},
 		"esnext.weak-map": {
-			polyfills: [
-				"es.weak-map.from",
-				"es.weak-map.of"
-			]
+			polyfills: ["es.weak-map.from", "es.weak-map.of"]
 		},
 		"esnext.set": {
 			polyfills: [
@@ -2288,16 +2214,13 @@ export const constant: IConstant = {
 				"es.set.some",
 				"es.set.symmetric-difference",
 				"es.set.union",
-				"es.set.is-disjoint-with",
+				"es.set.is-disjoint-from",
 				"es.set.is-subset-of",
 				"es.set.is-superset-of"
 			]
 		},
 		"esnext.weak-set": {
-			polyfills: [
-				"es.weak-set.from",
-				"es.weak-set.of"
-			]
+			polyfills: ["es.weak-set.from", "es.weak-set.of"]
 		},
 		"esnext.math": {
 			polyfills: [
@@ -2316,15 +2239,10 @@ export const constant: IConstant = {
 			]
 		},
 		"esnext.number": {
-			polyfills: [
-				"es.number.from-string"
-			]
+			polyfills: ["es.number.from-string"]
 		},
 		"esnext.promise": {
-			polyfills: [
-				"es.promise.all-settled",
-				"es.promise.try"
-			]
+			polyfills: ["es.promise.all-settled", "es.promise.try"]
 		},
 		"esnext.reflect": {
 			polyfills: [
@@ -2340,26 +2258,13 @@ export const constant: IConstant = {
 			]
 		},
 		"esnext.string": {
-			polyfills: [
-				"es.string.at",
-				"es.string.code-points",
-				"es.string.match-all",
-				"es.string.replace-all",
-				"es.string.trim-start",
-				"es.string.trim-end"
-			]
+			polyfills: ["es.string.at", "es.string.code-points", "es.string.match-all", "es.string.replace-all", "es.string.trim-start", "es.string.trim-end"]
 		},
 		"esnext.symbol": {
-			polyfills: [
-				"es.symbol.description",
-				"es.symbol.pattern-match"
-			]
+			polyfills: ["es.symbol.description", "es.symbol.pattern-match"]
 		},
 		"dom.collections.iterable": {
-			polyfills: [
-				"dom.collections.iterator",
-				"dom.collections.for-each"
-			]
+			polyfills: ["dom.collections.iterator", "dom.collections.for-each"]
 		},
 		"dom.collections.iterator": {
 			library: "core-js",
@@ -2404,19 +2309,13 @@ export const constant: IConstant = {
 			dependencies: []
 		},
 		fetch: {
-			localPaths: [
-				"src/polyfill/lib/fetch/fetch.js"
-			],
+			localPaths: ["src/polyfill/lib/fetch/fetch.js"],
 			features: ["fetch"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_WHATWG_FETCH,
 			dependencies: ["es.array.for-each", "es.object.get-own-property-names", "es.promise", "xhr"]
 		},
 		intl: {
-			polyfills: [
-				"intl.core",
-				"intl.list-format",
-				"intl.relative-time-format"
-			]
+			polyfills: ["intl.core", "intl.list-format", "intl.relative-time-format"]
 		},
 		"intl.core": {
 			library: "intl",
@@ -2430,32 +2329,17 @@ export const constant: IConstant = {
 		},
 		"intl.relative-time-format": {
 			library: "intl-relative-time-format",
-			relativePaths: [
-				"dist/index.js"
-			],
+			relativePaths: ["dist/index.js"],
 			meta: {
 				localeDir: "locale-data"
 			},
-			features: [
-				"javascript.builtins.Intl.RelativeTimeFormat"
-			],
+			features: ["javascript.builtins.Intl.RelativeTimeFormat"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_INTL_RELATIVE_TIME_FORMAT,
-			dependencies: [
-				"intl.core",
-				"es.array.includes",
-				"es.object.create",
-				"es.object.is",
-				"es.string.includes",
-				"es.string.replace",
-				"es.symbol.to-string-tag",
-				"es.weak-map"
-			]
+			dependencies: ["intl.core", "es.array.includes", "es.object.create", "es.object.is", "es.string.includes", "es.string.replace", "es.symbol.to-string-tag", "es.weak-map"]
 		},
 		"intl.list-format": {
 			library: "intl-list-format",
-			relativePaths: [
-				"dist/index.js"
-			],
+			relativePaths: ["dist/index.js"],
 			meta: {
 				localeDir: "locale-data"
 			},
@@ -2464,14 +2348,7 @@ export const constant: IConstant = {
 				// "javascript.builtins.Intl.ListFormat"
 			],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_INTL_LIST_FORMAT,
-			dependencies: [
-				"intl.core",
-				"es.array.includes",
-				"es.object.create",
-				"es.string.replace",
-				"es.symbol.to-string-tag",
-				"es.weak-map"
-			]
+			dependencies: ["intl.core", "es.array.includes", "es.object.create", "es.string.replace", "es.symbol.to-string-tag", "es.weak-map"]
 		},
 		animation: {
 			library: "web-animations-js",
@@ -2495,11 +2372,7 @@ export const constant: IConstant = {
 			dependencies: ["es"]
 		},
 		"web-components": {
-			polyfills: [
-				"custom-elements",
-				"shadow-dom",
-				"template"
-			]
+			polyfills: ["custom-elements", "shadow-dom", "template"]
 		},
 		"custom-elements": {
 			library: "@webcomponents/custom-elements",
@@ -2544,16 +2417,9 @@ export const constant: IConstant = {
 		"scroll-behavior": {
 			library: "scroll-behavior-polyfill",
 			relativePaths: ["dist/index.js"],
-			features: [
-				"css-scroll-behavior",
-				"scrollintoview"
-			],
+			features: ["css-scroll-behavior", "scrollintoview"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_SCROLL_BEHAVIOR_POLYFILL,
-			dependencies: [
-				"es.object.define-property",
-				"es.object.get-own-property-descriptor",
-				"requestanimationframe"
-			]
+			dependencies: ["es.object.define-property", "es.object.get-own-property-descriptor", "requestanimationframe"]
 		},
 		"node.contains": {
 			library: "polyfill-service",
@@ -2588,10 +2454,7 @@ export const constant: IConstant = {
 		},
 		"dom-token-list": {
 			library: "polyfill-service",
-			relativePaths: [
-				"polyfills/_DOMTokenList/polyfill.js",
-				"polyfills/DOMTokenList/polyfill.js"
-			],
+			relativePaths: ["polyfills/_DOMTokenList/polyfill.js", "polyfills/DOMTokenList/polyfill.js"],
 			features: ["rellist"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
 			dependencies: ["es.object.define-property"]
@@ -2605,11 +2468,7 @@ export const constant: IConstant = {
 			dependencies: ["document"]
 		},
 		event: {
-			polyfills: [
-				"event.constructor",
-				"event.focusin",
-				"event.hashchange"
-			]
+			polyfills: ["event.constructor", "event.focusin", "event.hashchange"]
 		},
 		"event.constructor": {
 			library: "polyfill-service",

@@ -1,3 +1,3 @@
 export interface IStaticBl {
-	getWelcomeMessage (): Promise<string>;
+	getWelcomeMessage(): Promise<string>;
 }

@@ -36,7 +36,7 @@ export class LoggerService implements ILoggerService {
 	 */
 	private _verbose: boolean = false;
 
-	constructor (config: IConfig) {
+	constructor(config: IConfig) {
 		this.setDebug(config.debug);
 		this.setVerbose(config.verbose);
 	}
@@ -45,7 +45,7 @@ export class LoggerService implements ILoggerService {
 	 * Sets whether or not debugging is active
 	 * @param {boolean} debug
 	 */
-	public setDebug (debug: boolean): void {
+	public setDebug(debug: boolean): void {
 		this._debug = debug;
 	}
 
@@ -53,7 +53,7 @@ export class LoggerService implements ILoggerService {
 	 * Sets whether or not verbose output is active
 	 * @param {boolean} verbose
 	 */
-	public setVerbose (verbose: boolean): void {
+	public setVerbose(verbose: boolean): void {
 		this._verbose = verbose;
 	}
 
@@ -62,7 +62,7 @@ export class LoggerService implements ILoggerService {
 	 * @param {T[]} messages
 	 * @returns {T}
 	 */
-	public debug (...messages: any[]): any[] {
+	public debug(...messages: any[]): any[] {
 		// Print the message if 'debug' is true
 		if (this._debug) {
 			console.log(this.DEBUG_PREFIX, ...messages);
@@ -77,7 +77,7 @@ export class LoggerService implements ILoggerService {
 	 * @param {T} messages
 	 * @returns {T[]}
 	 */
-	public log (...messages: any[]): any[] {
+	public log(...messages: any[]): any[] {
 		// Print the message
 		console.log(this.LOG_PREFIX, ...messages);
 
@@ -90,7 +90,7 @@ export class LoggerService implements ILoggerService {
 	 * @param {T} messages
 	 * @returns {T[]}
 	 */
-	public verbose (...messages: any[]): any[] {
+	public verbose(...messages: any[]): any[] {
 		// Print the message if 'verbose' is true
 		if (this._verbose) {
 			console.log(this.VERBOSE_PREFIX, ...messages);
@@ -105,8 +105,7 @@ export class LoggerService implements ILoggerService {
 	 * @param {string} prefix
 	 * @returns {string}
 	 */
-	private padPrefix (prefix: string): string {
+	private padPrefix(prefix: string): string {
 		return prefix.padEnd(10, " ");
 	}
-
 }

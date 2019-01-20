@@ -5,7 +5,7 @@ import {constant} from "../../constant/constant";
  * @param {string} message
  * @returns {string}
  */
-export function generateHtml (message: string): string {
+export function generateHtml(message: string): string {
 	// language=HTML
 	return `
 		<!DOCTYPE html>
@@ -33,7 +33,7 @@ export function generateHtml (message: string): string {
  * @param {number} code
  * @returns {string}
  */
-export function generateErrorHtml (message: Error, code: number): string {
+export function generateErrorHtml(message: Error, code: number): string {
 	// language=HTML
 	return `
 		<!DOCTYPE html>

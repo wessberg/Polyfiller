@@ -7,13 +7,12 @@ import {transform} from "@babel/core";
  * A class that helps with minifying code
  */
 export class MinifyService implements IMinifyService {
-
 	/**
 	 * Minifies the given code based on the given options
 	 * @param {IMinifyServiceOptions} options
 	 * @returns {string}
 	 */
-	public async minify (options: IMinifyServiceOptions): Promise<string> {
+	public async minify(options: IMinifyServiceOptions): Promise<string> {
 		const result = await transform(options.code, {
 			configFile: false,
 			babelrc: false,
@@ -30,5 +29,4 @@ export class MinifyService implements IMinifyService {
 		});
 		return result.code;
 	}
-
 }

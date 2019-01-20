@@ -20,34 +20,35 @@ import {PolyfillDealiasedName} from "../../polyfill/polyfill-name";
  * A service that can load and cache all polyfills
  */
 export class PolyfillBuilderService implements IPolyfillBuilderService {
-
-	constructor (private readonly minifier: IMinifyService,
-							 private readonly flattener: IFlattenerService,
-							 private readonly logger: ILoggerService,
-							 private readonly cacheService: ICacheRegistryService,
-							 private readonly compressor: ICompressorService,
-							 private readonly fileLoader: IFileLoader) {
-	}
+	constructor(
+		private readonly minifier: IMinifyService,
+		private readonly flattener: IFlattenerService,
+		private readonly logger: ILoggerService,
+		private readonly cacheService: ICacheRegistryService,
+		private readonly compressor: ICompressorService,
+		private readonly fileLoader: IFileLoader
+	) {}
 
 	/**
 	 * Builds the given PolyfillSet and returns the result in all encodings
 	 * @param {Set<IPolyfillFeature>} polyfillSet
 	 * @returns {Promise<ICompressedPolyfillSetResult>}
 	 */
-	public async buildPolyfillSet (polyfillSet: Set<IPolyfillFeature>): Promise<ICompressedPolyfillSetResult> {
-		const input: { polyfillName: PolyfillDealiasedName; paths: string[]; flatten: boolean }[] = [];
+	public async buildPolyfillSet(polyfillSet: Set<IPolyfillFeature>): Promise<ICompressedPolyfillSetResult> {
+		const input: {polyfillName: PolyfillDealiasedName; paths: string[]; flatten: boolean}[] = [];
 		let content: string = "";
 		let hasAddedCoreJsContent: boolean = false;
 
 		// Take all Core Js paths
-		const coreJsPaths = ([] as string[]).concat.apply([], [...polyfillSet].map(polyfillFeature => {
-			if (!this.isCoreJs(polyfillFeature)) return [];
+		const coreJsPaths = ([] as string[]).concat.apply(
+			[],
+			[...polyfillSet].map(polyfillFeature => {
+				if (!this.isCoreJs(polyfillFeature)) return [];
 
-			const match = <IPolyfillLibraryDictEntry>constant.polyfill[polyfillFeature.name];
-			return match.relativePaths.map(relativePath => relativePath
-				.replace("modules/", "")
-				.replace(".js", ""));
-		}));
+				const match = <IPolyfillLibraryDictEntry>constant.polyfill[polyfillFeature.name];
+				return match.relativePaths.map(relativePath => relativePath.replace("modules/", "").replace(".js", ""));
+			})
+		);
 
 		// Check if a bundle has been built previously for the given core js paths
 		let coreJsContent = await this.cacheService.getCoreJsBundle(coreJsPaths);
@@ -58,9 +59,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 			coreJsContent = Buffer.from(coreJsPaths.length < 1 ? "" : await builder({modules: coreJsPaths}));
 			// Store it within the cache
 			await this.cacheService.setCoreJsBundle(coreJsPaths, coreJsContent);
-		}
-
-		else {
+		} else {
 			this.logger.debug(`Matched CoreJS paths in cache!`);
 		}
 
@@ -82,17 +81,19 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 
 			const flatten = match.flatten === true;
 
-			const rootDirectory = "library" in match
-				? join(__dirname, "../node_modules", match.library)
-				: join(__dirname, "../");
-			const localPaths = "library" in match
-				? match.relativePaths
-				: match.localPaths;
+			const rootDirectory = "library" in match ? join(__dirname, "../node_modules", match.library) : join(__dirname, "../");
+			const localPaths = "library" in match ? match.relativePaths : match.localPaths;
 
 			const {meta} = match;
 
 			// If SystemJS is requested, the variant to use may be provided as metadata. If so, we should use that one, rather than the relativePaths
-			if (polyfillFeature.name === "systemjs" && meta != null && polyfillFeature.meta != null && "variant" in polyfillFeature.meta && (polyfillFeature.meta.variant === "s" || polyfillFeature.meta.variant === "system")) {
+			if (
+				polyfillFeature.name === "systemjs" &&
+				meta != null &&
+				polyfillFeature.meta != null &&
+				"variant" in polyfillFeature.meta &&
+				(polyfillFeature.meta.variant === "s" || polyfillFeature.meta.variant === "system")
+			) {
 				absolutePaths.push(join(rootDirectory, meta[polyfillFeature.meta.variant]));
 			}
 
@@ -113,19 +114,17 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				const requestedLocales: string[] = ensureArray(polyfillFeature.meta.locale);
 
 				// Loop through all of the requested locales in parallel
-				await Promise.all(requestedLocales.map(async requestedLocale => {
-					// Resolve the absolute path
-					const localePath = join(
-						rootDirectory,
-						meta.localeDir,
-						`${requestedLocale}.js`
-					);
+				await Promise.all(
+					requestedLocales.map(async requestedLocale => {
+						// Resolve the absolute path
+						const localePath = join(rootDirectory, meta.localeDir, `${requestedLocale}.js`);
 
-					// If it exists, add it to the array of absolute paths
-					if (await this.fileLoader.exists(localePath)) {
-						absolutePaths.push(localePath);
-					}
-				}));
+						// If it exists, add it to the array of absolute paths
+						if (await this.fileLoader.exists(localePath)) {
+							absolutePaths.push(localePath);
+						}
+					})
+				);
 			}
 
 			// Push all of the absolute paths for this specific polyfill to the input paths
@@ -142,9 +141,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				content += `\n${await this.flattener.flatten({
 					path: paths
 				})}`;
-			}
-
-			else {
+			} else {
 				for (const path of paths) {
 					content += `\n${(await this.fileLoader.load(path)).toString()}`;
 				}
@@ -158,7 +155,9 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 
 		// Return all of the Buffers
 		return {
-			brotli, minified, zlib
+			brotli,
+			minified,
+			zlib
 		};
 	}
 
@@ -167,9 +166,8 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 	 * @param {IPolyfillFeature} polyfillFeature
 	 * @returns {boolean}
 	 */
-	private isCoreJs (polyfillFeature: IPolyfillFeature): boolean {
+	private isCoreJs(polyfillFeature: IPolyfillFeature): boolean {
 		const match = constant.polyfill[polyfillFeature.name];
 		return "library" in match && match.library === "core-js";
 	}
-
 }

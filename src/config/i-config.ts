@@ -13,7 +13,7 @@ export declare type IConfig = typeof environment & {
 	http2: boolean;
 	port: number;
 	host: string;
-	email: string|undefined;
-	key: Buffer|undefined;
-	cert: Buffer|undefined;
+	email: string | undefined;
+	key: Buffer | undefined;
+	cert: Buffer | undefined;
 };

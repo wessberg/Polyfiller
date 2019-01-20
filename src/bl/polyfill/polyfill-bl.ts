@@ -12,27 +12,25 @@ import {IGetPolyfillsResult} from "./i-get-polyfills-result";
  * Business logic for polyfills
  */
 export class PolyfillBl implements IPolyfillBl {
-
-	constructor (private readonly cacheRegistry: ICacheRegistryService,
-							 private readonly logger: ILoggerService,
-							 private readonly builder: IPolyfillBuilderService) {
-	}
+	constructor(private readonly cacheRegistry: ICacheRegistryService, private readonly logger: ILoggerService, private readonly builder: IPolyfillBuilderService) {}
 
 	/**
 	 * Generates a chunk of polyfills that matches the given request
 	 * @param {IPolyfillRequest} request
 	 * @returns {Promise<IGetPolyfillsResult>}
 	 */
-	public async getPolyfills (request: IPolyfillRequest): Promise<IGetPolyfillsResult> {
+	public async getPolyfills(request: IPolyfillRequest): Promise<IGetPolyfillsResult> {
 		// Check if a polyfill set exists within the cache for the request features and the user agent of the request
 		let featureSet = await this.cacheRegistry.getPolyfillFeatureSet(request.features, request.userAgent);
 
 		// If not, resolve and order the required polyfills
 		if (featureSet == null) {
 			featureSet = await getOrderedPolyfillsWithDependencies(
-				new Set([...request.features]
-				// Take only valid names
-					.filter(feature => feature.name in constant.polyfill)),
+				new Set(
+					[...request.features]
+						// Take only valid names
+						.filter(feature => feature.name in constant.polyfill)
+				),
 				request.userAgent
 			);
 
@@ -72,5 +70,4 @@ export class PolyfillBl implements IPolyfillBl {
 				return {result: minifiedResult, featureSet};
 		}
 	}
-
 }

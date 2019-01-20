@@ -3,7 +3,7 @@
  * @param {string} str
  * @returns {boolean}
  */
-export function booleanize (str: string): boolean {
+export function booleanize(str: string): boolean {
 	switch (str.toLowerCase().trim()) {
 		case "true":
 		case "yes":

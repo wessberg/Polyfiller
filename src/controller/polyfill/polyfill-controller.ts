@@ -15,8 +15,7 @@ import {generateErrorHtml} from "../../util/html/generate-html";
  * A controller that can respond to requests for polyfills
  */
 export class PolyfillController extends Controller implements IPolyfillController {
-
-	constructor (private readonly polyfillBl: IPolyfillBl) {
+	constructor(private readonly polyfillBl: IPolyfillBl) {
 		super();
 	}
 
@@ -26,20 +25,21 @@ export class PolyfillController extends Controller implements IPolyfillControlle
 	 * @returns {Promise<Response>}
 	 */
 	@GET({path: constant.endpoint.polyfill})
-	public async onPolyfillRequested (request: Request): Promise<Response> {
+	public async onPolyfillRequested(request: Request): Promise<Response> {
 		// Normalize the polyfill request
 		const polyfillRequest = getPolyfillRequestFromUrl(request.url, request.userAgent, pickEncoding(request.acceptEncoding));
 
 		// Generate polyfill bundle
 		try {
-			const {result: {buffer, checksum}, featureSet} = await this.polyfillBl.getPolyfills(polyfillRequest);
+			const {
+				result: {buffer, checksum},
+				featureSet
+			} = await this.polyfillBl.getPolyfills(polyfillRequest);
 
 			// If the cached checksum (ETag) is identical, respond with NOT_MODIFIED
 			if (request.cachedChecksum != null && request.cachedChecksum === checksum) {
 				return {
-					statusCode: request.http2
-						? constants.HTTP_STATUS_NOT_MODIFIED
-						: NOT_MODIFIED,
+					statusCode: request.http2 ? constants.HTTP_STATUS_NOT_MODIFIED : NOT_MODIFIED,
 					cacheControl: "public,max-age=31536000,immutable",
 					polyfillsHeader: encodeFeatureSetForHttpHeader(featureSet)
 				};
@@ -48,9 +48,7 @@ export class PolyfillController extends Controller implements IPolyfillControlle
 			// Return an OK
 			return {
 				contentType: "application/javascript",
-				statusCode: request.http2
-					? constants.HTTP_STATUS_OK
-					: OK,
+				statusCode: request.http2 ? constants.HTTP_STATUS_OK : OK,
 				body: buffer,
 				cacheControl: "public,max-age=31536000,immutable",
 				contentEncoding: polyfillRequest.encoding,
@@ -59,9 +57,7 @@ export class PolyfillController extends Controller implements IPolyfillControlle
 			};
 		} catch (ex) {
 			// Respond with error code 500
-			const statusCode = request.http2
-				? constants.HTTP_STATUS_INTERNAL_SERVER_ERROR
-				: INTERNAL_SERVER_ERROR;
+			const statusCode = request.http2 ? constants.HTTP_STATUS_INTERNAL_SERVER_ERROR : INTERNAL_SERVER_ERROR;
 
 			return {
 				contentType: "text/html",
@@ -70,5 +66,4 @@ export class PolyfillController extends Controller implements IPolyfillControlle
 			};
 		}
 	}
-
 }

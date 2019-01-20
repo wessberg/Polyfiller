@@ -13,13 +13,12 @@ import multiEntry from "rollup-plugin-multi-entry";
  * A service that can flatten the given code into a single file
  */
 export class FlattenerService implements IFlattenerService {
-
 	/**
 	 * Flattens the given code into a single file based on the given options
 	 * @param {IFlattenerOptions} options
 	 * @return {Promise<string>}
 	 */
-	public async flatten ({path, transform}: IFlattenerOptions): Promise<string> {
+	public async flatten({path, transform}: IFlattenerOptions): Promise<string> {
 		const paths = Array.isArray(path) ? path : [path];
 		if (paths.length < 1) return "";
 
@@ -30,7 +29,7 @@ export class FlattenerService implements IFlattenerService {
 				multiEntry(),
 				{
 					name: "transformer",
-					transform (code: string, id: string) {
+					transform(code: string, id: string) {
 						if (transform == null) return;
 
 						const result = transform.call(this, code, id);
@@ -57,9 +56,7 @@ export class FlattenerService implements IFlattenerService {
 		});
 
 		// Produce a flattened bundle
-		let flattened = bundleSet.output
-			.map(file => file.code)
-			.join("\n");
+		let flattened = bundleSet.output.map(file => file.code).join("\n");
 
 		// If the IIFE is named, make sure to remove its outer declaration. We only care about the side-effects
 		const indexOfIife = flattened.indexOf("(function");
@@ -69,5 +66,4 @@ export class FlattenerService implements IFlattenerService {
 
 		return flattened;
 	}
-
 }

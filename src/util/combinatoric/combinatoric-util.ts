@@ -3,15 +3,14 @@
 /**
  * Retrieves all possible combinations of the elements of the given array
  */
-export function* getCombinations<T> (arr: T[], minSize: number = 1): IterableIterator<T[]> {
-
+export function* getCombinations<T>(arr: T[], minSize: number = 1): IterableIterator<T[]> {
 	/**
 	 * The inner handler
 	 * @param offset
 	 * @param combo
 	 * @returns {IterableIterator<any>}
 	 */
-	function* doGenerateCombinations (offset: number, combo: T[]): IterableIterator<T[]> {
+	function* doGenerateCombinations(offset: number, combo: T[]): IterableIterator<T[]> {
 		if (combo.length >= minSize) {
 			yield combo;
 		}
@@ -28,7 +27,7 @@ export function* getCombinations<T> (arr: T[], minSize: number = 1): IterableIte
  * @param {T[]} permutation
  * @returns {IterableIterator<T[]>}
  */
-export function* getPermutations<T> (permutation: T[]): IterableIterator<T[]> {
+export function* getPermutations<T>(permutation: T[]): IterableIterator<T[]> {
 	const length = permutation.length;
 	const c = Array(length).fill(0);
 	let i = 1;

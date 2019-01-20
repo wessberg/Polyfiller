@@ -1,3 +1,3 @@
 export interface IApiService {
-	launch (): Promise<void>;
+	launch(): Promise<void>;
 }

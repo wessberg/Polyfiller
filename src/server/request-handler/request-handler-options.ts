@@ -26,4 +26,4 @@ export interface IOptionsRequestHandlerOptions extends IRequestHandlerOptions {
 	request: IOptionsRequest;
 }
 
-export declare type RequestHandlerOptions = IGetRequestHandlerOptions|IPutRequestHandlerOptions|IPostRequestHandlerOptions|IDeleteRequestHandlerOptions|IOptionsRequestHandlerOptions;
+export declare type RequestHandlerOptions = IGetRequestHandlerOptions | IPutRequestHandlerOptions | IPostRequestHandlerOptions | IDeleteRequestHandlerOptions | IOptionsRequestHandlerOptions;

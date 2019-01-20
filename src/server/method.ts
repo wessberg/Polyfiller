@@ -1,1 +1,1 @@
-export declare type Method = "GET"|"PUT"|"POST"|"DELETE"|"OPTIONS";
+export declare type Method = "GET" | "PUT" | "POST" | "DELETE" | "OPTIONS";

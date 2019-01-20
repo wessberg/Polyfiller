@@ -12,8 +12,7 @@ import {IStaticBl} from "../../bl/static/i-static-bl";
  * A controller that can respond to requests for static resources
  */
 export class StaticController extends Controller implements IStaticController {
-
-	constructor (private readonly staticBl: IStaticBl) {
+	constructor(private readonly staticBl: IStaticBl) {
 		super();
 	}
 
@@ -23,16 +22,12 @@ export class StaticController extends Controller implements IStaticController {
 	 * @returns {Promise<Response>}
 	 */
 	@GET({path: constant.endpoint.index})
-	public async onIndexRequested (request: Request): Promise<Response> {
-
+	public async onIndexRequested(request: Request): Promise<Response> {
 		// Return an OK
 		return {
 			contentType: "text/html",
-			statusCode: request.http2
-				? constants.HTTP_STATUS_OK
-				: OK,
+			statusCode: request.http2 ? constants.HTTP_STATUS_OK : OK,
 			body: await this.staticBl.getWelcomeMessage()
 		};
 	}
-
 }

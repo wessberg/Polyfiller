@@ -1,1 +1,1 @@
-export declare type Path = string|RegExp;
+export declare type Path = string | RegExp;

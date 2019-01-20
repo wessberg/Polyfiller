@@ -17,6 +17,16 @@ export const config: IConfig = {
 	host: environment.HOST,
 	port: parseInt(environment.PORT),
 	email: environment.EMAIL != null && environment.EMAIL !== "" ? environment.EMAIL : undefined,
-	key: environment.KEY == null || environment.KEY === "" ? undefined : environment.KEY.trim().startsWith("-----BEGIN RSA PRIVATE KEY-----") ? Buffer.from(environment.KEY.replace(/\\n/g, "\n")) : readFileSync(environment.KEY),
-	cert: environment.CERT == null || environment.CERT === "" ? undefined : environment.CERT.trim().startsWith("-----BEGIN CERTIFICATE-----") ? Buffer.from(environment.CERT.replace(/\\n/g, "\n")) : readFileSync(environment.CERT)
+	key:
+		environment.KEY == null || environment.KEY === ""
+			? undefined
+			: environment.KEY.trim().startsWith("-----BEGIN RSA PRIVATE KEY-----")
+			? Buffer.from(environment.KEY.replace(/\\n/g, "\n"))
+			: readFileSync(environment.KEY),
+	cert:
+		environment.CERT == null || environment.CERT === ""
+			? undefined
+			: environment.CERT.trim().startsWith("-----BEGIN CERTIFICATE-----")
+			? Buffer.from(environment.CERT.replace(/\\n/g, "\n"))
+			: readFileSync(environment.CERT)
 };

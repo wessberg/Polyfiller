@@ -3,7 +3,9 @@ import {IApiService} from "./service/api/i-api-service";
 import {ICacheRegistryService} from "./service/registry/cache-registry/i-cache-registry-service";
 
 // Initializes the Cache Registry and then launches the server
-container.get<ICacheRegistryService>().initialize()
+container
+	.get<ICacheRegistryService>()
+	.initialize()
 	.then(async () => container.get<IApiService>().launch());
 
 // Exports

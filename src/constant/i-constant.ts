@@ -2,7 +2,7 @@ import {Path} from "../server/path";
 import {PolyfillDict} from "../polyfill/polyfill-dict";
 
 export interface IEndpointConstant {
-	index: Path[]|Path;
+	index: Path[] | Path;
 	polyfill: Path;
 }
 

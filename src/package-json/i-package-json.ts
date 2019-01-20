@@ -17,11 +17,11 @@ export interface IPackageJson {
 	name: string;
 	version: string;
 	description: string;
-	scripts?: { [key: string]: string };
+	scripts?: {[key: string]: string};
 	keywords?: string[];
-	devDependencies?: { [key: string]: string };
-	peerDependencies?: { [key: string]: string };
-	dependencies?: { [key: string]: string };
+	devDependencies?: {[key: string]: string};
+	peerDependencies?: {[key: string]: string};
+	dependencies?: {[key: string]: string};
 	module?: string;
 	main?: string;
 	"jsnext:main"?: string;
@@ -33,7 +33,7 @@ export interface IPackageJson {
 	bugs?: IBugs;
 	author?: IAuthor;
 	authors?: IAuthor[];
-	engines?: { [key: string]: string };
+	engines?: {[key: string]: string};
 	license?: string;
 	private?: boolean;
 }

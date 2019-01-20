@@ -7,17 +7,14 @@ import {ICompressorServiceCompressResult} from "./i-compressor-service-compress-
  * A class that helps with compressing files with Brotli and Zlib
  */
 export class CompressorService implements ICompressorService {
-
-	constructor (private readonly zlibCompressionOptions: ZlibOptions,
-							 private readonly brotliCompressionOptions: BrotliEncodeParams) {
-	}
+	constructor(private readonly zlibCompressionOptions: ZlibOptions, private readonly brotliCompressionOptions: BrotliEncodeParams) {}
 
 	/**
 	 * Compresses the given code based on the given options
 	 * @param {Buffer} content
 	 * @returns {Promise<ICompressorServiceCompressResult>}
 	 */
-	public async compress (content: Buffer): Promise<ICompressorServiceCompressResult> {
+	public async compress(content: Buffer): Promise<ICompressorServiceCompressResult> {
 		return {
 			brotli: await this.compressWithBrotli(content),
 			zlib: await this.compressWithZlib(content)
@@ -29,7 +26,7 @@ export class CompressorService implements ICompressorService {
 	 * @param {string} code
 	 * @returns {Promise<Buffer>}
 	 */
-	public async compressWithBrotli (code: Buffer): Promise<Buffer> {
+	public async compressWithBrotli(code: Buffer): Promise<Buffer> {
 		return new Promise<Buffer>((resolve, reject) => {
 			brotliCompress(code, this.brotliCompressionOptions, (err, output) => {
 				if (err != null) return reject(err);
@@ -43,7 +40,7 @@ export class CompressorService implements ICompressorService {
 	 * @param {Buffer} code
 	 * @returns {Promise<Buffer>}
 	 */
-	public async compressWithZlib (code: Buffer): Promise<Buffer> {
+	public async compressWithZlib(code: Buffer): Promise<Buffer> {
 		return new Promise<Buffer>((resolve, reject) => {
 			gzip(code, this.zlibCompressionOptions, (err, output) => {
 				if (err != null) return reject(err);
@@ -51,5 +48,4 @@ export class CompressorService implements ICompressorService {
 			});
 		});
 	}
-
 }

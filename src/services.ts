@@ -69,7 +69,4 @@ container.registerSingleton<IPolyfillBl, PolyfillBl>();
 // Controller
 container.registerSingleton<IStaticController, StaticController>();
 container.registerSingleton<IPolyfillController, PolyfillController>();
-container.registerSingleton<RegisteredControllers>(() => [
-	container.get<IStaticController>(),
-	container.get<IPolyfillController>()
-]);
+container.registerSingleton<RegisteredControllers>(() => [container.get<IStaticController>(), container.get<IPolyfillController>()]);

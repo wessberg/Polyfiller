@@ -30,6 +30,7 @@
 		"bs:watch": "npm run watch & npm run serve",
 		"watch": "npm run rollup:watch",
 		"validate": "npm run lint && npm run test",
+		"prettier": "prettier --write 'src/**/*.*'",
 		"publish:pre": "NODE_ENV=production npm run validate && NODE_ENV=production npm run build",
 		"publish:meta": "npm run generate:all && git add . && (git commit -am \"Bumped version\" || true) && git push",
 		"publish:patch": "npm run publish:pre && npm version patch && npm run publish:meta && npm publish",

@@ -6,8 +6,7 @@ import {AssignmentExpression, CallExpression, ExpressionStatement, Identifier, L
  * @param {string} code
  * @return {TransformSourceDescription["ast"]}
  */
-export function transformRelativeTimeFormat (this: PluginContext, code: string): TransformSourceDescription["ast"]|void {
-
+export function transformRelativeTimeFormat(this: PluginContext, code: string): TransformSourceDescription["ast"] | void {
 	const ast = this.parse(code, {});
 	return {
 		type: "Program",
@@ -23,9 +22,7 @@ export function transformRelativeTimeFormat (this: PluginContext, code: string):
 							name: statement.expression.right.name
 						}
 					};
-				}
-
-				else if (isRequireToVariableAssignment(statement)) {
+				} else if (isRequireToVariableAssignment(statement)) {
 					return {
 						type: "ImportDeclaration",
 						specifiers: [
@@ -55,7 +52,9 @@ export function transformRelativeTimeFormat (this: PluginContext, code: string):
  * @param {Node} statement
  * @return {boolean}
  */
-function isDefineEsModuleOnExportsStatement (statement: Node): statement is ExpressionStatement&{ expression: CallExpression&{ callee: MemberExpression&{ object: Identifier; property: Identifier } } } {
+function isDefineEsModuleOnExportsStatement(
+	statement: Node
+): statement is ExpressionStatement & {expression: CallExpression & {callee: MemberExpression & {object: Identifier; property: Identifier}}} {
 	if (
 		statement.type === "ExpressionStatement" &&
 		statement.expression.type === "CallExpression" &&
@@ -66,11 +65,7 @@ function isDefineEsModuleOnExportsStatement (statement: Node): statement is Expr
 		statement.expression.callee.property.name === "defineProperty"
 	) {
 		const [firstArgument] = statement.expression.arguments;
-		return (
-			firstArgument != null &&
-			firstArgument.type === "Identifier" &&
-			firstArgument.name === "exports"
-		);
+		return firstArgument != null && firstArgument.type === "Identifier" && firstArgument.name === "exports";
 	}
 	return false;
 }
@@ -80,7 +75,9 @@ function isDefineEsModuleOnExportsStatement (statement: Node): statement is Expr
  * @param {Node} statement
  * @return {boolean}
  */
-function isCommonjsDefaultExport (statement: Node): statement is ExpressionStatement&{ expression: AssignmentExpression&{ left: MemberExpression&{ object: Identifier; property: Identifier }; right: Identifier } } {
+function isCommonjsDefaultExport(
+	statement: Node
+): statement is ExpressionStatement & {expression: AssignmentExpression & {left: MemberExpression & {object: Identifier; property: Identifier}; right: Identifier}} {
 	return (
 		statement.type === "ExpressionStatement" &&
 		statement.expression.type === "AssignmentExpression" &&
@@ -97,7 +94,9 @@ function isCommonjsDefaultExport (statement: Node): statement is ExpressionState
  * @param {Node} statement
  * @return {boolean}
  */
-function isRequireToVariableAssignment (statement: Node): statement is VariableDeclaration&{ declarations: [VariableDeclarator&{ id: Identifier; init: CallExpression&{ callee: Identifier; arguments: [Literal] } }] } {
+function isRequireToVariableAssignment(
+	statement: Node
+): statement is VariableDeclaration & {declarations: [VariableDeclarator & {id: Identifier; init: CallExpression & {callee: Identifier; arguments: [Literal]}}]} {
 	if (statement.type !== "VariableDeclaration") return false;
 	const [firstDeclaration] = statement.declarations;
 	if (firstDeclaration == null || firstDeclaration.init == null) return false;
@@ -108,10 +107,7 @@ function isRequireToVariableAssignment (statement: Node): statement is VariableD
 		firstDeclaration.init.callee.name === "require"
 	) {
 		const [firstArgument] = firstDeclaration.init.arguments;
-		return (
-			firstArgument != null &&
-			firstArgument.type === "Literal"
-		);
+		return firstArgument != null && firstArgument.type === "Literal";
 	}
 	return false;
 }

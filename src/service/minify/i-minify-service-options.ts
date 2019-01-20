@@ -1,3 +1,3 @@
 export interface IMinifyServiceOptions {
-	code: string|Buffer;
+	code: string | Buffer;
 }

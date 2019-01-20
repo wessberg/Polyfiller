@@ -4,6 +4,6 @@ import {Method} from "../../server/method";
 import {Path} from "../../server/path";
 
 export interface IController {
-	readonly controllerMethods: Map<Method, Map<Path[]|Path, ControllerMethod>>;
-	match (request: Request): ControllerMethod|undefined;
+	readonly controllerMethods: Map<Method, Map<Path[] | Path, ControllerMethod>>;
+	match(request: Request): ControllerMethod | undefined;
 }

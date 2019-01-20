@@ -9,8 +9,7 @@ import {readFileSync} from "fs";
  * @param {string} id
  * @return {TransformSourceDescription["ast"]}
  */
-export function transformRelativeTimeFormatLocale (this: PluginContext, code: string, id: string): TransformSourceDescription["ast"]|void {
-
+export function transformRelativeTimeFormatLocale(this: PluginContext, code: string, id: string): TransformSourceDescription["ast"] | void {
 	/**
 	 * Visits a CallExpression that is assigned to the value of a Property
 	 * @param {CallExpression} expression
@@ -25,16 +24,16 @@ export function transformRelativeTimeFormatLocale (this: PluginContext, code: st
 		const rawContent = readFileSync(join(dirname(id), normalizedModuleSpecifier)).toString();
 
 		if (normalizedModuleSpecifier.endsWith(".json")) {
-			const {body: [firstStatement]} = this.parse(`(${rawContent})`, {});
+			const {
+				body: [firstStatement]
+			} = this.parse(`(${rawContent})`, {});
 			return (firstStatement as ExpressionStatement).expression;
-		}
+		} else {
+			const {
+				body: [firstStatement]
+			} = this.parse(rawContent, {});
 
-		else {
-			const {body: [firstStatement]} = this.parse(rawContent, {});
-
-			if (firstStatement.type !== "ExpressionStatement" ||
-				firstStatement.expression.type !== "AssignmentExpression"
-			) return expression;
+			if (firstStatement.type !== "ExpressionStatement" || firstStatement.expression.type !== "AssignmentExpression") return expression;
 
 			return firstStatement.expression.right;
 		}
@@ -48,9 +47,7 @@ export function transformRelativeTimeFormatLocale (this: PluginContext, code: st
 	const visitProperty = (property: Property): Property => {
 		return {
 			...property,
-			value: property.value.type !== "CallExpression"
-				? property.value
-				: visitPropertyValueCallExpression(property.value)
+			value: property.value.type !== "CallExpression" ? property.value : visitPropertyValueCallExpression(property.value)
 		};
 	};
 
@@ -85,47 +82,39 @@ export function transformRelativeTimeFormatLocale (this: PluginContext, code: st
 				source: {
 					type: "Literal",
 					value: "../../modules/RelativeTimeFormat",
-					raw: "\"../../modules/RelativeTimeFormat\""
+					raw: '"../../modules/RelativeTimeFormat"'
 				}
 			},
-			...ast.body
-				.filter(isTransformableStatementForRelativeTimeFormat)
-				.map(statement => {
-
-					return {
-						type: "ExpressionStatement",
-						expression: {
-							type: "CallExpression",
-							callee: {
-								type: "MemberExpression",
-								object: {
-									type: "Identifier",
-									name: "RelativeTimeFormat"
-								},
-								property: {
-									type: "Identifier",
-									name: "addLocale"
-								},
-								computed: false
+			...ast.body.filter(isTransformableStatementForRelativeTimeFormat).map(statement => {
+				return {
+					type: "ExpressionStatement",
+					expression: {
+						type: "CallExpression",
+						callee: {
+							type: "MemberExpression",
+							object: {
+								type: "Identifier",
+								name: "RelativeTimeFormat"
 							},
-							arguments: [visitObjectExpression(statement.expression.right)]
-						}
-					};
-				})
+							property: {
+								type: "Identifier",
+								name: "addLocale"
+							},
+							computed: false
+						},
+						arguments: [visitObjectExpression(statement.expression.right)]
+					}
+				};
+			})
 		]
 	} as TransformSourceDescription["ast"];
 }
-
 
 /**
  * Returns true if the given statement is transformable for locale files for RelativeTimeFormat
  * @param {Node} statement
  * @return {statement is ExpressionStatement & {expression: AssignmentExpression & {right: ObjectExpression}}}
  */
-function isTransformableStatementForRelativeTimeFormat (statement: Node): statement is ExpressionStatement&{ expression: AssignmentExpression&{ right: ObjectExpression } } {
-	return (
-		statement.type === "ExpressionStatement" &&
-		statement.expression.type === "AssignmentExpression" &&
-		statement.expression.right.type === "ObjectExpression"
-	);
+function isTransformableStatementForRelativeTimeFormat(statement: Node): statement is ExpressionStatement & {expression: AssignmentExpression & {right: ObjectExpression}} {
+	return statement.type === "ExpressionStatement" && statement.expression.type === "AssignmentExpression" && statement.expression.right.type === "ObjectExpression";
 }

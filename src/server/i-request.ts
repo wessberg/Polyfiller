@@ -43,4 +43,4 @@ export interface IOptionsRequest extends IRequest {
 	method: "OPTIONS";
 }
 
-export declare type Request = IGetRequest|IPutRequest|IPostRequest|IDeleteRequest|IOptionsRequest;
+export declare type Request = IGetRequest | IPutRequest | IPostRequest | IDeleteRequest | IOptionsRequest;

@@ -32,11 +32,11 @@ export class MemoryRegistryService implements IMemoryRegistryService {
 	 * @param {ContentEncodingKind} [encoding]
 	 * @returns {Promise<IRegistryGetResult?>}
 	 */
-	public async get (name: IPolyfillFeature|Set<IPolyfillFeature>, encoding?: ContentEncodingKind): Promise<IRegistryGetResult|undefined> {
+	public async get(name: IPolyfillFeature | Set<IPolyfillFeature>, encoding?: ContentEncodingKind): Promise<IRegistryGetResult | undefined> {
 		const checksum = getPolyfillIdentifier(name, encoding);
 		const buffer = this.registeredPolyfills.get(checksum);
 
-		return buffer == null ? undefined : {buffer, checksum };
+		return buffer == null ? undefined : {buffer, checksum};
 	}
 
 	/**
@@ -44,7 +44,7 @@ export class MemoryRegistryService implements IMemoryRegistryService {
 	 * @param {Set<IPolyfillFeatureInput>} input
 	 * @param {string} userAgent
 	 */
-	public async getPolyfillFeatureSet (input: Set<IPolyfillFeatureInput>, userAgent: string): Promise<Set<IPolyfillFeature>|undefined> {
+	public async getPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, userAgent: string): Promise<Set<IPolyfillFeature> | undefined> {
 		const checksum = getPolyfillSetIdentifier(input, userAgent);
 		return this.registeredPolyfillSets.get(checksum);
 	}
@@ -54,7 +54,7 @@ export class MemoryRegistryService implements IMemoryRegistryService {
 	 * @param {string[]} paths
 	 * @returns {Promise<Buffer|undefined>}
 	 */
-	public async getCoreJsBundle (paths: string[]): Promise<Buffer|undefined> {
+	public async getCoreJsBundle(paths: string[]): Promise<Buffer | undefined> {
 		const checksum = getCoreJsBundleIdentifier(paths);
 		return this.registeredCoreJsBundles.get(checksum);
 	}
@@ -65,10 +65,8 @@ export class MemoryRegistryService implements IMemoryRegistryService {
 	 * @param {ContentEncodingKind} [encoding]
 	 * @returns {Promise<boolean>}
 	 */
-	public async has (name: IPolyfillFeature|Set<IPolyfillFeature>, encoding?: ContentEncodingKind): Promise<boolean> {
-		return this.registeredPolyfills.has(
-			getPolyfillIdentifier(name, encoding)
-		);
+	public async has(name: IPolyfillFeature | Set<IPolyfillFeature>, encoding?: ContentEncodingKind): Promise<boolean> {
+		return this.registeredPolyfills.has(getPolyfillIdentifier(name, encoding));
 	}
 
 	/**
@@ -77,10 +75,8 @@ export class MemoryRegistryService implements IMemoryRegistryService {
 	 * @param {string} userAgent
 	 * @returns {Promise<boolean>}
 	 */
-	public async hasPolyfillFeatureSet (input: Set<IPolyfillFeatureInput>, userAgent: string): Promise<boolean> {
-		return this.registeredPolyfillSets.has(
-			getPolyfillSetIdentifier(input, userAgent)
-		);
+	public async hasPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, userAgent: string): Promise<boolean> {
+		return this.registeredPolyfillSets.has(getPolyfillSetIdentifier(input, userAgent));
 	}
 
 	/**
@@ -88,10 +84,8 @@ export class MemoryRegistryService implements IMemoryRegistryService {
 	 * @param {string[]} paths
 	 * @returns {Promise<boolean>}
 	 */
-	public async hasCoreJsBundle (paths: string[]): Promise<boolean> {
-		return this.registeredCoreJsBundles.has(
-			getCoreJsBundleIdentifier(paths)
-		);
+	public async hasCoreJsBundle(paths: string[]): Promise<boolean> {
+		return this.registeredCoreJsBundles.has(getCoreJsBundleIdentifier(paths));
 	}
 
 	/**
@@ -101,7 +95,7 @@ export class MemoryRegistryService implements IMemoryRegistryService {
 	 * @param {ContentEncodingKind} [encoding]
 	 * @returns {Promise<IRegistryGetResult>}
 	 */
-	public async set (name: IPolyfillFeature|Set<IPolyfillFeature>, buffer: Buffer, encoding?: ContentEncodingKind): Promise<IRegistryGetResult> {
+	public async set(name: IPolyfillFeature | Set<IPolyfillFeature>, buffer: Buffer, encoding?: ContentEncodingKind): Promise<IRegistryGetResult> {
 		const checksum = getPolyfillIdentifier(name, encoding);
 
 		this.registeredPolyfills.set(checksum, buffer);
@@ -115,7 +109,7 @@ export class MemoryRegistryService implements IMemoryRegistryService {
 	 * @param {string} userAgent
 	 * @returns {Promise<Set<IPolyfillFeature>>}
 	 */
-	public async setPolyfillFeatureSet (input: Set<IPolyfillFeatureInput>, polyfillSet: Set<IPolyfillFeature>, userAgent: string): Promise<Set<IPolyfillFeature>> {
+	public async setPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, polyfillSet: Set<IPolyfillFeature>, userAgent: string): Promise<Set<IPolyfillFeature>> {
 		const checksum = getPolyfillSetIdentifier(input, userAgent);
 
 		this.registeredPolyfillSets.set(checksum, polyfillSet);
@@ -127,7 +121,7 @@ export class MemoryRegistryService implements IMemoryRegistryService {
 	 * @param {string[]} paths
 	 * @param {Buffer} bundle
 	 */
-	public async setCoreJsBundle (paths: string[], bundle: Buffer): Promise<Buffer> {
+	public async setCoreJsBundle(paths: string[], bundle: Buffer): Promise<Buffer> {
 		const checksum = getCoreJsBundleIdentifier(paths);
 
 		this.registeredCoreJsBundles.set(checksum, bundle);

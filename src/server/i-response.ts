@@ -15,7 +15,6 @@ export interface IOKResponse extends IResponse {
 	checksum: string;
 }
 
-export interface INotModifiedResponse extends IResponse {
-}
+export interface INotModifiedResponse extends IResponse {}
 
-export declare type Response = IOKResponse|INotModifiedResponse;
+export declare type Response = IOKResponse | INotModifiedResponse;

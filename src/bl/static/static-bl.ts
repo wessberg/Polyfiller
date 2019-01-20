@@ -10,7 +10,7 @@ export class StaticBl implements IStaticBl {
 	 * Generates a HTML-formatted welcome message
 	 * @returns {Promise<string>}
 	 */
-	public async getWelcomeMessage (): Promise<string> {
+	public async getWelcomeMessage(): Promise<string> {
 		return generateHtml(`
 			<div style="display: flex; flex-direction: row;">
 				<img style="margin-right: 30px" alt="logo" height="100" src="https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/logo-color.png" />
@@ -20,5 +20,4 @@ export class StaticBl implements IStaticBl {
 			<h3>For API reference, please see <a href="${constant.meta.github}">Github</a></h3>
 			`);
 	}
-
 }

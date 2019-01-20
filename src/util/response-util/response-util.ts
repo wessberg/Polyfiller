@@ -11,8 +11,7 @@ import {constant} from "../../constant/constant";
  * @param {Response} response
  * @returns {void}
  */
-export function respondToRequest (rawResponse: HttpServerResponse|Http2ServerResponse, response: Response): void {
-
+export function respondToRequest(rawResponse: HttpServerResponse | Http2ServerResponse, response: Response): void {
 	if ("contentType" in response) {
 		rawResponse.setHeader("Content-Type", response.contentType);
 	}

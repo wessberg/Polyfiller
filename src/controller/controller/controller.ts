@@ -10,20 +10,19 @@ import {Path} from "../../server/path";
  * A controller can handle a request and return a response for it
  */
 export abstract class Controller implements IController {
-
 	// noinspection JSPotentiallyInvalidConstructorUsage
 	/**
 	 * The controller method listeners of this concrete Controller instance
 	 * @type {Map<RegExp, ControllerMethod>}
 	 */
-	public readonly controllerMethods: Map<Method, Map<Path[]|Path, ControllerMethod>> = (<any>this).constructor.prototype.controllerMethods;
+	public readonly controllerMethods: Map<Method, Map<Path[] | Path, ControllerMethod>> = (<any>this).constructor.prototype.controllerMethods;
 
 	/**
 	 * Returns a ControllerMatch for the given request, if any exists
 	 * @param {Request} request
 	 * @returns {ControllerMethod | undefined}
 	 */
-	public match (request: Request): ControllerMethod|undefined {
+	public match(request: Request): ControllerMethod | undefined {
 		const controllerMethodListener = this.controllerMethods.get(request.method);
 		if (controllerMethodListener == null) {
 			return undefined;
@@ -41,5 +40,4 @@ export abstract class Controller implements IController {
 
 		return undefined;
 	}
-
 }

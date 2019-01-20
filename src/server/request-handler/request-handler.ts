@@ -11,17 +11,14 @@ import {IStaticController} from "../../controller/static/i-static-controller";
  * A handler that can handle requests
  */
 export class RequestHandler implements IRequestHandler {
-
-	constructor (private readonly controllers: RegisteredControllers,
-							 private readonly staticController: IStaticController) {
-	}
+	constructor(private readonly controllers: RegisteredControllers, private readonly staticController: IStaticController) {}
 
 	/**
 	 * Handles the given request
 	 * @param {RequestHandlerOptions} options
 	 * @returns {Promise<Response>}
 	 */
-	public async handle (options: RequestHandlerOptions): Promise<Response> {
+	public async handle(options: RequestHandlerOptions): Promise<Response> {
 		// Print the request
 		printRequest(options.request);
 
@@ -33,9 +30,7 @@ export class RequestHandler implements IRequestHandler {
 			default:
 				return {
 					body: `Only GET requests are supported`,
-					statusCode: options.request.http2
-						? constants.HTTP_STATUS_METHOD_NOT_ALLOWED
-						: METHOD_NOT_ALLOWED,
+					statusCode: options.request.http2 ? constants.HTTP_STATUS_METHOD_NOT_ALLOWED : METHOD_NOT_ALLOWED,
 					contentType: "text/plain"
 				};
 		}
@@ -46,8 +41,7 @@ export class RequestHandler implements IRequestHandler {
 	 * @param {RequestHandlerOptions} options
 	 * @returns {Promise<Response>}
 	 */
-	private async handleGetRequest (options: RequestHandlerOptions): Promise<Response> {
-
+	private async handleGetRequest(options: RequestHandlerOptions): Promise<Response> {
 		// Find the first matched controller
 		for (const controller of this.controllers) {
 			const match = controller.match(options.request);
@@ -65,12 +59,9 @@ export class RequestHandler implements IRequestHandler {
 	 * @param {RequestHandlerOptions} options
 	 * @returns {Promise<Response>}
 	 */
-	private async handleOptionsRequest (options: RequestHandlerOptions): Promise<Response> {
-
+	private async handleOptionsRequest(options: RequestHandlerOptions): Promise<Response> {
 		return {
-			statusCode: options.request.http2
-				? constants.HTTP_STATUS_OK
-				: OK
+			statusCode: options.request.http2 ? constants.HTTP_STATUS_OK : OK
 		};
 	}
 }

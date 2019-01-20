@@ -6,7 +6,7 @@ import {certificateFor} from "devcert";
  * @param {IGetCertificateOptions} options
  * @returns {Promise<{key: Buffer|undefined, cert: Buffer|undefined}>}
  */
-export async function getCertificates ({key, cert, production, host}: IGetCertificateOptions): Promise<{ key: Buffer|undefined; cert: Buffer|undefined }> {
+export async function getCertificates({key, cert, production, host}: IGetCertificateOptions): Promise<{key: Buffer | undefined; cert: Buffer | undefined}> {
 	// If a key and certificate was already given, use those two
 	if (key != null && cert != null) return {key, cert};
 

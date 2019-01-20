@@ -24,10 +24,8 @@ const OPTIONS_COLOR = chalk.gray;
  * @param {string} header
  * @returns {Set<string>}
  */
-function splitStringifiedListHeader (header: string|string[]): Set<string> {
-	const splitted = Array.isArray(header) ? header : header
-		.split(",")
-		.map(part => part.trim());
+function splitStringifiedListHeader(header: string | string[]): Set<string> {
+	const splitted = Array.isArray(header) ? header : header.split(",").map(part => part.trim());
 
 	return new Set(splitted);
 }
@@ -38,24 +36,18 @@ function splitStringifiedListHeader (header: string|string[]): Set<string> {
  * @param {boolean} http2
  * @returns {Request}
  */
-export function getRequestFromIncomingHeaders (headers: IncomingHttpHeaders, http2: boolean): Request {
+export function getRequestFromIncomingHeaders(headers: IncomingHttpHeaders, http2: boolean): Request {
 	let path = headers[":path"];
 	if (typeof path === "string") {
 		// Replace all literal "+" with its literal encoded variant
 		path = path.replace(/\+/g, "%2B");
 	}
-	return <Request> {
+	return <Request>{
 		http2,
-		method: <Request["method"]> headers[":method"]!,
-		accept: headers.accept == null
-			? undefined
-			: splitStringifiedListHeader(headers.accept),
-		acceptEncoding: headers["accept-encoding"] == null
-			? undefined
-			: splitStringifiedListHeader(headers["accept-encoding"]!),
-		acceptLanguage: headers["accept-language"] == null
-			? undefined
-			: splitStringifiedListHeader(headers["accept-language"]!),
+		method: <Request["method"]>headers[":method"]!,
+		accept: headers.accept == null ? undefined : splitStringifiedListHeader(headers.accept),
+		acceptEncoding: headers["accept-encoding"] == null ? undefined : splitStringifiedListHeader(headers["accept-encoding"]!),
+		acceptLanguage: headers["accept-language"] == null ? undefined : splitStringifiedListHeader(headers["accept-language"]!),
 		userAgent: headers["user-agent"]!,
 		// @ts-ignore
 		url: new URL(path, `${headers[":scheme"]}://${headers[":authority"]}`),
@@ -68,7 +60,7 @@ export function getRequestFromIncomingHeaders (headers: IncomingHttpHeaders, htt
  * @param {string} method
  * @returns {string}
  */
-function paintMethod (method: Request["method"]): string {
+function paintMethod(method: Request["method"]): string {
 	switch (method) {
 		case "GET":
 			return GET_COLOR(method);
@@ -87,10 +79,8 @@ function paintMethod (method: Request["method"]): string {
  * Prints the given request
  * @param {IRequest} request
  */
-export function printRequest ({method, url}: Request): void {
-	console.log(
-		`${paintMethod(method)} ${url.toString()}`
-	);
+export function printRequest({method, url}: Request): void {
+	console.log(`${paintMethod(method)} ${url.toString()}`);
 }
 
 /**
@@ -98,7 +88,7 @@ export function printRequest ({method, url}: Request): void {
  * @param {IRawRequest} rawRequest
  * @returns {Promise<Response>}
  */
-export async function sendRequest (rawRequest: IRawRequest): Promise<Response> {
+export async function sendRequest(rawRequest: IRawRequest): Promise<Response> {
 	return new Promise<Response>(async resolve => {
 		const response: IOKResponse = {
 			contentType: "text/plain",
@@ -108,12 +98,12 @@ export async function sendRequest (rawRequest: IRawRequest): Promise<Response> {
 			polyfillsHeader: ""
 		};
 
-		let contentType: string|undefined;
-		let cacheControl: string|undefined;
-		let statusCode: number|undefined;
-		let contentEncoding: string|undefined;
-		let checksum: string|undefined;
-		let polyfillsHeader: string|undefined;
+		let contentType: string | undefined;
+		let cacheControl: string | undefined;
+		let statusCode: number | undefined;
+		let contentEncoding: string | undefined;
+		let checksum: string | undefined;
+		let polyfillsHeader: string | undefined;
 
 		const setResponseHeaders = () => {
 			if (statusCode != null) {
@@ -129,7 +119,7 @@ export async function sendRequest (rawRequest: IRawRequest): Promise<Response> {
 			}
 
 			if (contentEncoding != null) {
-				response.contentEncoding = <ContentEncodingKind> contentEncoding;
+				response.contentEncoding = <ContentEncodingKind>contentEncoding;
 			}
 
 			if (checksum != null) {
@@ -141,13 +131,16 @@ export async function sendRequest (rawRequest: IRawRequest): Promise<Response> {
 			}
 		};
 
-		const onResponse = (res: IncomingMessage|ClientHttp2Stream, client?: ClientHttp2Session) => {
+		const onResponse = (res: IncomingMessage | ClientHttp2Stream, client?: ClientHttp2Session) => {
 			res.setEncoding("utf8");
 			let data: string = "";
 			// @ts-ignore
-			res.on("data", (chunk: any): void => {
-				data += chunk;
-			});
+			res.on(
+				"data",
+				(chunk: any): void => {
+					data += chunk;
+				}
+			);
 
 			// @ts-ignore
 			res.on("end", () => {
@@ -177,33 +170,33 @@ export async function sendRequest (rawRequest: IRawRequest): Promise<Response> {
 				contentType = rawResponse.headers["content-type"];
 				cacheControl = rawResponse.headers["cache-control"];
 				contentEncoding = rawResponse.headers["content-encoding"];
-				polyfillsHeader = <string|undefined> rawResponse.headers[constant.header.polyfills];
-				checksum = <string|undefined> rawResponse.headers.etag;
+				polyfillsHeader = <string | undefined>rawResponse.headers[constant.header.polyfills];
+				checksum = <string | undefined>rawResponse.headers.etag;
 				setResponseHeaders();
 				onResponse(rawResponse);
 			};
 
 			const sentRequest = rawRequest.tls ? requestHttps({...requestOptions, rejectUnauthorized: false}, incomingMessageHandler) : requestHttp(requestOptions, incomingMessageHandler);
 			sentRequest.end();
-		}
-
-		else {
-			const client = connect(`https://${rawRequest.host}:${rawRequest.port}`, {rejectUnauthorized: false});
-			const req = client.request({
-					":path": rawRequest.path,
-					":method": rawRequest.method,
-					...(rawRequest.acceptEncoding == null ? {} : {"accept-encoding": [...rawRequest.acceptEncoding].join(",")}),
-					...(rawRequest.userAgent == null ? {} : {"user-agent": rawRequest.userAgent})
-				}
+		} else {
+			const client = connect(
+				`https://${rawRequest.host}:${rawRequest.port}`,
+				{rejectUnauthorized: false}
 			);
+			const req = client.request({
+				":path": rawRequest.path,
+				":method": rawRequest.method,
+				...(rawRequest.acceptEncoding == null ? {} : {"accept-encoding": [...rawRequest.acceptEncoding].join(",")}),
+				...(rawRequest.userAgent == null ? {} : {"user-agent": rawRequest.userAgent})
+			});
 
-			req.once("response", (headers) => {
-				statusCode = <number><any> headers[":status"];
+			req.once("response", headers => {
+				statusCode = <number>(<any>headers[":status"]);
 				contentType = headers["content-type"];
 				cacheControl = headers["cache-control"];
 				contentEncoding = headers["content-encoding"];
-				polyfillsHeader = <string|undefined> headers[constant.header.polyfills];
-				checksum = <string|undefined> headers.etag;
+				polyfillsHeader = <string | undefined>headers[constant.header.polyfills];
+				checksum = <string | undefined>headers.etag;
 				setResponseHeaders();
 			});
 
@@ -218,7 +211,7 @@ export async function sendRequest (rawRequest: IRawRequest): Promise<Response> {
  * @param {Set<string> | undefined} encodings
  * @returns {ContentEncodingKind | undefined}
  */
-export function pickEncoding (encodings: Set<string>|undefined): ContentEncodingKind|undefined {
+export function pickEncoding(encodings: Set<string> | undefined): ContentEncodingKind | undefined {
 	if (encodings == null) return undefined;
 	if (encodings.has(ContentEncodingKind.BROTLI)) return ContentEncodingKind.BROTLI;
 	if (encodings.has(ContentEncodingKind.GZIP)) return ContentEncodingKind.GZIP;

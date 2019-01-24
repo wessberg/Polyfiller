@@ -1,3 +1,9 @@
+## [0.0.54](https://github.com/wessberg/polyfiller/compare/v0.0.53...v0.0.54) (2019-01-24)
+
+### Features
+
+- **polyfill:** made 'animation' an alias for the polyfill 'web-animations' ([7fa03e9](https://github.com/wessberg/polyfiller/commit/7fa03e9))
+
 ## [0.0.53](https://github.com/wessberg/polyfiller/compare/v0.0.52...v0.0.53) (2019-01-24)
 
 ### Bug Fixes

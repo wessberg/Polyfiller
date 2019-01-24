@@ -7,7 +7,7 @@ import {sendRequest} from "../../src/util/request-util/request-util";
 import {constant} from "../../src/constant/constant";
 import {initializeTests} from "./setup";
 // @ts-ignore
-import {chrome, ie} from "useragent-generator";
+import {chrome, ie, safari} from "useragent-generator";
 import {ContentEncodingKind} from "../../src/encoding/content-encoding-kind";
 import {getPolyfillRequestFromUrl} from "../../src/util/polyfill/polyfill-util";
 import {URL} from "url";

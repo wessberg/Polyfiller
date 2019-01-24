@@ -2351,6 +2351,9 @@ export const constant: IConstant = {
 			dependencies: ["intl.core", "es.array.includes", "es.object.create", "es.string.replace", "es.symbol.to-string-tag", "es.weak-map"]
 		},
 		animation: {
+			polyfills: ["web-animations"]
+		},
+		"web-animations": {
 			library: "web-animations-js",
 			relativePaths: ["web-animations.min.js"],
 			features: ["web-animation"],

@@ -34,7 +34,8 @@ export declare type PolyfillName =
 	| "event"
 	| "dom.collections.iterable"
 	| "web-components"
-	| "intl";
+	| "intl"
+	| "animation";
 
 export declare type PolyfillDealiasedName =
 	| "es.object.assign"
@@ -304,7 +305,6 @@ export declare type PolyfillDealiasedName =
 	| "intl.core"
 	| "intl.list-format"
 	| "intl.relative-time-format"
-	| "animation"
 	| "proxy"
 	| "window"
 	| "document"
@@ -332,4 +332,5 @@ export declare type PolyfillDealiasedName =
 	| "custom-event"
 	| "event-source"
 	| "pointer-event"
-	| "setimmediate";
+	| "setimmediate"
+	| "web-animations";

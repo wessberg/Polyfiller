@@ -1,3 +1,9 @@
+## [0.0.55](https://github.com/wessberg/polyfiller/compare/v0.0.54...v0.0.55) (2019-01-24)
+
+### Bug Fixes
+
+- **safari:** fixes an issue where intersection-observer and web-animations would not apply to Safari v12 (not TP) ([3cd66d0](https://github.com/wessberg/polyfiller/commit/3cd66d0))
+
 ## [0.0.54](https://github.com/wessberg/polyfiller/compare/v0.0.53...v0.0.54) (2019-01-24)
 
 ### Features

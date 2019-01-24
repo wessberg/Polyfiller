@@ -77,34 +77,21 @@ test("Will generate correct polyfills for IE11", async t => {
 });
 
 test("Will correctly parse meta information for SystemJS. #1", async t => {
-
-	const polyfillRequest = getPolyfillRequestFromUrl(
-		new URL("?features=systemjs|variant=s", `https://my-polyfill-service.app${constant.endpoint.polyfill}`),
-		chrome(70)
-	);
+	const polyfillRequest = getPolyfillRequestFromUrl(new URL("?features=systemjs|variant=s", `https://my-polyfill-service.app${constant.endpoint.polyfill}`), chrome(70));
 	t.true([...polyfillRequest.features].some(({meta, name}) => name === "systemjs" && meta != null && meta.variant === "s"));
 });
 
 test("Will correctly parse meta information for SystemJS. #2", async t => {
-
-	const polyfillRequest = getPolyfillRequestFromUrl(
-		new URL("?features=systemjs|variant=system", `https://my-polyfill-service.app${constant.endpoint.polyfill}`),
-		chrome(70)
-	);
+	const polyfillRequest = getPolyfillRequestFromUrl(new URL("?features=systemjs|variant=system", `https://my-polyfill-service.app${constant.endpoint.polyfill}`), chrome(70));
 	t.true([...polyfillRequest.features].some(({meta, name}) => name === "systemjs" && meta != null && meta.variant === "system"));
 });
 
 test("Will correctly parse meta information for Zone. #1", async t => {
-
-	const polyfillRequest = getPolyfillRequestFromUrl(
-		new URL("?features=zone|error", `https://my-polyfill-service.app${constant.endpoint.polyfill}`),
-		chrome(70)
-	);
+	const polyfillRequest = getPolyfillRequestFromUrl(new URL("?features=zone|error", `https://my-polyfill-service.app${constant.endpoint.polyfill}`), chrome(70));
 	t.true([...polyfillRequest.features].some(({meta, name}) => name === "zone" && meta != null && meta.error === true));
 });
 
 test("Will set a 'x-applied-polyfills' header on HTTP2 responses with a HTTP-friendly list of all applied polyfills. #1", async t => {
-
 	const result = await sendRequest({
 		http2: config.http2,
 		tls: true,
@@ -120,7 +107,6 @@ test("Will set a 'x-applied-polyfills' header on HTTP2 responses with a HTTP-fri
 });
 
 test("Accepts OPTIONS requests. #1", async t => {
-
 	const result = await sendRequest({
 		http2: config.http2,
 		tls: true,

@@ -1,13 +1,7 @@
 {
 	"extends": "@wessberg/ts-config",
-	"include": [
-		"src/**/*.*"
-	],
-	"exclude": ["test/server/**/*"],
+	"include": ["src/**/*.*"],
 	"compilerOptions": {
-		"target": "es2017",
-		"paths": {
-			"tslib": ["node_modules/tslib/tslib.d.ts"]
-		}
+		"target": "es2017"
 	}
 }

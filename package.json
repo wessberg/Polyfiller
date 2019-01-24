@@ -28,6 +28,7 @@
 		"rollup": "rollup -c rollup.config.js",
 		"preversion": "npm run lint && NODE_ENV=production npm run build",
 		"version": "npm run generate:all && git add .",
+		"postpublish": "npm run deploy",
 		"release": "np --no-cleanup --no-yarn",
 		"deploy": "nanobox build && nanobox deploy"
 	},

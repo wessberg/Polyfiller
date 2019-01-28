@@ -1,3 +1,9 @@
+## [0.0.57](https://github.com/wessberg/polyfiller/compare/v0.0.56...v0.0.57) (2019-01-28)
+
+### Bug Fixes
+
+- **edge:** Bumps dependencies to fix an issue where Edge 16 could report as Edge 18 under some circumstances ([417a3b9](https://github.com/wessberg/polyfiller/commit/417a3b9))
+
 ## [0.0.56](https://github.com/wessberg/polyfiller/compare/v0.0.55...v0.0.56) (2019-01-28)
 
 ### Bug Fixes

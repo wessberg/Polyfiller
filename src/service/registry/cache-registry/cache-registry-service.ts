@@ -170,7 +170,8 @@ export class CacheRegistryService implements ICacheRegistryService {
 	public async needsUpdate(polyfillName: PolyfillName, currentVersion: string): Promise<boolean> {
 		const packageVersionMap = await this.getPackageVersionMap();
 		const cachedVersion = packageVersionMap[polyfillName];
-		return cachedVersion == null || gt(coerce(currentVersion)!.version, coerce(cachedVersion)!.version);
+
+		return cachedVersion == null || isNaN(parseInt(cachedVersion)) || gt(coerce(currentVersion)!.version, coerce(cachedVersion)!.version);
 	}
 
 	/**

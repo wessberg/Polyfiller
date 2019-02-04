@@ -42,7 +42,7 @@ In this example:
 - `intl` is polyfilled, with the inclusion of `Intl.ListFormat` and `Intl.RelativeTimeFormat`, if the browser doesn't support it, and the `en` locale data is included.
 
 ```html
-<script src="https://polyfill.app/api/polyfill?features=es,intersection-observer|force,intl|locales=en"></script>
+<script src="https://polyfill.app/api/polyfill?features=es,intersection-observer|force,intl|locale=en"></script>
 ```
 
 ### Example 2:
@@ -102,7 +102,7 @@ For example, here's how to associate the `force` option with a `feature`:
 `animation|force`.
 
 Some `option`s apply to all `feature`s while others only apply to specific `feature`s. For example:
-`intl|locales=en`
+`intl|locale=en`
 
 #### The `force` option
 
@@ -112,18 +112,18 @@ In order to do so, associate the `force` option with a `feature`. For example:
 `animation|force`
 This will force-apply a polyfill for `Web Animations`.
 
-#### The `locales` option for `Intl`
+#### The `locale` option for `Intl`
 
 **This option only works with `intl`, `intl.core`, `intl.list-format`, or `intl.relative-time-format`**.
 The `Intl` family of polyfills rely on locale data for them to work. There are over 600 different locale files shipped. Sending all of them back over the network would take way too much bandwidth.
 Instead, if you just ask for the `intl`, `intl.core`, `intl.list-format`, or `intl.relative-time-format` features, they will be returned without any locale data.
 
-To add one or more locales, use the `locales` option. For example:
-`intl|locales=en`
+To add one or more locales, use the `locale` option. For example:
+`intl|locale=en`
 
 This will return a bundle of `Intl`-related polyfills along with locale data for the `en` (English) language code.
 You can ask for as many you want by separating the locales with the `~` operator. For example:
-`intl|locales=en~da~fr`
+`intl|locale=en~da~fr`
 This will return a bundle of `Intl`-related polyfills along with locale data for `en` (English), `da` (Danish), and `fr` (French).
 
 #### The `variant` option for `SystemJS`

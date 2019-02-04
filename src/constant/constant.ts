@@ -174,6 +174,7 @@ export const constant: IConstant = {
 				"es.object.define-getter",
 				"es.object.define-setter",
 				"es.object.entries",
+				"es.object.from-entries",
 				"es.object.get-own-property-descriptors",
 				"es.object.lookup-getter",
 				"es.object.lookup-setter",
@@ -204,7 +205,7 @@ export const constant: IConstant = {
 		},
 		"es.object.from-entries": {
 			library: "core-js",
-			relativePaths: ["modules/esnext.object.from-entries.js"],
+			relativePaths: ["modules/es.object.from-entries.js"],
 			features: ["javascript.builtins.Object.fromEntries"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: []
@@ -393,6 +394,8 @@ export const constant: IConstant = {
 				"es.array.concat",
 				"es.array.copy-within",
 				"es.array.every",
+				"es.array.flat",
+				"es.array.flat-map",
 				"es.array.fill",
 				"es.array.filter",
 				"es.array.find",
@@ -425,14 +428,14 @@ export const constant: IConstant = {
 		},
 		"es.array.flat": {
 			library: "core-js",
-			relativePaths: ["modules/esnext.array.flat.js"],
+			relativePaths: ["modules/es.array.flat.js"],
 			features: ["javascript.builtins.Array.flat"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: []
 		},
 		"es.array.flat-map": {
 			library: "core-js",
-			relativePaths: ["modules/esnext.array.flat-map.js"],
+			relativePaths: ["modules/es.array.flat-map.js"],
 			features: ["javascript.builtins.Array.flatMap"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: []
@@ -666,7 +669,9 @@ export const constant: IConstant = {
 				"es.string.strike",
 				"es.string.sub",
 				"es.string.sup",
-				"es.string.trim"
+				"es.string.trim",
+				"es.string.trim-start",
+				"es.string.trim-end"
 			]
 		},
 		"es.string.at": {
@@ -703,14 +708,14 @@ export const constant: IConstant = {
 		},
 		"es.string.trim-start": {
 			library: "core-js",
-			relativePaths: ["modules/esnext.string.trim-left.js"],
+			relativePaths: ["modules/es.string.trim-start.js"],
 			features: ["javascript.builtins.String.trimStart"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: []
 		},
 		"es.string.trim-end": {
 			library: "core-js",
-			relativePaths: ["modules/esnext.string.trim-right.js"],
+			relativePaths: ["modules/es.string.trim-end.js"],
 			features: ["javascript.builtins.String.trimEnd"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: []
@@ -2183,10 +2188,10 @@ export const constant: IConstant = {
 			polyfills: ["esnext"]
 		},
 		"esnext.array": {
-			polyfills: ["es.array.flat", "es.array.flat-map", "es.array.last-index", "es.array.last-item"]
+			polyfills: ["es.array.last-index", "es.array.last-item"]
 		},
 		"esnext.object": {
-			polyfills: ["es.object.from-entries"]
+			polyfills: []
 		},
 		"esnext.collections": {
 			polyfills: ["esnext.map", "esnext.weak-map", "esnext.set", "esnext.weak-set"]
@@ -2258,7 +2263,7 @@ export const constant: IConstant = {
 			]
 		},
 		"esnext.string": {
-			polyfills: ["es.string.at", "es.string.code-points", "es.string.match-all", "es.string.replace-all", "es.string.trim-start", "es.string.trim-end"]
+			polyfills: ["es.string.at", "es.string.code-points", "es.string.match-all", "es.string.replace-all"]
 		},
 		"esnext.symbol": {
 			polyfills: ["es.symbol.description", "es.symbol.pattern-match"]

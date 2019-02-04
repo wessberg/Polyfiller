@@ -1,3 +1,9 @@
+## [0.0.58](https://github.com/wessberg/polyfiller/compare/v0.0.57...v0.0.58) (2019-02-04)
+
+### Bug Fixes
+
+- **intl:** fixes an issue where Intl.PluralRules would not be polyfilled. ([72db7d3](https://github.com/wessberg/polyfiller/commit/72db7d3))
+
 ## [0.0.57](https://github.com/wessberg/polyfiller/compare/v0.0.56...v0.0.57) (2019-01-28)
 
 ### Bug Fixes

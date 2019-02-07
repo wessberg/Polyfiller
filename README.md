@@ -83,7 +83,7 @@ The web service is hosted and live at `https://polyfill.app/api`. It is **free**
 - [Backers](#backers)
   - [Patreon](#patreon)
   - [FAQ](#faq)
-  - [What's the difference from [polyfill.io](https://github.com/Financial-Times/polyfill-service)](#whats-the-difference-from-polyfilliohttpsgithubcomfinancial-timespolyfill-service)
+  - [What's the difference from polyfill.io](#whats-the-difference-from-polyfillio)
   - [Hosting](#hosting)
 - [Logo](#logo)
 - [License](#license)

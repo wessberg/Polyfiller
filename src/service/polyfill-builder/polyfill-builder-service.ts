@@ -46,7 +46,8 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				if (!this.isCoreJs(polyfillFeature)) return [];
 
 				const match = <IPolyfillLibraryDictEntry>constant.polyfill[polyfillFeature.name];
-				return match.relativePaths.map(relativePath => relativePath.replace("modules/", "").replace(".js", ""));
+				const relativePaths = Array.isArray(match.relativePaths) ? match.relativePaths : match.relativePaths[polyfillFeature.context];
+				return relativePaths.map(relativePath => relativePath.replace("modules/", "").replace(".js", ""));
 			})
 		);
 
@@ -81,8 +82,16 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 
 			const flatten = match.flatten === true;
 
-			const rootDirectory = "library" in match ? join(__dirname, "../node_modules", match.library) : join(__dirname, "../");
-			const localPaths = "library" in match ? match.relativePaths : match.localPaths;
+			const rootDirectory =
+				"library" in match ? join(__dirname, "../node_modules", typeof match.library === "string" ? match.library : match.library[polyfillFeature.context]) : join(__dirname, "../");
+			const localPaths =
+				"library" in match
+					? Array.isArray(match.relativePaths)
+						? match.relativePaths
+						: match.relativePaths[polyfillFeature.context]
+					: Array.isArray(match.localPaths)
+					? match.localPaths
+					: match.localPaths[polyfillFeature.context];
 
 			const {meta} = match;
 

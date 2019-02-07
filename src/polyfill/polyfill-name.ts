@@ -35,7 +35,10 @@ export declare type PolyfillName =
 	| "dom.collections.iterable"
 	| "web-components"
 	| "intl"
-	| "animation";
+	| "animation"
+	| "requestanimationframe"
+	| "requestidlecallback"
+	| "setimmediate";
 
 export declare type PolyfillDealiasedName =
 	| "es.object.assign"
@@ -294,8 +297,6 @@ export declare type PolyfillDealiasedName =
 	| "systemjs"
 	| "performance.now"
 	| "blob"
-	| "requestanimationframe"
-	| "requestidlecallback"
 	| "url"
 	| "base64"
 	| "xhr"
@@ -315,6 +316,8 @@ export declare type PolyfillDealiasedName =
 	| "node.parentelement"
 	| "queryselector"
 	| "document-fragment"
+	| "request-idle-callback"
+	| "request-animation-frame"
 	| "intersection-observer"
 	| "mutation-observer"
 	| "resize-observer"
@@ -332,5 +335,5 @@ export declare type PolyfillDealiasedName =
 	| "custom-event"
 	| "event-source"
 	| "pointer-event"
-	| "setimmediate"
+	| "set-immediate"
 	| "web-animations";

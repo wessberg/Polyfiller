@@ -15,6 +15,7 @@ import {truncate} from "@wessberg/stringutil";
 import {IPolyfillLibraryDictEntry, IPolyfillLocalDictEntry} from "../../polyfill/polyfill-dict";
 // @ts-ignore
 import toposort from "toposort";
+import {POLYFILL_CONTEXTS, PolyfillContext} from "../../polyfill/polyfill-context";
 
 // tslint:disable
 
@@ -82,11 +83,13 @@ export function getCoreJsBundleIdentifier(paths: string[]): string {
 /**
  * Returns true if the given polyfill should be included for a particular user agent
  * @param {boolean} force
+ * @param {PolyfillContext} context
  * @param {string} userAgent
  * @param {string[]} features
+ * @param {Set<PolyfillContext>} supportedContexts
  */
-function shouldIncludePolyfill(force: boolean, userAgent: string, features: string[]): boolean {
-	return force || features.length < 1 || !userAgentSupportsFeatures(userAgent, ...features);
+function shouldIncludePolyfill(force: boolean, context: PolyfillContext, userAgent: string, features: string[], supportedContexts: Set<PolyfillContext>): boolean {
+	return supportedContexts.has(context) && (force || features.length < 1 || !userAgentSupportsFeatures(userAgent, ...features));
 }
 
 /**
@@ -123,12 +126,12 @@ function getRequiredPolyfillsForUserAgent(polyfillSet: Set<IPolyfillFeatureInput
 	polyfillSet.forEach(polyfill => {
 		const match = constant.polyfill[polyfill.name];
 
-		if (shouldIncludePolyfill(polyfill.force, userAgent, match.features)) {
+		if (shouldIncludePolyfill(polyfill.force, polyfill.context, userAgent, match.features, match.contexts)) {
 			const existingIndex = polyfillNameToPolyfillIndexMap.get(polyfill.name);
 			if (existingIndex != null) {
 				polyfills[existingIndex].meta = polyfill.meta;
 			} else {
-				polyfills.push({name: polyfill.name, meta: polyfill.meta});
+				polyfills.push({name: polyfill.name, meta: polyfill.meta, context: polyfill.context});
 				polyfillNameToPolyfillIndexMap.set(polyfill.name, currentIndex++);
 				polyfillNames.add(polyfill.name);
 			}
@@ -137,7 +140,10 @@ function getRequiredPolyfillsForUserAgent(polyfillSet: Set<IPolyfillFeatureInput
 				[],
 				match.dependencies.map(dependency => [...traceAllPolyfillNamesForPolyfillName(dependency)])
 			);
-			for (const childPolyfill of getRequiredPolyfillsForUserAgent(new Set(resolvedDependencies.map(dependency => ({name: dependency, meta: {}, force: polyfill.force}))), userAgent)[0]) {
+			for (const childPolyfill of getRequiredPolyfillsForUserAgent(
+				new Set(resolvedDependencies.map(dependency => ({name: dependency, meta: {}, force: polyfill.force, context: polyfill.context}))),
+				userAgent
+			)[0]) {
 				if (!polyfillNames.has(childPolyfill.name)) {
 					polyfills.push({
 						...childPolyfill,
@@ -188,6 +194,8 @@ export async function getOrderedPolyfillsWithDependencies(polyfillSet: Set<IPoly
  */
 export function getPolyfillRequestFromUrl(url: URL, userAgent: string, encoding?: ContentEncodingKind): IPolyfillRequest {
 	const featuresRaw = url.searchParams.get("features");
+	const contextRaw = url.searchParams.get("context") as PolyfillContext;
+	let context: PolyfillContext = contextRaw == null || !POLYFILL_CONTEXTS.includes(contextRaw) ? "window" : contextRaw;
 
 	// Prepare a Set of features
 	const featureSet: Set<IPolyfillFeatureInput> = new Set();
@@ -227,7 +235,8 @@ export function getPolyfillRequestFromUrl(url: URL, userAgent: string, encoding?
 				featureSet.add({
 					name: polyfillName,
 					force,
-					meta
+					meta,
+					context
 				});
 			}
 		}

@@ -1,4 +1,5 @@
 import {PolyfillDealiasedName, PolyfillName} from "./polyfill-name";
+import {PolyfillContext} from "./polyfill-context";
 
 export interface IPolyfillDictAlias {
 	polyfills: PolyfillName[];
@@ -8,18 +9,19 @@ export interface IPolyfillDictEntryBase {
 	features: string[];
 	meta?: {[key: string]: string};
 	version: string;
+	contexts: Set<PolyfillContext>;
 	dependencies: PolyfillName[];
 	mustComeAfter?: PolyfillName[] | "*";
 	flatten?: boolean;
 }
 
 export interface IPolyfillLibraryDictEntry extends IPolyfillDictEntryBase {
-	library: string;
-	relativePaths: string[];
+	library: string | Record<PolyfillContext, string>;
+	relativePaths: string[] | Record<PolyfillContext, string[]>;
 }
 
 export interface IPolyfillLocalDictEntry extends IPolyfillDictEntryBase {
-	localPaths: string[];
+	localPaths: string[] | Record<PolyfillContext, string[]>;
 }
 
 export declare type PolyfillDictNormalizedEntry = IPolyfillLibraryDictEntry | IPolyfillLocalDictEntry;

@@ -1,4 +1,5 @@
 import {PolyfillDealiasedName} from "./polyfill-name";
+import {PolyfillContext} from "./polyfill-context";
 
 // tslint:disable:no-any
 
@@ -9,6 +10,7 @@ export interface IPolyfillFeatureMeta {
 export interface IPolyfillFeature {
 	name: PolyfillDealiasedName;
 	meta: IPolyfillFeatureMeta;
+	context: PolyfillContext;
 }
 
 export interface IPolyfillFeatureInput extends IPolyfillFeature {

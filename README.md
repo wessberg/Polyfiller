@@ -307,7 +307,7 @@ Do you want to contribute? Awesome! Please follow [these recommendations](./CONT
 
 <!-- SHADOW_SECTION_FAQ_END -->
 
-### What's the difference from [polyfill.io](https://github.com/Financial-Times/polyfill-service)
+### What's the difference from polyfill.io
 
 These two services are very much alike. In fact, `Polyfiller` depends on the library behind [polyfill.io](https://github.com/Financial-Times/polyfill-service) for some of the polyfills!
 `Polyfiller` exists for two reasons:

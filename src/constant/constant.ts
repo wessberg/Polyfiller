@@ -1656,9 +1656,36 @@ export const constant: IConstant = {
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
+		"es.map.every": {
+			library: "core-js",
+			relativePaths: ["modules/esnext.map.every.js"],
+			// TODO: Update when MDN or Caniuse Compatibility is added
+			features: [],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+			dependencies: ["es.map"],
+			contexts: ALL_CONTEXTS
+		},
 		"es.map.filter": {
 			library: "core-js",
 			relativePaths: ["modules/esnext.map.filter.js"],
+			// TODO: Update when MDN or Caniuse Compatibility is added
+			features: [],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+			dependencies: ["es.map"],
+			contexts: ALL_CONTEXTS
+		},
+		"es.map.find": {
+			library: "core-js",
+			relativePaths: ["modules/esnext.map.find.js"],
+			// TODO: Update when MDN or Caniuse Compatibility is added
+			features: [],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+			dependencies: ["es.map"],
+			contexts: ALL_CONTEXTS
+		},
+		"es.map.find-key": {
+			library: "core-js",
+			relativePaths: ["modules/esnext.map.find-key.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
@@ -1683,9 +1710,27 @@ export const constant: IConstant = {
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
+		"es.map.includes": {
+			library: "core-js",
+			relativePaths: ["modules/esnext.map.includes.js"],
+			// TODO: Update when MDN or Caniuse Compatibility is added
+			features: [],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+			dependencies: ["es.map"],
+			contexts: ALL_CONTEXTS
+		},
 		"es.map.key-by": {
 			library: "core-js",
 			relativePaths: ["modules/esnext.map.key-by.js"],
+			// TODO: Update when MDN or Caniuse Compatibility is added
+			features: [],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+			dependencies: ["es.map"],
+			contexts: ALL_CONTEXTS
+		},
+		"es.map.key-of": {
+			library: "core-js",
+			relativePaths: ["modules/esnext.map.key-of.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
@@ -1722,6 +1767,33 @@ export const constant: IConstant = {
 		"es.map.of": {
 			library: "core-js",
 			relativePaths: ["modules/esnext.map.of.js"],
+			// TODO: Update when MDN or Caniuse Compatibility is added
+			features: [],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+			dependencies: ["es.map"],
+			contexts: ALL_CONTEXTS
+		},
+		"es.map.reduce": {
+			library: "core-js",
+			relativePaths: ["modules/esnext.map.reduce.js"],
+			// TODO: Update when MDN or Caniuse Compatibility is added
+			features: [],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+			dependencies: ["es.map"],
+			contexts: ALL_CONTEXTS
+		},
+		"es.map.some": {
+			library: "core-js",
+			relativePaths: ["modules/esnext.map.some.js"],
+			// TODO: Update when MDN or Caniuse Compatibility is added
+			features: [],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+			dependencies: ["es.map"],
+			contexts: ALL_CONTEXTS
+		},
+		"es.map.update": {
+			library: "core-js",
+			relativePaths: ["modules/esnext.map.update.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
@@ -2480,7 +2552,24 @@ export const constant: IConstant = {
 			polyfills: ["esnext.map", "esnext.weak-map", "esnext.set", "esnext.weak-set"]
 		},
 		"esnext.map": {
-			polyfills: ["es.map.filter", "es.map.from", "es.map.group-by", "es.map.key-by", "es.map.map-keys", "es.map.map-values", "es.map.merge", "es.map.of"]
+			polyfills: [
+				"es.map.every",
+				"es.map.filter",
+				"es.map.find",
+				"es.map.find-key",
+				"es.map.from",
+				"es.map.group-by",
+				"es.map.includes",
+				"es.map.key-by",
+				"es.map.key-of",
+				"es.map.map-keys",
+				"es.map.map-values",
+				"es.map.merge",
+				"es.map.of",
+				"es.map.reduce",
+				"es.map.some",
+				"es.map.update"
+			]
 		},
 		"esnext.weak-map": {
 			polyfills: ["es.weak-map.from", "es.weak-map.of"]

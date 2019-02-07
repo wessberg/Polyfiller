@@ -1,3 +1,11 @@
+## [0.0.60](https://github.com/wessberg/polyfiller/compare/v0.0.59...v0.0.60) (2019-02-07)
+
+### Features
+
+- **contexts:** adds support for passing a context of either 'window', 'worker', or 'node' as a query parameter ([5266c25](https://github.com/wessberg/polyfiller/commit/5266c25)), closes [#2](https://github.com/wessberg/polyfiller/issues/2)
+- **polyfill:** adds missing ESNext map methods: 'Map.#every, 'Map.#find', 'Map.#find-key', 'Map.#includes', 'Map.#key-of', 'Map.#reduce', Map.'#some', and 'Map.#update' ([1307877](https://github.com/wessberg/polyfiller/commit/1307877))
+- **polyfill:** adds support for 'globalThis' ([ffb3e0d](https://github.com/wessberg/polyfiller/commit/ffb3e0d))
+
 ## [0.0.59](https://github.com/wessberg/polyfiller/compare/v0.0.58...v0.0.59) (2019-02-04)
 
 ## [0.0.58](https://github.com/wessberg/polyfiller/compare/v0.0.57...v0.0.58) (2019-02-04)

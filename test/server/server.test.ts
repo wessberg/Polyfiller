@@ -91,17 +91,21 @@ test("Will correctly parse meta information for Zone. #1", async t => {
 	t.true([...polyfillRequest.features].some(({meta, name}) => name === "zone" && meta != null && meta.error === true));
 });
 
-test("Will set a 'x-applied-polyfills' header on HTTP2 responses with a HTTP-friendly list of all applied polyfills. #1", async t => {
+test.only("Will set a 'x-applied-polyfills' header on HTTP2 responses with a HTTP-friendly list of all applied polyfills. #1", async t => {
 	const result = await sendRequest({
 		http2: config.http2,
 		tls: true,
-		userAgent: ie("11"),
+		userAgent: chrome("73"),
 		method: "GET",
 		host: config.host,
 		port: config.port,
-		path: `${constant.endpoint.polyfill}?features=event,custom-event,zone,es.promise.finally,pointer-event|force,systemjs|variant=system,intl|force|locale=en~da&context=node`,
+		path: `${constant.endpoint.polyfill}?features=requestanimationframe|force`,
 		acceptEncoding: undefined
 	});
+
+	if ("body" in result) {
+		console.log(result.body);
+	}
 
 	t.true(result.polyfillsHeader != null);
 });

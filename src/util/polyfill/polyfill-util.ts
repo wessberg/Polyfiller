@@ -48,7 +48,7 @@ export function getPolyfillIdentifier(name: IPolyfillFeature | IPolyfillFeatureI
 	const shasum = createHash("sha1");
 	const normalizedName = name instanceof Set ? name : new Set([name]);
 	const sortedName = [...normalizedName].sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
-	const namePart = sortedName.map(part => `${part.name}${JSON.stringify(part.meta)}`).join(",");
+	const namePart = sortedName.map(part => `${part.name}${JSON.stringify(part.meta)}${part.context}`).join(",");
 	shasum.update(`[${namePart}].${encoding == null ? "" : encoding}`);
 	return shasum.digest("hex");
 }
@@ -62,7 +62,7 @@ export function getPolyfillIdentifier(name: IPolyfillFeature | IPolyfillFeatureI
 export function getPolyfillSetIdentifier(polyfills: Set<IPolyfillFeatureInput>, userAgent: string): string {
 	const shasum = createHash("sha1");
 	const sortedName = [...polyfills].sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
-	const namePart = sortedName.map(part => `${part.name}${JSON.stringify(part.meta)}${JSON.stringify(part.force)}`).join(",");
+	const namePart = sortedName.map(part => `${part.name}${JSON.stringify(part.meta)}${JSON.stringify(part.force)}${JSON.stringify(part.context)}`).join(",");
 	shasum.update(`[${namePart}].${userAgent}`);
 	return shasum.digest("hex");
 }
@@ -130,6 +130,7 @@ function getRequiredPolyfillsForUserAgent(polyfillSet: Set<IPolyfillFeatureInput
 			const existingIndex = polyfillNameToPolyfillIndexMap.get(polyfill.name);
 			if (existingIndex != null) {
 				polyfills[existingIndex].meta = polyfill.meta;
+				polyfills[existingIndex].context = polyfill.context;
 			} else {
 				polyfills.push({name: polyfill.name, meta: polyfill.meta, context: polyfill.context});
 				polyfillNameToPolyfillIndexMap.set(polyfill.name, currentIndex++);

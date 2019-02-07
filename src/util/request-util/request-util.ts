@@ -5,9 +5,8 @@ import {IOKResponse, Response} from "../../server/i-response";
 import chalk from "chalk";
 import {connect, ClientHttp2Stream, ClientHttp2Session} from "http2";
 import {ContentEncodingKind} from "../../encoding/content-encoding-kind";
-import * as URLNamespace from "url";
+import {URL} from "url";
 import {constant} from "../../constant/constant";
-const {URL} = URLNamespace;
 
 // tslint:disable:no-any
 
@@ -79,8 +78,8 @@ function paintMethod(method: Request["method"]): string {
  * Prints the given request
  * @param {IRequest} request
  */
-export function printRequest({method, url}: Request): void {
-	console.log(`${paintMethod(method)} ${url.toString()}`);
+export function printRequest({method, url, userAgent}: Request): void {
+	console.log(`${paintMethod(method)} ${url.toString()} (${chalk.gray(userAgent)})`);
 }
 
 /**

@@ -2,6 +2,8 @@
 	"extends": "@wessberg/ts-config",
 	"include": ["src/**/*.*"],
 	"compilerOptions": {
-		"target": "es2017"
+		"target": "es2017",
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true
 	}
 }

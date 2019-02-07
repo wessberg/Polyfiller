@@ -99,7 +99,7 @@ test("Will set a 'x-applied-polyfills' header on HTTP2 responses with a HTTP-fri
 		method: "GET",
 		host: config.host,
 		port: config.port,
-		path: `${constant.endpoint.polyfill}?features=event,custom-event,zone,es.promise.finally,pointer-event|force,systemjs|variant=system,intl|force|locale=en~da`,
+		path: `${constant.endpoint.polyfill}?features=event,custom-event,zone,es.promise.finally,pointer-event|force,systemjs|variant=system,intl|force|locale=en~da&context=node`,
 		acceptEncoding: undefined
 	});
 

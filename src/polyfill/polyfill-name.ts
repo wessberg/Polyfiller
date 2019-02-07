@@ -38,7 +38,8 @@ export declare type PolyfillName =
 	| "animation"
 	| "requestanimationframe"
 	| "requestidlecallback"
-	| "setimmediate";
+	| "setimmediate"
+	| "globalthis";
 
 export declare type PolyfillDealiasedName =
 	| "es.object.assign"
@@ -344,4 +345,5 @@ export declare type PolyfillDealiasedName =
 	| "event-source"
 	| "pointer-event"
 	| "set-immediate"
-	| "web-animations";
+	| "web-animations"
+	| "global-this";

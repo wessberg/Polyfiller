@@ -1,14 +1,31 @@
-<img alt="Logo for @wessberg/polyfiller" src="https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/logo-color-text.png" height="80"></img><br>
-<a href="https://npmcharts.com/compare/@wessberg/polyfiller?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/%40wessberg%2Fpolyfiller.svg" height="20"></img></a>
-<a href="https://david-dm.org/wessberg/polyfiller"><img alt="Dependencies" src="https://img.shields.io/david/wessberg/polyfiller.svg" height="20"></img></a>
-<a href="https://www.npmjs.com/package/@wessberg/polyfiller"><img alt="NPM Version" src="https://badge.fury.io/js/%40wessberg%2Fpolyfiller.svg" height="20"></img></a>
-<a href="https://github.com/wessberg/polyfiller/graphs/contributors"><img alt="Contributors" src="https://img.shields.io/github/contributors/wessberg%2Fpolyfiller.svg" height="20"></img></a>
-<a href="https://opensource.org/licenses/MIT"><img alt="MIT License" src="https://img.shields.io/badge/License-MIT-yellow.svg" height="20"></img></a>
-<a href="https://www.patreon.com/bePatron?u=11315442"><img alt="Support on Patreon" src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" height="20"></img></a>
+<!-- SHADOW_SECTION_LOGO_START -->
+
+<div><img alt="Logo" src="https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/logo-color-text.png" height="80"   /></div>
+
+<!-- SHADOW_SECTION_LOGO_END -->
+
+<!-- SHADOW_SECTION_DESCRIPTION_SHORT_START -->
 
 > Never worry about polyfills again.
 
+<!-- SHADOW_SECTION_DESCRIPTION_SHORT_END -->
+
+<!-- SHADOW_SECTION_BADGES_START -->
+
+<a href="https://npmcharts.com/compare/%40wessberg%2Fpolyfiller?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/%40wessberg%2Fpolyfiller.svg"    /></a>
+<a href="https://david-dm.org/wessberg/polyfiller"><img alt="Dependencies" src="https://img.shields.io/david/wessberg%2Fpolyfiller.svg"    /></a>
+<a href="https://github.com/wessberg/polyfiller/graphs/contributors"><img alt="Contributors" src="https://img.shields.io/github/contributors/wessberg%2Fpolyfiller.svg"    /></a>
+<a href="https://github.com/prettier/prettier"><img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"    /></a>
+<a href="https://opensource.org/licenses/MIT"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg"    /></a>
+<a href="https://www.patreon.com/bePatron?u=11315442"><img alt="Support on Patreon" src="https://img.shields.io/badge/patreon-donate-green.svg"    /></a>
+
+<!-- SHADOW_SECTION_BADGES_END -->
+
+<!-- SHADOW_SECTION_DESCRIPTION_LONG_START -->
+
 ## Description
+
+<!-- SHADOW_SECTION_DESCRIPTION_LONG_END -->
 
 This is a web service that returns a minified and encoded bundle of _only_ the polyfills your users need.
 It's like [polyfill.io](https://github.com/Financial-Times/polyfill-service), but it has additional polyfills such as [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components), [Pointer Events](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events), and much more.
@@ -16,20 +33,108 @@ It is also potentially faster since all unique polyfill combinations are cached 
 And, it supports different kinds of encodings for the smallest possible network bandwidth overhead, including [Brotli](https://github.com/google/brotli) and [Gzip](https://en.wikipedia.org/wiki/Gzip).
 The web service is hosted and live at `https://polyfill.app/api`. It is **free** to use, and there are no quota limits. See the [Hosting](#hosting) section for details on how to host it yourself, if you want to.
 
+<!-- SHADOW_SECTION_FEATURES_START -->
+
+### Features
+
+<!-- SHADOW_SECTION_FEATURES_END -->
+
+- Sends only the polyfills your users actually need
+- Wide range of polyfills for modern technologies such as [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components), [Pointer Events](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events), [Intl (including `RelativeTimeFormat` and `ListFormat`)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl), and much more.
+- Automatic deduplication and insertion of missing dependencies of requested polyfills
+- Supports multiple environments, including Browsers, Workers, and even Node.
+- Brotli and Gzip compression
+- Intelligent disk- and memory caching for maximum speed and availability
+- Completely free
+
+<!-- SHADOW_SECTION_FEATURE_IMAGE_START -->
+
+<!-- SHADOW_SECTION_FEATURE_IMAGE_END -->
+
+<!-- SHADOW_SECTION_TOC_START -->
+
+## Table of Contents
+
+- [Description](#description)
+  - [Features](#features)
+- [Table of Contents](#table-of-contents)
+- [Install](#install)
+  - [NPM](#npm)
+  - [Yarn](#yarn)
+- [Usage](#usage)
+  - [Usage in a Browser](#usage-in-a-browser)
+- [Examples](#examples)
+  - [Example 1:](#example-1)
+  - [Example 2:](#example-2)
+  - [Example 3:](#example-3)
+- [Web Service API Reference](#web-service-api-reference)
+  - [`GET /api/polyfill?features=[...features]`](#get-apipolyfillfeaturesfeatures)
+    - [Parameter overview](#parameter-overview)
+    - [`feature`](#feature)
+    - [`Option`](#option)
+    - [The `force` option](#the-force-option)
+    - [The `locale` option for `Intl`](#the-locale-option-for-intl)
+    - [The `variant` option for `SystemJS`](#the-variant-option-for-systemjs)
+    - [The `error` option for `Zone`](#the-error-option-for-zone)
+  - [Usage in a Web Worker/Service Worker](#usage-in-a-web-workerservice-worker)
+  - [Usage in Node](#usage-in-node)
+- [Contributing](#contributing)
+- [Maintainers](#maintainers)
+- [Backers](#backers)
+  - [Patreon](#patreon)
+  - [FAQ](#faq)
+  - [What's the difference from [polyfill.io](https://github.com/Financial-Times/polyfill-service)](#whats-the-difference-from-polyfilliohttpsgithubcomfinancial-timespolyfill-service)
+  - [Hosting](#hosting)
+- [Logo](#logo)
+- [License](#license)
+  - [Feature names](#feature-names)
+
+<!-- SHADOW_SECTION_TOC_END -->
+
+<!-- SHADOW_SECTION_INSTALL_START -->
+
+## Install
+
+### NPM
+
+```
+$ npm install @wessberg/polyfiller
+```
+
+### Yarn
+
+```
+$ yarn add @wessberg/polyfiller
+```
+
+<!-- SHADOW_SECTION_INSTALL_END -->
+
+`Polyfiller` is already hosted at `https://polyfill.app/api` as a **free** web service, but you can install it, for example if
+you want to host it yourself. See the [Hosting](#hosting) section for more details on that.
+
+<!-- SHADOW_SECTION_USAGE_START -->
+
 ## Usage
+
+<!-- SHADOW_SECTION_USAGE_END -->
+
+`Polyfiller` can be used both in a _Browser_, _Worker_, and _Node_ environment. By default, the assumed environment is _Browser_.
+
+### Usage in a Browser
 
 Place a `<script>` tag inside your `index.html` file with a `src` pointing at `https://polyfill.app/api/polyfill`.
 In the following example, polyfills for `ES2015` and `Shadow DOM` are requested:
 
 ```html
-<!-- An example of requesting polyfills for an ES2015 environment as well as Shadow DOM support
+<!-- An example of requesting polyfills for an ES2015 environment as well as Web Component support
 -->
-<script src="https://polyfill.app/api/polyfill?features=es,shadow-dom"></script>
+<script crossorigin src="https://polyfill.app/api/polyfill?features=es,web-components"></script>
 ```
 
 A targeted bundle will be returned that **only contains the specific polyfills the browser needs**!
 When a browser (or robot) visits your site, `Polyfiller` evaluates the user agent against [Caniuse](http://caniuse.com/) and decides what is supported and what isn't.
 It is up to you to decide which polyfills you need, but the web service will automatically make sure to include every dependency of those polyfills, but only if the browser doesn't already support them.
+See [this](#usage-in-a-web-workerservice-worker) or [this](#usage-in-node) section for details on how to use `Polyfiller` from Web Workers/ServiceWorkers and Node.
 
 ## Examples
 
@@ -42,7 +147,7 @@ In this example:
 - `intl` is polyfilled, with the inclusion of `Intl.ListFormat` and `Intl.RelativeTimeFormat`, if the browser doesn't support it, and the `en` locale data is included.
 
 ```html
-<script src="https://polyfill.app/api/polyfill?features=es,intersection-observer|force,intl|locale=en"></script>
+<script crossorigin src="https://polyfill.app/api/polyfill?features=es,intersection-observer|force,intl|locale=en"></script>
 ```
 
 ### Example 2:
@@ -54,13 +159,13 @@ This example shows how you can add support for [Web Components](https://develope
 - `custom-elements` polyfills the `Custom Elements` v1 specification if the browser doesn't support it.
 
 ```html
-<script src="https://polyfill.app/api/polyfill?features=template,shadow-dom,custom-elements"></script>
+<script crossorigin src="https://polyfill.app/api/polyfill?features=template,shadow-dom,custom-elements"></script>
 ```
 
 For your convenience, the `web-components` alias requests those three features.
 
 ```html
-<script src="https://polyfill.app/api/polyfill?features=web-components"></script>
+<script crossorigin src="https://polyfill.app/api/polyfill?features=web-components"></script>
 ```
 
 ### Example 3:
@@ -72,7 +177,7 @@ In this example:
 - `regenerator-runtime` is added, which is what [babel](https://github.com/babel/) transpiles async functions and generator functions into if you don't target browsers that supports it.
 
 ```html
-<script src="https://polyfill.app/api/polyfill?features=systemjs,regenerator-runtime"></script>
+<script crossorigin src="https://polyfill.app/api/polyfill?features=systemjs,regenerator-runtime"></script>
 ```
 
 ## Web Service API Reference
@@ -87,6 +192,7 @@ Retrieves a bundle of polyfills.
 | Parameter  | Description                                                                                                                                                                                                                                                       |
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `features` | A comma-separated string of all the `feature`s you want to include in your bundle (if required by the browser). Each `feature` may receive zero or more `option`s. Some `option`s are supported for all `feature`s while others only support specific `feature`s. |
+| `context`  | Can be either `window`, `worker`, or `node`. Use this to instruct `Polyfiller` to optimize polyfills for the given environment, as well as to exclude polyfills that doesn't support the given context.                                                           |
 
 #### `feature`
 
@@ -137,38 +243,69 @@ For example: `systemjs|variant=s` selects the _s_ variant, while `systemjs|varia
 
 [Zone.js](https://github.com/angular/zone.js/) can be configured to produce more readable Stack traces. If you want this, you can give the `error` option: `zone|error`.
 
-## Install
+### Usage in a Web Worker/Service Worker
 
-`Polyfiller` is already hosted at `https://polyfill.app/api` as a **free** web service, but you can install it, for example if
-you want to host it yourself. See the [Hosting](#hosting) section for more details on that.
+You can also request polyfills from a Worker. It is highly recommended that you pass in the [`context`](#the-context-option) query parameter with a value of `worker` to instruct `Polyfiller` to optimize polyfills for a Worker environment, as well as to
+not include any polyfills that won't work in a Worker environment.
 
-### NPM
-
-```
-$ npm install @wessberg/polyfiller
-```
-
-### Yarn
-
-```
-$ yarn add @wessberg/polyfiller
+```typescript
+// Provide a context query parameter with a value of 'worker' to avoid polyfills that doesn't support that environment
+importScripts("https://polyfill.app/api/polyfill?features=es,intl,web-animations&context=worker");
 ```
 
-### Run once with NPX
+### Usage in Node
 
+You can also request polyfills from Node, if that's a thing you want to do. It is highly recommended that you pass in the [`context`](#parameter-overview) query parameter with a value of `node` to instruct `Polyfiller` to optimize polyfills for a Node environment, as well as to
+not include any polyfills that won't work in a Node environment.
+
+```typescript
+// Could be anything, but let's use fetch for this example
+const fetch = require("node-fetch");
+
+(async () => {
+	// Remember to provide a user agent header if you want anything meaningful back
+	const response = await fetch("https://polyfill.app/api/polyfill?features=intl&context=node");
+	const text = await response.text();
+	// Apply the polyfills
+	new Function(text)();
+})();
 ```
-$ npx @wessberg/polyfiller
-```
+
+<!-- SHADOW_SECTION_CONTRIBUTING_START -->
 
 ## Contributing
 
 Do you want to contribute? Awesome! Please follow [these recommendations](./CONTRIBUTING.md).
 
+<!-- SHADOW_SECTION_CONTRIBUTING_END -->
+
+<!-- SHADOW_SECTION_MAINTAINERS_START -->
+
 ## Maintainers
 
-- <a href="https://github.com/wessberg"><img alt="Frederik Wessberg" src="https://avatars2.githubusercontent.com/u/20454213?s=460&v=4" height="11"></img></a> [Frederik Wessberg](https://github.com/wessberg): _Maintainer_
+| <img alt="Frederik Wessberg" src="https://avatars2.githubusercontent.com/u/20454213?s=460&v=4" height="70"   />                   |
+| --------------------------------------------------------------------------------------------------------------------------------- |
+| [Frederik Wessberg](mailto:frederikwessberg@hotmail.com)<br>[@FredWessberg](https://twitter.com/FredWessberg)<br>_Lead Developer_ |
 
-## FAQ
+<!-- SHADOW_SECTION_MAINTAINERS_END -->
+
+<!-- SHADOW_SECTION_BACKERS_START -->
+
+## Backers
+
+### Patreon
+
+[Become a backer](https://www.patreon.com/bePatron?u=11315442) and get your name, avatar, and Twitter handle listed here.
+
+<a href="https://www.patreon.com/bePatron?u=11315442"><img alt="Backers on Patreon" src="https://patreon-badge.herokuapp.com/11315442.png"  width="500"  /></a>
+
+<!-- SHADOW_SECTION_BACKERS_END -->
+
+<!-- SHADOW_SECTION_FAQ_START -->
+
+### FAQ
+
+<!-- SHADOW_SECTION_FAQ_END -->
 
 ### What's the difference from [polyfill.io](https://github.com/Financial-Times/polyfill-service)
 
@@ -188,13 +325,13 @@ If you use a load balancer and something like `nginx` in a reverse proxy setup, 
 
 All credits go to [Andreas Mehlsen (@andreasbm)](https://github.com/andreasbm/) for the awesome logo design.
 
-## Backers 🏅
+<!-- SHADOW_SECTION_LICENSE_START -->
 
-[Become a backer](https://www.patreon.com/bePatron?u=11315442) and get your name, logo, and link to your site listed here.
+## License
 
-## License 📄
+MIT © [Frederik Wessberg](mailto:frederikwessberg@hotmail.com) ([@FredWessberg](https://twitter.com/FredWessberg)) ([Website](https://github.com/wessberg))
 
-MIT © [Frederik Wessberg](https://github.com/wessberg)
+<!-- SHADOW_SECTION_LICENSE_END -->
 
 ### Feature names
 
@@ -202,328 +339,379 @@ Here's a full list of all possible `feature` _names_.
 Note that these will be deduplicated. For example, if you request `es.object`, but also request `es`, `es.object` will only be included once as part of `es`.
 And, if you request `performance.now`, `date.now` will also be included since the polyfill depends on it. You don't have to worry about dependencies.
 
-- es
-- es2015
-- es.object
-- es.object.assign
-- es.object.create
-- es.object.define-properties
-- es.object.define-property
-- es.object.freeze
-- es.object.get-own-property-descriptor
-- es.object.get-own-property-names
-- es.object.get-prototype-of
-- es.object.is-extensible
-- es.object.is-frozen
-- es.object.is-sealed
-- es.object.is
-- es.object.keys
-- es.object.prevent-extensions
-- es.object.seal
-- es.object.set-prototype-of
-- es.object.from-entries
-- es.object.to-string
-- es.object.define-getter
-- es.object.define-setter
-- es.object.entries
-- es.object.get-own-property-descriptors
-- es.object.lookup-getter
-- es.object.lookup-setter
-- es.object.values
-- es.function
-- es.function.bind
-- es.function.name
-- es.array
-- es.array.concat
-- es.array.flat
-- es.array.flat-map
-- es.array.last-index
-- es.array.last-item
-- es.array.copy-within
-- es.array.every
-- es.array.fill
-- es.array.filter
-- es.array.find-index
-- es.array.find
-- es.array.for-each
-- es.array.from
-- es.array.index-of
-- es.array.is-array
-- es.array.iterator
-- es.array.join
-- es.array.last-index-of
-- es.array.map
-- es.array.of
-- es.array.reduce-right
-- es.array.reduce
-- es.array.slice
-- es.array.some
-- es.array.sort
-- es.array.splice
-- es.array.species
-- es.array.includes
-- es.array-buffer
-- es.array-buffer.constructor
-- es.array-buffer.is-view
-- es.array-buffer.slice
-- es.string
-- es.string.at
-- es.string.code-points
-- es.string.match-all
-- es.string.replace-all
-- es.string.trim-start
-- es.string.trim-end
-- es.string.anchor
-- es.string.big
-- es.string.blink
-- es.string.bold
-- es.string.code-point-at
-- es.string.ends-with
-- es.string.fixed
-- es.string.fontcolor
-- es.string.fontsize
-- es.string.from-code-point
-- es.string.includes
-- es.string.italics
-- es.string.iterator
-- es.string.link
-- es.string.match
-- es.string.pad-end
-- es.string.pad-start
-- es.string.raw
-- es.string.repeat
-- es.string.replace
-- es.string.search
-- es.string.small
-- es.string.split
-- es.string.starts-with
-- es.string.strike
-- es.string.sub
-- es.string.sup
-- es.string.trim
-- es.regexp
-- es.regexp.constructor
-- es.regexp.flags
-- es.regexp.to-string
-- es.number
-- es.number.constructor
-- es.number.epsilon
-- es.number.is-finite
-- es.number.is-integer
-- es.number.is-nan
-- es.number.is-safe-integer
-- es.number.max-safe-integer
-- es.number.min-safe-integer
-- es.number.parse-float
-- es.number.parse-int
-- es.number.to-fixed
-- es.number.to-precision
-- es.number.from-string
-- es.math
-- es.map
-- es.map.filter
-- es.map.from
-- es.map.group-by
-- es.map.key-by
-- es.map.map-keys
-- es.map.map-values
-- es.map.merge
-- es.map.of
-- es.weak-map
-- es.weak-map.from
-- es.weak-map.of
-- es.set
-- es.set.add-all
-- es.set.delete-all
-- es.set.difference
-- es.set.every
-- es.set.filter
-- es.set.find
-- es.set.from
-- es.set.intersection
-- es.set.join
-- es.set.map
-- es.set.of
-- es.set.reduce
-- es.set.some
-- es.set.symmetric-difference
-- es.set.union
-- es.set.is-disjoint-from
-- es.set.is-subset-of
-- es.set.is-superset-of
-- es.weak-set
-- es.weak-set.from
-- es.weak-set.of
-- es.math.acosh
-- es.math.asinh
-- es.math.atanh
-- es.math.cbrt
-- es.math.clz32
-- es.math.cosh
-- es.math.expm1
-- es.math.fround
-- es.math.hypot
-- es.math.imul
-- es.math.log1p
-- es.math.log2
-- es.math.log10
-- es.math.sign
-- es.math.sinh
-- es.math.tanh
-- es.math.trunc
-- es.math.clamp
-- es.math.deg-per-rad
-- es.math.degrees
-- es.math.fscale
-- es.math.iaddh
-- es.math.imulh
-- es.math.isubh
-- es.math.rad-per-deg
-- es.math.radians
-- es.math.scale
-- es.math.signbit
-- es.math.umulh
-- es.data-view
-- es.date
-- es.date.now
-- es.date.to-iso-string
-- es.date.to-json
-- es.date.to-primitive
-- es.date.to-string
-- es.promise
-- es.promise.finally
-- es.promise.constructor
-- es.promise.all-settled
-- es.promise.try
-- es.symbol
-- es.symbol.constructor
-- es.symbol.async-iterator
-- es.symbol.has-instance
-- es.symbol.is-concat-spreadable
-- es.symbol.iterator
-- es.symbol.match
-- es.symbol.replace
-- es.symbol.search
-- es.symbol.species
-- es.symbol.split
-- es.symbol.to-primitive
-- es.symbol.to-string-tag
-- es.symbol.unscopables
-- es.symbol.description
-- es.symbol.pattern-match
-- es.collections
-- es.typed-array
-- es.typed-array.copy-within
-- es.typed-array.every
-- es.typed-array.fill
-- es.typed-array.filter
-- es.typed-array.find
-- es.typed-array.find-index
-- es.typed-array.float32-array
-- es.typed-array.float64-array
-- es.typed-array.for-each
-- es.typed-array.from
-- es.typed-array.includes
-- es.typed-array.index-of
-- es.typed-array.int8-array
-- es.typed-array.int16-array
-- es.typed-array.int32-array
-- es.typed-array.iterator
-- es.typed-array.join
-- es.typed-array.last-index-of
-- es.typed-array.map
-- es.typed-array.of
-- es.typed-array.reduce
-- es.typed-array.reduce-right
-- es.typed-array.reverse
-- es.typed-array.set
-- es.typed-array.slice
-- es.typed-array.some
-- es.typed-array.sort
-- es.typed-array.subarray
-- es.typed-array.to-locale-string
-- es.typed-array.to-string
-- es.typed-array.uint8-array
-- es.typed-array.uint8-clamped-array
-- es.typed-array.uint16-array
-- es.typed-array.uint32-array
-- es.reflect
-- es.reflect.apply
-- es.reflect.construct
-- es.reflect.define-property
-- es.reflect.delete-property
-- es.reflect.get
-- es.reflect.get-own-property-descriptor
-- es.reflect.get-prototype-of
-- es.reflect.has
-- es.reflect.is-extensible
-- es.reflect.own-keys
-- es.reflect.prevent-extensions
-- es.reflect.set
-- es.reflect.set-prototype-of
-- es.reflect.define-metadata
-- es.reflect.delete-metadata
-- es.reflect.get-metadata
-- es.reflect.get-metadata-keys
-- es.reflect.get-own-metadata
-- es.reflect.get-own-metadata-keys
-- es.reflect.has-metadata
-- es.reflect.has-own-metadata
-- es.reflect.metadata
-- esnext
-- es2016+
-- esnext.array
-- esnext.collections
-- esnext.math
-- esnext.number
-- esnext.promise
-- esnext.object
-- esnext.reflect
-- esnext.string
-- esnext.symbol
-- esnext.map
-- esnext.weak-map
-- esnext.set
-- esnext.weak-set
-- regenerator-runtime
-- systemjs
-- performance.now
-- blob
-- requestanimationframe
-- requestidlecallback
-- url
-- base64
-- xhr
-- dom.collections.iterable
-- dom.collections.iterator
-- dom.collections.for-each
-- fetch
-- intl _(alias for intl.core, intl.list-format, and intl.relative-time-format)_
-- intl.core
-- intl.list-format
-- intl.relative-time-format
-- animation _(alias for web-animations)_
-- web-animations
-- proxy
-- event
-- pointer-event
-- window
-- document
-- element
-- get-computed-style
-- node.contains
-- node.parentelement
-- queryselector
-- document-fragment
-- intersection-observer
-- mutation-observer
-- resize-observer
-- custom-elements
-- shadow-dom
-- template
-- zone
-- class-list
-- dom-token-list
-- object-fit
-- console
-- scroll-behavior
+Bold-formatted polyfills are _aliases_ for one or several other related `feature`s.
+
+- **`requestidlecallback`**
+  - `request-idle-callback`
+- **`requestanimationframe`**
+  - `request-animation-frame`
+- **`es`**
+  - `es.promise`
+  - `es.object`
+  - `es.function`
+  - `es.array`
+  - `es.array-buffer`
+  - `es.string`
+  - `es.data-view`
+  - `es.regexp`
+  - `es.number`
+  - `es.math`
+  - `es.date`
+  - `es.symbol`
+  - `es.collections`
+  - `es.typed-array`
+  - `es.reflect`
+- **`es2015`**
+  - `es`
+- **`es.promise`**
+  - `es.promise.constructor`
+  - `es.promise.finally`
+- **`es.object`**
+  - `es.object.assign`
+  - `es.object.create`
+  - `es.object.define-getter`
+  - `es.object.define-setter`
+  - `es.object.entries`
+  - `es.object.from-entries`
+  - `es.object.get-own-property-descriptors`
+  - `es.object.lookup-getter`
+  - `es.object.lookup-setter`
+  - `es.object.values`
+  - `es.object.define-properties`
+  - `es.object.define-property`
+  - `es.object.freeze`
+  - `es.object.get-own-property-descriptor`
+  - `es.object.get-own-property-names`
+  - `es.object.get-prototype-of`
+  - `es.object.is-extensible`
+  - `es.object.is-frozen`
+  - `es.object.is-sealed`
+  - `es.object.is`
+  - `es.object.keys`
+  - `es.object.prevent-extensions`
+  - `es.object.seal`
+  - `es.object.set-prototype-of`
+  - `es.object.to-string`
+- **`es.function`**
+  - `es.function.bind`
+  - `es.function.name`
+- **`es.array`**
+  - `es.array.concat`
+  - `es.array.copy-within`
+  - `es.array.every`
+  - `es.array.flat`
+  - `es.array.flat-map`
+  - `es.array.fill`
+  - `es.array.filter`
+  - `es.array.find`
+  - `es.array.find-index`
+  - `es.array.for-each`
+  - `es.array.from`
+  - `es.array.includes`
+  - `es.array.index-of`
+  - `es.array.is-array`
+  - `es.array.iterator`
+  - `es.array.join`
+  - `es.array.last-index-of`
+  - `es.array.map`
+  - `es.array.of`
+  - `es.array.reduce`
+  - `es.array.reduce-right`
+  - `es.array.slice`
+  - `es.array.some`
+  - `es.array.sort`
+  - `es.array.species`
+  - `es.array.splice`
+- **`es.array-buffer`**
+  - `es.array-buffer.constructor`
+  - `es.array-buffer.is-view`
+  - `es.array-buffer.slice`
+- **`es.string`**
+  - `es.string.anchor`
+  - `es.string.big`
+  - `es.string.blink`
+  - `es.string.bold`
+  - `es.string.code-point-at`
+  - `es.string.ends-with`
+  - `es.string.fixed`
+  - `es.string.fontcolor`
+  - `es.string.fontsize`
+  - `es.string.from-code-point`
+  - `es.string.includes`
+  - `es.string.italics`
+  - `es.string.iterator`
+  - `es.string.link`
+  - `es.string.match`
+  - `es.string.pad-end`
+  - `es.string.pad-start`
+  - `es.string.raw`
+  - `es.string.repeat`
+  - `es.string.search`
+  - `es.string.small`
+  - `es.string.split`
+  - `es.string.starts-with`
+  - `es.string.strike`
+  - `es.string.sub`
+  - `es.string.sup`
+  - `es.string.trim`
+  - `es.string.trim-start`
+  - `es.string.trim-end`
+- **`es.regexp`**
+  - `es.regexp.constructor`
+  - `es.regexp.flags`
+  - `es.regexp.to-string`
+- **`es.number`**
+  - `es.number.constructor`
+  - `es.number.epsilon`
+  - `es.number.is-finite`
+  - `es.number.is-integer`
+  - `es.number.is-nan`
+  - `es.number.is-safe-integer`
+  - `es.number.max-safe-integer`
+  - `es.number.min-safe-integer`
+  - `es.number.parse-float`
+  - `es.number.parse-int`
+  - `es.number.to-fixed`
+  - `es.number.to-precision`
+- **`es.math`**
+  - `es.math.acosh`
+  - `es.math.asinh`
+  - `es.math.atanh`
+  - `es.math.cbrt`
+  - `es.math.clz32`
+  - `es.math.cosh`
+  - `es.math.expm1`
+  - `es.math.fround`
+  - `es.math.hypot`
+  - `es.math.imul`
+  - `es.math.log1p`
+  - `es.math.log2`
+  - `es.math.log10`
+  - `es.math.sign`
+  - `es.math.sinh`
+  - `es.math.tanh`
+  - `es.math.trunc`
+- **`es.date`**
+  - `es.date.now`
+  - `es.date.to-iso-string`
+  - `es.date.to-json`
+  - `es.date.to-primitive`
+  - `es.date.to-string`
+- **`es.symbol`**
+  - `es.symbol.async-iterator`
+  - `es.symbol.has-instance`
+  - `es.symbol.is-concat-spreadable`
+  - `es.symbol.iterator`
+  - `es.symbol.constructor`
+  - `es.symbol.match`
+  - `es.symbol.replace`
+  - `es.symbol.search`
+  - `es.symbol.species`
+  - `es.symbol.split`
+  - `es.symbol.to-primitive`
+  - `es.symbol.to-string-tag`
+  - `es.symbol.unscopables`
+- **`es.collections`**
+  - `es.map`
+  - `es.weak-map`
+  - `es.set`
+  - `es.weak-set`
+- **`es.typed-array`**
+  - `es.typed-array.copy-within`
+  - `es.typed-array.every`
+  - `es.typed-array.fill`
+  - `es.typed-array.filter`
+  - `es.typed-array.find`
+  - `es.typed-array.find-index`
+  - `es.typed-array.float32-array`
+  - `es.typed-array.float64-array`
+  - `es.typed-array.for-each`
+  - `es.typed-array.from`
+  - `es.typed-array.includes`
+  - `es.typed-array.index-of`
+  - `es.typed-array.int8-array`
+  - `es.typed-array.int16-array`
+  - `es.typed-array.int32-array`
+  - `es.typed-array.iterator`
+  - `es.typed-array.join`
+  - `es.typed-array.last-index-of`
+  - `es.typed-array.map`
+  - `es.typed-array.of`
+  - `es.typed-array.reduce`
+  - `es.typed-array.reduce-right`
+  - `es.typed-array.reverse`
+  - `es.typed-array.set`
+  - `es.typed-array.slice`
+  - `es.typed-array.some`
+  - `es.typed-array.sort`
+  - `es.typed-array.subarray`
+  - `es.typed-array.to-locale-string`
+  - `es.typed-array.to-string`
+  - `es.typed-array.uint8-array`
+  - `es.typed-array.uint8-clamped-array`
+  - `es.typed-array.uint16-array`
+  - `es.typed-array.uint32-array`
+- **`es.reflect`**
+  - `es.reflect.apply`
+  - `es.reflect.construct`
+  - `es.reflect.define-property`
+  - `es.reflect.delete-property`
+  - `es.reflect.get`
+  - `es.reflect.get-own-property-descriptor`
+  - `es.reflect.get-prototype-of`
+  - `es.reflect.has`
+  - `es.reflect.is-extensible`
+  - `es.reflect.own-keys`
+  - `es.reflect.prevent-extensions`
+  - `es.reflect.set`
+  - `es.reflect.set-prototype-of`
+- **`esnext`**
+  - `esnext.array`
+  - `esnext.collections`
+  - `esnext.math`
+  - `esnext.number`
+  - `esnext.object`
+  - `esnext.promise`
+  - `esnext.reflect`
+  - `esnext.string`
+  - `esnext.symbol`
+- **`es2016+`**
+  - `esnext`
+- **`esnext.array`**
+  - `es.array.last-index`
+  - `es.array.last-item`
+- **`esnext.object`**
+- **`esnext.collections`**
+  - `esnext.map`
+  - `esnext.weak-map`
+  - `esnext.set`
+  - `esnext.weak-set`
+- **`esnext.map`**
+  - `es.map.every`
+  - `es.map.filter`
+  - `es.map.find`
+  - `es.map.find-key`
+  - `es.map.from`
+  - `es.map.group-by`
+  - `es.map.includes`
+  - `es.map.key-by`
+  - `es.map.key-of`
+  - `es.map.map-keys`
+  - `es.map.map-values`
+  - `es.map.merge`
+  - `es.map.of`
+  - `es.map.reduce`
+  - `es.map.some`
+  - `es.map.update`
+- **`esnext.weak-map`**
+  - `es.weak-map.from`
+  - `es.weak-map.of`
+- **`esnext.set`**
+  - `es.set.add-all`
+  - `es.set.delete-all`
+  - `es.set.difference`
+  - `es.set.every`
+  - `es.set.filter`
+  - `es.set.find`
+  - `es.set.from`
+  - `es.set.intersection`
+  - `es.set.join`
+  - `es.set.map`
+  - `es.set.of`
+  - `es.set.reduce`
+  - `es.set.some`
+  - `es.set.symmetric-difference`
+  - `es.set.union`
+  - `es.set.is-disjoint-from`
+  - `es.set.is-subset-of`
+  - `es.set.is-superset-of`
+- **`esnext.weak-set`**
+  - `es.weak-set.from`
+  - `es.weak-set.of`
+- **`esnext.math`**
+  - `es.math.clamp`
+  - `es.math.deg-per-rad`
+  - `es.math.degrees`
+  - `es.math.fscale`
+  - `es.math.iaddh`
+  - `es.math.imulh`
+  - `es.math.isubh`
+  - `es.math.rad-per-deg`
+  - `es.math.radians`
+  - `es.math.scale`
+  - `es.math.signbit`
+  - `es.math.umulh`
+- **`esnext.number`**
+  - `es.number.from-string`
+- **`esnext.promise`**
+  - `es.promise.all-settled`
+  - `es.promise.try`
+- **`esnext.reflect`**
+  - `es.reflect.define-metadata`
+  - `es.reflect.delete-metadata`
+  - `es.reflect.get-metadata`
+  - `es.reflect.get-metadata-keys`
+  - `es.reflect.get-own-metadata`
+  - `es.reflect.get-own-metadata-keys`
+  - `es.reflect.has-metadata`
+  - `es.reflect.has-own-metadata`
+  - `es.reflect.metadata`
+- **`esnext.string`**
+  - `es.string.at`
+  - `es.string.code-points`
+  - `es.string.match-all`
+  - `es.string.replace-all`
+- **`esnext.symbol`**
+  - `es.symbol.description`
+  - `es.symbol.pattern-match`
+- **`dom.collections.iterable`**
+  - `dom.collections.iterator`
+  - `dom.collections.for-each`
+- **`intl`**
+  - `intl.core`
+  - `intl.list-format`
+  - `intl.relative-time-format`
+- **`animation`**
+  - `web-animations`
+- **`web-components`**
+  - `custom-elements`
+  - `shadow-dom`
+  - `template`
+- **`event`**
+  - `event.constructor`
+  - `event.focusin`
+  - `event.hashchange`
+- **`setimmediate`**
+  - `set-immediate`
+- **`globalthis`**
+  - `global-this`
+- `systemjs`
+- `zone`
+- `performance.now`
+- `url`
+- `object-fit`
+- `console`
+- `base64`
+- `blob`
+- `proxy`
+- `es.string.replace`
+- `pointer-event`
+- `xhr`
+- `fetch`
+- `regenerator-runtime`
+- `queryselector`
+- `document-fragment`
+- `node.parentelement`
+- `scroll-behavior`
+- `node.contains`
+- `window`
+- `document`
+- `class-list`
+- `dom-token-list`
+- `element`
+- `custom-event`
+- `event-source`
+- `get-computed-style`
+- `intersection-observer`
+- `mutation-observer`
+- `resize-observer`

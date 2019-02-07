@@ -1,7 +1,7 @@
 import {IConstant} from "./i-constant";
 import {environment} from "../environment/environment";
 // @ts-ignore
-import * as tempDir from "temp-dir";
+import tempDir from "temp-dir";
 import {join} from "path";
 import {ALL_CONTEXTS, WINDOW_CONTEXT, WINDOW_NODE_CONTEXT} from "../polyfill/polyfill-context";
 
@@ -2964,6 +2964,17 @@ export const constant: IConstant = {
 			relativePaths: ["setImmediate.js"],
 			features: ["setimmediate"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_SETIMMEDIATE,
+			dependencies: [],
+			contexts: ALL_CONTEXTS
+		},
+		globalthis: {
+			polyfills: ["global-this"]
+		},
+		"global-this": {
+			library: "core-js",
+			relativePaths: ["modules/esnext.global-this.js"],
+			features: ["javascript.builtins.globals.globalThis"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		}

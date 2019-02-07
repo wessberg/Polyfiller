@@ -8,12 +8,12 @@
 	"scripts": {
 		"serve": "node ./dist/index.js",
 		"serve:production": "NODE_ENV=production npm run serve",
-		"generate:readme": "scaffold readme --blacklist intro",
-		"generate:license": "scaffold license",
-		"generate:contributing": "scaffold contributing",
-		"generate:coc": "scaffold coc",
+		"generate:readme": "scaffold readme --yes",
+		"generate:license": "scaffold license --yes",
+		"generate:contributing": "scaffold contributing --yes",
+		"generate:coc": "scaffold coc --yes",
 		"generate:changelog": "standard-changelog --first-release",
-		"generate:all": "npm run generate:license & npm run generate:contributing & npm run generate:coc & npm run generate:readme  & npm run generate:changelog",
+		"generate:all": "npm run generate:license & npm run generate:contributing & npm run generate:coc & npm run generate:readme && npm run generate:changelog",
 		"clean:dist": "rm -rf dist",
 		"clean:compiled": "rm -rf compiled",
 		"clean": "npm run clean:dist && npm run clean:compiled",
@@ -26,6 +26,7 @@
 		"prebuild": "npm run clean:dist",
 		"build": "npm run rollup",
 		"rollup": "rollup -c rollup.config.js",
+		"scripts:markdown-format-feature-names": "ts-node --project scripts/tsconfig.json scripts/markdown-format-feature-names.ts",
 		"preversion": "npm run lint && NODE_ENV=production npm run build",
 		"version": "npm run generate:all && git add .",
 		"postpublish": "npm run deploy",
@@ -46,14 +47,15 @@
 		"@wessberg/rollup-plugin-ts": "1.1.28",
 		"@wessberg/scaffold": "^1.0.13",
 		"@wessberg/ts-config": "^0.0.39",
-		"standard-changelog": "^2.0.6",
-		"tslint": "^5.12.1",
-		"typescript": "^3.3.1",
-		"useragent-generator": "^1.1.0",
+		"husky": "^1.3.1",
+		"np": "^4.0.2",
 		"prettier": "^1.16.4",
 		"pretty-quick": "^1.10.0",
-		"husky": "^1.3.1",
-		"np": "^4.0.2"
+		"standard-changelog": "^2.0.6",
+		"ts-node": "^8.0.2",
+		"tslint": "^5.12.1",
+		"typescript": "^3.3.1",
+		"useragent-generator": "^1.1.0"
 	},
 	"dependencies": {
 		"@babel/core": "^7.2.2",
@@ -134,28 +136,20 @@
 	"bugs": {
 		"url": "https://github.com/wessberg/polyfiller/issues"
 	},
-	"author": {
-		"name": "Frederik Wessberg",
-		"email": "frederikwessberg@hotmail.com",
-		"url": "https://github.com/wessberg"
-	},
+	"contributors": [
+		{
+			"name": "Frederik Wessberg",
+			"email": "frederikwessberg@hotmail.com",
+			"url": "https://github.com/wessberg",
+			"imageUrl": "https://avatars2.githubusercontent.com/u/20454213?s=460&v=4",
+			"role": "Lead Developer",
+			"twitter": "FredWessberg"
+		}
+	],
 	"engines": {
 		"node": ">=9.0.0"
 	},
 	"license": "MIT",
-	"scaffold": {
-		"patreonUserId": "11315442",
-		"logo": "https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/logo-color-text.png",
-		"contributorMeta": {
-			"Frederik Wessberg": {
-				"imageUrl": "https://avatars2.githubusercontent.com/u/20454213?s=460&v=4",
-				"role": "Maintainer",
-				"twitterHandle": "FredWessberg",
-				"isCocEnforcer": true
-			}
-		},
-		"backers": []
-	},
 	"husky": {
 		"hooks": {
 			"pre-commit": "pretty-quick --staged"

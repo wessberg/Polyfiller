@@ -1,3 +1,10 @@
+## [0.0.61](https://github.com/wessberg/polyfiller/compare/v0.0.60...v0.0.61) (2019-02-07)
+
+### Bug Fixes
+
+- **polyfill:** fixes a caching issue ([964449f](https://github.com/wessberg/polyfiller/commit/964449f))
+- **polyfill:** updated supported contexts for requestIdleCallback ([5261d13](https://github.com/wessberg/polyfiller/commit/5261d13))
+
 ## [0.0.60](https://github.com/wessberg/polyfiller/compare/v0.0.59...v0.0.60) (2019-02-07)
 
 ### Features

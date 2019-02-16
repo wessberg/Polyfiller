@@ -685,6 +685,8 @@ And, if you request `performance.now`, `date.now` will also be included since th
   - `set-immediate`
 - **`globalthis`**
   - `global-this`
+- **`adopted-style-sheets`**
+  - `constructable-style-sheets`
 - `systemjs`
 - `zone`
 - `performance.now`

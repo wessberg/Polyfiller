@@ -2977,6 +2977,18 @@ export const constant: IConstant = {
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: [],
 			contexts: ALL_CONTEXTS
+		},
+		"adopted-style-sheets": {
+			polyfills: ["constructable-style-sheets"]
+		},
+		"constructable-style-sheets": {
+			library: "construct-style-sheets-polyfill",
+			relativePaths: ["adoptedStyleSheets.min.js"],
+			// TODO: Add features when MDN or Caniuse adds support
+			features: [],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_CONSTRUCT_STYLE_SHEETS_POLYFILL,
+			dependencies: ["shadow-dom"],
+			contexts: ALL_CONTEXTS
 		}
 	}
 };

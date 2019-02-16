@@ -339,7 +339,7 @@ Here's a full list of all possible `feature` _names_.
 Note that these will be deduplicated. For example, if you request `es.object`, but also request `es`, `es.object` will only be included once as part of `es`.
 And, if you request `performance.now`, `date.now` will also be included since the polyfill depends on it. You don't have to worry about dependencies.
 
-Bold-formatted polyfills are _aliases_ for one or several other related `feature`s.
+**Bold**-formatted polyfills are _aliases_ for one or several other related `feature`s.
 
 - **`requestidlecallback`**
   - `request-idle-callback`

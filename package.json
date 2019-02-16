@@ -82,6 +82,7 @@
 		"blob-polyfill": "^3.0.20180112",
 		"chalk": "^2.4.2",
 		"console-polyfill": "^0.3.0",
+		"construct-style-sheets-polyfill": "^1.0.1",
 		"core-js": "^3.0.0-beta.14",
 		"core-js-builder": "^3.0.0-beta.14",
 		"devcert": "^1.0.0",

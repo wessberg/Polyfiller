@@ -1,3 +1,9 @@
+## [0.0.62](https://github.com/wessberg/polyfiller/compare/v0.0.61...v0.0.62) (2019-02-16)
+
+### Features
+
+- **polyfill:** Adds polyfill for Constructable StyleSheets ([b9f9989](https://github.com/wessberg/polyfiller/commit/b9f9989))
+
 ## [0.0.61](https://github.com/wessberg/polyfiller/compare/v0.0.60...v0.0.61) (2019-02-07)
 
 ### Bug Fixes

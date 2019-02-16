@@ -13,6 +13,7 @@
 <!-- SHADOW_SECTION_BADGES_START -->
 
 <a href="https://npmcharts.com/compare/%40wessberg%2Fpolyfiller?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/%40wessberg%2Fpolyfiller.svg"    /></a>
+<a href="https://www.npmjs.com/package/%40wessberg%2Fpolyfiller"><img alt="NPM version" src="https://badge.fury.io/js/%40wessberg%2Fpolyfiller.svg"    /></a>
 <a href="https://david-dm.org/wessberg/polyfiller"><img alt="Dependencies" src="https://img.shields.io/david/wessberg%2Fpolyfiller.svg"    /></a>
 <a href="https://github.com/wessberg/polyfiller/graphs/contributors"><img alt="Contributors" src="https://img.shields.io/github/contributors/wessberg%2Fpolyfiller.svg"    /></a>
 <a href="https://github.com/prettier/prettier"><img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"    /></a>
@@ -82,7 +83,7 @@ The web service is hosted and live at `https://polyfill.app/api`. It is **free**
 - [Maintainers](#maintainers)
 - [Backers](#backers)
   - [Patreon](#patreon)
-  - [FAQ](#faq)
+- [FAQ](#faq)
   - [What's the difference from polyfill.io](#whats-the-difference-from-polyfillio)
   - [Hosting](#hosting)
 - [Logo](#logo)
@@ -303,7 +304,7 @@ Do you want to contribute? Awesome! Please follow [these recommendations](./CONT
 
 <!-- SHADOW_SECTION_FAQ_START -->
 
-### FAQ
+## FAQ
 
 <!-- SHADOW_SECTION_FAQ_END -->
 

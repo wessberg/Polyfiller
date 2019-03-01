@@ -1,3 +1,9 @@
+## [0.0.63](https://github.com/wessberg/polyfiller/compare/v0.0.62...v0.0.63) (2019-03-01)
+
+### Bug Fixes
+
+- **custom-elements:** adds MutationObserver as dependency of the custom-elements polyfill ([3716111](https://github.com/wessberg/polyfiller/commit/3716111))
+
 ## [0.0.62](https://github.com/wessberg/polyfiller/compare/v0.0.61...v0.0.62) (2019-02-16)
 
 ### Features

@@ -2770,7 +2770,7 @@ export const constant: IConstant = {
 			relativePaths: ["custom-elements.min.js"],
 			features: ["custom-elementsv1"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES__WEBCOMPONENTS_CUSTOM_ELEMENTS,
-			dependencies: ["es"],
+			dependencies: ["es", "mutation-observer"],
 			contexts: WINDOW_CONTEXT
 		},
 		"shadow-dom": {

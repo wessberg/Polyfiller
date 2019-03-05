@@ -3,4 +3,5 @@ export interface IGetCertificateOptions {
 	cert?: Buffer;
 	host: string;
 	production: boolean;
+	https: boolean;
 }

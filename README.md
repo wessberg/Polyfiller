@@ -320,7 +320,7 @@ These two services are very much alike. In fact, `Polyfiller` depends on the lib
 
 `Polyfiller` is already hosted at `https://polyfill.app/api` as a **free** web service, but feel free to host it yourself.
 The server is built with support for both HTTP2 and HTTP. The environment variable `HTTP2=[true|false]` decides whether a HTTP2 server will be hosted or not.
-If you use a load balancer and something like `nginx` in a reverse proxy setup, please know that `nginx` doesn't support HTTP2 via its proxy module, so you have to use HTTP1.1 there. Thankfully, it is as easy as setting `HTTP2=false` before launching the server
+If you use a load balancer and something like `nginx` in a reverse proxy setup, please know that `nginx` doesn't support HTTP2 via its proxy module, so you have to use HTTP1.1 there. Thankfully, it is as easy as setting `HTTP2=false` before launching the server and setting `HTTPS=false`.
 
 ## Logo
 

@@ -15,6 +15,7 @@ import {ILoggerService} from "../logger/i-logger-service";
 import {ensureArray} from "../../util/ensure-array/ensure-array";
 import {IFlattenerService} from "../flattener/i-flattener-service";
 import {PolyfillDealiasedName} from "../../polyfill/polyfill-name";
+import {sync} from "find-up";
 
 /**
  * A service that can load and cache all polyfills
@@ -82,8 +83,8 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 
 			const flatten = match.flatten === true;
 
-			const rootDirectory =
-				"library" in match ? join(__dirname, "../node_modules", typeof match.library === "string" ? match.library : match.library[polyfillFeature.context]) : join(__dirname, "../");
+			const rootDirectory = "library" in match ? sync(join("node_modules", typeof match.library === "string" ? match.library : match.library[polyfillFeature.context]))! : join(sync("src")!, "../");
+
 			const localPaths =
 				"library" in match
 					? Array.isArray(match.relativePaths)

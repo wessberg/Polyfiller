@@ -14,6 +14,7 @@ export const config: IConfig = {
 	verbose: booleanize(environment.VERBOSE),
 	clearCache: booleanize(environment.CLEAR_CACHE),
 	http2: booleanize(environment.HTTP2),
+	https: booleanize(environment.HTTPS),
 	host: environment.HOST,
 	port: parseInt(environment.PORT),
 	email: environment.EMAIL != null && environment.EMAIL !== "" ? environment.EMAIL : undefined,

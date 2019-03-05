@@ -41,6 +41,7 @@ export const environmentDefaults = {
 	DEBUG: "false",
 	VERBOSE: "false",
 	HTTP2: "true",
+	HTTPS: "true",
 	CLEAR_CACHE: "false",
 	HOST: "0.0.0.0",
 	PORT: "3000",

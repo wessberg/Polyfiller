@@ -1,3 +1,9 @@
+## [0.0.64](https://github.com/wessberg/polyfiller/compare/v0.0.63...v0.0.64) (2019-03-05)
+
+### Bug Fixes
+
+- **hosting:** fixes some issues with self-hosting when dependencies are hoisted ([d4958fd](https://github.com/wessberg/polyfiller/commit/d4958fd))
+
 ## [0.0.63](https://github.com/wessberg/polyfiller/compare/v0.0.62...v0.0.63) (2019-03-01)
 
 ### Bug Fixes

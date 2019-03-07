@@ -1,3 +1,9 @@
+## [0.0.66](https://github.com/wessberg/polyfiller/compare/v0.0.65...v0.0.66) (2019-03-07)
+
+### Bug Fixes
+
+- **hosting:** fixes a bug with resolving file paths in Docker environments ([e13be77](https://github.com/wessberg/polyfiller/commit/e13be77))
+
 ## [0.0.65](https://github.com/wessberg/polyfiller/compare/v0.0.64...v0.0.65) (2019-03-07)
 
 ### Bug Fixes

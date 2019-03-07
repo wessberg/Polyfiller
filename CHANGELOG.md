@@ -1,3 +1,9 @@
+## [0.0.65](https://github.com/wessberg/polyfiller/compare/v0.0.64...v0.0.65) (2019-03-07)
+
+### Bug Fixes
+
+- **hosting:** fixes a bug in Docker environments ([bcf6028](https://github.com/wessberg/polyfiller/commit/bcf6028))
+
 ## [0.0.64](https://github.com/wessberg/polyfiller/compare/v0.0.63...v0.0.64) (2019-03-05)
 
 ### Bug Fixes

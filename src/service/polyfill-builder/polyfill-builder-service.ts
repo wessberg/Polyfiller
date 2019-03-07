@@ -17,6 +17,8 @@ import {IFlattenerService} from "../flattener/i-flattener-service";
 import {PolyfillDealiasedName} from "../../polyfill/polyfill-name";
 import {sync} from "find-up";
 
+const SYNC_OPTIONS = {cwd: __dirname};
+
 /**
  * A service that can load and cache all polyfills
  */
@@ -83,8 +85,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 
 			const flatten = match.flatten === true;
 
-			const rootDirectory =
-				"library" in match ? sync(join("node_modules", typeof match.library === "string" ? match.library : match.library[polyfillFeature.context]))! : join(sync("polyfill-lib")!, "../");
+			const rootDirectory = "library" in match ? join("node_modules", typeof match.library === "string" ? match.library : match.library[polyfillFeature.context]) : "";
 
 			const localPaths =
 				"library" in match
@@ -105,18 +106,38 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				"variant" in polyfillFeature.meta &&
 				(polyfillFeature.meta.variant === "s" || polyfillFeature.meta.variant === "system")
 			) {
-				absolutePaths.push(join(rootDirectory, meta[polyfillFeature.meta.variant]));
+				const metaVariantPathInput = join(rootDirectory, meta[polyfillFeature.meta.variant]);
+				const resolvedMetaVariantPath = sync(metaVariantPathInput, SYNC_OPTIONS);
+				if (resolvedMetaVariantPath != null) {
+					absolutePaths.push(resolvedMetaVariantPath);
+				} else {
+					this.logger.debug(`Unresolved path:`, metaVariantPathInput);
+				}
 			}
 
 			// Otherwise, use all of the given relativePaths
 			else {
 				// For each of the relative paths, compute the absolute path
-				absolutePaths.push(...localPaths.map(path => join(rootDirectory, path)));
+				for (const path of localPaths) {
+					const pathInput = join(rootDirectory, path);
+					const resolvedPath = sync(pathInput, SYNC_OPTIONS);
+					if (resolvedPath != null) {
+						absolutePaths.push(resolvedPath);
+					} else {
+						this.logger.debug(`Unresolved path:`, pathInput);
+					}
+				}
 			}
 
 			// If Zone is requested, 'zone-error' may be requested which improves the produced Stack trace when using Zone
 			if (polyfillFeature.name === "zone" && meta != null && polyfillFeature.meta != null && polyfillFeature.meta.error === true) {
-				absolutePaths.push(join(rootDirectory, meta.error));
+				const errorPathInput = join(rootDirectory, meta.error);
+				const resolvedErrorPath = sync(errorPathInput, SYNC_OPTIONS);
+				if (resolvedErrorPath != null) {
+					absolutePaths.push(resolvedErrorPath);
+				} else {
+					this.logger.debug(`Unresolved path:`, errorPathInput);
+				}
 			}
 
 			// If the Polyfill is "intl.core" and a localeDir is associated with it, also resolve the requested locales (if any)
@@ -128,11 +149,12 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				await Promise.all(
 					requestedLocales.map(async requestedLocale => {
 						// Resolve the absolute path
-						const localePath = join(rootDirectory, meta.localeDir, `${requestedLocale}.js`);
-
-						// If it exists, add it to the array of absolute paths
-						if (await this.fileLoader.exists(localePath)) {
-							absolutePaths.push(localePath);
+						const localePathInput = join(rootDirectory, meta.localeDir, `${requestedLocale}.js`);
+						const resolvedLocalePath = sync(localePathInput, SYNC_OPTIONS);
+						if (resolvedLocalePath != null) {
+							absolutePaths.push(resolvedLocalePath);
+						} else {
+							this.logger.debug(`Unresolved path:`, localePathInput);
 						}
 					})
 				);

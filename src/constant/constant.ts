@@ -82,7 +82,7 @@ export const constant: IConstant = {
 			contexts: ALL_CONTEXTS
 		},
 		"object-fit": {
-			localPaths: ["node_modules/object-fit-images/dist/ofi.min.js", "src/polyfill/lib/object-fit/object-fit-hook.js"],
+			localPaths: ["node_modules/object-fit-images/dist/ofi.min.js", "polyfill-lib/object-fit/object-fit-hook.js"],
 			features: ["object-fit"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_OBJECT_FIT_IMAGES,
 			dependencies: ["get-computed-style", "es.object.define-property"],
@@ -2690,7 +2690,7 @@ export const constant: IConstant = {
 			contexts: WINDOW_CONTEXT
 		},
 		fetch: {
-			localPaths: ["src/polyfill/lib/fetch/fetch.js"],
+			localPaths: ["polyfill-lib/fetch/fetch.js"],
 			features: ["fetch"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_WHATWG_FETCH,
 			dependencies: ["es.array.for-each", "es.object.get-own-property-names", "es.promise", "xhr"],

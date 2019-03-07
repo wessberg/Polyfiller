@@ -4,7 +4,7 @@
 	"description": "Never worry about polyfills again.",
 	"files": [
 		"dist/**/*.*",
-		"src/**/*.*"
+		"polyfill-lib/**/*.*"
 	],
 	"scripts": {
 		"serve": "node ./dist/index.js",

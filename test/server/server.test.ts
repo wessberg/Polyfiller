@@ -69,7 +69,9 @@ test("Will generate correct polyfills for IE11", async t => {
 		method: "GET",
 		host: config.host,
 		port: config.port,
-		path: `${constant.endpoint.polyfill}?features=event,custom-event,zone,es.promise.finally,pointer-event|force,systemjs|variant=system`,
+		path: `${
+			constant.endpoint.polyfill
+		}?features=web-components,es,class-list,system|variant=system,custom-event,url,fetch,object-fit,intersection-observer,animation,regenerator-runtime,requestanimationframe,requestidlecallback,resize-observer,pointer-event,dom.collections.iterable,scroll-behavior,zone|error,esnext.reflect`,
 		acceptEncoding: undefined
 	});
 

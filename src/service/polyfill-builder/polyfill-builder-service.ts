@@ -83,7 +83,8 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 
 			const flatten = match.flatten === true;
 
-			const rootDirectory = "library" in match ? sync(join("node_modules", typeof match.library === "string" ? match.library : match.library[polyfillFeature.context]))! : join(sync("src")!, "../");
+			const rootDirectory =
+				"library" in match ? sync(join("node_modules", typeof match.library === "string" ? match.library : match.library[polyfillFeature.context]))! : join(sync("polyfill-lib")!, "../");
 
 			const localPaths =
 				"library" in match

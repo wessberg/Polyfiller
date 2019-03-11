@@ -2705,7 +2705,7 @@ export const constant: IConstant = {
 			meta: {
 				localeDir: "locale-data/jsonp"
 			},
-			features: ["internationalization"],
+			features: ["internationalization", "javascript.builtins.Intl.PluralRules"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_INTL,
 			dependencies: [],
 			contexts: ALL_CONTEXTS

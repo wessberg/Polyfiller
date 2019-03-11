@@ -1,3 +1,9 @@
+## [0.0.67](https://github.com/wessberg/polyfiller/compare/v0.0.66...v0.0.67) (2019-03-11)
+
+### Bug Fixes
+
+- **safari:** fixes Intl issue in Safari with PluralRules ([e278c75](https://github.com/wessberg/polyfiller/commit/e278c75))
+
 ## [0.0.66](https://github.com/wessberg/polyfiller/compare/v0.0.65...v0.0.66) (2019-03-07)
 
 ### Bug Fixes

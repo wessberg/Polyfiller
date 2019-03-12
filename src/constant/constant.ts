@@ -41,7 +41,6 @@ export const constant: IConstant = {
 			contexts: ALL_CONTEXTS
 		},
 		zone: {
-			// TODO: When the context is 'node', load dist/zone-node.js instead
 			library: "zone.js",
 			meta: {
 				error: "dist/zone-error.min.js"
@@ -788,8 +787,7 @@ export const constant: IConstant = {
 		"es.string.match-all": {
 			library: "core-js",
 			relativePaths: ["modules/esnext.string.match-all.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
+			features: ["javascript.builtins.String.matchAll"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: [],
 			contexts: ALL_CONTEXTS
@@ -2726,10 +2724,7 @@ export const constant: IConstant = {
 			meta: {
 				localeDir: "locale-data"
 			},
-			features: [
-				// TODO: Add when MDN data gets updated
-				// "javascript.builtins.Intl.ListFormat"
-			],
+			features: ["javascript.builtins.Intl.ListFormat"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_INTL_LIST_FORMAT,
 			dependencies: ["intl.core", "es.array.includes", "es.object.create", "es.string.replace", "es.symbol.to-string-tag", "es.weak-map"],
 			contexts: ALL_CONTEXTS
@@ -2983,8 +2978,7 @@ export const constant: IConstant = {
 		"constructable-style-sheets": {
 			library: "construct-style-sheets-polyfill",
 			relativePaths: ["adoptedStyleSheets.min.js"],
-			// TODO: Add features when MDN or Caniuse adds support
-			features: [],
+			features: ["api.DocumentOrShadowRoot.adoptedStyleSheets"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CONSTRUCT_STYLE_SHEETS_POLYFILL,
 			dependencies: ["shadow-dom"],
 			contexts: ALL_CONTEXTS

@@ -1,3 +1,9 @@
+## [0.0.72](https://github.com/wessberg/polyfiller/compare/v0.0.71...v0.0.72) (2019-03-12)
+
+### Bug Fixes
+
+- **feature detection:** adds feature detections for newer features such as Intl.ListFormat, String.prototype.matchAll, and Constructable Stylesheets/DocumentOrShadowRoot.adoptedStyleSheets ([c14c118](https://github.com/wessberg/polyfiller/commit/c14c118))
+
 ## [0.0.71](https://github.com/wessberg/polyfiller/compare/v0.0.70...v0.0.71) (2019-03-12)
 
 ### Bug Fixes

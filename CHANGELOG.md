@@ -1,3 +1,9 @@
+## [0.0.71](https://github.com/wessberg/polyfiller/compare/v0.0.70...v0.0.71) (2019-03-12)
+
+### Bug Fixes
+
+- **intl:** fixes intl polyfills ([3e3a553](https://github.com/wessberg/polyfiller/commit/3e3a553))
+
 ## [0.0.70](https://github.com/wessberg/polyfiller/compare/v0.0.69...v0.0.70) (2019-03-12)
 
 ### Bug Fixes

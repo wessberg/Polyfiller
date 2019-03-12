@@ -5856,4 +5856,5 @@
 	if ("__applyLocaleSensitivePrototypes" in Intl$1) {
 		Intl$1.__applyLocaleSensitivePrototypes();
 	}
+	_globalThis.IntlPolyfill = _globalThis.Intl;
 })();

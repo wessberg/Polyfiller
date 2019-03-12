@@ -2700,12 +2700,11 @@ export const constant: IConstant = {
 			polyfills: ["intl.core", "intl.list-format", "intl.relative-time-format"]
 		},
 		"intl.core": {
-			library: "intl",
-			relativePaths: ["dist/Intl.min.js"],
+			localPaths: ["polyfill-lib/intl/intl.js"],
 			meta: {
-				localeDir: "locale-data/jsonp"
+				localeDir: "node_modules/intl/locale-data/jsonp"
 			},
-			features: ["internationalization", "javascript.builtins.Intl.PluralRules"],
+			features: ["internationalization", "javascript.builtins.Intl.PluralRules", "javascript.builtins.Intl.NumberFormat"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_INTL,
 			dependencies: [],
 			contexts: ALL_CONTEXTS

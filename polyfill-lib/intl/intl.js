@@ -1,7 +1,7 @@
-(function() {
+(function(global, factory) {
+	typeof exports === "object" && typeof module !== "undefined" ? (module.exports = factory()) : typeof define === "function" && define.amd ? define(factory) : (global.IntlPolyfill = factory());
+})(this, function() {
 	"use strict";
-
-	var hasPatchedAnything = false;
 
 	var _typeof =
 		typeof Symbol === "function" && typeof Symbol.iterator === "symbol"
@@ -657,7 +657,6 @@
 			var obj = void 0;
 
 			function F() {}
-
 			F.prototype = proto;
 			obj = new F();
 
@@ -725,7 +724,6 @@
 			if (obj instanceof Record || hop.call(obj, k)) defineProperty(this, k, {value: obj[k], enumerable: true, writable: true, configurable: true});
 		}
 	}
-
 	Record.prototype = objCreate(null);
 
 	/**
@@ -736,7 +734,6 @@
 
 		if (arguments.length) arrPush.apply(this, arrSlice.call(arguments));
 	}
-
 	List.prototype = objCreate(null);
 
 	/**
@@ -962,7 +959,6 @@
 
 	// Default locale is the first-added locale data for us
 	var defaultLocale = void 0;
-
 	function setDefaultLocale(locale) {
 		defaultLocale = locale;
 	}
@@ -2093,8 +2089,7 @@
 	}
 
 	// 8 The Intl Object
-	const _globalThis = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : self;
-	var Intl$1 = "Intl" in _globalThis ? _globalThis.Intl : {};
+	var Intl$1 = {};
 
 	// 8.2 Function Properties of the Intl Object
 
@@ -2119,15 +2114,12 @@
 		}
 	}
 
-	if (!"getCanonicalLocales" in Intl$1) {
-		hasPatchedAnything = true;
-		Object.defineProperty(Intl$1, "getCanonicalLocales", {
-			enumerable: false,
-			configurable: true,
-			writable: true,
-			value: getCanonicalLocales
-		});
-	}
+	Object.defineProperty(Intl$1, "getCanonicalLocales", {
+		enumerable: false,
+		configurable: true,
+		writable: true,
+		value: getCanonicalLocales
+	});
 
 	// 11.1 The Intl.NumberFormat constructor
 	// ======================================
@@ -2174,288 +2166,16 @@
 		return InitializeNumberFormat(toObject(this), locales, options);
 	}
 
-	if (!"NumberFormat" in Intl$1) {
-		hasPatchedAnything = true;
-		defineProperty(Intl$1, "NumberFormat", {
-			configurable: true,
-			writable: true,
-			value: NumberFormatConstructor
-		});
+	defineProperty(Intl$1, "NumberFormat", {
+		configurable: true,
+		writable: true,
+		value: NumberFormatConstructor
+	});
 
-		// Must explicitly set prototypes as unwritable
-		defineProperty(Intl$1.NumberFormat, "prototype", {
-			writable: false
-		});
-
-		/**
-		 * When the supportedLocalesOf method of Intl.NumberFormat is called, the
-		 * following steps are taken:
-		 */
-		/* 11.2.2 */
-		defineProperty(Intl$1.NumberFormat, "supportedLocalesOf", {
-			configurable: true,
-			writable: true,
-			value: fnBind.call(function(locales) {
-				// Bound functions only have the `this` value altered if being used as a constructor,
-				// this lets us imitate a native function that has no constructor
-				if (!hop.call(this, "[[availableLocales]]")) throw new TypeError("supportedLocalesOf() is not a constructor");
-
-				// Create an object whose props can be used to restore the values of RegExp props
-				var regexpRestore = createRegExpRestore(),
-					// 1. If options is not provided, then let options be undefined.
-					options = arguments[1],
-					// 2. Let availableLocales be the value of the [[availableLocales]] internal
-					//    property of the standard built-in object that is the initial value of
-					//    Intl.NumberFormat.
-
-					availableLocales = this["[[availableLocales]]"],
-					// 3. Let requestedLocales be the result of calling the CanonicalizeLocaleList
-					//    abstract operation (defined in 9.2.1) with argument locales.
-					requestedLocales = CanonicalizeLocaleList(locales);
-
-				// Restore the RegExp properties
-				regexpRestore();
-
-				// 4. Return the result of calling the SupportedLocales abstract operation
-				//    (defined in 9.2.8) with arguments availableLocales, requestedLocales,
-				//    and options.
-				return SupportedLocales(availableLocales, requestedLocales, options);
-			}, internals.NumberFormat)
-		});
-
-		/**
-		 * This named accessor property returns a function that formats a number
-		 * according to the effective locale and the formatting options of this
-		 * NumberFormat object.
-		 */
-		/* 11.3.2 */
-		defineProperty(Intl$1.NumberFormat.prototype, "format", {
-			configurable: true,
-			get: GetFormatNumber
-		});
-
-		Object.defineProperty(Intl$1.NumberFormat.prototype, "formatToParts", {
-			configurable: true,
-			enumerable: false,
-			writable: true,
-			value: formatToParts
-		});
-
-		/**
-		 * This function provides access to the locale and formatting options computed
-		 * during initialization of the object.
-		 *
-		 * The function returns a new object whose properties and attributes are set as
-		 * if constructed by an object literal assigning to each of the following
-		 * properties the value of the corresponding internal property of this
-		 * NumberFormat object (see 11.4): locale, numberingSystem, style, currency,
-		 * currencyDisplay, minimumIntegerDigits, minimumFractionDigits,
-		 * maximumFractionDigits, minimumSignificantDigits, maximumSignificantDigits, and
-		 * useGrouping. Properties whose corresponding internal properties are not present
-		 * are not assigned.
-		 */
-		/* 11.3.3 */
-		defineProperty(Intl$1.NumberFormat.prototype, "resolvedOptions", {
-			configurable: true,
-			writable: true,
-			value: function value() {
-				var prop = void 0,
-					descs = new Record(),
-					props = [
-						"locale",
-						"numberingSystem",
-						"style",
-						"currency",
-						"currencyDisplay",
-						"minimumIntegerDigits",
-						"minimumFractionDigits",
-						"maximumFractionDigits",
-						"minimumSignificantDigits",
-						"maximumSignificantDigits",
-						"useGrouping"
-					],
-					internal = this !== null && babelHelpers$1["typeof"](this) === "object" && getInternalProperties(this);
-
-				// Satisfy test 11.3_b
-				if (!internal || !internal["[[initializedNumberFormat]]"]) throw new TypeError("`this` value for resolvedOptions() is not an initialized Intl.NumberFormat object.");
-
-				for (var i = 0, max = props.length; i < max; i++) {
-					if (hop.call(internal, (prop = "[[" + props[i] + "]]"))) descs[props[i]] = {value: internal[prop], writable: true, configurable: true, enumerable: true};
-				}
-
-				return objCreate({}, descs);
-			}
-		});
-	}
-
-	if (!("DateTimeFormat" in Intl$1)) {
-		hasPatchedAnything = true;
-		defineProperty(Intl$1, "DateTimeFormat", {
-			configurable: true,
-			writable: true,
-			value: DateTimeFormatConstructor
-		});
-
-		// Must explicitly set prototypes as unwritable
-		defineProperty(DateTimeFormatConstructor, "prototype", {
-			writable: false
-		});
-
-		/**
-		 * When the supportedLocalesOf method of Intl.DateTimeFormat is called, the
-		 * following steps are taken:
-		 */
-		/* 12.2.2 */
-		defineProperty(Intl$1.DateTimeFormat, "supportedLocalesOf", {
-			configurable: true,
-			writable: true,
-			value: fnBind.call(function(locales) {
-				// Bound functions only have the `this` value altered if being used as a constructor,
-				// this lets us imitate a native function that has no constructor
-				if (!hop.call(this, "[[availableLocales]]")) throw new TypeError("supportedLocalesOf() is not a constructor");
-
-				// Create an object whose props can be used to restore the values of RegExp props
-				var regexpRestore = createRegExpRestore(),
-					// 1. If options is not provided, then let options be undefined.
-					options = arguments[1],
-					// 2. Let availableLocales be the value of the [[availableLocales]] internal
-					//    property of the standard built-in object that is the initial value of
-					//    Intl.NumberFormat.
-
-					availableLocales = this["[[availableLocales]]"],
-					// 3. Let requestedLocales be the result of calling the CanonicalizeLocaleList
-					//    abstract operation (defined in 9.2.1) with argument locales.
-					requestedLocales = CanonicalizeLocaleList(locales);
-
-				// Restore the RegExp properties
-				regexpRestore();
-
-				// 4. Return the result of calling the SupportedLocales abstract operation
-				//    (defined in 9.2.8) with arguments availableLocales, requestedLocales,
-				//    and options.
-				return SupportedLocales(availableLocales, requestedLocales, options);
-			}, internals.NumberFormat)
-		});
-
-		/**
-		 * This named accessor property returns a function that formats a number
-		 * according to the effective locale and the formatting options of this
-		 * DateTimeFormat object.
-		 */
-		/* 12.3.2 */
-		defineProperty(Intl$1.DateTimeFormat.prototype, "format", {
-			configurable: true,
-			get: GetFormatDateTime
-		});
-
-		Object.defineProperty(Intl$1.DateTimeFormat.prototype, "formatToParts", {
-			enumerable: false,
-			writable: true,
-			configurable: true,
-			value: formatToParts$1
-		});
-
-		/**
-		 * The function returns a new object whose properties and attributes are set as if
-		 * constructed by an object literal assigning to each of the following properties the
-		 * value of the corresponding internal property of this DateTimeFormat object (see 12.4):
-		 * locale, calendar, numberingSystem, timeZone, hour12, weekday, era, year, month, day,
-		 * hour, minute, second, and timeZoneName. Properties whose corresponding internal
-		 * properties are not present are not assigned.
-		 */
-		/* 12.3.3 */
-		defineProperty(Intl$1.DateTimeFormat.prototype, "resolvedOptions", {
-			writable: true,
-			configurable: true,
-			value: function value() {
-				var prop = void 0,
-					descs = new Record(),
-					props = ["locale", "calendar", "numberingSystem", "timeZone", "hour12", "weekday", "era", "year", "month", "day", "hour", "minute", "second", "timeZoneName"],
-					internal = this !== null && babelHelpers$1["typeof"](this) === "object" && getInternalProperties(this);
-
-				// Satisfy test 12.3_b
-				if (!internal || !internal["[[initializedDateTimeFormat]]"]) throw new TypeError("`this` value for resolvedOptions() is not an initialized Intl.DateTimeFormat object.");
-
-				for (var i = 0, max = props.length; i < max; i++) {
-					if (hop.call(internal, (prop = "[[" + props[i] + "]]"))) descs[props[i]] = {value: internal[prop], writable: true, configurable: true, enumerable: true};
-				}
-
-				return objCreate({}, descs);
-			}
-		});
-	}
-
-	if (!("PluralRules" in Intl$1)) {
-		hasPatchedAnything = true;
-		defineProperty(Intl$1, "PluralRules", {
-			configurable: true,
-			writable: true,
-			value: PluralRules
-		});
-
-		defineProperty(PluralRules, "prototype", {
-			writable: false
-		});
-
-		defineProperty(Intl$1.PluralRules, "supportedLocalesOf", {
-			configurable: true,
-			writable: true,
-			value: fnBind.call(function(locales) {
-				// Bound functions only have the `this` value altered if being used as a constructor,
-				// this lets us imitate a native function that has no constructor
-				if (!hop.call(this, "[[availableLocales]]")) throw new TypeError("supportedLocalesOf() is not a constructor");
-
-				// Create an object whose props can be used to restore the values of RegExp props
-				var regexpRestore = createRegExpRestore(),
-					// 1. If options is not provided, then let options be undefined.
-					options = arguments[1],
-					// 2. Let availableLocales be the value of the [[availableLocales]] internal
-					//    property of the standard built-in object that is the initial value of
-					//    Intl.NumberFormat.
-
-					availableLocales = this["[[availableLocales]]"],
-					// 3. Let requestedLocales be the result of calling the CanonicalizeLocaleList
-					//    abstract operation (defined in 9.2.1) with argument locales.
-					requestedLocales = CanonicalizeLocaleList(locales);
-
-				// Restore the RegExp properties
-				regexpRestore();
-
-				// 4. Return the result of calling the SupportedLocales abstract operation
-				//    (defined in 9.2.8) with arguments availableLocales, requestedLocales,
-				//    and options.
-				return SupportedLocales(availableLocales, requestedLocales, options);
-			}, internals.PluralRules)
-		});
-
-		defineProperty(Intl$1.PluralRules.prototype, "select", {
-			configurable: true,
-			value: function value(_value) {
-				var pluralRules = this;
-				var n = Number(_value);
-				return ResolvePlural(pluralRules, n);
-			}
-		});
-
-		defineProperty(Intl$1.PluralRules.prototype, "resolvedOptions", {
-			configurable: true,
-			writable: true,
-			value: function value() {
-				var prop = void 0,
-					descs = new Record(),
-					props = ["locale", "type", "minimumIntegerDigits", "minimumFractionDigits", "maximumFractionDigits", "minimumSignificantDigits", "maximumSignificantDigits"],
-					internal = this !== null && babelHelpers$1["typeof"](this) === "object" && getInternalProperties(this);
-
-				if (!internal || !internal["[[InitializedPluralRules]]"]) throw new TypeError("`this` value for resolvedOptions() is not an initialized Intl.PluralRules object.");
-
-				for (var i = 0, max = props.length; i < max; i++) {
-					if (hop.call(internal, (prop = "[[" + props[i] + "]]"))) descs[props[i]] = {value: internal[prop], writable: true, configurable: true, enumerable: true};
-				}
-
-				return objCreate({}, descs);
-			}
-		});
-	}
+	// Must explicitly set prototypes as unwritable
+	defineProperty(Intl$1.NumberFormat, "prototype", {
+		writable: false
+	});
 
 	/*
 	 * @spec[tc39/ecma402/master/spec/numberformat.html]
@@ -2712,12 +2432,57 @@
 		return currencyMinorUnits[currency] !== undefined ? currencyMinorUnits[currency] : 2;
 	}
 
-	/* 11.2.3 */
-	internals.NumberFormat = {
+	/* 11.2.3 */ internals.NumberFormat = {
 		"[[availableLocales]]": [],
 		"[[relevantExtensionKeys]]": ["nu"],
 		"[[localeData]]": {}
 	};
+
+	/**
+	 * When the supportedLocalesOf method of Intl.NumberFormat is called, the
+	 * following steps are taken:
+	 */
+	/* 11.2.2 */
+	defineProperty(Intl$1.NumberFormat, "supportedLocalesOf", {
+		configurable: true,
+		writable: true,
+		value: fnBind.call(function(locales) {
+			// Bound functions only have the `this` value altered if being used as a constructor,
+			// this lets us imitate a native function that has no constructor
+			if (!hop.call(this, "[[availableLocales]]")) throw new TypeError("supportedLocalesOf() is not a constructor");
+
+			// Create an object whose props can be used to restore the values of RegExp props
+			var regexpRestore = createRegExpRestore(),
+				// 1. If options is not provided, then let options be undefined.
+				options = arguments[1],
+				// 2. Let availableLocales be the value of the [[availableLocales]] internal
+				//    property of the standard built-in object that is the initial value of
+				//    Intl.NumberFormat.
+
+				availableLocales = this["[[availableLocales]]"],
+				// 3. Let requestedLocales be the result of calling the CanonicalizeLocaleList
+				//    abstract operation (defined in 9.2.1) with argument locales.
+				requestedLocales = CanonicalizeLocaleList(locales);
+
+			// Restore the RegExp properties
+			regexpRestore();
+
+			// 4. Return the result of calling the SupportedLocales abstract operation
+			//    (defined in 9.2.8) with arguments availableLocales, requestedLocales,
+			//    and options.
+			return SupportedLocales(availableLocales, requestedLocales, options);
+		}, internals.NumberFormat)
+	});
+
+	/**
+	 * This named accessor property returns a function that formats a number
+	 * according to the effective locale and the formatting options of this
+	 * NumberFormat object.
+	 */
+	/* 11.3.2 */ defineProperty(Intl$1.NumberFormat.prototype, "format", {
+		configurable: true,
+		get: GetFormatNumber
+	});
 
 	function GetFormatNumber() {
 		var internal = this !== null && babelHelpers$1["typeof"](this) === "object" && getInternalProperties(this);
@@ -2768,6 +2533,13 @@
 		var x = Number(value);
 		return FormatNumberToParts(this, x);
 	}
+
+	Object.defineProperty(Intl$1.NumberFormat.prototype, "formatToParts", {
+		configurable: true,
+		enumerable: false,
+		writable: true,
+		value: formatToParts
+	});
 
 	/*
 	 * @spec[tc39/ecma402/master/spec/numberformat.html]
@@ -3255,6 +3027,51 @@
 		tibt: ["\u0F20", "\u0F21", "\u0F22", "\u0F23", "\u0F24", "\u0F25", "\u0F26", "\u0F27", "\u0F28", "\u0F29"]
 	};
 
+	/**
+	 * This function provides access to the locale and formatting options computed
+	 * during initialization of the object.
+	 *
+	 * The function returns a new object whose properties and attributes are set as
+	 * if constructed by an object literal assigning to each of the following
+	 * properties the value of the corresponding internal property of this
+	 * NumberFormat object (see 11.4): locale, numberingSystem, style, currency,
+	 * currencyDisplay, minimumIntegerDigits, minimumFractionDigits,
+	 * maximumFractionDigits, minimumSignificantDigits, maximumSignificantDigits, and
+	 * useGrouping. Properties whose corresponding internal properties are not present
+	 * are not assigned.
+	 */
+	/* 11.3.3 */ defineProperty(Intl$1.NumberFormat.prototype, "resolvedOptions", {
+		configurable: true,
+		writable: true,
+		value: function value() {
+			var prop = void 0,
+				descs = new Record(),
+				props = [
+					"locale",
+					"numberingSystem",
+					"style",
+					"currency",
+					"currencyDisplay",
+					"minimumIntegerDigits",
+					"minimumFractionDigits",
+					"maximumFractionDigits",
+					"minimumSignificantDigits",
+					"maximumSignificantDigits",
+					"useGrouping"
+				],
+				internal = this !== null && babelHelpers$1["typeof"](this) === "object" && getInternalProperties(this);
+
+			// Satisfy test 11.3_b
+			if (!internal || !internal["[[initializedNumberFormat]]"]) throw new TypeError("`this` value for resolvedOptions() is not an initialized Intl.NumberFormat object.");
+
+			for (var i = 0, max = props.length; i < max; i++) {
+				if (hop.call(internal, (prop = "[[" + props[i] + "]]"))) descs[props[i]] = {value: internal[prop], writable: true, configurable: true, enumerable: true};
+			}
+
+			return objCreate({}, descs);
+		}
+	});
+
 	/* jslint esnext: true */
 
 	// Match these datetime components in a CLDR pattern, except those in single quotes
@@ -3659,6 +3476,17 @@
 		}
 		return InitializeDateTimeFormat(toObject(this), locales, options);
 	}
+
+	defineProperty(Intl$1, "DateTimeFormat", {
+		configurable: true,
+		writable: true,
+		value: DateTimeFormatConstructor
+	});
+
+	// Must explicitly set prototypes as unwritable
+	defineProperty(DateTimeFormatConstructor, "prototype", {
+		writable: false
+	});
 
 	/**
 	 * The abstract operation InitializeDateTimeFormat accepts the arguments dateTimeFormat
@@ -4295,12 +4123,57 @@
 		return bestFormat;
 	}
 
-	/* 12.2.3 */
-	internals.DateTimeFormat = {
+	/* 12.2.3 */ internals.DateTimeFormat = {
 		"[[availableLocales]]": [],
 		"[[relevantExtensionKeys]]": ["ca", "nu"],
 		"[[localeData]]": {}
 	};
+
+	/**
+	 * When the supportedLocalesOf method of Intl.DateTimeFormat is called, the
+	 * following steps are taken:
+	 */
+	/* 12.2.2 */
+	defineProperty(Intl$1.DateTimeFormat, "supportedLocalesOf", {
+		configurable: true,
+		writable: true,
+		value: fnBind.call(function(locales) {
+			// Bound functions only have the `this` value altered if being used as a constructor,
+			// this lets us imitate a native function that has no constructor
+			if (!hop.call(this, "[[availableLocales]]")) throw new TypeError("supportedLocalesOf() is not a constructor");
+
+			// Create an object whose props can be used to restore the values of RegExp props
+			var regexpRestore = createRegExpRestore(),
+				// 1. If options is not provided, then let options be undefined.
+				options = arguments[1],
+				// 2. Let availableLocales be the value of the [[availableLocales]] internal
+				//    property of the standard built-in object that is the initial value of
+				//    Intl.NumberFormat.
+
+				availableLocales = this["[[availableLocales]]"],
+				// 3. Let requestedLocales be the result of calling the CanonicalizeLocaleList
+				//    abstract operation (defined in 9.2.1) with argument locales.
+				requestedLocales = CanonicalizeLocaleList(locales);
+
+			// Restore the RegExp properties
+			regexpRestore();
+
+			// 4. Return the result of calling the SupportedLocales abstract operation
+			//    (defined in 9.2.8) with arguments availableLocales, requestedLocales,
+			//    and options.
+			return SupportedLocales(availableLocales, requestedLocales, options);
+		}, internals.NumberFormat)
+	});
+
+	/**
+	 * This named accessor property returns a function that formats a number
+	 * according to the effective locale and the formatting options of this
+	 * DateTimeFormat object.
+	 */
+	/* 12.3.2 */ defineProperty(Intl$1.DateTimeFormat.prototype, "format", {
+		configurable: true,
+		get: GetFormatDateTime
+	});
 
 	function GetFormatDateTime() {
 		var internal = this !== null && babelHelpers$1["typeof"](this) === "object" && getInternalProperties(this);
@@ -4356,6 +4229,13 @@
 		return FormatToPartsDateTime(this, x);
 	}
 
+	Object.defineProperty(Intl$1.DateTimeFormat.prototype, "formatToParts", {
+		enumerable: false,
+		writable: true,
+		configurable: true,
+		value: formatToParts$1
+	});
+
 	function CreateDateTimeParts(dateTimeFormat, x) {
 		// 1. If x is not a finite Number, then throw a RangeError exception.
 		if (!isFinite(x)) throw new RangeError("Invalid valid date passed to format");
@@ -4363,8 +4243,7 @@
 		var internal = dateTimeFormat.__getInternalProperties(secret);
 
 		// Creating restore point for properties on the RegExp object... please wait
-		/* let regexpRestore = */
-		createRegExpRestore(); // ###TODO: review this
+		/* let regexpRestore = */ createRegExpRestore(); // ###TODO: review this
 
 		// 2. Let locale be the value of the [[locale]] internal property of dateTimeFormat.
 		var locale = internal["[[locale]]"];
@@ -4609,139 +4488,161 @@
 		});
 	}
 
+	/**
+	 * The function returns a new object whose properties and attributes are set as if
+	 * constructed by an object literal assigning to each of the following properties the
+	 * value of the corresponding internal property of this DateTimeFormat object (see 12.4):
+	 * locale, calendar, numberingSystem, timeZone, hour12, weekday, era, year, month, day,
+	 * hour, minute, second, and timeZoneName. Properties whose corresponding internal
+	 * properties are not present are not assigned.
+	 */
+	/* 12.3.3 */ defineProperty(Intl$1.DateTimeFormat.prototype, "resolvedOptions", {
+		writable: true,
+		configurable: true,
+		value: function value() {
+			var prop = void 0,
+				descs = new Record(),
+				props = ["locale", "calendar", "numberingSystem", "timeZone", "hour12", "weekday", "era", "year", "month", "day", "hour", "minute", "second", "timeZoneName"],
+				internal = this !== null && babelHelpers$1["typeof"](this) === "object" && getInternalProperties(this);
+
+			// Satisfy test 12.3_b
+			if (!internal || !internal["[[initializedDateTimeFormat]]"]) throw new TypeError("`this` value for resolvedOptions() is not an initialized Intl.DateTimeFormat object.");
+
+			for (var i = 0, max = props.length; i < max; i++) {
+				if (hop.call(internal, (prop = "[[" + props[i] + "]]"))) descs[props[i]] = {value: internal[prop], writable: true, configurable: true, enumerable: true};
+			}
+
+			return objCreate({}, descs);
+		}
+	});
+
 	// Sect 13 Locale Sensitive Functions of the ECMAScript Language Specification
 	// ===========================================================================
 
-	if (hasPatchedAnything) {
-		var ls = (Intl$1.__localeSensitiveProtos = {
-			Number: {},
-			Date: {}
-		});
+	var ls = (Intl$1.__localeSensitiveProtos = {
+		Number: {},
+		Date: {}
+	});
 
-		/**
-		 * When the toLocaleString method is called with optional arguments locales and options,
-		 * the following steps are taken:
-		 */
-		/* 13.2.1 */
-		ls.Number.toLocaleString = function() {
-			// Satisfy test 13.2.1_1
-			if (Object.prototype.toString.call(this) !== "[object Number]") throw new TypeError("`this` value must be a number for Number.prototype.toLocaleString()");
+	/**
+	 * When the toLocaleString method is called with optional arguments locales and options,
+	 * the following steps are taken:
+	 */
+	/* 13.2.1 */ ls.Number.toLocaleString = function() {
+		// Satisfy test 13.2.1_1
+		if (Object.prototype.toString.call(this) !== "[object Number]") throw new TypeError("`this` value must be a number for Number.prototype.toLocaleString()");
 
-			// 1. Let x be this Number value (as defined in ES5, 15.7.4).
-			// 2. If locales is not provided, then let locales be undefined.
-			// 3. If options is not provided, then let options be undefined.
-			// 4. Let numberFormat be the result of creating a new object as if by the
-			//    expression new Intl.NumberFormat(locales, options) where
-			//    Intl.NumberFormat is the standard built-in constructor defined in 11.1.3.
-			// 5. Return the result of calling the FormatNumber abstract operation
-			//    (defined in 11.3.2) with arguments numberFormat and x.
-			return FormatNumber(new NumberFormatConstructor(arguments[0], arguments[1]), this);
-		};
+		// 1. Let x be this Number value (as defined in ES5, 15.7.4).
+		// 2. If locales is not provided, then let locales be undefined.
+		// 3. If options is not provided, then let options be undefined.
+		// 4. Let numberFormat be the result of creating a new object as if by the
+		//    expression new Intl.NumberFormat(locales, options) where
+		//    Intl.NumberFormat is the standard built-in constructor defined in 11.1.3.
+		// 5. Return the result of calling the FormatNumber abstract operation
+		//    (defined in 11.3.2) with arguments numberFormat and x.
+		return FormatNumber(new NumberFormatConstructor(arguments[0], arguments[1]), this);
+	};
 
-		/**
-		 * When the toLocaleString method is called with optional arguments locales and options,
-		 * the following steps are taken:
-		 */
-		/* 13.3.1 */
-		ls.Date.toLocaleString = function() {
-			// Satisfy test 13.3.0_1
-			if (Object.prototype.toString.call(this) !== "[object Date]") throw new TypeError("`this` value must be a Date instance for Date.prototype.toLocaleString()");
+	/**
+	 * When the toLocaleString method is called with optional arguments locales and options,
+	 * the following steps are taken:
+	 */
+	/* 13.3.1 */ ls.Date.toLocaleString = function() {
+		// Satisfy test 13.3.0_1
+		if (Object.prototype.toString.call(this) !== "[object Date]") throw new TypeError("`this` value must be a Date instance for Date.prototype.toLocaleString()");
 
-			// 1. Let x be this time value (as defined in ES5, 15.9.5).
-			var x = +this;
+		// 1. Let x be this time value (as defined in ES5, 15.9.5).
+		var x = +this;
 
-			// 2. If x is NaN, then return "Invalid Date".
-			if (isNaN(x)) return "Invalid Date";
+		// 2. If x is NaN, then return "Invalid Date".
+		if (isNaN(x)) return "Invalid Date";
 
-			// 3. If locales is not provided, then let locales be undefined.
-			var locales = arguments[0];
+		// 3. If locales is not provided, then let locales be undefined.
+		var locales = arguments[0];
 
+		// 4. If options is not provided, then let options be undefined.
+		var options = arguments[1];
+
+		// 5. Let options be the result of calling the ToDateTimeOptions abstract
+		//    operation (defined in 12.1.1) with arguments options, "any", and "all".
+		options = ToDateTimeOptions(options, "any", "all");
+
+		// 6. Let dateTimeFormat be the result of creating a new object as if by the
+		//    expression new Intl.DateTimeFormat(locales, options) where
+		//    Intl.DateTimeFormat is the standard built-in constructor defined in 12.1.3.
+		var dateTimeFormat = new DateTimeFormatConstructor(locales, options);
+
+		// 7. Return the result of calling the FormatDateTime abstract operation (defined
+		//    in 12.3.2) with arguments dateTimeFormat and x.
+		return FormatDateTime(dateTimeFormat, x);
+	};
+
+	/**
+	 * When the toLocaleDateString method is called with optional arguments locales and
+	 * options, the following steps are taken:
+	 */
+	/* 13.3.2 */ ls.Date.toLocaleDateString = function() {
+		// Satisfy test 13.3.0_1
+		if (Object.prototype.toString.call(this) !== "[object Date]") throw new TypeError("`this` value must be a Date instance for Date.prototype.toLocaleDateString()");
+
+		// 1. Let x be this time value (as defined in ES5, 15.9.5).
+		var x = +this;
+
+		// 2. If x is NaN, then return "Invalid Date".
+		if (isNaN(x)) return "Invalid Date";
+
+		// 3. If locales is not provided, then let locales be undefined.
+		var locales = arguments[0],
 			// 4. If options is not provided, then let options be undefined.
-			var options = arguments[1];
+			options = arguments[1];
 
-			// 5. Let options be the result of calling the ToDateTimeOptions abstract
-			//    operation (defined in 12.1.1) with arguments options, "any", and "all".
-			options = ToDateTimeOptions(options, "any", "all");
+		// 5. Let options be the result of calling the ToDateTimeOptions abstract
+		//    operation (defined in 12.1.1) with arguments options, "date", and "date".
+		options = ToDateTimeOptions(options, "date", "date");
 
-			// 6. Let dateTimeFormat be the result of creating a new object as if by the
-			//    expression new Intl.DateTimeFormat(locales, options) where
-			//    Intl.DateTimeFormat is the standard built-in constructor defined in 12.1.3.
-			var dateTimeFormat = new DateTimeFormatConstructor(locales, options);
+		// 6. Let dateTimeFormat be the result of creating a new object as if by the
+		//    expression new Intl.DateTimeFormat(locales, options) where
+		//    Intl.DateTimeFormat is the standard built-in constructor defined in 12.1.3.
+		var dateTimeFormat = new DateTimeFormatConstructor(locales, options);
 
-			// 7. Return the result of calling the FormatDateTime abstract operation (defined
-			//    in 12.3.2) with arguments dateTimeFormat and x.
-			return FormatDateTime(dateTimeFormat, x);
-		};
+		// 7. Return the result of calling the FormatDateTime abstract operation (defined
+		//    in 12.3.2) with arguments dateTimeFormat and x.
+		return FormatDateTime(dateTimeFormat, x);
+	};
 
-		/**
-		 * When the toLocaleDateString method is called with optional arguments locales and
-		 * options, the following steps are taken:
-		 */
-		/* 13.3.2 */
-		ls.Date.toLocaleDateString = function() {
-			// Satisfy test 13.3.0_1
-			if (Object.prototype.toString.call(this) !== "[object Date]") throw new TypeError("`this` value must be a Date instance for Date.prototype.toLocaleDateString()");
+	/**
+	 * When the toLocaleTimeString method is called with optional arguments locales and
+	 * options, the following steps are taken:
+	 */
+	/* 13.3.3 */ ls.Date.toLocaleTimeString = function() {
+		// Satisfy test 13.3.0_1
+		if (Object.prototype.toString.call(this) !== "[object Date]") throw new TypeError("`this` value must be a Date instance for Date.prototype.toLocaleTimeString()");
 
-			// 1. Let x be this time value (as defined in ES5, 15.9.5).
-			var x = +this;
+		// 1. Let x be this time value (as defined in ES5, 15.9.5).
+		var x = +this;
 
-			// 2. If x is NaN, then return "Invalid Date".
-			if (isNaN(x)) return "Invalid Date";
+		// 2. If x is NaN, then return "Invalid Date".
+		if (isNaN(x)) return "Invalid Date";
 
-			// 3. If locales is not provided, then let locales be undefined.
-			var locales = arguments[0],
-				// 4. If options is not provided, then let options be undefined.
-				options = arguments[1];
+		// 3. If locales is not provided, then let locales be undefined.
+		var locales = arguments[0];
 
-			// 5. Let options be the result of calling the ToDateTimeOptions abstract
-			//    operation (defined in 12.1.1) with arguments options, "date", and "date".
-			options = ToDateTimeOptions(options, "date", "date");
+		// 4. If options is not provided, then let options be undefined.
+		var options = arguments[1];
 
-			// 6. Let dateTimeFormat be the result of creating a new object as if by the
-			//    expression new Intl.DateTimeFormat(locales, options) where
-			//    Intl.DateTimeFormat is the standard built-in constructor defined in 12.1.3.
-			var dateTimeFormat = new DateTimeFormatConstructor(locales, options);
+		// 5. Let options be the result of calling the ToDateTimeOptions abstract
+		//    operation (defined in 12.1.1) with arguments options, "time", and "time".
+		options = ToDateTimeOptions(options, "time", "time");
 
-			// 7. Return the result of calling the FormatDateTime abstract operation (defined
-			//    in 12.3.2) with arguments dateTimeFormat and x.
-			return FormatDateTime(dateTimeFormat, x);
-		};
+		// 6. Let dateTimeFormat be the result of creating a new object as if by the
+		//    expression new Intl.DateTimeFormat(locales, options) where
+		//    Intl.DateTimeFormat is the standard built-in constructor defined in 12.1.3.
+		var dateTimeFormat = new DateTimeFormatConstructor(locales, options);
 
-		/**
-		 * When the toLocaleTimeString method is called with optional arguments locales and
-		 * options, the following steps are taken:
-		 */
-		/* 13.3.3 */
-		ls.Date.toLocaleTimeString = function() {
-			// Satisfy test 13.3.0_1
-			if (Object.prototype.toString.call(this) !== "[object Date]") throw new TypeError("`this` value must be a Date instance for Date.prototype.toLocaleTimeString()");
-
-			// 1. Let x be this time value (as defined in ES5, 15.9.5).
-			var x = +this;
-
-			// 2. If x is NaN, then return "Invalid Date".
-			if (isNaN(x)) return "Invalid Date";
-
-			// 3. If locales is not provided, then let locales be undefined.
-			var locales = arguments[0];
-
-			// 4. If options is not provided, then let options be undefined.
-			var options = arguments[1];
-
-			// 5. Let options be the result of calling the ToDateTimeOptions abstract
-			//    operation (defined in 12.1.1) with arguments options, "time", and "time".
-			options = ToDateTimeOptions(options, "time", "time");
-
-			// 6. Let dateTimeFormat be the result of creating a new object as if by the
-			//    expression new Intl.DateTimeFormat(locales, options) where
-			//    Intl.DateTimeFormat is the standard built-in constructor defined in 12.1.3.
-			var dateTimeFormat = new DateTimeFormatConstructor(locales, options);
-
-			// 7. Return the result of calling the FormatDateTime abstract operation (defined
-			//    in 12.3.2) with arguments dateTimeFormat and x.
-			return FormatDateTime(dateTimeFormat, x);
-		};
-	}
+		// 7. Return the result of calling the FormatDateTime abstract operation (defined
+		//    in 12.3.2) with arguments dateTimeFormat and x.
+		return FormatDateTime(dateTimeFormat, x);
+	};
 
 	var _cp = [
 		function(n, ord) {
@@ -5666,6 +5567,16 @@
 		return InitializePluralRules(toObject(this), locales, options);
 	}
 
+	defineProperty(Intl$1, "PluralRules", {
+		configurable: true,
+		writable: true,
+		value: PluralRules
+	});
+
+	defineProperty(PluralRules, "prototype", {
+		writable: false
+	});
+
 	function InitializePluralRules(pluralRules, locales, options) {
 		var internal = getInternalProperties(pluralRules);
 
@@ -5769,6 +5680,65 @@
 		"[[localeData]]": {}
 	};
 
+	defineProperty(Intl$1.PluralRules, "supportedLocalesOf", {
+		configurable: true,
+		writable: true,
+		value: fnBind.call(function(locales) {
+			// Bound functions only have the `this` value altered if being used as a constructor,
+			// this lets us imitate a native function that has no constructor
+			if (!hop.call(this, "[[availableLocales]]")) throw new TypeError("supportedLocalesOf() is not a constructor");
+
+			// Create an object whose props can be used to restore the values of RegExp props
+			var regexpRestore = createRegExpRestore(),
+				// 1. If options is not provided, then let options be undefined.
+				options = arguments[1],
+				// 2. Let availableLocales be the value of the [[availableLocales]] internal
+				//    property of the standard built-in object that is the initial value of
+				//    Intl.NumberFormat.
+
+				availableLocales = this["[[availableLocales]]"],
+				// 3. Let requestedLocales be the result of calling the CanonicalizeLocaleList
+				//    abstract operation (defined in 9.2.1) with argument locales.
+				requestedLocales = CanonicalizeLocaleList(locales);
+
+			// Restore the RegExp properties
+			regexpRestore();
+
+			// 4. Return the result of calling the SupportedLocales abstract operation
+			//    (defined in 9.2.8) with arguments availableLocales, requestedLocales,
+			//    and options.
+			return SupportedLocales(availableLocales, requestedLocales, options);
+		}, internals.PluralRules)
+	});
+
+	defineProperty(Intl$1.PluralRules.prototype, "select", {
+		configurable: true,
+		value: function value(_value) {
+			var pluralRules = this;
+			var n = Number(_value);
+			return ResolvePlural(pluralRules, n);
+		}
+	});
+
+	defineProperty(Intl$1.PluralRules.prototype, "resolvedOptions", {
+		configurable: true,
+		writable: true,
+		value: function value() {
+			var prop = void 0,
+				descs = new Record(),
+				props = ["locale", "type", "minimumIntegerDigits", "minimumFractionDigits", "maximumFractionDigits", "minimumSignificantDigits", "maximumSignificantDigits"],
+				internal = this !== null && babelHelpers$1["typeof"](this) === "object" && getInternalProperties(this);
+
+			if (!internal || !internal["[[InitializedPluralRules]]"]) throw new TypeError("`this` value for resolvedOptions() is not an initialized Intl.PluralRules object.");
+
+			for (var i = 0, max = props.length; i < max; i++) {
+				if (hop.call(internal, (prop = "[[" + props[i] + "]]"))) descs[props[i]] = {value: internal[prop], writable: true, configurable: true, enumerable: true};
+			}
+
+			return objCreate({}, descs);
+		}
+	});
+
 	/**
 	 * @license Copyright 2013 Andy Earnshaw, MIT License
 	 *
@@ -5780,41 +5750,33 @@
 	 * CLDR format locale data should be provided using IntlPolyfill.__addLocaleData().
 	 */
 
-	if (hasPatchedAnything) {
-		defineProperty(Intl$1, "__applyLocaleSensitivePrototypes", {
-			writable: true,
-			configurable: true,
-			value: function value() {
-				defineProperty(Number.prototype, "toLocaleString", {writable: true, configurable: true, value: ls.Number.toLocaleString});
-				// Need this here for IE 8, to avoid the _DontEnum_ bug
-				defineProperty(Date.prototype, "toLocaleString", {writable: true, configurable: true, value: ls.Date.toLocaleString});
+	defineProperty(Intl$1, "__applyLocaleSensitivePrototypes", {
+		writable: true,
+		configurable: true,
+		value: function value() {
+			defineProperty(Number.prototype, "toLocaleString", {writable: true, configurable: true, value: ls.Number.toLocaleString});
+			// Need this here for IE 8, to avoid the _DontEnum_ bug
+			defineProperty(Date.prototype, "toLocaleString", {writable: true, configurable: true, value: ls.Date.toLocaleString});
 
-				for (var k in ls.Date) {
-					if (hop.call(ls.Date, k)) defineProperty(Date.prototype, k, {writable: true, configurable: true, value: ls.Date[k]});
-				}
+			for (var k in ls.Date) {
+				if (hop.call(ls.Date, k)) defineProperty(Date.prototype, k, {writable: true, configurable: true, value: ls.Date[k]});
 			}
-		});
+		}
+	});
 
-		/**
-		 * Can't really ship a single script with data for hundreds of locales, so we provide
-		 * this __addLocaleData method as a means for the developer to add the data on an
-		 * as-needed basis
-		 */
-		defineProperty(Intl$1, "__addLocaleData", {
-			value: function value(data) {
-				if (!IsStructurallyValidLanguageTag(data.locale))
-					throw new Error('Invalid language tag "' + data.locale + '" when calling __addLocaleData("' + data.locale + '", ...) to register new locale data.');
+	/**
+	 * Can't really ship a single script with data for hundreds of locales, so we provide
+	 * this __addLocaleData method as a means for the developer to add the data on an
+	 * as-needed basis
+	 */
+	defineProperty(Intl$1, "__addLocaleData", {
+		value: function value(data) {
+			if (!IsStructurallyValidLanguageTag(data.locale))
+				throw new Error('Invalid language tag "' + data.locale + '" when calling __addLocaleData("' + data.locale + '", ...) to register new locale data.');
 
-				addLocaleData(data, data.locale);
-			}
-		});
-
-		defineProperty(Intl$1, "__disableRegExpRestore", {
-			value: function value() {
-				internals.disableRegExpRestore = true;
-			}
-		});
-	}
+			addLocaleData(data, data.locale);
+		}
+	});
 
 	function addLocaleData(data, tag) {
 		// Both NumberFormat and DateTimeFormat require number data, so throw if it isn't present
@@ -5844,17 +5806,22 @@
 		if (defaultLocale === undefined) setDefaultLocale(tag);
 	}
 
+	defineProperty(Intl$1, "__disableRegExpRestore", {
+		value: function value() {
+			internals.disableRegExpRestore = true;
+		}
+	});
+
 	// hack to export the polyfill as global Intl if needed
-	if (typeof Intl === "undefined") {
+	if (typeof Intl === "undefined" || typeof Intl.NumberFormat === "undefined" || typeof Intl.PluralRules === "undefined") {
 		try {
-			_globalThis.Intl = Intl$1;
+			window.Intl = Intl$1;
+			Intl$1.__applyLocaleSensitivePrototypes();
 		} catch (e) {
 			// can be read only property
 		}
 	}
 
-	if ("__applyLocaleSensitivePrototypes" in Intl$1) {
-		Intl$1.__applyLocaleSensitivePrototypes();
-	}
-	_globalThis.IntlPolyfill = _globalThis.Intl;
-})();
+	return Intl$1;
+});
+//# sourceMappingURL=Intl.js.map

@@ -1,3 +1,9 @@
+## [0.0.70](https://github.com/wessberg/polyfiller/compare/v0.0.69...v0.0.70) (2019-03-12)
+
+### Bug Fixes
+
+- **safari:** fixes Intl issue ([adede93](https://github.com/wessberg/polyfiller/commit/adede93))
+
 ## [0.0.69](https://github.com/wessberg/polyfiller/compare/v0.0.68...v0.0.69) (2019-03-12)
 
 ### Bug Fixes

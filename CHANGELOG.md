@@ -1,3 +1,9 @@
+## [0.0.73](https://github.com/wessberg/polyfiller/compare/v0.0.72...v0.0.73) (2019-03-17)
+
+### Bug Fixes
+
+- **zone:** fixes an issue where zone would break polyfill bundles for web workers/service workers ([22b45c5](https://github.com/wessberg/polyfiller/commit/22b45c5))
+
 ## [0.0.72](https://github.com/wessberg/polyfiller/compare/v0.0.71...v0.0.72) (2019-03-12)
 
 ### Bug Fixes

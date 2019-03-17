@@ -3,7 +3,7 @@ import {environment} from "../environment/environment";
 // @ts-ignore
 import tempDir from "temp-dir";
 import {join} from "path";
-import {ALL_CONTEXTS, WINDOW_CONTEXT} from "../polyfill/polyfill-context";
+import {ALL_CONTEXTS, WINDOW_CONTEXT, WINDOW_NODE_CONTEXT} from "../polyfill/polyfill-context";
 
 // tslint:disable:no-duplicate-string
 
@@ -54,7 +54,7 @@ export const constant: IConstant = {
 			version: environment.NPM_PACKAGE_DEPENDENCIES_ZONE_JS,
 			dependencies: [],
 			mustComeAfter: "*",
-			contexts: ALL_CONTEXTS
+			contexts: WINDOW_NODE_CONTEXT
 		},
 		"performance.now": {
 			library: {

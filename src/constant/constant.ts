@@ -2943,11 +2943,10 @@ export const constant: IConstant = {
 			contexts: WINDOW_CONTEXT
 		},
 		"resize-observer": {
-			library: "resize-observer",
-			relativePaths: ["dist/resize-observer.min.js"],
+			localPaths: ["polyfill-lib/resize-observer/resize-observer.js"],
 			features: ["resizeobserver"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_RESIZE_OBSERVER,
-			dependencies: ["get-computed-style", "requestanimationframe"],
+			version: "1.0.0",
+			dependencies: ["es.weak-map", "es.object.create", "mutation-observer", "get-computed-style", "requestanimationframe"],
 			contexts: WINDOW_CONTEXT
 		},
 		setimmediate: {

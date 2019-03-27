@@ -63,7 +63,7 @@ export class Server implements IServer {
 			// Create HTTP2 server
 			this.server = shouldRunSecureServer
 				? createSecureServer({key: options.key, cert: options.cert, allowHTTP1: true}, async (request, response) => http2RequestHandler(request, response, true))
-				: createServer({allowHTTP1: true}, async (request, response) => http2RequestHandler(request, response, false));
+				: createServer({}, async (request, response) => http2RequestHandler(request, response, false));
 		} else {
 			// Create HTTP2 server
 			this.server = shouldRunSecureServer

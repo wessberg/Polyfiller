@@ -61,7 +61,7 @@ test("Will not generate polyfills for 'Element' on Chrome 69 for a Galaxy S5", a
 	t.true(result.statusCode === constants.HTTP_STATUS_OK);
 });
 
-test("Will generate correct polyfills for IE11", async t => {
+test.only("Will generate correct polyfills for IE11", async t => {
 	const result = await sendRequest({
 		http2: config.http2,
 		tls: true,
@@ -71,7 +71,7 @@ test("Will generate correct polyfills for IE11", async t => {
 		port: config.port,
 		path: `${
 			constant.endpoint.polyfill
-		}?features=web-components,es,class-list,system|variant=system,custom-event,url,fetch,object-fit,intersection-observer,animation,regenerator-runtime,requestanimationframe,requestidlecallback,resize-observer,pointer-event,dom.collections.iterable,scroll-behavior,zone|error,esnext.reflect,intl|force|locale=en~da`,
+		}?features=web-components,es,class-list,system|variant=system,custom-event,url,fetch,object-fit,intersection-observer,animation,regenerator-runtime,requestanimationframe,requestidlecallback,resize-observer,pointer-event,dom.collections.iterable,scroll-behavior,zone|error|rxjs|shadydom,esnext.reflect,intl|force|locale=en~da`,
 		acceptEncoding: undefined
 	});
 

@@ -129,14 +129,64 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				}
 			}
 
-			// If Zone is requested, 'zone-error' may be requested which improves the produced Stack trace when using Zone
-			if (polyfillFeature.name === "zone" && meta != null && polyfillFeature.meta != null && polyfillFeature.meta.error === true) {
-				const errorPathInput = join(rootDirectory, meta.error);
-				const resolvedErrorPath = sync(errorPathInput, SYNC_OPTIONS);
-				if (resolvedErrorPath != null) {
-					absolutePaths.push(resolvedErrorPath);
-				} else {
-					this.logger.debug(`Unresolved path:`, errorPathInput);
+			if (meta != null && polyfillFeature.name === "zone") {
+				// If Zone is requested, 'zone-error' may be requested which improves the produced Stack trace when using Zone
+				if (polyfillFeature.meta != null && polyfillFeature.meta.error === true) {
+					const errorPathInput = join(rootDirectory, meta.error);
+					const resolvedErrorPath = sync(errorPathInput, SYNC_OPTIONS);
+					if (resolvedErrorPath != null) {
+						absolutePaths.push(resolvedErrorPath);
+					} else {
+						this.logger.debug(`Unresolved path:`, errorPathInput);
+					}
+				}
+
+				// Check if any web component polyfill has been requested
+				const hasWCPolyfill = [...polyfillSet].some(({name}) => name === "custom-elements" || name === "shadow-dom");
+
+				// If any web component polyfill has been requested, or if the 'shadydom' zone extension has been explicitly requested
+				// add it to the Zone.js polyfill buffer
+				if (hasWCPolyfill || (polyfillFeature.meta != null && polyfillFeature.meta.shadydom === true)) {
+					const shadyDomExtensionPathInput = join(rootDirectory, meta.shadydom);
+					const resolvedShadyDomExtensionPath = sync(shadyDomExtensionPathInput, SYNC_OPTIONS);
+					if (resolvedShadyDomExtensionPath != null) {
+						absolutePaths.push(resolvedShadyDomExtensionPath);
+					} else {
+						this.logger.debug(`Unresolved path:`, shadyDomExtensionPathInput);
+					}
+				}
+
+				// If the Zone-patching of 'matchMedia' is requested, add it to the polyfill buffer for Zone.js
+				if (polyfillFeature.meta != null && polyfillFeature.meta.mediaquery === true) {
+					const mediaQueryExtensionPathInput = join(rootDirectory, meta.mediaquery);
+					const resolvedMediaQueryExtensionPath = sync(mediaQueryExtensionPathInput, SYNC_OPTIONS);
+					if (resolvedMediaQueryExtensionPath != null) {
+						absolutePaths.push(resolvedMediaQueryExtensionPath);
+					} else {
+						this.logger.debug(`Unresolved path:`, mediaQueryExtensionPathInput);
+					}
+				}
+
+				// If the Zone-patching of 'rxjs' is requested, add it to the polyfill buffer for Zone.js
+				if (polyfillFeature.meta != null && polyfillFeature.meta.rxjs === true) {
+					const rxjsExtensionPathInput = join(rootDirectory, meta.rxjs);
+					const resolvedRxjsExtensionPath = sync(rxjsExtensionPathInput, SYNC_OPTIONS);
+					if (resolvedRxjsExtensionPath != null) {
+						absolutePaths.push(resolvedRxjsExtensionPath);
+					} else {
+						this.logger.debug(`Unresolved path:`, rxjsExtensionPathInput);
+					}
+				}
+
+				// If the Zone-patching of 'fetch' is requested, add it to the polyfill buffer for Zone.js
+				if (polyfillFeature.meta != null && polyfillFeature.meta.fetch === true) {
+					const fetchExtensionPathInput = join(rootDirectory, meta.fetch);
+					const resolvedFetchExtensionPath = sync(fetchExtensionPathInput, SYNC_OPTIONS);
+					if (resolvedFetchExtensionPath != null) {
+						absolutePaths.push(resolvedFetchExtensionPath);
+					} else {
+						this.logger.debug(`Unresolved path:`, fetchExtensionPathInput);
+					}
 				}
 			}
 

@@ -1,3 +1,9 @@
+## [0.0.74](https://github.com/wessberg/polyfiller/compare/v0.0.73...v0.0.74) (2019-03-27)
+
+### Bug Fixes
+
+- **resize-observer:** Changes ResizeObserver polyfill implementation since the current one causes significant performance issues in some browsers ([aa5ffd8](https://github.com/wessberg/polyfiller/commit/aa5ffd8))
+
 ## [0.0.73](https://github.com/wessberg/polyfiller/compare/v0.0.72...v0.0.73) (2019-03-17)
 
 ### Bug Fixes

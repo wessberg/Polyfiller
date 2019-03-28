@@ -1,3 +1,14 @@
+## [0.0.75](https://github.com/wessberg/polyfiller/compare/v0.0.74...v0.0.75) (2019-03-28)
+
+### Bug Fixes
+
+- **bug:** fixes an issue where polyfills with es2015 block scoping would cause issues in older browers ([4efd9dd](https://github.com/wessberg/polyfiller/commit/4efd9dd))
+
+### Features
+
+- **zone:** added ResizeObserver patch for Zone ([1cdcbb5](https://github.com/wessberg/polyfiller/commit/1cdcbb5))
+- **zone.js:** adds additional configuration options for Zone.js ([315b0c1](https://github.com/wessberg/polyfiller/commit/315b0c1))
+
 ## [0.0.74](https://github.com/wessberg/polyfiller/compare/v0.0.73...v0.0.74) (2019-03-27)
 
 ### Bug Fixes

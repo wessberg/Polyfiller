@@ -244,13 +244,14 @@ For example: `systemjs|variant=s` selects the _s_ variant, while `systemjs|varia
 
 [Zone.js](https://github.com/angular/zone.js/), which is supported by Polyfiller, can be configured with some extra options to enhance its operation or support interoperability with more APIs:
 
-| Option       | Description                                                                                       |
-| ------------ | ------------------------------------------------------------------------------------------------- |
-| `error`      | Generates more readable Stack traces when using Zone                                              |
-| `shadydom`   | _This will be automatically applied if the Shadow DOM polyfill is being loaded along with Zone_.  |
-| `mediaquery` | Patches the [Media Query API](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) |
-| `rxjs`       | Patches [Rxjs](https://github.com/ReactiveX/rxjs)                                                 |
-| `fetch`      | Patches the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)               |
+| Option           | Description                                                                                                                                                                                             |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `error`          | Generates more readable Stack traces when using Zone                                                                                                                                                    |
+| `shadydom`       | _This will be automatically applied if the Shadow DOM polyfill is being loaded along with Zone_.                                                                                                        |
+| `mediaquery`     | Patches the [Media Query API](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia)                                                                                                       |
+| `rxjs`           | Patches [Rxjs](https://github.com/ReactiveX/rxjs)                                                                                                                                                       |
+| `fetch`          | Patches the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). _This will be automatically applied if the Fetch polyfill is being loaded along with Zone_.                        |
+| `resizeobserver` | Patches the [ResizeObserver API](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver). _This will be automatically applied if the ResizeObserver polyfill is being loaded along with Zone_. |
 
 ### Usage in a Web Worker/Service Worker
 

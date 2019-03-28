@@ -178,14 +178,31 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 					}
 				}
 
-				// If the Zone-patching of 'fetch' is requested, add it to the polyfill buffer for Zone.js
-				if (polyfillFeature.meta != null && polyfillFeature.meta.fetch === true) {
+				// Check if any fetch polyfill has been requested
+				const hasFetchPolyfill = [...polyfillSet].some(({name}) => name === "fetch");
+
+				// If the Zone-patching of 'fetch' is requested, or if 'fetch' is requested as a polyfill along with Zone add it to the polyfill buffer for Zone.js
+				if (hasFetchPolyfill || (polyfillFeature.meta != null && polyfillFeature.meta.fetch === true)) {
 					const fetchExtensionPathInput = join(rootDirectory, meta.fetch);
 					const resolvedFetchExtensionPath = sync(fetchExtensionPathInput, SYNC_OPTIONS);
 					if (resolvedFetchExtensionPath != null) {
 						absolutePaths.push(resolvedFetchExtensionPath);
 					} else {
 						this.logger.debug(`Unresolved path:`, fetchExtensionPathInput);
+					}
+				}
+
+				// Check if any fetch polyfill has been requested
+				const hasResizeObserverPolyfill = [...polyfillSet].some(({name}) => name === "resize-observer");
+
+				// If the Zone-patching of 'ResizeObserver' is requested or if ResizeObserver is requested as a polyfill along with Zone.js, add it to the polyfill buffer for Zone.js
+				if (hasResizeObserverPolyfill || (polyfillFeature.meta != null && polyfillFeature.meta.resizeobserver === true)) {
+					const resizeObserverExtensionPathInput = join(rootDirectory, meta.resizeobserver);
+					const resolvedResizeObserverExtensionPath = sync(resizeObserverExtensionPathInput, SYNC_OPTIONS);
+					if (resolvedResizeObserverExtensionPath != null) {
+						absolutePaths.push(resolvedResizeObserverExtensionPath);
+					} else {
+						this.logger.debug(`Unresolved path:`, resizeObserverExtensionPathInput);
 					}
 				}
 			}

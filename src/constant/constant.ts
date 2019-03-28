@@ -47,7 +47,8 @@ export const constant: IConstant = {
 				shadydom: "dist/webapis-shadydom.min.js",
 				mediaquery: "dist/webapis-media-query.min.js",
 				rxjs: "dist/zone-patch-rxjs.min.js",
-				fetch: "dist/zone-patch-fetch.min.js"
+				fetch: "dist/zone-patch-fetch.min.js",
+				resizeobserver: "dist/zone-patch-resize-observer.min.js"
 			},
 			relativePaths: {
 				window: ["dist/zone.min.js"],

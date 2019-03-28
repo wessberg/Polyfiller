@@ -25,7 +25,7 @@ export class MinifyService implements IMinifyService {
 			sourceMaps: false,
 			root: "",
 			presets: [],
-			plugins: []
+			plugins: ["@babel/plugin-transform-block-scoping"]
 		});
 		return result.code;
 	}

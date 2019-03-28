@@ -37,7 +37,7 @@ export const constant: IConstant = {
 			},
 			features: [],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_SYSTEMJS,
-			dependencies: ["es.promise", "fetch"],
+			dependencies: ["es.object.create", "es.object.freeze", "es.object.define-property", "es.promise", "fetch"],
 			contexts: ALL_CONTEXTS
 		},
 		zone: {

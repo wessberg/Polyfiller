@@ -2778,6 +2778,10 @@ export const constant: IConstant = {
 				"node_modules/@webcomponents/shadycss/scoping-shim.min.js",
 				"node_modules/@webcomponents/shadycss/custom-style-interface.min.js"
 			],
+			meta: {
+				// The experimental variant is based on https://github.com/webcomponents/shadycss/pull/242
+				experimental: ["node_modules/@webcomponents/shadydom/shadydom.min.js", "polyfill-lib/shady-css/scoping-shim.min.js", "node_modules/@webcomponents/shadycss/custom-style-interface.min.js"]
+			},
 			features: ["shadowdomv1"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES__WEBCOMPONENTS_SHADYDOM,
 			dependencies: ["es", "template", "mutation-observer", "event", "node.contains", "queryselector"],

@@ -253,6 +253,10 @@ For example: `systemjs|variant=s` selects the _s_ variant, while `systemjs|varia
 | `fetch`          | Patches the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). _This will be automatically applied if the Fetch polyfill is being loaded along with Zone_.                        |
 | `resizeobserver` | Patches the [ResizeObserver API](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver). _This will be automatically applied if the ResizeObserver polyfill is being loaded along with Zone_. |
 
+#### Extra options for `shadow-dom`
+
+You can pass the `experimental` option to `shadow-dom` (or any of its aliases such as `web-components`) to base it on some experimental features that may reduce bugs in older browsers such as IE and Edge <= 15.
+
 ### Usage in a Web Worker/Service Worker
 
 You can also request polyfills from a Worker. It is highly recommended that you pass in the [`context`](#the-context-option) query parameter with a value of `worker` to instruct `Polyfiller` to optimize polyfills for a Worker environment, as well as to

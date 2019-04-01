@@ -7,7 +7,7 @@ export interface IPolyfillDictAlias {
 
 export interface IPolyfillDictEntryBase {
 	features: string[];
-	meta?: {[key: string]: string};
+	meta?: Record<string, string[] | string>;
 	version: string;
 	contexts: Set<PolyfillContext>;
 	dependencies: PolyfillName[];

@@ -106,12 +106,27 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				"variant" in polyfillFeature.meta &&
 				(polyfillFeature.meta.variant === "s" || polyfillFeature.meta.variant === "system")
 			) {
-				const metaVariantPathInput = join(rootDirectory, meta[polyfillFeature.meta.variant]);
-				const resolvedMetaVariantPath = sync(metaVariantPathInput, SYNC_OPTIONS);
-				if (resolvedMetaVariantPath != null) {
-					absolutePaths.push(resolvedMetaVariantPath);
-				} else {
-					this.logger.debug(`Unresolved path:`, metaVariantPathInput);
+				for (const variant of ensureArray(meta[polyfillFeature.meta.variant])) {
+					const metaVariantPathInput = join(rootDirectory, variant);
+					const resolvedMetaVariantPath = sync(metaVariantPathInput, SYNC_OPTIONS);
+					if (resolvedMetaVariantPath != null) {
+						absolutePaths.push(resolvedMetaVariantPath);
+					} else {
+						this.logger.debug(`Unresolved path:`, metaVariantPathInput);
+					}
+				}
+			}
+
+			// If shadow-dom is requested, the variant to use may be provided as metadata. If so, we should use that one, rather than the relativePaths
+			else if (polyfillFeature.name === "shadow-dom" && meta != null && polyfillFeature.meta != null && "experimental" in polyfillFeature.meta && polyfillFeature.meta.experimental === true) {
+				for (const variant of ensureArray(meta.experimental)) {
+					const metaVariantPathInput = join(rootDirectory, variant);
+					const resolvedMetaVariantPath = sync(metaVariantPathInput, SYNC_OPTIONS);
+					if (resolvedMetaVariantPath != null) {
+						absolutePaths.push(resolvedMetaVariantPath);
+					} else {
+						this.logger.debug(`Unresolved path:`, metaVariantPathInput);
+					}
 				}
 			}
 
@@ -132,12 +147,14 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 			if (meta != null && polyfillFeature.name === "zone") {
 				// If Zone is requested, 'zone-error' may be requested which improves the produced Stack trace when using Zone
 				if (polyfillFeature.meta != null && polyfillFeature.meta.error === true) {
-					const errorPathInput = join(rootDirectory, meta.error);
-					const resolvedErrorPath = sync(errorPathInput, SYNC_OPTIONS);
-					if (resolvedErrorPath != null) {
-						absolutePaths.push(resolvedErrorPath);
-					} else {
-						this.logger.debug(`Unresolved path:`, errorPathInput);
+					for (const errorPath of ensureArray(meta.error)) {
+						const errorPathInput = join(rootDirectory, errorPath);
+						const resolvedErrorPath = sync(errorPathInput, SYNC_OPTIONS);
+						if (resolvedErrorPath != null) {
+							absolutePaths.push(resolvedErrorPath);
+						} else {
+							this.logger.debug(`Unresolved path:`, errorPathInput);
+						}
 					}
 				}
 
@@ -147,34 +164,40 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				// If any web component polyfill has been requested, or if the 'shadydom' zone extension has been explicitly requested
 				// add it to the Zone.js polyfill buffer
 				if (hasWCPolyfill || (polyfillFeature.meta != null && polyfillFeature.meta.shadydom === true)) {
-					const shadyDomExtensionPathInput = join(rootDirectory, meta.shadydom);
-					const resolvedShadyDomExtensionPath = sync(shadyDomExtensionPathInput, SYNC_OPTIONS);
-					if (resolvedShadyDomExtensionPath != null) {
-						absolutePaths.push(resolvedShadyDomExtensionPath);
-					} else {
-						this.logger.debug(`Unresolved path:`, shadyDomExtensionPathInput);
+					for (const shadydomPath of ensureArray(meta.shadydom)) {
+						const shadyDomExtensionPathInput = join(rootDirectory, shadydomPath);
+						const resolvedShadyDomExtensionPath = sync(shadyDomExtensionPathInput, SYNC_OPTIONS);
+						if (resolvedShadyDomExtensionPath != null) {
+							absolutePaths.push(resolvedShadyDomExtensionPath);
+						} else {
+							this.logger.debug(`Unresolved path:`, shadyDomExtensionPathInput);
+						}
 					}
 				}
 
 				// If the Zone-patching of 'matchMedia' is requested, add it to the polyfill buffer for Zone.js
 				if (polyfillFeature.meta != null && polyfillFeature.meta.mediaquery === true) {
-					const mediaQueryExtensionPathInput = join(rootDirectory, meta.mediaquery);
-					const resolvedMediaQueryExtensionPath = sync(mediaQueryExtensionPathInput, SYNC_OPTIONS);
-					if (resolvedMediaQueryExtensionPath != null) {
-						absolutePaths.push(resolvedMediaQueryExtensionPath);
-					} else {
-						this.logger.debug(`Unresolved path:`, mediaQueryExtensionPathInput);
+					for (const mediaqueryPath of ensureArray(meta.mediaquery)) {
+						const mediaQueryExtensionPathInput = join(rootDirectory, mediaqueryPath);
+						const resolvedMediaQueryExtensionPath = sync(mediaQueryExtensionPathInput, SYNC_OPTIONS);
+						if (resolvedMediaQueryExtensionPath != null) {
+							absolutePaths.push(resolvedMediaQueryExtensionPath);
+						} else {
+							this.logger.debug(`Unresolved path:`, mediaQueryExtensionPathInput);
+						}
 					}
 				}
 
 				// If the Zone-patching of 'rxjs' is requested, add it to the polyfill buffer for Zone.js
 				if (polyfillFeature.meta != null && polyfillFeature.meta.rxjs === true) {
-					const rxjsExtensionPathInput = join(rootDirectory, meta.rxjs);
-					const resolvedRxjsExtensionPath = sync(rxjsExtensionPathInput, SYNC_OPTIONS);
-					if (resolvedRxjsExtensionPath != null) {
-						absolutePaths.push(resolvedRxjsExtensionPath);
-					} else {
-						this.logger.debug(`Unresolved path:`, rxjsExtensionPathInput);
+					for (const rxjsPath of ensureArray(meta.rxjs)) {
+						const rxjsExtensionPathInput = join(rootDirectory, rxjsPath);
+						const resolvedRxjsExtensionPath = sync(rxjsExtensionPathInput, SYNC_OPTIONS);
+						if (resolvedRxjsExtensionPath != null) {
+							absolutePaths.push(resolvedRxjsExtensionPath);
+						} else {
+							this.logger.debug(`Unresolved path:`, rxjsExtensionPathInput);
+						}
 					}
 				}
 
@@ -183,12 +206,14 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 
 				// If the Zone-patching of 'fetch' is requested, or if 'fetch' is requested as a polyfill along with Zone add it to the polyfill buffer for Zone.js
 				if (hasFetchPolyfill || (polyfillFeature.meta != null && polyfillFeature.meta.fetch === true)) {
-					const fetchExtensionPathInput = join(rootDirectory, meta.fetch);
-					const resolvedFetchExtensionPath = sync(fetchExtensionPathInput, SYNC_OPTIONS);
-					if (resolvedFetchExtensionPath != null) {
-						absolutePaths.push(resolvedFetchExtensionPath);
-					} else {
-						this.logger.debug(`Unresolved path:`, fetchExtensionPathInput);
+					for (const fetchPath of ensureArray(meta.fetch)) {
+						const fetchExtensionPathInput = join(rootDirectory, fetchPath);
+						const resolvedFetchExtensionPath = sync(fetchExtensionPathInput, SYNC_OPTIONS);
+						if (resolvedFetchExtensionPath != null) {
+							absolutePaths.push(resolvedFetchExtensionPath);
+						} else {
+							this.logger.debug(`Unresolved path:`, fetchExtensionPathInput);
+						}
 					}
 				}
 
@@ -197,12 +222,14 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 
 				// If the Zone-patching of 'ResizeObserver' is requested or if ResizeObserver is requested as a polyfill along with Zone.js, add it to the polyfill buffer for Zone.js
 				if (hasResizeObserverPolyfill || (polyfillFeature.meta != null && polyfillFeature.meta.resizeobserver === true)) {
-					const resizeObserverExtensionPathInput = join(rootDirectory, meta.resizeobserver);
-					const resolvedResizeObserverExtensionPath = sync(resizeObserverExtensionPathInput, SYNC_OPTIONS);
-					if (resolvedResizeObserverExtensionPath != null) {
-						absolutePaths.push(resolvedResizeObserverExtensionPath);
-					} else {
-						this.logger.debug(`Unresolved path:`, resizeObserverExtensionPathInput);
+					for (const resizeobserverPath of ensureArray(meta.resizeobserver)) {
+						const resizeObserverExtensionPathInput = join(rootDirectory, resizeobserverPath);
+						const resolvedResizeObserverExtensionPath = sync(resizeObserverExtensionPathInput, SYNC_OPTIONS);
+						if (resolvedResizeObserverExtensionPath != null) {
+							absolutePaths.push(resolvedResizeObserverExtensionPath);
+						} else {
+							this.logger.debug(`Unresolved path:`, resizeObserverExtensionPathInput);
+						}
 					}
 				}
 			}
@@ -216,12 +243,14 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				await Promise.all(
 					requestedLocales.map(async requestedLocale => {
 						// Resolve the absolute path
-						const localePathInput = join(rootDirectory, meta.localeDir, `${requestedLocale}.js`);
-						const resolvedLocalePath = sync(localePathInput, SYNC_OPTIONS);
-						if (resolvedLocalePath != null) {
-							absolutePaths.push(resolvedLocalePath);
-						} else {
-							this.logger.debug(`Unresolved path:`, localePathInput);
+						for (const localeDir of ensureArray(meta.localeDir)) {
+							const localePathInput = join(rootDirectory, localeDir, `${requestedLocale}.js`);
+							const resolvedLocalePath = sync(localePathInput, SYNC_OPTIONS);
+							if (resolvedLocalePath != null) {
+								absolutePaths.push(resolvedLocalePath);
+							} else {
+								this.logger.debug(`Unresolved path:`, localePathInput);
+							}
 						}
 					})
 				);

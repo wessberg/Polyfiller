@@ -77,6 +77,7 @@ The web service is hosted and live at `https://polyfill.app/api`. It is **free**
     - [The `locale` option for `Intl`](#the-locale-option-for-intl)
     - [The `variant` option for `SystemJS`](#the-variant-option-for-systemjs)
     - [Extra options for `Zone`](#extra-options-for-zone)
+    - [Extra options for `shadow-dom`](#extra-options-for-shadow-dom)
   - [Usage in a Web Worker/Service Worker](#usage-in-a-web-workerservice-worker)
   - [Usage in Node](#usage-in-node)
 - [Contributing](#contributing)

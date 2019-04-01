@@ -1,3 +1,9 @@
+## [0.0.76](https://github.com/wessberg/polyfiller/compare/v0.0.75...v0.0.76) (2019-04-01)
+
+### Features
+
+- **shadow-dom:** adds a 'experimental' option to the shadow-dom polyfill which may reduce bugs in older browsers such as IE and Edge <=15 ([fb1a8f9](https://github.com/wessberg/polyfiller/commit/fb1a8f9))
+
 ## [0.0.75](https://github.com/wessberg/polyfiller/compare/v0.0.74...v0.0.75) (2019-03-28)
 
 ### Bug Fixes

@@ -158,12 +158,9 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 					}
 				}
 
-				// Check if any web component polyfill has been requested
-				const hasWCPolyfill = [...polyfillSet].some(({name}) => name === "custom-elements" || name === "shadow-dom");
-
 				// If any web component polyfill has been requested, or if the 'shadydom' zone extension has been explicitly requested
 				// add it to the Zone.js polyfill buffer
-				if (hasWCPolyfill || (polyfillFeature.meta != null && polyfillFeature.meta.shadydom === true)) {
+				if (polyfillFeature.meta != null && polyfillFeature.meta.shadydom === true) {
 					for (const shadydomPath of ensureArray(meta.shadydom)) {
 						const shadyDomExtensionPathInput = join(rootDirectory, shadydomPath);
 						const resolvedShadyDomExtensionPath = sync(shadyDomExtensionPathInput, SYNC_OPTIONS);
@@ -201,11 +198,8 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 					}
 				}
 
-				// Check if any fetch polyfill has been requested
-				const hasFetchPolyfill = [...polyfillSet].some(({name}) => name === "fetch");
-
 				// If the Zone-patching of 'fetch' is requested, or if 'fetch' is requested as a polyfill along with Zone add it to the polyfill buffer for Zone.js
-				if (hasFetchPolyfill || (polyfillFeature.meta != null && polyfillFeature.meta.fetch === true)) {
+				if (polyfillFeature.meta != null && polyfillFeature.meta.fetch === true) {
 					for (const fetchPath of ensureArray(meta.fetch)) {
 						const fetchExtensionPathInput = join(rootDirectory, fetchPath);
 						const resolvedFetchExtensionPath = sync(fetchExtensionPathInput, SYNC_OPTIONS);
@@ -217,11 +211,8 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 					}
 				}
 
-				// Check if any fetch polyfill has been requested
-				const hasResizeObserverPolyfill = [...polyfillSet].some(({name}) => name === "resize-observer");
-
 				// If the Zone-patching of 'ResizeObserver' is requested or if ResizeObserver is requested as a polyfill along with Zone.js, add it to the polyfill buffer for Zone.js
-				if (hasResizeObserverPolyfill || (polyfillFeature.meta != null && polyfillFeature.meta.resizeobserver === true)) {
+				if (polyfillFeature.meta != null && polyfillFeature.meta.resizeobserver === true) {
 					for (const resizeobserverPath of ensureArray(meta.resizeobserver)) {
 						const resizeObserverExtensionPathInput = join(rootDirectory, resizeobserverPath);
 						const resolvedResizeObserverExtensionPath = sync(resizeObserverExtensionPathInput, SYNC_OPTIONS);

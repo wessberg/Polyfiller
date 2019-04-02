@@ -1,3 +1,9 @@
+## [0.0.78](https://github.com/wessberg/polyfiller/compare/v0.0.77...v0.0.78) (2019-04-02)
+
+### Bug Fixes
+
+- **bug:** stops auto-applying zone patches for ShadyDOM when requesting both Zone and shadow-dom since this may lead to issues in IE11 ([fb6c5cf](https://github.com/wessberg/polyfiller/commit/fb6c5cf))
+
 ## [0.0.77](https://github.com/wessberg/polyfiller/compare/v0.0.76...v0.0.77) (2019-04-01)
 
 ## [0.0.76](https://github.com/wessberg/polyfiller/compare/v0.0.75...v0.0.76) (2019-04-01)

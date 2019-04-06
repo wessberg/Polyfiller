@@ -2992,10 +2992,9 @@ export const constant: IConstant = {
 			contexts: ALL_CONTEXTS
 		},
 		proto: {
-			library: "proto-polyfill",
-			relativePaths: ["index.js"],
+			localPaths: ["polyfill-lib/proto/proto.js"],
 			features: ["javascript.builtins.Object.proto"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_PROTO_POLYFILL,
+			version: "1.0.0",
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		}

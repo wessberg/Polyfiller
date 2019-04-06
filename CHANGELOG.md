@@ -1,3 +1,9 @@
+## [0.0.80](https://github.com/wessberg/polyfiller/compare/v0.0.79...v0.0.80) (2019-04-06)
+
+### Features
+
+- **polyfill:** adds a 'proto' polyfill that adds support for '**proto**' on IE <11 ([41ba4c2](https://github.com/wessberg/polyfiller/commit/41ba4c2))
+
 ## [0.0.79](https://github.com/wessberg/polyfiller/compare/v0.0.78...v0.0.79) (2019-04-06)
 
 ### Bug Fixes

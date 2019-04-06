@@ -1,3 +1,9 @@
+## [0.0.81](https://github.com/wessberg/polyfiller/compare/v0.0.80...v0.0.81) (2019-04-06)
+
+### Bug Fixes
+
+- **proto:** makes the proto polyfill not entirely crash IE 8. Fixes [#5](https://github.com/wessberg/polyfiller/issues/5) ([4cfec27](https://github.com/wessberg/polyfiller/commit/4cfec27))
+
 ## [0.0.80](https://github.com/wessberg/polyfiller/compare/v0.0.79...v0.0.80) (2019-04-06)
 
 ### Features

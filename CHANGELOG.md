@@ -1,3 +1,9 @@
+## [0.0.79](https://github.com/wessberg/polyfiller/compare/v0.0.78...v0.0.79) (2019-04-06)
+
+### Bug Fixes
+
+- **bug:** fixes a bug that would lead to crashes when requesting global-this ([a24d038](https://github.com/wessberg/polyfiller/commit/a24d038))
+
 ## [0.0.78](https://github.com/wessberg/polyfiller/compare/v0.0.77...v0.0.78) (2019-04-02)
 
 ### Bug Fixes

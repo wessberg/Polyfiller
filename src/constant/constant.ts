@@ -360,7 +360,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/es.object.get-prototype-of.js"],
 			features: ["javascript.builtins.Object.getPrototypeOf"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
-			dependencies: [],
+			dependencies: ["proto"],
 			contexts: ALL_CONTEXTS
 		},
 		"es.object.is-extensible": {
@@ -424,7 +424,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/es.object.set-prototype-of.js"],
 			features: ["javascript.builtins.Object.setPrototypeOf"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
-			dependencies: [],
+			dependencies: ["proto"],
 			contexts: ALL_CONTEXTS
 		},
 		"es.object.to-string": {
@@ -2487,7 +2487,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/es.reflect.get-prototype-of.js"],
 			features: ["javascript.builtins.Reflect.getPrototypeOf"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
-			dependencies: [],
+			dependencies: ["proto"],
 			contexts: ALL_CONTEXTS
 		},
 		"es.reflect.has": {
@@ -2535,7 +2535,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/es.reflect.set-prototype-of.js"],
 			features: ["javascript.builtins.Reflect.setPrototypeOf"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
-			dependencies: [],
+			dependencies: ["proto"],
 			contexts: ALL_CONTEXTS
 		},
 		esnext: {
@@ -2989,6 +2989,14 @@ export const constant: IConstant = {
 			features: ["api.DocumentOrShadowRoot.adoptedStyleSheets"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CONSTRUCT_STYLE_SHEETS_POLYFILL,
 			dependencies: ["shadow-dom"],
+			contexts: ALL_CONTEXTS
+		},
+		proto: {
+			library: "proto-polyfill",
+			relativePaths: ["index.js"],
+			features: ["javascript.builtins.Object.proto"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_PROTO_POLYFILL,
+			dependencies: [],
 			contexts: ALL_CONTEXTS
 		}
 	}

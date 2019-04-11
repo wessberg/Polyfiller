@@ -1,3 +1,5 @@
+## [0.0.82](https://github.com/wessberg/polyfiller/compare/v0.0.81...v0.0.82) (2019-04-11)
+
 ## [0.0.81](https://github.com/wessberg/polyfiller/compare/v0.0.80...v0.0.81) (2019-04-06)
 
 ### Bug Fixes

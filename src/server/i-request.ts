@@ -17,6 +17,7 @@ export interface IRequest {
 	method: Method;
 	url: URL;
 	userAgent: string;
+	referer: string;
 	accept?: Set<string>;
 	acceptEncoding?: Set<string>;
 	acceptLanguage?: Set<string>;

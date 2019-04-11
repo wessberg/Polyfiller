@@ -3,10 +3,11 @@ import {request as requestHttps} from "https";
 import {IRawRequest, Request} from "../../server/i-request";
 import {IOKResponse, Response} from "../../server/i-response";
 import chalk from "chalk";
-import {connect, ClientHttp2Stream, ClientHttp2Session} from "http2";
+import {ClientHttp2Session, ClientHttp2Stream, connect} from "http2";
 import {ContentEncodingKind} from "../../encoding/content-encoding-kind";
 import {URL} from "url";
 import {constant} from "../../constant/constant";
+import {Method} from "../../server/method";
 
 // tslint:disable:no-any
 
@@ -41,17 +42,18 @@ export function getRequestFromIncomingHeaders(headers: IncomingHttpHeaders, http
 		// Replace all literal "+" with its literal encoded variant
 		path = path.replace(/\+/g, "%2B");
 	}
-	return <Request>{
+
+	return {
 		http2,
-		method: <Request["method"]>headers[":method"]!,
+		method: headers[":method"] == null ? "OPTIONS" : (headers[":method"] as Method),
 		accept: headers.accept == null ? undefined : splitStringifiedListHeader(headers.accept),
 		acceptEncoding: headers["accept-encoding"] == null ? undefined : splitStringifiedListHeader(headers["accept-encoding"]!),
 		acceptLanguage: headers["accept-language"] == null ? undefined : splitStringifiedListHeader(headers["accept-language"]!),
-		userAgent: headers["user-agent"]!,
-		// @ts-ignore
-		url: new URL(path, `${headers[":scheme"]}://${headers[":authority"]}`),
+		userAgent: headers["user-agent"] != null ? headers["user-agent"] : "",
+		referer: headers[":referer"] != null ? (headers[":referer"] as string) : headers.referer != null ? headers.referer : "",
+		url: new URL(path as string, `${headers[":scheme"]}://${headers[":authority"]}`),
 		cachedChecksum: headers["if-none-match"]
-	};
+	} as Request;
 }
 
 /**
@@ -78,8 +80,8 @@ function paintMethod(method: Request["method"]): string {
  * Prints the given request
  * @param {IRequest} request
  */
-export function printRequest({method, url, userAgent}: Request): void {
-	console.log(`${paintMethod(method)} ${url.toString()} (${chalk.gray(userAgent)})`);
+export function printRequest({method, url, userAgent, referer}: Request): void {
+	console.log(`${paintMethod(method)} ${url.toString()} (${chalk.gray(userAgent)}) ${referer != null && referer.length > 0 ? `(${chalk.yellow(referer)})` : ``}`);
 }
 
 /**

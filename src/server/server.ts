@@ -137,6 +137,7 @@ export class Server implements IServer {
 		const normalizedRequest = getRequestFromIncomingHeaders(
 			{
 				...request.headers,
+				":referer": ":referer" in request.headers ? request.headers[":referer"] : request.headers.referer,
 				":method": ":method" in request.headers ? request.headers[":method"] : request.method,
 				":path": ":path" in request.headers ? request.headers[":path"] : request.url,
 				":scheme": ":scheme" in request.headers ? request.headers[":scheme"] : tls ? "https" : "http",

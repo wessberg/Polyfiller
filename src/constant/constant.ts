@@ -1,7 +1,6 @@
 import {IConstant} from "./i-constant";
 import {environment} from "../environment/environment";
-// @ts-ignore
-import tempDir from "temp-dir";
+import tempDirectory from "temp-dir";
 import {join} from "path";
 import {ALL_CONTEXTS, WINDOW_CONTEXT, WINDOW_NODE_CONTEXT} from "../polyfill/polyfill-context";
 
@@ -23,8 +22,8 @@ export const constant: IConstant = {
 	},
 
 	path: {
-		cacheRoot: join(tempDir, environment.NPM_PACKAGE_NAME),
-		cachePackageVersionMap: join(tempDir, environment.NPM_PACKAGE_NAME, "cache_package_version_map.json")
+		cacheRoot: join(tempDirectory, environment.NPM_PACKAGE_NAME),
+		cachePackageVersionMap: join(tempDirectory, environment.NPM_PACKAGE_NAME, "cache_package_version_map.json")
 	},
 
 	polyfill: {

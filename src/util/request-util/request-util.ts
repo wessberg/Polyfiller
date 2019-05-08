@@ -48,7 +48,7 @@ export function getRequestFromIncomingHeaders(headers: IncomingHttpHeaders, http
 		method: headers[":method"] == null ? "OPTIONS" : (headers[":method"] as Method),
 		accept: headers.accept == null ? undefined : splitStringifiedListHeader(headers.accept),
 		acceptEncoding: headers["accept-encoding"] == null ? undefined : splitStringifiedListHeader(headers["accept-encoding"]!),
-		acceptLanguage: headers["accept-language"] == null ? undefined : splitStringifiedListHeader(headers["accept-language"]!),
+		acceptLanguage: headers["accept-language"] == null ? undefined : splitStringifiedListHeader(headers["accept-language"]),
 		userAgent: headers["user-agent"] != null ? headers["user-agent"] : "",
 		referer: headers[":referer"] != null ? (headers[":referer"] as string) : headers.referer != null ? headers.referer : "",
 		url: new URL(path as string, `${headers[":scheme"]}://${headers[":authority"]}`),

@@ -1,3 +1,9 @@
+## [0.0.83](https://github.com/wessberg/polyfiller/compare/v0.0.82...v0.0.83) (2019-05-08)
+
+### Features
+
+- **logging:** adds referrer logging ([77cbce8](https://github.com/wessberg/polyfiller/commit/77cbce8))
+
 ## [0.0.82](https://github.com/wessberg/polyfiller/compare/v0.0.81...v0.0.82) (2019-04-11)
 
 ## [0.0.81](https://github.com/wessberg/polyfiller/compare/v0.0.80...v0.0.81) (2019-04-06)

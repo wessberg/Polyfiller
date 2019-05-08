@@ -1,6 +1,6 @@
 {
 	"name": "@wessberg/polyfiller",
-	"version": "0.0.82",
+	"version": "0.0.83",
 	"description": "Never worry about polyfills again.",
 	"files": [
 		"dist/**/*.*",

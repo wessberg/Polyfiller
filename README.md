@@ -326,7 +326,7 @@ Do you want to contribute? Awesome! Please follow [these recommendations](./CONT
 
 Polyfiller is kindly supported by JetBrains:
 
-<a href="https://www.jetbrains.com/?from=Polyfiller"><img alt="Supported by JetBrains" src="https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/jetbrains.png" height="80" /></a>
+<a href="https://www.jetbrains.com/?from=Polyfiller"><img alt="Supported by JetBrains" src="https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/jetbrains.png" height="150" /></a>
 
 ## FAQ
 

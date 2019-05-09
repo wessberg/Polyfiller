@@ -36,7 +36,7 @@ The web service is hosted and live at `https://polyfill.app/api`. It is **free**
 
 Polyfiller relies on [BrowserStack](https://www.browserstack.com) for cross-browser testing to ensure maximum compatibility.
 
-<a href="https://www.browserstack.com"><img alt="BrowserStack" src="https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/browserstack.png" height="80" /></a>
+<a href="https://www.browserstack.com"><img alt="BrowserStack" src="https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/browserstack.png" height="60" /></a>
 
 <!-- SHADOW_SECTION_FEATURES_START -->
 

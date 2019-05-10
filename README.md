@@ -34,10 +34,6 @@ It is also potentially faster since all unique polyfill combinations are cached 
 And, it supports different kinds of encodings for the smallest possible network bandwidth overhead, including [Brotli](https://github.com/google/brotli) and [Gzip](https://en.wikipedia.org/wiki/Gzip).
 The web service is hosted and live at `https://polyfill.app/api`. It is **free** to use, and there are no quota limits. See the [Hosting](#hosting) section for details on how to host it yourself, if you want to.
 
-Polyfiller relies on [BrowserStack](https://www.browserstack.com) for cross-browser testing to ensure maximum compatibility.
-
-<a href="https://www.browserstack.com"><img alt="BrowserStack" src="https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/browserstack.png" height="60" /></a>
-
 <!-- SHADOW_SECTION_FEATURES_START -->
 
 ### Features
@@ -56,12 +52,23 @@ Polyfiller relies on [BrowserStack](https://www.browserstack.com) for cross-brow
 
 <!-- SHADOW_SECTION_FEATURE_IMAGE_END -->
 
+## Supporters
+
+Polyfiller is kindly supported by and relies heavily on [BrowserStack](https://www.browserstack.com) for cross-browser testing to ensure maximum cross-browser compatibility.
+
+<a href="https://www.browserstack.com"><img alt="BrowserStack" src="https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/browserstack.png" height="60" /></a>
+
+Polyfiller is kindly supported by JetBrains for software development tools:
+
+<a href="https://www.jetbrains.com/?from=Polyfiller"><img alt="Supported by JetBrains" src="https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/jetbrains.png" height="150" /></a>
+
 <!-- SHADOW_SECTION_TOC_START -->
 
 ## Table of Contents
 
 - [Description](#description)
   - [Features](#features)
+- [Supporters](#supporters)
 - [Table of Contents](#table-of-contents)
 - [Install](#install)
   - [NPM](#npm)
@@ -321,12 +328,6 @@ Do you want to contribute? Awesome! Please follow [these recommendations](./CONT
 <!-- SHADOW_SECTION_BACKERS_END -->
 
 <!-- SHADOW_SECTION_FAQ_START -->
-
-## Supporters
-
-Polyfiller is kindly supported by JetBrains:
-
-<a href="https://www.jetbrains.com/?from=Polyfiller"><img alt="Supported by JetBrains" src="https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/jetbrains.png" height="150" /></a>
 
 ## FAQ
 

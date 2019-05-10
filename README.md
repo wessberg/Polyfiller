@@ -58,7 +58,7 @@ Polyfiller is kindly supported by and relies heavily on [BrowserStack](https://w
 
 <a href="https://www.browserstack.com"><img alt="BrowserStack" src="https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/browserstack.png" height="60" /></a>
 
-Polyfiller is kindly supported by JetBrains for software development tools:
+Polyfiller is kindly supported by [JetBrains](https://www.jetbrains.com/?from=Polyfiller) for software development tools:
 
 <a href="https://www.jetbrains.com/?from=Polyfiller"><img alt="Supported by JetBrains" src="https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/jetbrains.png" height="150" /></a>
 

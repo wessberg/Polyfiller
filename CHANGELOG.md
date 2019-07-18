@@ -1,3 +1,5 @@
+## [0.0.85](https://github.com/wessberg/polyfiller/compare/v0.0.83...v0.0.85) (2019-07-18)
+
 ## [0.0.83](https://github.com/wessberg/polyfiller/compare/v0.0.82...v0.0.83) (2019-05-08)
 
 ### Features

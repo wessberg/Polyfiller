@@ -1,1 +1,7 @@
-export type ElementOf<ArrayType> = ArrayType extends (infer ElementType)[] ? ElementType : never;
+export type ElementOf<IterableType> = IterableType extends (infer ElementType)[]
+	? ElementType
+	: IterableType extends readonly (infer ReadonlyElementType)[]
+	? ReadonlyElementType
+	: IterableType extends Set<infer SetElementType>
+	? SetElementType
+	: never;

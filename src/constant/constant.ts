@@ -790,7 +790,7 @@ export const constant: IConstant = {
 		},
 		"es.string.match-all": {
 			library: "core-js",
-			relativePaths: ["modules/esnext.string.match-all.js"],
+			relativePaths: ["modules/es.string.match-all.js"],
 			features: ["javascript.builtins.String.matchAll"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: [],
@@ -1517,6 +1517,7 @@ export const constant: IConstant = {
 				"es.symbol.iterator",
 				"es.symbol.constructor",
 				"es.symbol.match",
+				"es.symbol.match-all",
 				"es.symbol.replace",
 				"es.symbol.search",
 				"es.symbol.species",
@@ -1587,6 +1588,14 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.symbol.match.js"],
 			features: ["javascript.builtins.Symbol.match"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+			dependencies: ["es.symbol.constructor"],
+			contexts: ALL_CONTEXTS
+		},
+		"es.symbol.match-all": {
+			library: "core-js",
+			relativePaths: ["modules/es.symbol.match-all.js"],
+			features: ["javascript.builtins.Symbol.matchAll"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: ["es.symbol.constructor"],
 			contexts: ALL_CONTEXTS
@@ -2538,7 +2547,17 @@ export const constant: IConstant = {
 			contexts: ALL_CONTEXTS
 		},
 		esnext: {
-			polyfills: ["esnext.array", "esnext.collections", "esnext.math", "esnext.number", "esnext.object", "esnext.promise", "esnext.reflect", "esnext.string", "esnext.symbol"]
+			polyfills: [
+				"esnext.array",
+				"esnext.collections",
+				"esnext.math",
+				"esnext.number",
+				"esnext.object",
+				"esnext.promise",
+				"esnext.reflect",
+				"esnext.string",
+				"esnext.symbol"
+			]
 		},
 		// An alias for the alias 'esnext'
 		"es2016+": {
@@ -2719,7 +2738,16 @@ export const constant: IConstant = {
 			},
 			features: ["javascript.builtins.Intl.RelativeTimeFormat"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_INTL_RELATIVE_TIME_FORMAT,
-			dependencies: ["intl.core", "es.array.includes", "es.object.create", "es.object.is", "es.string.includes", "es.string.replace", "es.symbol.to-string-tag", "es.weak-map"],
+			dependencies: [
+				"intl.core",
+				"es.array.includes",
+				"es.object.create",
+				"es.object.is",
+				"es.string.includes",
+				"es.string.replace",
+				"es.symbol.to-string-tag",
+				"es.weak-map"
+			],
 			contexts: ALL_CONTEXTS
 		},
 		"intl.list-format": {
@@ -2779,7 +2807,11 @@ export const constant: IConstant = {
 			],
 			meta: {
 				// The experimental variant is based on https://github.com/webcomponents/shadycss/pull/242
-				experimental: ["node_modules/@webcomponents/shadydom/shadydom.min.js", "polyfill-lib/shady-css/scoping-shim.min.js", "node_modules/@webcomponents/shadycss/custom-style-interface.min.js"]
+				experimental: [
+					"node_modules/@webcomponents/shadydom/shadydom.min.js",
+					"polyfill-lib/shady-css/scoping-shim.min.js",
+					"node_modules/@webcomponents/shadycss/custom-style-interface.min.js"
+				]
 			},
 			features: ["shadowdomv1"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES__WEBCOMPONENTS_SHADYDOM,
@@ -2787,19 +2819,18 @@ export const constant: IConstant = {
 			contexts: WINDOW_CONTEXT
 		},
 		queryselector: {
-			library: "polyfill-service",
-			relativePaths: ["polyfills/document.querySelector/polyfill.js"],
+			library: "polyfill-library",
+			relativePaths: ["polyfills/document/querySelector/polyfill.js"],
 			features: ["queryselector"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["element", "document", "document-fragment"],
 			contexts: WINDOW_CONTEXT
 		},
 		"document-fragment": {
-			// If 'addEventListener' isn't found, the Window interface shouldn't exist on the window
-			library: "polyfill-service",
+			library: "polyfill-library",
 			relativePaths: ["polyfills/DocumentFragment/polyfill.js"],
 			features: ["queryselector"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: [],
 			contexts: WINDOW_CONTEXT
 		},
@@ -2821,54 +2852,54 @@ export const constant: IConstant = {
 			contexts: WINDOW_CONTEXT
 		},
 		"node.contains": {
-			library: "polyfill-service",
+			library: "polyfill-library",
 			relativePaths: ["polyfills/Node/prototype/contains/polyfill.js"],
 			// If 'addEventListener' isn't found, the Window interface shouldn't exist on the window
 			features: ["addeventlistener"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["element"],
 			contexts: WINDOW_CONTEXT
 		},
 		window: {
-			library: "polyfill-service",
+			library: "polyfill-library",
 			relativePaths: ["polyfills/Window/polyfill.js"],
-			// If 'addEventListener' isn't found, the Window interface shouldn't exist on the window
+
 			features: ["addeventlistener"],
-			version: "1.0.0",
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: [],
 			contexts: WINDOW_CONTEXT
 		},
 		document: {
-			library: "polyfill-service",
-			relativePaths: ["polyfills/Document/polyfill.js"],
+			library: "polyfill-library",
+			relativePaths: ["polyfills/document/polyfill.js"],
 			// If 'addEventListener' isn't found, the Document interface shouldn't exist on the window
 			features: ["addeventlistener"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: [],
 			contexts: WINDOW_CONTEXT
 		},
 		"class-list": {
-			library: "polyfill-service",
+			library: "polyfill-library",
 			relativePaths: ["polyfills/Element/prototype/classList/polyfill.js"],
 			features: ["classlist"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["dom-token-list"],
 			contexts: WINDOW_CONTEXT
 		},
 		"dom-token-list": {
-			library: "polyfill-service",
+			library: "polyfill-library",
 			relativePaths: ["polyfills/_DOMTokenList/polyfill.js", "polyfills/DOMTokenList/polyfill.js"],
 			features: ["rellist"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["es.object.define-property"],
 			contexts: WINDOW_CONTEXT
 		},
 		element: {
-			library: "polyfill-service",
+			library: "polyfill-library",
 			relativePaths: ["polyfills/Element/polyfill.js"],
 			// If 'addEventListener' isn't found, the Element interface shouldn't exist on the window
 			features: ["addeventlistener"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["document"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -2876,50 +2907,50 @@ export const constant: IConstant = {
 			polyfills: ["event.constructor", "event.focusin", "event.hashchange"]
 		},
 		"event.constructor": {
-			library: "polyfill-service",
+			library: "polyfill-library",
 			relativePaths: ["polyfills/Event/polyfill.js"],
 			features: ["api.Event.Event"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["window", "document", "element", "es.object.define-property"],
 			contexts: WINDOW_CONTEXT
 		},
 		"event.focusin": {
-			library: "polyfill-service",
+			library: "polyfill-library",
 			relativePaths: ["polyfills/Event/focusin/polyfill.js"],
 			features: ["focusin-focusout-events"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["event.constructor"],
 			contexts: WINDOW_CONTEXT
 		},
 		"event.hashchange": {
-			library: "polyfill-service",
+			library: "polyfill-library",
 			relativePaths: ["polyfills/Event/hashchange/polyfill.js"],
 			features: ["hashchange"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["event.constructor"],
 			contexts: WINDOW_CONTEXT
 		},
 		"custom-event": {
-			library: "polyfill-service",
+			library: "polyfill-library",
 			relativePaths: ["polyfills/CustomEvent/polyfill.js"],
 			features: ["customevent"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["event"],
 			contexts: WINDOW_CONTEXT
 		},
 		"event-source": {
-			library: "polyfill-service",
+			library: "polyfill-library",
 			relativePaths: ["polyfills/EventSource/polyfill.js"],
 			features: ["eventsource"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: [],
 			contexts: WINDOW_CONTEXT
 		},
 		"get-computed-style": {
-			library: "polyfill-service",
+			library: "polyfill-library",
 			relativePaths: ["polyfills/getComputedStyle/polyfill.js"],
 			features: ["getcomputedstyle"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_SERVICE,
+			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["window"],
 			contexts: WINDOW_CONTEXT
 		},

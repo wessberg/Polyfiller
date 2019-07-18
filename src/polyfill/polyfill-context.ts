@@ -1,13 +1,12 @@
-import {stringTuple} from "../util/type/string-tuple";
 import {ElementOf} from "../util/type/element-of";
 
-export const POLYFILL_CONTEXTS = stringTuple("node", "window", "worker");
+export const POLYFILL_CONTEXTS = ["node", "window", "worker"] as const;
 
 export type PolyfillContext = ElementOf<typeof POLYFILL_CONTEXTS>;
 
-export const NODE_CONTEXT: Set<PolyfillContext> = new Set(stringTuple("node"));
-export const WINDOW_CONTEXT: Set<PolyfillContext> = new Set(stringTuple("window"));
-export const WORKER_CONTEXT: Set<PolyfillContext> = new Set(stringTuple("worker"));
+export const NODE_CONTEXT: Set<PolyfillContext> = new Set(["node"] as const);
+export const WINDOW_CONTEXT: Set<PolyfillContext> = new Set(["window"] as const);
+export const WORKER_CONTEXT: Set<PolyfillContext> = new Set(["worker"] as const);
 
 export const WINDOW_NODE_CONTEXT: Set<PolyfillContext> = new Set([...WINDOW_CONTEXT, ...NODE_CONTEXT]);
 

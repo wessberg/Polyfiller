@@ -238,6 +238,7 @@ export declare type PolyfillDealiasedName =
 	| "es.symbol.is-concat-spreadable"
 	| "es.symbol.iterator"
 	| "es.symbol.match"
+	| "es.symbol.match-all"
 	| "es.symbol.replace"
 	| "es.symbol.search"
 	| "es.symbol.species"

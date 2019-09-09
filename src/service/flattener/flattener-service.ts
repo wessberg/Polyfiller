@@ -56,7 +56,7 @@ export class FlattenerService implements IFlattenerService {
 		});
 
 		// Produce a flattened bundle
-		let flattened = bundleSet.output.map(file => file.code).join("\n");
+		let flattened = bundleSet.output.map(file => ("source" in file ? file.source.toString() : file.code)).join("\n");
 
 		// If the IIFE is named, make sure to remove its outer declaration. We only care about the side-effects
 		const indexOfIife = flattened.indexOf("(function");

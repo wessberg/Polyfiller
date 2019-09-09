@@ -189,9 +189,8 @@ export const constant: IConstant = {
 		},
 		"es.promise.all-settled": {
 			library: "core-js",
-			relativePaths: ["modules/esnext.promise.all-settled.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
+			relativePaths: ["modules/es.promise.all-settled.js"],
+			features: ["javascript.builtins.Promise.allSettled"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: ["es.promise.constructor"],
 			contexts: ALL_CONTEXTS

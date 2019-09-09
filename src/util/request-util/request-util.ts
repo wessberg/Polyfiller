@@ -47,7 +47,7 @@ export function getRequestFromIncomingHeaders(headers: IncomingHttpHeaders, http
 		http2,
 		method: headers[":method"] == null ? "OPTIONS" : (headers[":method"] as Method),
 		accept: headers.accept == null ? undefined : splitStringifiedListHeader(headers.accept),
-		acceptEncoding: headers["accept-encoding"] == null ? undefined : splitStringifiedListHeader(headers["accept-encoding"]!),
+		acceptEncoding: headers["accept-encoding"] == null ? undefined : splitStringifiedListHeader(headers["accept-encoding"]),
 		acceptLanguage: headers["accept-language"] == null ? undefined : splitStringifiedListHeader(headers["accept-language"]),
 		userAgent: headers["user-agent"] != null ? headers["user-agent"] : "",
 		referer: headers[":referer"] != null ? (headers[":referer"] as string) : headers.referer != null ? headers.referer : "",
@@ -81,7 +81,9 @@ function paintMethod(method: Request["method"]): string {
  * @param {IRequest} request
  */
 export function printRequest({method, url, userAgent, referer}: Request): void {
-	console.log(`${paintMethod(method)} ${url.toString()} (${chalk.gray(userAgent)}) ${referer != null && referer.length > 0 ? `(${chalk.yellow(referer)})` : ``}`);
+	console.log(
+		`${paintMethod(method)} ${url.toString()} (${chalk.gray(userAgent)}) ${referer != null && referer.length > 0 ? `(${chalk.yellow(referer)})` : ``}`
+	);
 }
 
 /**
@@ -136,12 +138,9 @@ export async function sendRequest(rawRequest: IRawRequest): Promise<Response> {
 			res.setEncoding("utf8");
 			let data: string = "";
 			// @ts-ignore
-			res.on(
-				"data",
-				(chunk: any): void => {
-					data += chunk;
-				}
-			);
+			res.on("data", (chunk: any): void => {
+				data += chunk;
+			});
 
 			// @ts-ignore
 			res.on("end", () => {
@@ -177,7 +176,9 @@ export async function sendRequest(rawRequest: IRawRequest): Promise<Response> {
 				onResponse(rawResponse);
 			};
 
-			const sentRequest = rawRequest.tls ? requestHttps({...requestOptions, rejectUnauthorized: false}, incomingMessageHandler) : requestHttp(requestOptions, incomingMessageHandler);
+			const sentRequest = rawRequest.tls
+				? requestHttps({...requestOptions, rejectUnauthorized: false}, incomingMessageHandler)
+				: requestHttp(requestOptions, incomingMessageHandler);
 			sentRequest.end();
 		} else {
 			const client = connect(

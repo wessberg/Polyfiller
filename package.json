@@ -1,6 +1,6 @@
 {
 	"name": "@wessberg/polyfiller",
-	"version": "0.0.88",
+	"version": "0.0.89",
 	"description": "Never worry about polyfills again.",
 	"files": [
 		"dist/**/*.*",
@@ -103,7 +103,7 @@
 		"nodemon": "^1.19.2",
 		"object-fit-images": "^3.2.4",
 		"perfnow": "^0.2.0",
-		"polyfill-library": "^3.40.0",
+		"polyfill-library": "^3.41.0",
 		"proxy-polyfill": "^0.3.0",
 		"regenerator-runtime": "^0.13.3",
 		"requestanimationframe": "0.0.23",

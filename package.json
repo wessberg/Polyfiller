@@ -71,7 +71,7 @@
 		"@webcomponents/shadycss": "^1.9.2",
 		"@webcomponents/shadydom": "^1.6.1",
 		"@webcomponents/template": "^1.4.1",
-		"@wessberg/browserslist-generator": "1.0.25",
+		"@wessberg/browserslist-generator": "1.0.26",
 		"@wessberg/di": "^2.0.3",
 		"@wessberg/fileloader": "^1.1.9",
 		"@wessberg/filesaver": "^1.0.8",

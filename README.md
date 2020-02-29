@@ -62,6 +62,20 @@ Polyfiller is kindly supported by [JetBrains](https://www.jetbrains.com/?from=Po
 
 <a href="https://www.jetbrains.com/?from=Polyfiller"><img alt="Supported by JetBrains" src="https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/jetbrains.png" height="150" /></a>
 
+<!-- SHADOW_SECTION_BACKERS_START -->
+
+## Backers
+
+| <img alt="Bubbles" src="https://uploads-ssl.webflow.com/5d682047c28b217055606673/5e5360be16879c1d0dca6514_icon-thin-128x128%402x.png" height="70"   /> |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [Bubbles](https://usebubbles.com)<br><strong>Twitter</strong>: [@use_bubbles](https://twitter.com/use_bubbles)                                         |
+
+### Patreon
+
+<a href="https://www.patreon.com/bePatron?u=11315442"><img alt="Patrons on Patreon" src="https://img.shields.io/endpoint.svg?url=https://shieldsio-patreon.herokuapp.com/wessberg"  width="200"  /></a>
+
+<!-- SHADOW_SECTION_BACKERS_END -->
+
 <!-- SHADOW_SECTION_TOC_START -->
 
 ## Table of Contents
@@ -69,6 +83,8 @@ Polyfiller is kindly supported by [JetBrains](https://www.jetbrains.com/?from=Po
 - [Description](#description)
   - [Features](#features)
 - [Supporters](#supporters)
+- [Backers](#backers)
+  - [Patreon](#patreon)
 - [Table of Contents](#table-of-contents)
 - [Install](#install)
   - [npm](#npm)
@@ -94,8 +110,6 @@ Polyfiller is kindly supported by [JetBrains](https://www.jetbrains.com/?from=Po
   - [Usage in Node](#usage-in-node)
 - [Contributing](#contributing)
 - [Maintainers](#maintainers)
-- [Backers](#backers)
-  - [Patreon](#patreon)
 - [FAQ](#faq)
   - [What's the difference from polyfill.io](#whats-the-difference-from-polyfillio)
   - [Hosting](#hosting)
@@ -321,20 +335,6 @@ Do you want to contribute? Awesome! Please follow [these recommendations](./CONT
 | [Frederik Wessberg](mailto:frederikwessberg@hotmail.com)<br><strong>Twitter</strong>: [@FredWessberg](https://twitter.com/FredWessberg)<br><strong>Github</strong>: [@wessberg](https://github.com/wessberg)<br>_Lead Developer_ |
 
 <!-- SHADOW_SECTION_MAINTAINERS_END -->
-
-<!-- SHADOW_SECTION_BACKERS_START -->
-
-## Backers
-
-| <img alt="Bubbles" src="https://uploads-ssl.webflow.com/5d682047c28b217055606673/5e5360be16879c1d0dca6514_icon-thin-128x128%402x.png" height="70"   /> |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [Bubbles](https://usebubbles.com)<br><strong>Twitter</strong>: [@use_bubbles](https://twitter.com/use_bubbles)                                         |
-
-### Patreon
-
-<a href="https://www.patreon.com/bePatron?u=11315442"><img alt="Patrons on Patreon" src="https://img.shields.io/endpoint.svg?url=https://shieldsio-patreon.herokuapp.com/wessberg"  width="200"  /></a>
-
-<!-- SHADOW_SECTION_BACKERS_END -->
 
 <!-- SHADOW_SECTION_FAQ_START -->
 

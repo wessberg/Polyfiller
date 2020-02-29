@@ -42,7 +42,7 @@
 	"devDependencies": {
 		"@wessberg/di-compiler": "^2.0.5",
 		"@wessberg/rollup-plugin-ts": "^1.2.18",
-		"@wessberg/scaffold": "^1.0.24",
+		"@wessberg/scaffold": "^1.0.25",
 		"@wessberg/ts-config": "^1.0.8",
 		"@typescript-eslint/eslint-plugin": "^2.21.0",
 		"@typescript-eslint/parser": "^2.21.0",

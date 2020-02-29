@@ -3,10 +3,17 @@ import {certificateFor} from "devcert";
 
 /**
  * Gets certificates that can be used with a HTTP2 server
- * @param {IGetCertificateOptions} options
- * @returns {Promise<{key: Buffer|undefined, cert: Buffer|undefined}>}
+ *
+ * @param options
+ * @returns
  */
-export async function getCertificates({key, cert, production, host, https}: IGetCertificateOptions): Promise<{key: Buffer | undefined; cert: Buffer | undefined}> {
+export async function getCertificates({
+	key,
+	cert,
+	production,
+	host,
+	https
+}: IGetCertificateOptions): Promise<{key: Buffer | undefined; cert: Buffer | undefined}> {
 	// If a key and certificate was already given, use those two
 	if (key != null && cert != null) return {key, cert};
 

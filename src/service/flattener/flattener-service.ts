@@ -2,12 +2,11 @@ import {IFlattenerService} from "./i-flattener-service";
 import {IFlattenerOptions} from "./i-flattener-options";
 import {generate} from "astring";
 import {rollup} from "rollup";
+import commonjs from "@rollup/plugin-commonjs";
+import nodeResolve from "@rollup/plugin-node-resolve";
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import commonjs from "rollup-plugin-commonjs";
-// @ts-ignore
-import nodeResolve from "rollup-plugin-node-resolve";
-// @ts-ignore
-import multiEntry from "rollup-plugin-multi-entry";
+import multiEntry from "@rollup/plugin-multi-entry";
 
 /**
  * A service that can flatten the given code into a single file
@@ -15,10 +14,11 @@ import multiEntry from "rollup-plugin-multi-entry";
 export class FlattenerService implements IFlattenerService {
 	/**
 	 * Flattens the given code into a single file based on the given options
-	 * @param {IFlattenerOptions} options
-	 * @return {Promise<string>}
+	 *
+	 * @param options
+	 * @return
 	 */
-	public async flatten({path, transform}: IFlattenerOptions): Promise<string> {
+	async flatten({path, transform}: IFlattenerOptions): Promise<string> {
 		const paths = Array.isArray(path) ? path : [path];
 		if (paths.length < 1) return "";
 
@@ -42,8 +42,7 @@ export class FlattenerService implements IFlattenerService {
 					}
 				},
 				nodeResolve({
-					module: true,
-					jsnext: true
+					mainFields: ["module", "jsnext", "main"]
 				}),
 				commonjs()
 			]

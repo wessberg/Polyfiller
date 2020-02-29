@@ -18,11 +18,12 @@ export class StaticController extends Controller implements IStaticController {
 
 	/**
 	 * Called when the index (/) is requested
-	 * @param {Request} request
-	 * @returns {Promise<Response>}
+	 *
+	 * @param request
+	 * @returns
 	 */
 	@GET({path: constant.endpoint.index})
-	public async onIndexRequested(request: Request): Promise<Response> {
+	async onIndexRequested(request: Request): Promise<Response> {
 		// Return an OK
 		return {
 			contentType: "text/html",

@@ -7,9 +7,10 @@ import {constant} from "../../constant/constant";
 
 /**
  * Responds to the given request with the given response
- * @param {HttpServerResponse} rawResponse
- * @param {Response} response
- * @returns {void}
+ *
+ * @param rawResponse
+ * @param response
+ * @returns
  */
 export function respondToRequest(rawResponse: HttpServerResponse | Http2ServerResponse, response: Response): void {
 	if ("contentType" in response) {
@@ -43,5 +44,6 @@ export function respondToRequest(rawResponse: HttpServerResponse | Http2ServerRe
 	rawResponse.statusCode = response.statusCode;
 
 	// Submit the response
-	(<any>rawResponse).end("body" in response ? response.body : undefined);
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	(rawResponse as any).end("body" in response ? response.body : undefined);
 }

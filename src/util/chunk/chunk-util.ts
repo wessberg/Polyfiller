@@ -1,8 +1,9 @@
 /**
  * Divides an array up into multiple chunks
- * @param {T[]} arr
- * @param {number} chunkSize
- * @returns {T[][]}
+ *
+ * @param arr
+ * @param chunkSize
+ * @returns
  */
 export function chunkify<T>(arr: T[], chunkSize: number): T[][] {
 	const chunkList: T[][] = [];

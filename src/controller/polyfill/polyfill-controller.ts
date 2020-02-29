@@ -21,11 +21,12 @@ export class PolyfillController extends Controller implements IPolyfillControlle
 
 	/**
 	 * Called when the polyfill (/polyfill) endpoint is requested
-	 * @param {Request} request
-	 * @returns {Promise<Response>}
+	 *
+	 * @param request
+	 * @returns
 	 */
 	@GET({path: constant.endpoint.polyfill})
-	public async onPolyfillRequested(request: Request): Promise<Response> {
+	async onPolyfillRequested(request: Request): Promise<Response> {
 		// Normalize the polyfill request
 		const polyfillRequest = getPolyfillRequestFromUrl(request.url, request.userAgent, pickEncoding(request.acceptEncoding));
 

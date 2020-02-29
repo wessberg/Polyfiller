@@ -20,13 +20,13 @@ export class Server implements IServer {
 	 * Whether or not a server is currently being initialized
 	 * @type {boolean}
 	 */
-	public initializing: boolean = false;
+	initializing = false;
 
 	/**
 	 * Whether or not the server has initialized
 	 * @type {boolean}
 	 */
-	public hasInitialized: boolean = false;
+	hasInitialized = false;
 
 	/**
 	 * The constructed Server
@@ -44,10 +44,11 @@ export class Server implements IServer {
 
 	/**
 	 * Starts a new HTTP2 server and listens on the given port
-	 * @param {IServeOptions} options
-	 * @returns {Promise<void>}
+	 *
+	 * @param options
+	 * @returns
 	 */
-	public async serve(options: IServeOptions): Promise<void> {
+	async serve(options: IServeOptions): Promise<void> {
 		if (this.initializing || this.hasInitialized) return;
 
 		if (this.server != null) await this.stop();
@@ -56,13 +57,18 @@ export class Server implements IServer {
 
 		// Only run a TLS-encrypted server if a key and cert is given
 		const shouldRunSecureServer = options.key != null && options.cert != null;
-		const http2RequestHandler = async (request: HttpIncomingMessage | Http2ServerRequest, response: HttpServerResponse | Http2ServerResponse, tls: boolean) =>
-			this.onRequest(request, response, options, tls);
+		const http2RequestHandler = async (
+			request: HttpIncomingMessage | Http2ServerRequest,
+			response: HttpServerResponse | Http2ServerResponse,
+			tls: boolean
+		) => this.onRequest(request, response, options, tls);
 
 		if (options.http2) {
 			// Create HTTP2 server
 			this.server = shouldRunSecureServer
-				? createSecureServer({key: options.key, cert: options.cert, allowHTTP1: true}, async (request, response) => http2RequestHandler(request, response, true))
+				? createSecureServer({key: options.key, cert: options.cert, allowHTTP1: true}, async (request, response) =>
+						http2RequestHandler(request, response, true)
+				  )
 				: createServer({}, async (request, response) => http2RequestHandler(request, response, false));
 		} else {
 			// Create HTTP2 server
@@ -95,9 +101,10 @@ export class Server implements IServer {
 
 	/**
 	 * Stops the active server, if any
-	 * @returns {Promise<void>}
+	 *
+	 * @returns
 	 */
-	public async stop(): Promise<void> {
+	async stop(): Promise<void> {
 		return new Promise<void>(resolve => {
 			this.hasInitialized = false;
 
@@ -113,9 +120,10 @@ export class Server implements IServer {
 
 	/**
 	 * Adds a callback to the Set of callbacks to invoke when polyfills has been successfully built
-	 * @returns {Promise<void>}
+	 *
+	 * @returns
 	 */
-	public async onInitialized(): Promise<void> {
+	async onInitialized(): Promise<void> {
 		return new Promise<void>(resolve => {
 			if (!this.initializing && this.hasInitialized) return resolve();
 			else this.onInitializedCallbacks.add(resolve);
@@ -124,13 +132,19 @@ export class Server implements IServer {
 
 	/**
 	 * Listens for "stream" events on the given Http2SecureServer
-	 * @param {HttpIncomingMessage|Http2ServerRequest} request
-	 * @param {HttpServerResponse|Http2ServerResponse} response
-	 * @param {IServeOptions} serverOptions
-	 * @param {boolean} tls
-	 * @returns {Promise<void>}
+	 *
+	 * @param request
+	 * @param response
+	 * @param serverOptions
+	 * @param tls
+	 * @returns
 	 */
-	private async onRequest(request: HttpIncomingMessage | Http2ServerRequest, response: HttpServerResponse | Http2ServerResponse, serverOptions: IServeOptions, tls: boolean): Promise<void> {
+	private async onRequest(
+		request: HttpIncomingMessage | Http2ServerRequest,
+		response: HttpServerResponse | Http2ServerResponse,
+		serverOptions: IServeOptions,
+		tls: boolean
+	): Promise<void> {
 		const isHttp2 = "stream" in request;
 
 		// Format a request
@@ -152,6 +166,6 @@ export class Server implements IServer {
 		};
 
 		// Respond with the result of calling the handler
-		respondToRequest(response, await this.requestHandler.handle(<RequestHandlerOptions>handleOptions));
+		respondToRequest(response, await this.requestHandler.handle(handleOptions as RequestHandlerOptions));
 	}
 }

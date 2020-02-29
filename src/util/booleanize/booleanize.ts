@@ -1,7 +1,8 @@
 /**
  * Converts the given string to a boolean
- * @param {string} str
- * @returns {boolean}
+ *
+ * @param str
+ * @returns
  */
 export function booleanize(str: string): boolean {
 	switch (str.toLowerCase().trim()) {

@@ -28,11 +28,12 @@ export class MemoryRegistryService implements IMemoryRegistryService {
 
 	/**
 	 * Gets the contents for the polyfill with the given name and with the given encoding
-	 * @param {IPolyfillFeature|Set<IPolyfillFeature>} name
-	 * @param {ContentEncodingKind} [encoding]
-	 * @returns {Promise<IRegistryGetResult?>}
+	 *
+	 * @param name
+	 * @param [encoding]
+	 * @returns
 	 */
-	public async get(name: IPolyfillFeature | Set<IPolyfillFeature>, encoding?: ContentEncodingKind): Promise<IRegistryGetResult | undefined> {
+	async get(name: IPolyfillFeature | Set<IPolyfillFeature>, encoding?: ContentEncodingKind): Promise<IRegistryGetResult | undefined> {
 		const checksum = getPolyfillIdentifier(name, encoding);
 		const buffer = this.registeredPolyfills.get(checksum);
 
@@ -41,61 +42,67 @@ export class MemoryRegistryService implements IMemoryRegistryService {
 
 	/**
 	 * Gets the Set of Polyfill feature inputs that matches the given input
-	 * @param {Set<IPolyfillFeatureInput>} input
-	 * @param {string} userAgent
+	 *
+	 * @param input
+	 * @param userAgent
 	 */
-	public async getPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, userAgent: string): Promise<Set<IPolyfillFeature> | undefined> {
+	async getPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, userAgent: string): Promise<Set<IPolyfillFeature> | undefined> {
 		const checksum = getPolyfillSetIdentifier(input, userAgent);
 		return this.registeredPolyfillSets.get(checksum);
 	}
 
 	/**
 	 * Gets the Core-js bundle that matches the given paths, if any
-	 * @param {string[]} paths
-	 * @returns {Promise<Buffer|undefined>}
+	 *
+	 * @param paths
+	 * @returns
 	 */
-	public async getCoreJsBundle(paths: string[]): Promise<Buffer | undefined> {
+	async getCoreJsBundle(paths: string[]): Promise<Buffer | undefined> {
 		const checksum = getCoreJsBundleIdentifier(paths);
 		return this.registeredCoreJsBundles.get(checksum);
 	}
 
 	/**
 	 * Returns true if a polyfill wil the given name exists
-	 * @param {IPolyfillFeature|Set<IPolyfillFeature>} name
-	 * @param {ContentEncodingKind} [encoding]
-	 * @returns {Promise<boolean>}
+	 *
+	 * @param name
+	 * @param [encoding]
+	 * @returns
 	 */
-	public async has(name: IPolyfillFeature | Set<IPolyfillFeature>, encoding?: ContentEncodingKind): Promise<boolean> {
+	async has(name: IPolyfillFeature | Set<IPolyfillFeature>, encoding?: ContentEncodingKind): Promise<boolean> {
 		return this.registeredPolyfills.has(getPolyfillIdentifier(name, encoding));
 	}
 
 	/**
 	 * Returns true if a Set of PolyfillFeatures exist in cache for the given PolyfillFeature input Set
-	 * @param {Set<IPolyfillFeatureInput>} input
-	 * @param {string} userAgent
-	 * @returns {Promise<boolean>}
+	 *
+	 * @param input
+	 * @param userAgent
+	 * @returns
 	 */
-	public async hasPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, userAgent: string): Promise<boolean> {
+	async hasPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, userAgent: string): Promise<boolean> {
 		return this.registeredPolyfillSets.has(getPolyfillSetIdentifier(input, userAgent));
 	}
 
 	/**
 	 * Returns true if a bundle exists for the given Core-js paths
-	 * @param {string[]} paths
-	 * @returns {Promise<boolean>}
+	 *
+	 * @param paths
+	 * @returns
 	 */
-	public async hasCoreJsBundle(paths: string[]): Promise<boolean> {
+	async hasCoreJsBundle(paths: string[]): Promise<boolean> {
 		return this.registeredCoreJsBundles.has(getCoreJsBundleIdentifier(paths));
 	}
 
 	/**
 	 * Sets the contents for the polyfill with the given name and of the given encoding
-	 * @param {IPolyfillFeature|Set<IPolyfillFeature>} name
-	 * @param {Buffer} buffer
-	 * @param {ContentEncodingKind} [encoding]
-	 * @returns {Promise<IRegistryGetResult>}
+	 *
+	 * @param name
+	 * @param buffer
+	 * @param [encoding]
+	 * @returns
 	 */
-	public async set(name: IPolyfillFeature | Set<IPolyfillFeature>, buffer: Buffer, encoding?: ContentEncodingKind): Promise<IRegistryGetResult> {
+	async set(name: IPolyfillFeature | Set<IPolyfillFeature>, buffer: Buffer, encoding?: ContentEncodingKind): Promise<IRegistryGetResult> {
 		const checksum = getPolyfillIdentifier(name, encoding);
 
 		this.registeredPolyfills.set(checksum, buffer);
@@ -104,12 +111,17 @@ export class MemoryRegistryService implements IMemoryRegistryService {
 
 	/**
 	 * Sets the given PolyfillFeature Set for the given Set of PolyfillFeature inputs
-	 * @param {Set<IPolyfillFeatureInput>} input
-	 * @param {Set<IPolyfillFeature>} polyfillSet
-	 * @param {string} userAgent
-	 * @returns {Promise<Set<IPolyfillFeature>>}
+	 *
+	 * @param input
+	 * @param polyfillSet
+	 * @param userAgent
+	 * @returns
 	 */
-	public async setPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, polyfillSet: Set<IPolyfillFeature>, userAgent: string): Promise<Set<IPolyfillFeature>> {
+	async setPolyfillFeatureSet(
+		input: Set<IPolyfillFeatureInput>,
+		polyfillSet: Set<IPolyfillFeature>,
+		userAgent: string
+	): Promise<Set<IPolyfillFeature>> {
 		const checksum = getPolyfillSetIdentifier(input, userAgent);
 
 		this.registeredPolyfillSets.set(checksum, polyfillSet);
@@ -118,10 +130,11 @@ export class MemoryRegistryService implements IMemoryRegistryService {
 
 	/**
 	 * Sets the given bundle Buffer for the given Core-js paths
-	 * @param {string[]} paths
-	 * @param {Buffer} bundle
+	 *
+	 * @param paths
+	 * @param bundle
 	 */
-	public async setCoreJsBundle(paths: string[], bundle: Buffer): Promise<Buffer> {
+	async setCoreJsBundle(paths: string[], bundle: Buffer): Promise<Buffer> {
 		const checksum = getCoreJsBundleIdentifier(paths);
 
 		this.registeredCoreJsBundles.set(checksum, bundle);

@@ -12,15 +12,24 @@ export default {
 	treeshake: true,
 	plugins: [
 		ts({
-			tsconfig: process.env.NODE_ENV === "production" ? "tsconfig.dist.json" : "tsconfig.json",
-			transformers: [
-				di
-			]
+			tsconfig: "tsconfig.json",
+			transformers: [di]
 		})
 	],
 	external: [
 		...Object.keys(packageJSON.dependencies),
 		...Object.keys(packageJSON.devDependencies),
-		"path", "fs", "util", "crypto", "buffer", "zlib", "fs/promises", "http", "https", "http2", "net", "url"
+		"path",
+		"fs",
+		"util",
+		"crypto",
+		"buffer",
+		"zlib",
+		"fs/promises",
+		"http",
+		"https",
+		"http2",
+		"net",
+		"url"
 	]
 };

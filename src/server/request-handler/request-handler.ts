@@ -15,10 +15,11 @@ export class RequestHandler implements IRequestHandler {
 
 	/**
 	 * Handles the given request
-	 * @param {RequestHandlerOptions} options
-	 * @returns {Promise<Response>}
+	 *
+	 * @param options
+	 * @returns
 	 */
-	public async handle(options: RequestHandlerOptions): Promise<Response> {
+	async handle(options: RequestHandlerOptions): Promise<Response> {
 		// Print the request
 		printRequest(options.request);
 
@@ -38,8 +39,9 @@ export class RequestHandler implements IRequestHandler {
 
 	/**
 	 * Handles the given GET request
-	 * @param {RequestHandlerOptions} options
-	 * @returns {Promise<Response>}
+	 *
+	 * @param options
+	 * @returns
 	 */
 	private async handleGetRequest(options: RequestHandlerOptions): Promise<Response> {
 		// Find the first matched controller
@@ -56,8 +58,9 @@ export class RequestHandler implements IRequestHandler {
 
 	/**
 	 * Handles the given OPTIONS request
-	 * @param {RequestHandlerOptions} options
-	 * @returns {Promise<Response>}
+	 *
+	 * @param options
+	 * @returns
 	 */
 	private async handleOptionsRequest(options: RequestHandlerOptions): Promise<Response> {
 		return {

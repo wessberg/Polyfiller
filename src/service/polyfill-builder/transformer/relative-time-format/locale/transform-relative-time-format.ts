@@ -1,10 +1,21 @@
 import {PluginContext, TransformSourceDescription} from "rollup";
-import {AssignmentExpression, CallExpression, ExpressionStatement, Identifier, Literal, MemberExpression, Node, VariableDeclaration, VariableDeclarator} from "estree";
+import {
+	AssignmentExpression,
+	CallExpression,
+	ExpressionStatement,
+	Identifier,
+	Literal,
+	MemberExpression,
+	Node,
+	VariableDeclaration,
+	VariableDeclarator
+} from "estree";
 
 /**
  * Transforms RelativeTimeFormat
- * @param {string} code
- * @return {TransformSourceDescription["ast"]}
+ *
+ * @param code
+ * @return
  */
 export function transformRelativeTimeFormat(this: PluginContext, code: string): TransformSourceDescription["ast"] | void {
 	const ast = this.parse(code, {});
@@ -49,8 +60,9 @@ export function transformRelativeTimeFormat(this: PluginContext, code: string): 
 
 /**
  * Returns true if the given statement is an operation such as 'Object.defineProperty(exports, ...)
- * @param {Node} statement
- * @return {boolean}
+ *
+ * @param statement
+ * @return
  */
 function isDefineEsModuleOnExportsStatement(
 	statement: Node
@@ -72,12 +84,15 @@ function isDefineEsModuleOnExportsStatement(
 
 /**
  * Returns true if the given statement is an operation such as 'Object.defineProperty(exports, ...)
- * @param {Node} statement
- * @return {boolean}
+ *
+ * @param statement
+ * @return
  */
 function isCommonjsDefaultExport(
 	statement: Node
-): statement is ExpressionStatement & {expression: AssignmentExpression & {left: MemberExpression & {object: Identifier; property: Identifier}; right: Identifier}} {
+): statement is ExpressionStatement & {
+	expression: AssignmentExpression & {left: MemberExpression & {object: Identifier; property: Identifier}; right: Identifier};
+} {
 	return (
 		statement.type === "ExpressionStatement" &&
 		statement.expression.type === "AssignmentExpression" &&
@@ -91,12 +106,15 @@ function isCommonjsDefaultExport(
 
 /**
  * Returns true if the given statement is an operation such as 'const foo = require(...)'
- * @param {Node} statement
- * @return {boolean}
+ *
+ * @param statement
+ * @return
  */
 function isRequireToVariableAssignment(
 	statement: Node
-): statement is VariableDeclaration & {declarations: [VariableDeclarator & {id: Identifier; init: CallExpression & {callee: Identifier; arguments: [Literal]}}]} {
+): statement is VariableDeclaration & {
+	declarations: [VariableDeclarator & {id: Identifier; init: CallExpression & {callee: Identifier; arguments: [Literal]}}];
+} {
 	if (statement.type !== "VariableDeclaration") return false;
 	const [firstDeclaration] = statement.declarations;
 	if (firstDeclaration == null || firstDeclaration.init == null) return false;

@@ -11,10 +11,11 @@ export class CompressorService implements ICompressorService {
 
 	/**
 	 * Compresses the given code based on the given options
-	 * @param {Buffer} content
-	 * @returns {Promise<ICompressorServiceCompressResult>}
+	 *
+	 * @param content
+	 * @returns
 	 */
-	public async compress(content: Buffer): Promise<ICompressorServiceCompressResult> {
+	async compress(content: Buffer): Promise<ICompressorServiceCompressResult> {
 		return {
 			brotli: await this.compressWithBrotli(content),
 			zlib: await this.compressWithZlib(content)
@@ -23,10 +24,11 @@ export class CompressorService implements ICompressorService {
 
 	/**
 	 * Compresses the given code with Brotli based on the given options
-	 * @param {string} code
-	 * @returns {Promise<Buffer>}
+	 *
+	 * @param code
+	 * @returns
 	 */
-	public async compressWithBrotli(code: Buffer): Promise<Buffer> {
+	async compressWithBrotli(code: Buffer): Promise<Buffer> {
 		return new Promise<Buffer>((resolve, reject) => {
 			brotliCompress(code, this.brotliCompressionOptions, (err, output) => {
 				if (err != null) return reject(err);
@@ -37,10 +39,11 @@ export class CompressorService implements ICompressorService {
 
 	/**
 	 * Compresses the given code with Zlib based on the given options
-	 * @param {Buffer} code
-	 * @returns {Promise<Buffer>}
+	 *
+	 * @param code
+	 * @returns
 	 */
-	public async compressWithZlib(code: Buffer): Promise<Buffer> {
+	async compressWithZlib(code: Buffer): Promise<Buffer> {
 		return new Promise<Buffer>((resolve, reject) => {
 			gzip(code, this.zlibCompressionOptions, (err, output) => {
 				if (err != null) return reject(err);

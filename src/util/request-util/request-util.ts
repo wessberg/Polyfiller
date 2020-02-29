@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore,@typescript-eslint/no-explicit-any */
 import {IncomingHttpHeaders, IncomingMessage, request as requestHttp, RequestOptions as HttpRequestOptions} from "http";
 import {request as requestHttps} from "https";
 import {IRawRequest, Request} from "../../server/i-request";
@@ -9,10 +10,6 @@ import {URL} from "url";
 import {constant} from "../../constant/constant";
 import {Method} from "../../server/method";
 
-// tslint:disable:no-any
-
-// tslint:disable:no-duplicate-string
-
 const GET_COLOR = chalk.green;
 const PUT_COLOR = chalk.yellow;
 const DELETE_COLOR = chalk.red;
@@ -21,8 +18,6 @@ const OPTIONS_COLOR = chalk.gray;
 
 /**
  * Splits a header that represents a comma-separated list
- * @param {string} header
- * @returns {Set<string>}
  */
 function splitStringifiedListHeader(header: string | string[]): Set<string> {
 	const splitted = Array.isArray(header) ? header : header.split(",").map(part => part.trim());
@@ -32,9 +27,6 @@ function splitStringifiedListHeader(header: string | string[]): Set<string> {
 
 /**
  * Gets an IRequest from the given IncomingHttpHeaders
- * @param {IncomingHttpHeaders} headers
- * @param {boolean} http2
- * @returns {Request}
  */
 export function getRequestFromIncomingHeaders(headers: IncomingHttpHeaders, http2: boolean): Request {
 	let path = headers[":path"];
@@ -58,8 +50,6 @@ export function getRequestFromIncomingHeaders(headers: IncomingHttpHeaders, http
 
 /**
  * Paints the given method with Chalk. Each method has its' own color
- * @param {string} method
- * @returns {string}
  */
 function paintMethod(method: Request["method"]): string {
 	switch (method) {
@@ -78,7 +68,8 @@ function paintMethod(method: Request["method"]): string {
 
 /**
  * Prints the given request
- * @param {IRequest} request
+ *
+ * @param request
  */
 export function printRequest({method, url, userAgent, referer}: Request): void {
 	console.log(
@@ -88,8 +79,6 @@ export function printRequest({method, url, userAgent, referer}: Request): void {
 
 /**
  * Sends the given request and returns a Promise of the result
- * @param {IRawRequest} rawRequest
- * @returns {Promise<Response>}
  */
 export async function sendRequest(rawRequest: IRawRequest): Promise<Response> {
 	return new Promise<Response>(async resolve => {
@@ -122,7 +111,7 @@ export async function sendRequest(rawRequest: IRawRequest): Promise<Response> {
 			}
 
 			if (contentEncoding != null) {
-				response.contentEncoding = <ContentEncodingKind>contentEncoding;
+				response.contentEncoding = contentEncoding as ContentEncodingKind;
 			}
 
 			if (checksum != null) {
@@ -136,7 +125,7 @@ export async function sendRequest(rawRequest: IRawRequest): Promise<Response> {
 
 		const onResponse = (res: IncomingMessage | ClientHttp2Stream, client?: ClientHttp2Session) => {
 			res.setEncoding("utf8");
-			let data: string = "";
+			let data = "";
 			// @ts-ignore
 			res.on("data", (chunk: any): void => {
 				data += chunk;
@@ -170,8 +159,8 @@ export async function sendRequest(rawRequest: IRawRequest): Promise<Response> {
 				contentType = rawResponse.headers["content-type"];
 				cacheControl = rawResponse.headers["cache-control"];
 				contentEncoding = rawResponse.headers["content-encoding"];
-				polyfillsHeader = <string | undefined>rawResponse.headers[constant.header.polyfills];
-				checksum = <string | undefined>rawResponse.headers.etag;
+				polyfillsHeader = rawResponse.headers[constant.header.polyfills] as string | undefined;
+				checksum = rawResponse.headers.etag as string | undefined;
 				setResponseHeaders();
 				onResponse(rawResponse);
 			};
@@ -181,10 +170,7 @@ export async function sendRequest(rawRequest: IRawRequest): Promise<Response> {
 				: requestHttp(requestOptions, incomingMessageHandler);
 			sentRequest.end();
 		} else {
-			const client = connect(
-				`https://${rawRequest.host}:${rawRequest.port}`,
-				{rejectUnauthorized: false}
-			);
+			const client = connect(`https://${rawRequest.host}:${rawRequest.port}`, {rejectUnauthorized: false});
 			const req = client.request({
 				":path": rawRequest.path,
 				":method": rawRequest.method,
@@ -193,12 +179,12 @@ export async function sendRequest(rawRequest: IRawRequest): Promise<Response> {
 			});
 
 			req.once("response", headers => {
-				statusCode = <number>(<any>headers[":status"]);
+				statusCode = (headers[":status"] as unknown) as number;
 				contentType = headers["content-type"];
 				cacheControl = headers["cache-control"];
 				contentEncoding = headers["content-encoding"];
-				polyfillsHeader = <string | undefined>headers[constant.header.polyfills];
-				checksum = <string | undefined>headers.etag;
+				polyfillsHeader = headers[constant.header.polyfills] as string | undefined;
+				checksum = headers.etag as string | undefined;
 				setResponseHeaders();
 			});
 
@@ -210,8 +196,9 @@ export async function sendRequest(rawRequest: IRawRequest): Promise<Response> {
 
 /**
  * Picks the most favorable encoding to use from the given Set of encodings
- * @param {Set<string> | undefined} encodings
- * @returns {ContentEncodingKind | undefined}
+ *
+ * @param encodings
+ * @returns
  */
 export function pickEncoding(encodings: Set<string> | undefined): ContentEncodingKind | undefined {
 	if (encodings == null) return undefined;

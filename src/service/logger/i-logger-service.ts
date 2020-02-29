@@ -1,4 +1,4 @@
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export interface ILoggerService {
 	log(...messages: any[]): any[];

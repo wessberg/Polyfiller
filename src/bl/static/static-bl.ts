@@ -8,9 +8,10 @@ import {generateHtml} from "../../util/html/generate-html";
 export class StaticBl implements IStaticBl {
 	/**
 	 * Generates a HTML-formatted welcome message
-	 * @returns {Promise<string>}
+	 *
+	 * @returns
 	 */
-	public async getWelcomeMessage(): Promise<string> {
+	async getWelcomeMessage(): Promise<string> {
 		return generateHtml(`
 			<div style="display: flex; flex-direction: row;">
 				<img style="margin-right: 30px" alt="logo" height="100" src="https://raw.githubusercontent.com/wessberg/Polyfiller/master/documentation/asset/logo-color.png" />

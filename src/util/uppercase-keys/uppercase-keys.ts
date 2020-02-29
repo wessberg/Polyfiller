@@ -1,12 +1,13 @@
 /**
  * Returns a new object with all of the keys uppercased
- * @param {T} obj
- * @returns {U}
+ *
+ * @param obj
+ * @returns
  */
 export function uppercaseKeys<T extends object>(obj: T): T {
-	const newObject = <T>{};
+	const newObject = {} as T;
 	Object.entries(obj).forEach(([key, value]) => {
-		newObject[<keyof T>key.toUpperCase()] = value;
+		newObject[key.toUpperCase() as keyof T] = value;
 	});
 	return newObject;
 }

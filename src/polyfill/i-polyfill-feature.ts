@@ -1,9 +1,8 @@
 import {PolyfillDealiasedName} from "./polyfill-name";
 import {PolyfillContext} from "./polyfill-context";
 
-// tslint:disable:no-any
-
 export interface IPolyfillFeatureMeta {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	[key: string]: any;
 }
 

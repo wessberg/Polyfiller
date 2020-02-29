@@ -1,5 +1,3 @@
-// tslint:disable:no-any
-
 import {ContentEncodingKind} from "../encoding/content-encoding-kind";
 
 export interface IResponse {
@@ -11,6 +9,7 @@ export interface IResponse {
 export interface IOKResponse extends IResponse {
 	contentType: string;
 	contentEncoding?: ContentEncodingKind;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	body: any;
 	checksum: string;
 }

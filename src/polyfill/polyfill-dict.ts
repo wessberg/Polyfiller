@@ -27,4 +27,6 @@ export interface IPolyfillLocalDictEntry extends IPolyfillDictEntryBase {
 export declare type PolyfillDictNormalizedEntry = IPolyfillLibraryDictEntry | IPolyfillLocalDictEntry;
 export declare type PolyfillDictEntry = IPolyfillDictAlias | PolyfillDictNormalizedEntry;
 
-export declare type PolyfillDict = {[Key in PolyfillName]: Key extends PolyfillDealiasedName ? IPolyfillLibraryDictEntry | IPolyfillLocalDictEntry : PolyfillDictEntry};
+export declare type PolyfillDict = {
+	[Key in PolyfillName]: Key extends PolyfillDealiasedName ? IPolyfillLibraryDictEntry | IPolyfillLocalDictEntry : PolyfillDictEntry;
+};

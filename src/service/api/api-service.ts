@@ -11,9 +11,10 @@ export class ApiService implements IApiService {
 
 	/**
 	 * Launches the API.
-	 * @returns {Promise<void>}
+	 *
+	 * @returns
 	 */
-	public async launch(): Promise<void> {
+	async launch(): Promise<void> {
 		// Serve if necessary
 		if (this.server.initializing || this.server.hasInitialized) {
 			await this.server.onInitialized();

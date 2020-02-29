@@ -7,6 +7,7 @@ import {IFileLoader} from "@wessberg/fileloader";
 import {join} from "path";
 import {ICompressorService} from "../compression/i-compressor-service";
 import {ICompressedPolyfillSetResult} from "./i-compressed-polyfill-set-result";
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import builder from "core-js-builder";
 import {IPolyfillLibraryDictEntry} from "../../polyfill/polyfill-dict";
@@ -34,13 +35,11 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 
 	/**
 	 * Builds the given PolyfillSet and returns the result in all encodings
-	 * @param {Set<IPolyfillFeature>} polyfillSet
-	 * @returns {Promise<ICompressedPolyfillSetResult>}
 	 */
-	public async buildPolyfillSet(polyfillSet: Set<IPolyfillFeature>): Promise<ICompressedPolyfillSetResult> {
+	async buildPolyfillSet(polyfillSet: Set<IPolyfillFeature>): Promise<ICompressedPolyfillSetResult> {
 		const input: {polyfillName: PolyfillDealiasedName; paths: string[]; flatten: boolean}[] = [];
-		let content: string = "";
-		let hasAddedCoreJsContent: boolean = false;
+		let content = "";
+		let hasAddedCoreJsContent = false;
 
 		// Take all Core Js paths
 		const coreJsPaths = ([] as string[]).concat.apply(
@@ -48,7 +47,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 			[...polyfillSet].map(polyfillFeature => {
 				if (!this.isCoreJs(polyfillFeature)) return [];
 
-				const match = <IPolyfillLibraryDictEntry>constant.polyfill[polyfillFeature.name];
+				const match = constant.polyfill[polyfillFeature.name] as IPolyfillLibraryDictEntry;
 				const relativePaths = Array.isArray(match.relativePaths) ? match.relativePaths : match.relativePaths[polyfillFeature.context];
 				return relativePaths.map(relativePath => relativePath.replace("modules/", "").replace(".js", ""));
 			})
@@ -85,7 +84,8 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 
 			const flatten = match.flatten === true;
 
-			const rootDirectory = "library" in match ? join("node_modules", typeof match.library === "string" ? match.library : match.library[polyfillFeature.context]) : "";
+			const rootDirectory =
+				"library" in match ? join("node_modules", typeof match.library === "string" ? match.library : match.library[polyfillFeature.context]) : "";
 
 			const localPaths =
 				"library" in match
@@ -118,7 +118,13 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 			}
 
 			// If shadow-dom is requested, the variant to use may be provided as metadata. If so, we should use that one, rather than the relativePaths
-			else if (polyfillFeature.name === "shadow-dom" && meta != null && polyfillFeature.meta != null && "experimental" in polyfillFeature.meta && polyfillFeature.meta.experimental === true) {
+			else if (
+				polyfillFeature.name === "shadow-dom" &&
+				meta != null &&
+				polyfillFeature.meta != null &&
+				"experimental" in polyfillFeature.meta &&
+				polyfillFeature.meta.experimental === true
+			) {
 				for (const variant of ensureArray(meta.experimental)) {
 					const metaVariantPathInput = join(rootDirectory, variant);
 					const resolvedMetaVariantPath = sync(metaVariantPathInput, SYNC_OPTIONS);
@@ -269,7 +275,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 		}
 
 		// Minify the result
-		const minified = Buffer.from(await this.minifier.minify({code: Buffer.from(content)}));
+		const minified = Buffer.from(await this.minifier.minify({code: content}));
 		// Compress the result
 		const {brotli, zlib} = await this.compressor.compress(minified);
 
@@ -283,8 +289,6 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 
 	/**
 	 * Returns true if the given polyfill feature is core-js
-	 * @param {IPolyfillFeature} polyfillFeature
-	 * @returns {boolean}
 	 */
 	private isCoreJs(polyfillFeature: IPolyfillFeature): boolean {
 		const match = constant.polyfill[polyfillFeature.name];

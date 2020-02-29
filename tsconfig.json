@@ -1,9 +1,9 @@
 {
+	"include": ["src/**/*.*", "test/**/*.*"],
 	"extends": "@wessberg/ts-config",
-	"include": ["src/**/*.*"],
 	"compilerOptions": {
-		"target": "es2017",
-		"esModuleInterop": true,
-		"allowSyntheticDefaultImports": true
+		"module": "commonjs",
+		"target": "es2016",
+		"skipLibCheck": true
 	}
 }

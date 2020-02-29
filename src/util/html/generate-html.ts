@@ -2,8 +2,9 @@ import {constant} from "../../constant/constant";
 
 /**
  * Generates some HTML contents with the given message
- * @param {string} message
- * @returns {string}
+ *
+ * @param message
+ * @returns
  */
 export function generateHtml(message: string): string {
 	// language=HTML
@@ -29,9 +30,10 @@ export function generateHtml(message: string): string {
 
 /**
  * Generates some HTML contents with the given message
- * @param {string} message
- * @param {number} code
- * @returns {string}
+ *
+ * @param message
+ * @param code
+ * @returns
  */
 export function generateErrorHtml(message: Error, code: number): string {
 	// language=HTML

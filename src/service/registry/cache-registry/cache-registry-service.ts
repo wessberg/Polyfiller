@@ -29,7 +29,7 @@ export class CacheRegistryService implements ICacheRegistryService {
 	/**
 	 * Initializes the Cache registry
 	 */
-	public async initialize(): Promise<void> {
+	async initialize(): Promise<void> {
 		// Flush the entire cache if requested
 		if (this.config.clearCache) {
 			await this.flushCache();
@@ -40,11 +40,12 @@ export class CacheRegistryService implements ICacheRegistryService {
 
 	/**
 	 * Gets the contents for the polyfill with the given name and with the given encoding
-	 * @param {IPolyfillFeature|Set<IPolyfillFeature>} name
-	 * @param {ContentEncodingKind} [encoding]
-	 * @returns {Promise<IRegistryGetResult?>}
+	 *
+	 * @param name
+	 * @param [encoding]
+	 * @returns
 	 */
-	public async get(name: IPolyfillFeature | Set<IPolyfillFeature>, encoding?: ContentEncodingKind): Promise<IRegistryGetResult | undefined> {
+	async get(name: IPolyfillFeature | Set<IPolyfillFeature>, encoding?: ContentEncodingKind): Promise<IRegistryGetResult | undefined> {
 		// Attempt to fetch it from the in-memory registry
 		const memoryHit = await this.memoryRegistry.get(name, encoding);
 		if (memoryHit != null) return memoryHit;
@@ -60,10 +61,11 @@ export class CacheRegistryService implements ICacheRegistryService {
 
 	/**
 	 * Gets the Set of Polyfill feature inputs that matches the given input
-	 * @param {Set<IPolyfillFeatureInput>} input
-	 * @param {string} userAgent
+	 *
+	 * @param input
+	 * @param userAgent
 	 */
-	public async getPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, userAgent: string): Promise<Set<IPolyfillFeature> | undefined> {
+	async getPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, userAgent: string): Promise<Set<IPolyfillFeature> | undefined> {
 		// Attempt to fetch it from the in-memory registry
 		const memoryHit = await this.memoryRegistry.getPolyfillFeatureSet(input, userAgent);
 		if (memoryHit != null) return memoryHit;
@@ -79,10 +81,11 @@ export class CacheRegistryService implements ICacheRegistryService {
 
 	/**
 	 * Gets the Core-js bundle that matches the given paths
-	 * @param {string[]} paths
-	 * @returns {Promise<Buffer|undefined>}
+	 *
+	 * @param paths
+	 * @returns
 	 */
-	public async getCoreJsBundle(paths: string[]): Promise<Buffer | undefined> {
+	async getCoreJsBundle(paths: string[]): Promise<Buffer | undefined> {
 		// Attempt to fetch it from the in-memory registry
 		const memoryHit = await this.memoryRegistry.getCoreJsBundle(paths);
 		if (memoryHit != null) return memoryHit;
@@ -98,40 +101,44 @@ export class CacheRegistryService implements ICacheRegistryService {
 
 	/**
 	 * Returns true if a polyfill wil the given name exists
-	 * @param {IPolyfillFeature|Set<IPolyfillFeature>} name
-	 * @param {ContentEncodingKind} [encoding]
-	 * @returns {Promise<boolean>}
+	 *
+	 * @param name
+	 * @param [encoding]
+	 * @returns
 	 */
-	public async has(name: IPolyfillFeature | Set<IPolyfillFeature>, encoding?: ContentEncodingKind): Promise<boolean> {
+	async has(name: IPolyfillFeature | Set<IPolyfillFeature>, encoding?: ContentEncodingKind): Promise<boolean> {
 		return (await this.get(name, encoding)) != null;
 	}
 
 	/**
 	 * Returns true if there is a PolyfillFeature Set in the cache that matches the given input Set
-	 * @param {Set<IPolyfillFeatureInput>} input
-	 * @param {string} userAgent
+	 *
+	 * @param input
+	 * @param userAgent
 	 */
-	public async hasPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, userAgent: string): Promise<boolean> {
+	async hasPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, userAgent: string): Promise<boolean> {
 		return (await this.getPolyfillFeatureSet(input, userAgent)) != null;
 	}
 
 	/**
 	 * Returns true if there is a Core-js bundle in cache that matches the given paths
-	 * @param {string[]} paths
-	 * @returns {Promise<boolean>}
+	 *
+	 * @param paths
+	 * @returns
 	 */
-	public async hasCoreJsBundle(paths: string[]): Promise<boolean> {
+	async hasCoreJsBundle(paths: string[]): Promise<boolean> {
 		return (await this.getCoreJsBundle(paths)) != null;
 	}
 
 	/**
 	 * Sets the contents for the polyfill with the given name and of the given encoding
-	 * @param {IPolyfillFeature|Set<IPolyfillFeature>} name
-	 * @param {Buffer} contents
-	 * @param {ContentEncodingKind} [encoding]
-	 * @returns {Promise<IRegistryGetResult>}
+	 *
+	 * @param name
+	 * @param contents
+	 * @param [encoding]
+	 * @returns
 	 */
-	public async set(name: IPolyfillFeature | Set<IPolyfillFeature>, contents: Buffer, encoding?: ContentEncodingKind): Promise<IRegistryGetResult> {
+	async set(name: IPolyfillFeature | Set<IPolyfillFeature>, contents: Buffer, encoding?: ContentEncodingKind): Promise<IRegistryGetResult> {
 		// Add it to the memory cache as well as the disk cache
 		await this.writeToCache(this.getCachePath(name, encoding), contents);
 		return await this.memoryRegistry.set(name, contents, encoding);
@@ -139,12 +146,17 @@ export class CacheRegistryService implements ICacheRegistryService {
 
 	/**
 	 * Sets the given PolyfillFeature Set for the given Set of PolyfillFeature inputs
-	 * @param {Set<IPolyfillFeatureInput>} input
-	 * @param {Set<IPolyfillFeature>} polyfillSet
-	 * @param {string} userAgent
-	 * @returns {Promise<Set<IPolyfillFeature>>}
+	 *
+	 * @param input
+	 * @param polyfillSet
+	 * @param userAgent
+	 * @returns
 	 */
-	public async setPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, polyfillSet: Set<IPolyfillFeature>, userAgent: string): Promise<Set<IPolyfillFeature>> {
+	async setPolyfillFeatureSet(
+		input: Set<IPolyfillFeatureInput>,
+		polyfillSet: Set<IPolyfillFeature>,
+		userAgent: string
+	): Promise<Set<IPolyfillFeature>> {
 		// Add it to the memory cache as well as the disk cache
 		await this.writeToCache(this.getCachePathForPolyfillSet(input, userAgent), Buffer.from(JSON.stringify([...polyfillSet])));
 		return await this.memoryRegistry.setPolyfillFeatureSet(input, polyfillSet, userAgent);
@@ -152,10 +164,11 @@ export class CacheRegistryService implements ICacheRegistryService {
 
 	/**
 	 * Sets the Core-js bundle that matches the given paths in the cache
-	 * @param {string[]} paths
-	 * @param {Buffer} bundle
+	 *
+	 * @param paths
+	 * @param bundle
 	 */
-	public async setCoreJsBundle(paths: string[], bundle: Buffer): Promise<Buffer> {
+	async setCoreJsBundle(paths: string[], bundle: Buffer): Promise<Buffer> {
 		// Add it to the memory cache as well as the disk cache
 		await this.writeToCache(this.getCachePathForCoreJsBundle(paths), bundle);
 		return await this.memoryRegistry.setCoreJsBundle(paths, bundle);
@@ -163,11 +176,12 @@ export class CacheRegistryService implements ICacheRegistryService {
 
 	/**
 	 * Returns true if the given polyfill name needs an update within the cache
-	 * @param {PolyfillName} polyfillName
-	 * @param {string} currentVersion
-	 * @returns {Promise<boolean>}
+	 *
+	 * @param polyfillName
+	 * @param currentVersion
+	 * @returns
 	 */
-	public async needsUpdate(polyfillName: PolyfillName, currentVersion: string): Promise<boolean> {
+	async needsUpdate(polyfillName: PolyfillName, currentVersion: string): Promise<boolean> {
 		const packageVersionMap = await this.getPackageVersionMap();
 		const cachedVersion = packageVersionMap[polyfillName];
 
@@ -176,10 +190,11 @@ export class CacheRegistryService implements ICacheRegistryService {
 
 	/**
 	 * Updates the cached package version map
-	 * @param {IterableIterator<PolyfillName, string>} options
-	 * @returns {Promise<void>}
+	 *
+	 * @param options
+	 * @returns
 	 */
-	public async updatePackageVersionMap(options: IterableIterator<[PolyfillName, string]>): Promise<void> {
+	async updatePackageVersionMap(options: IterableIterator<[PolyfillName, string]>): Promise<void> {
 		const packageVersionMap = await this.getPackageVersionMap();
 		for (const [name, version] of options) {
 			packageVersionMap[name] = version;
@@ -191,7 +206,8 @@ export class CacheRegistryService implements ICacheRegistryService {
 	/**
 	 * Updates the disk cache. If the cache is already valid, there is nothing to do.
 	 * Otherwise, it will store all polyfilled libraries and their current versions
-	 * @returns {Promise<void>}
+	 *
+	 * @returns
 	 */
 	private async updateDiskCache(): Promise<void> {
 		// Start with validating the disk cache
@@ -221,7 +237,8 @@ export class CacheRegistryService implements ICacheRegistryService {
 	 * Validates the disk cache. If any version of any package has been updated,
 	 * the entire cache will be flushed.
 	 * If 'true' is returned, the cache is valid
-	 * @returns {Promise<boolean>}
+	 *
+	 * @returns
 	 */
 	private async validateDiskCache(): Promise<boolean> {
 		for (const [polyfillName, polyfill] of Object.entries(constant.polyfill)) {
@@ -229,7 +246,7 @@ export class CacheRegistryService implements ICacheRegistryService {
 			if ("polyfills" in polyfill) continue;
 
 			// If the local copy of the polyfill needs to be updated, flush the entire cache
-			if (await this.needsUpdate(<PolyfillName>polyfillName, polyfill.version)) {
+			if (await this.needsUpdate(polyfillName as PolyfillName, polyfill.version)) {
 				this.logger.debug(`${polyfillName} needs an update! Flushing cache...`);
 				await this.flushCache();
 				return false;
@@ -240,7 +257,8 @@ export class CacheRegistryService implements ICacheRegistryService {
 
 	/**
 	 * Flushes the cache entirely
-	 * @returns {Promise<void>>}
+	 *
+	 * @returns
 	 */
 	private async flushCache(): Promise<void> {
 		await this.fileSaver.remove(constant.path.cacheRoot);
@@ -248,9 +266,10 @@ export class CacheRegistryService implements ICacheRegistryService {
 
 	/**
 	 * Writes the given Buffer to cache
-	 * @param {string} path
-	 * @param {Buffer} content
-	 * @returns {Promise<void>}
+	 *
+	 * @param path
+	 * @param content
+	 * @returns
 	 */
 	private async writeToCache(path: string, content: Buffer): Promise<void> {
 		await this.fileSaver.save(path, content);
@@ -258,19 +277,19 @@ export class CacheRegistryService implements ICacheRegistryService {
 
 	/**
 	 * Gets the package version map from the cache. A new one will be created if it doesn't exist already
-	 * @returns {object}
+	 *
+	 * @returns
 	 */
 	private async getPackageVersionMap(): Promise<{[key: string]: string}> {
-		let packageVersionMap: {[key: string]: string};
 		const packageVersionMapRaw = await this.getFromCache(constant.path.cachePackageVersionMap);
-		packageVersionMap = packageVersionMapRaw == null ? {} : JSON.parse(packageVersionMapRaw.toString());
-		return packageVersionMap;
+		return packageVersionMapRaw == null ? {} : JSON.parse(packageVersionMapRaw.toString());
 	}
 
 	/**
 	 * Returns the contents on the given path from the cache
-	 * @param {string} path
-	 * @returns {Promise<void>}
+	 *
+	 * @param path
+	 * @returns
 	 */
 	private async getFromCache(path: string): Promise<Buffer | undefined> {
 		try {
@@ -282,9 +301,10 @@ export class CacheRegistryService implements ICacheRegistryService {
 
 	/**
 	 * Gets the cache path to the given name and encoding
-	 * @param {IPolyfillFeature | Set<IPolyfillFeature>} name
-	 * @param {ContentEncodingKind} encoding
-	 * @returns {string}
+	 *
+	 * @param name
+	 * @param encoding
+	 * @returns
 	 */
 	private getCachePath(name: IPolyfillFeature | Set<IPolyfillFeature>, encoding?: ContentEncodingKind): string {
 		return join(constant.path.cacheRoot, getPolyfillIdentifier(name, encoding));
@@ -292,9 +312,10 @@ export class CacheRegistryService implements ICacheRegistryService {
 
 	/**
 	 * Gets the cache path to the given Polyfill Feature Set
-	 * @param {Set<IPolyfillFeatureInput>} input
-	 * @param {string} userAgent
-	 * @returns {string}
+	 *
+	 * @param input
+	 * @param userAgent
+	 * @returns
 	 */
 	private getCachePathForPolyfillSet(input: Set<IPolyfillFeatureInput>, userAgent: string): string {
 		return join(constant.path.cacheRoot, getPolyfillSetIdentifier(input, userAgent));
@@ -302,8 +323,9 @@ export class CacheRegistryService implements ICacheRegistryService {
 
 	/**
 	 * Gets the cache path to the bundle generated for the given Core-js paths
-	 * @param {string[]} paths
-	 * @returns {string}
+	 *
+	 * @param paths
+	 * @returns
 	 */
 	private getCachePathForCoreJsBundle(paths: string[]): string {
 		return join(constant.path.cacheRoot, getCoreJsBundleIdentifier(paths));

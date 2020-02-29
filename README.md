@@ -71,8 +71,9 @@ Polyfiller is kindly supported by [JetBrains](https://www.jetbrains.com/?from=Po
 - [Supporters](#supporters)
 - [Table of Contents](#table-of-contents)
 - [Install](#install)
-  - [NPM](#npm)
+  - [npm](#npm)
   - [Yarn](#yarn)
+  - [pnpm](#pnpm)
 - [Usage](#usage)
   - [Usage in a Browser](#usage-in-a-browser)
 - [Examples](#examples)
@@ -108,7 +109,7 @@ Polyfiller is kindly supported by [JetBrains](https://www.jetbrains.com/?from=Po
 
 ## Install
 
-### NPM
+### npm
 
 ```
 $ npm install @wessberg/polyfiller
@@ -118,6 +119,12 @@ $ npm install @wessberg/polyfiller
 
 ```
 $ yarn add @wessberg/polyfiller
+```
+
+### pnpm
+
+```
+$ pnpm add @wessberg/polyfiller
 ```
 
 <!-- SHADOW_SECTION_INSTALL_END -->
@@ -309,9 +316,9 @@ Do you want to contribute? Awesome! Please follow [these recommendations](./CONT
 
 ## Maintainers
 
-| <img alt="Frederik Wessberg" src="https://avatars2.githubusercontent.com/u/20454213?s=460&v=4" height="70"   />                                             |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Frederik Wessberg](mailto:frederikwessberg@hotmail.com)<br><strong>Twitter</strong>: [@FredWessberg](https://twitter.com/FredWessberg)<br>_Lead Developer_ |
+| <img alt="Frederik Wessberg" src="https://avatars2.githubusercontent.com/u/20454213?s=460&v=4" height="70"   />                                                                                                                  |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Frederik Wessberg](mailto:frederikwessberg@hotmail.com)<br><strong>Twitter</strong>: [@FredWessberg](https://twitter.com/FredWessberg)<br><strong>Github</strong>: [@wessberg](https://github.com/wessberg)<br>_Lead Developer_ |
 
 <!-- SHADOW_SECTION_MAINTAINERS_END -->
 
@@ -319,11 +326,13 @@ Do you want to contribute? Awesome! Please follow [these recommendations](./CONT
 
 ## Backers
 
+| <img alt="Bubbles" src="https://uploads-ssl.webflow.com/5d682047c28b217055606673/5e5360be16879c1d0dca6514_icon-thin-128x128%402x.png" height="70"   /> |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [Bubbles](https://usebubbles.com)<br><strong>Twitter</strong>: [@use_bubbles](https://twitter.com/use_bubbles)                                         |
+
 ### Patreon
 
-[Become a backer](https://www.patreon.com/bePatron?u=11315442) and get your name, avatar, and Twitter handle listed here.
-
-<a href="https://www.patreon.com/bePatron?u=11315442"><img alt="Backers on Patreon" src="https://patreon-badge.herokuapp.com/11315442.png"  width="500"  /></a>
+<a href="https://www.patreon.com/bePatron?u=11315442"><img alt="Patrons on Patreon" src="https://img.shields.io/endpoint.svg?url=https://shieldsio-patreon.herokuapp.com/wessberg"  width="200"  /></a>
 
 <!-- SHADOW_SECTION_BACKERS_END -->
 

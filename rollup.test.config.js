@@ -13,6 +13,7 @@ export default {
 	plugins: [
 		ts({
 			tsconfig: "tsconfig.json",
+			transpileOnly: true,
 			transformers: [di]
 		})
 	],

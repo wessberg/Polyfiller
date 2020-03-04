@@ -1,5 +1,3 @@
-// tslint:disable:no-any
-
 import {environment} from "../environment/environment";
 
 export declare type IConfig = typeof environment & {

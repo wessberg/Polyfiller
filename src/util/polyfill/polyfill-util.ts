@@ -18,8 +18,6 @@ import {IPolyfillLibraryDictEntry, IPolyfillLocalDictEntry} from "../../polyfill
 import toposort from "toposort";
 import {POLYFILL_CONTEXTS, PolyfillContext} from "../../polyfill/polyfill-context";
 
-// tslint:disable
-
 /**
  * Traces all polyfill names that matches the given name. It may be an alias, and it may refer to additional aliases
  * within the given features

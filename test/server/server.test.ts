@@ -13,8 +13,6 @@ import {ContentEncodingKind} from "../../src/encoding/content-encoding-kind";
 import {getPolyfillRequestFromUrl} from "../../src/util/polyfill/polyfill-util";
 import {URL} from "url";
 
-// tslint:disable:no-identical-functions
-
 const config = container.get<IConfig>();
 
 test.before(initializeTests);

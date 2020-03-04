@@ -3,8 +3,6 @@ import {ServerResponse as HttpServerResponse} from "http";
 import {Response} from "../../server/i-response";
 import {constant} from "../../constant/constant";
 
-// tslint:disable:no-any
-
 /**
  * Responds to the given request with the given response
  *

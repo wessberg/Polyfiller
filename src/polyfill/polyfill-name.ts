@@ -233,6 +233,7 @@ export declare type PolyfillDealiasedName =
 	| "es.promise.constructor"
 	| "es.promise.all-settled"
 	| "es.promise.try"
+	| "es.promise.any"
 	| "es.symbol.constructor"
 	| "es.symbol.async-iterator"
 	| "es.symbol.has-instance"

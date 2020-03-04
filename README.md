@@ -683,6 +683,7 @@ And, if you request `performance.now`, `date.now` will also be included since th
 - **`esnext.promise`**
   - `es.promise.all-settled`
   - `es.promise.try`
+  - `es.promise.any`
 - **`esnext.reflect`**
   - `es.reflect.define-metadata`
   - `es.reflect.delete-metadata`

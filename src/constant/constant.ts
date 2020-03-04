@@ -204,6 +204,15 @@ export const constant: IConstant = {
 			dependencies: ["es.promise.constructor"],
 			contexts: ALL_CONTEXTS
 		},
+		"es.promise.any": {
+			library: "core-js",
+			relativePaths: ["modules/esnext.promise.any.js"],
+			// TODO: Update when MDN or Caniuse Compatibility is added
+			features: [],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+			dependencies: ["es.promise.constructor"],
+			contexts: ALL_CONTEXTS
+		},
 		"es.object": {
 			polyfills: [
 				"es.object.assign",
@@ -2649,7 +2658,7 @@ export const constant: IConstant = {
 			polyfills: ["es.number.from-string"]
 		},
 		"esnext.promise": {
-			polyfills: ["es.promise.all-settled", "es.promise.try"]
+			polyfills: ["es.promise.all-settled", "es.promise.try", "es.promise.try"]
 		},
 		"esnext.reflect": {
 			polyfills: [

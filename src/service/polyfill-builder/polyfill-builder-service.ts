@@ -112,7 +112,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 					if (resolvedMetaVariantPath != null) {
 						absolutePaths.push(resolvedMetaVariantPath);
 					} else {
-						this.logger.debug(`Unresolved path:`, metaVariantPathInput);
+						throw new ReferenceError(`Unresolved path: '${metaVariantPathInput}'`);
 					}
 				}
 			}
@@ -131,7 +131,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 					if (resolvedMetaVariantPath != null) {
 						absolutePaths.push(resolvedMetaVariantPath);
 					} else {
-						this.logger.debug(`Unresolved path:`, metaVariantPathInput);
+						throw new ReferenceError(`Unresolved path: '${metaVariantPathInput}'`);
 					}
 				}
 			}
@@ -145,7 +145,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 					if (resolvedPath != null) {
 						absolutePaths.push(resolvedPath);
 					} else {
-						this.logger.debug(`Unresolved path:`, pathInput);
+						throw new ReferenceError(`Unresolved path: '${pathInput}'`);
 					}
 				}
 			}
@@ -159,7 +159,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 						if (resolvedErrorPath != null) {
 							absolutePaths.push(resolvedErrorPath);
 						} else {
-							this.logger.debug(`Unresolved path:`, errorPathInput);
+							throw new ReferenceError(`Unresolved path: '${errorPathInput}'`);
 						}
 					}
 				}
@@ -173,7 +173,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 						if (resolvedShadyDomExtensionPath != null) {
 							absolutePaths.push(resolvedShadyDomExtensionPath);
 						} else {
-							this.logger.debug(`Unresolved path:`, shadyDomExtensionPathInput);
+							throw new ReferenceError(`Unresolved path: '${shadyDomExtensionPathInput}'`);
 						}
 					}
 				}
@@ -186,7 +186,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 						if (resolvedMediaQueryExtensionPath != null) {
 							absolutePaths.push(resolvedMediaQueryExtensionPath);
 						} else {
-							this.logger.debug(`Unresolved path:`, mediaQueryExtensionPathInput);
+							throw new ReferenceError(`Unresolved path: '${mediaQueryExtensionPathInput}'`);
 						}
 					}
 				}
@@ -199,7 +199,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 						if (resolvedRxjsExtensionPath != null) {
 							absolutePaths.push(resolvedRxjsExtensionPath);
 						} else {
-							this.logger.debug(`Unresolved path:`, rxjsExtensionPathInput);
+							throw new ReferenceError(`Unresolved path: '${rxjsExtensionPathInput}'`);
 						}
 					}
 				}
@@ -212,7 +212,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 						if (resolvedFetchExtensionPath != null) {
 							absolutePaths.push(resolvedFetchExtensionPath);
 						} else {
-							this.logger.debug(`Unresolved path:`, fetchExtensionPathInput);
+							throw new ReferenceError(`Unresolved path: '${fetchExtensionPathInput}'`);
 						}
 					}
 				}
@@ -225,7 +225,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 						if (resolvedResizeObserverExtensionPath != null) {
 							absolutePaths.push(resolvedResizeObserverExtensionPath);
 						} else {
-							this.logger.debug(`Unresolved path:`, resizeObserverExtensionPathInput);
+							throw new ReferenceError(`Unresolved path: '${resizeObserverExtensionPathInput}'`);
 						}
 					}
 				}
@@ -246,7 +246,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 							if (resolvedLocalePath != null) {
 								absolutePaths.push(resolvedLocalePath);
 							} else {
-								this.logger.debug(`Unresolved path:`, localePathInput);
+								throw new ReferenceError(`Unresolved path: '${localePathInput}'`);
 							}
 						}
 					})

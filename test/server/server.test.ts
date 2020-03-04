@@ -12,6 +12,7 @@ import {chrome, ie} from "useragent-generator";
 import {ContentEncodingKind} from "../../src/encoding/content-encoding-kind";
 import {getPolyfillRequestFromUrl} from "../../src/util/polyfill/polyfill-util";
 import {URL} from "url";
+import {PolyfillDictNormalizedEntry} from "../../src/polyfill/polyfill-dict";
 
 const config = container.get<IConfig>();
 
@@ -56,6 +57,37 @@ test("Will not generate polyfills for 'Element' on Chrome 69 for a Galaxy S5", a
 		port: config.port,
 		path: `${constant.endpoint.polyfill}?features=intersection-observer,zone,es2015,es2016+`,
 		acceptEncoding: new Set([ContentEncodingKind.BROTLI])
+	});
+
+	t.true(result.statusCode === constants.HTTP_STATUS_OK);
+});
+
+test("Is able to generate a bundle of every available polyfill", async t => {
+	const features = Object.entries(constant.polyfill)
+		.filter(([, value]) => !("polyfills" in value))
+		.map(([key, value]) => {
+			switch (key) {
+				case "zone":
+					return `${key}|${Object.keys(((value as unknown) as PolyfillDictNormalizedEntry).meta!).join("|")}|force`;
+				case "intl.core":
+				case "intl.list-format":
+				case "intl.relative-time-format":
+					return `${key}|locale=en~da|force`;
+				default:
+					return `${key}|force`;
+			}
+		});
+
+	const result = await sendRequest({
+		http2: config.http2,
+		tls: true,
+		userAgent:
+			"Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3450.0 Mobile Safari/537.36",
+		method: "GET",
+		host: config.host,
+		port: config.port,
+		path: `${constant.endpoint.polyfill}?features=${features.join(",")}`,
+		acceptEncoding: undefined
 	});
 
 	t.true(result.statusCode === constants.HTTP_STATUS_OK);

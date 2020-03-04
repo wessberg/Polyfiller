@@ -50,5 +50,4 @@ Thumbs.db
 *.crt
 *.csr
 /dist/
-package-lock.json
 .esm-cache

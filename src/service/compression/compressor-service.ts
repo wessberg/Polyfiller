@@ -1,12 +1,13 @@
 import {ICompressorService} from "./i-compressor-service";
-import {gzip, brotliCompress, ZlibOptions, BrotliOptions} from "zlib";
+import {gzip, ZlibOptions} from "zlib";
+import {BrotliEncodeParams, compress as brotliCompress} from "iltorb";
 import {ICompressorServiceCompressResult} from "./i-compressor-service-compress-result";
 
 /**
  * A class that helps with compressing files with Brotli and Zlib
  */
 export class CompressorService implements ICompressorService {
-	constructor(private readonly zlibCompressionOptions: ZlibOptions, private readonly brotliCompressionOptions: BrotliOptions) {}
+	constructor(private readonly zlibCompressionOptions: ZlibOptions, private readonly brotliCompressionOptions: BrotliEncodeParams) {}
 
 	/**
 	 * Compresses the given code based on the given options

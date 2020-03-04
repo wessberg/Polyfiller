@@ -1,3 +1,7 @@
-import {BrotliOptions} from "zlib";
+import {BrotliEncodeParams} from "iltorb";
 
-export const brotliCompressionOptions: BrotliOptions = {};
+export const brotliCompressionOptions: BrotliEncodeParams = {
+	mode: 0,
+	quality: 11,
+	lgwin: 22
+};

@@ -1108,7 +1108,7 @@ export const constant: IConstant = {
 		"es.number.constructor": {
 			library: "core-js",
 			relativePaths: ["modules/es.number.constructor.js"],
-			features: ["javascript.builtins.Number.prototype"],
+			features: ["javascript.builtins.Number"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: [],
 			contexts: ALL_CONTEXTS

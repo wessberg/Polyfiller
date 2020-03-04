@@ -1,3 +1,9 @@
+## [0.0.96](https://github.com/wessberg/polyfiller/compare/v0.0.95...v0.0.96) (2020-03-04)
+
+### Features
+
+- **css.focus-visible:** add support for the :focus-visible pseudo-class ([cac6e5a](https://github.com/wessberg/polyfiller/commit/cac6e5ad25678b04b5b9b9837c7f95a9fc283bdf))
+
 ## [0.0.95](https://github.com/wessberg/polyfiller/compare/v0.0.94...v0.0.95) (2020-03-04)
 
 ### Bug Fixes

@@ -539,6 +539,7 @@ And, if you request `performance.now`, `date.now` will also be included since th
   - `es.symbol.iterator`
   - `es.symbol.constructor`
   - `es.symbol.match`
+  - `es.symbol.match-all`
   - `es.symbol.replace`
   - `es.symbol.search`
   - `es.symbol.species`
@@ -638,6 +639,7 @@ And, if you request `performance.now`, `date.now` will also be included since th
   - `es.map.reduce`
   - `es.map.some`
   - `es.map.update`
+  - `es.map.upsert`
 - **`esnext.weak-map`**
   - `es.weak-map.from`
   - `es.weak-map.of`

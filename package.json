@@ -86,9 +86,9 @@
 		"chalk": "^2.4.2",
 		"console-polyfill": "^0.3.0",
 		"construct-style-sheets-polyfill": "^2.2.10",
-		"core-js": "^3.2.1",
-		"core-js-builder": "^3.2.1",
-		"devcert": "^1.0.2",
+		"core-js": "^3.6.4",
+		"core-js-builder": "^3.6.4",
+		"devcert": "^1.1.0",
 		"events-polyfill": "^2.1.2",
 		"file-type": "^12.3.0",
 		"find-up": "^4.1.0",
@@ -133,6 +133,10 @@
 	"types": "./dist/index.d.ts",
 	"typings": "./dist/index.d.ts",
 	"es2015": "./dist/index.js",
+	"funding": {
+		"type": "github",
+		"url": "https://github.com/wessberg/polyfiller?sponsor=1"
+	},
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/wessberg/polyfiller.git"

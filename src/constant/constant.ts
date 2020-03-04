@@ -1810,6 +1810,15 @@ export const constant: IConstant = {
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
+		"es.map.upsert": {
+			library: "core-js",
+			relativePaths: ["modules/esnext.map.upsert.js"],
+			// TODO: Update when MDN or Caniuse Compatibility is added
+			features: [],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+			dependencies: ["es.map"],
+			contexts: ALL_CONTEXTS
+		},
 		"es.weak-map": {
 			library: "core-js",
 			relativePaths: ["modules/es.weak-map.js"],
@@ -2588,7 +2597,8 @@ export const constant: IConstant = {
 				"es.map.of",
 				"es.map.reduce",
 				"es.map.some",
-				"es.map.update"
+				"es.map.update",
+				"es.map.upsert"
 			]
 		},
 		"esnext.weak-map": {

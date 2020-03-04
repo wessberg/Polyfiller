@@ -168,6 +168,7 @@ export declare type PolyfillDealiasedName =
 	| "es.map.reduce"
 	| "es.map.some"
 	| "es.map.update"
+	| "es.map.upsert"
 	| "es.weak-map"
 	| "es.weak-map.from"
 	| "es.weak-map.of"

@@ -10,8 +10,7 @@ import {MinifyService} from "./service/minify/minify-service";
 import {IConfig} from "./config/i-config";
 import {config} from "./config/config";
 import {brotliCompressionOptions} from "./service/compression/brotli-compression-options";
-import {BrotliEncodeParams} from "iltorb";
-import {ZlibOptions} from "zlib";
+import {BrotliOptions, ZlibOptions} from "zlib";
 import {zlibCompressionOptions} from "./service/compression/zlib-compression-options";
 import {IServer} from "./server/i-server";
 import {Server} from "./server/server";
@@ -55,7 +54,7 @@ container.registerSingleton<IApiService, ApiService>();
 
 // Configuration
 container.registerSingleton<IConfig>(() => config);
-container.registerSingleton<BrotliEncodeParams>(() => brotliCompressionOptions);
+container.registerSingleton<BrotliOptions>(() => brotliCompressionOptions);
 container.registerSingleton<ZlibOptions>(() => zlibCompressionOptions);
 
 // Server

@@ -2,6 +2,6 @@ import {ICompressorServiceCompressResult} from "./i-compressor-service-compress-
 
 export interface ICompressorService {
 	compress(content: Buffer): Promise<ICompressorServiceCompressResult>;
-	compressWithBrotli(code: Buffer): Promise<Buffer>;
-	compressWithZlib(code: Buffer): Promise<Buffer>;
+	brotli(code: Buffer): Promise<Buffer>;
+	gzip(code: Buffer): Promise<Buffer>;
 }

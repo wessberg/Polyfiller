@@ -683,7 +683,7 @@ And, if you request `performance.now`, `date.now` will also be included since th
 - **`esnext.promise`**
   - `es.promise.all-settled`
   - `es.promise.try`
-  - `es.promise.any`
+  - `es.promise.try`
 - **`esnext.reflect`**
   - `es.reflect.define-metadata`
   - `es.reflect.delete-metadata`
@@ -734,6 +734,7 @@ And, if you request `performance.now`, `date.now` will also be included since th
 - `base64`
 - `blob`
 - `proxy`
+- `es.promise.any`
 - `es.string.replace`
 - `pointer-event`
 - `xhr`
@@ -743,6 +744,7 @@ And, if you request `performance.now`, `date.now` will also be included since th
 - `document-fragment`
 - `node.parentelement`
 - `scroll-behavior`
+- `focus-visible`
 - `node.contains`
 - `window`
 - `document`

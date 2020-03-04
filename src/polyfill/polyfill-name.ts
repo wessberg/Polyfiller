@@ -352,4 +352,5 @@ export declare type PolyfillDealiasedName =
 	| "web-animations"
 	| "global-this"
 	| "constructable-style-sheets"
-	| "proto";
+	| "proto"
+	| "focus-visible";

@@ -2867,6 +2867,14 @@ export const constant: IConstant = {
 			dependencies: ["es.object.define-property", "es.object.get-own-property-descriptor", "requestanimationframe"],
 			contexts: WINDOW_CONTEXT
 		},
+		"focus-visible": {
+			library: "focus-visible",
+			relativePaths: ["dist/focus-visible.min.js"],
+			features: ["css-focus-visible"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_FOCUS_VISIBLE,
+			dependencies: ["class-list"],
+			contexts: WINDOW_CONTEXT
+		},
 		"node.contains": {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/Node.prototype.contains/min.js"],

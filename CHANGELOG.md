@@ -1,3 +1,9 @@
+## [0.0.95](https://github.com/wessberg/polyfiller/compare/v0.0.94...v0.0.95) (2020-03-04)
+
+### Bug Fixes
+
+- update relative paths for some polyfills ([d1e09a1](https://github.com/wessberg/polyfiller/commit/d1e09a1b3d614228281fb76a15b72057daedc1f5))
+
 ## [0.0.94](https://github.com/wessberg/polyfiller/compare/v0.0.93...v0.0.94) (2020-03-04)
 
 ### Features

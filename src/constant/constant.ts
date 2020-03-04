@@ -3022,7 +3022,7 @@ export const constant: IConstant = {
 		},
 		"global-this": {
 			library: "core-js",
-			relativePaths: ["modules/esnext.global-this.js"],
+			relativePaths: ["modules/es.global-this.js"],
 			features: ["javascript.builtins.globalThis"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: [],

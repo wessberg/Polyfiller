@@ -8,7 +8,7 @@
 	],
 	"scripts": {
 		"serve": "node ./dist/index.js",
-		"serve:production": "NODE_ENV=production npm run serve",
+		"serve:production": "NODE_ENV=production CLEAR_CACHE=true npm run serve",
 		"generate:scaffold": "scaffold all --yes",
 		"generate:changelog": "standard-changelog --first-release",
 		"generate:all": "npm run generate:scaffold && npm run generate:changelog",
@@ -61,7 +61,7 @@
 		"useragent-generator": "^1.1.1-amkt-22079-finish.0"
 	},
 	"dependencies": {
-		"@babel/core": "^7.8.6",
+		"@babel/core": "^7.8.7",
 		"@babel/plugin-transform-block-scoping": "^7.8.3",
 		"@types/astring": "^1.3.0",
 		"@types/mime": "^2.0.1",
@@ -107,7 +107,7 @@
 		"regenerator-runtime": "^0.13.3",
 		"requestanimationframe": "0.0.23",
 		"requestidlecallback": "^0.3.0",
-		"rollup": "^1.32.0",
+		"rollup": "^1.32.1",
 		"@rollup/plugin-commonjs": "^11.0.2",
 		"@rollup/plugin-multi-entry": "^3.0.0",
 		"@rollup/plugin-node-resolve": "^7.1.1",

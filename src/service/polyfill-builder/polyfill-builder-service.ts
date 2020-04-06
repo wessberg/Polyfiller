@@ -14,7 +14,6 @@ import {IPolyfillLibraryDictEntry} from "../../polyfill/polyfill-dict";
 import {ICacheRegistryService} from "../registry/cache-registry/i-cache-registry-service";
 import {ILoggerService} from "../logger/i-logger-service";
 import {ensureArray} from "../../util/ensure-array/ensure-array";
-import {IFlattenerService} from "../flattener/i-flattener-service";
 import {PolyfillDealiasedName} from "../../polyfill/polyfill-name";
 import {sync} from "find-up";
 
@@ -26,7 +25,6 @@ const SYNC_OPTIONS = {cwd: __dirname};
 export class PolyfillBuilderService implements IPolyfillBuilderService {
 	constructor(
 		private readonly minifier: IMinifyService,
-		private readonly flattener: IFlattenerService,
 		private readonly logger: ILoggerService,
 		private readonly cacheService: ICacheRegistryService,
 		private readonly compressor: ICompressorService,
@@ -37,7 +35,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 	 * Builds the given PolyfillSet and returns the result in all encodings
 	 */
 	async buildPolyfillSet(polyfillSet: Set<IPolyfillFeature>): Promise<ICompressedPolyfillSetResult> {
-		const input: {polyfillName: PolyfillDealiasedName; paths: string[]; flatten: boolean}[] = [];
+		const input: {polyfillName: PolyfillDealiasedName; paths: string[]}[] = [];
 		let content = "";
 		let hasAddedCoreJsContent = false;
 
@@ -81,8 +79,6 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 			if (match == null || "polyfills" in match) {
 				throw new TypeError(`No aliased polyfill names can be built! These must be resolved before calling ${this.buildPolyfillSet.name}!`);
 			}
-
-			const flatten = match.flatten === true;
 
 			const rootDirectory =
 				"library" in match ? join("node_modules", typeof match.library === "string" ? match.library : match.library[polyfillFeature.context]) : "";
@@ -256,21 +252,14 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 			// Push all of the absolute paths for this specific polyfill to the input paths
 			input.push({
 				polyfillName: polyfillFeature.name,
-				paths: absolutePaths,
-				flatten
+				paths: absolutePaths
 			});
 		}
 
 		// Load all of the input paths and add them to the generated content
-		for (const {paths, flatten} of input) {
-			if (flatten) {
-				content += `\n${await this.flattener.flatten({
-					path: paths
-				})}`;
-			} else {
-				for (const path of paths) {
-					content += `\n${(await this.fileLoader.load(path)).toString()}`;
-				}
+		for (const {paths} of input) {
+			for (const path of paths) {
+				content += `\n${(await this.fileLoader.load(path)).toString()}`;
 			}
 		}
 

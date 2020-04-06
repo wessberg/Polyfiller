@@ -1,3 +1,9 @@
+## [0.0.100](https://github.com/wessberg/polyfiller/compare/v0.0.99...v0.0.100) (2020-04-06)
+
+### Bug Fixes
+
+- **pointer-event:** when combining the 'pointer-event' feature with the 'shadow-dom' feature, 'shadow-dom' must always be included first, given that both mutate EventTarget.prototype.addEventListener ([00772bc](https://github.com/wessberg/polyfiller/commit/00772bc292c96912423c11c5500d24ab3dfaa035))
+
 ## [0.0.99](https://github.com/wessberg/polyfiller/compare/v0.0.98...v0.0.99) (2020-04-06)
 
 ### Bug Fixes

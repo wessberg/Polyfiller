@@ -1,3 +1,9 @@
+## [0.0.99](https://github.com/wessberg/polyfiller/compare/v0.0.98...v0.0.99) (2020-04-06)
+
+### Bug Fixes
+
+- update ScopingShim when requesting web-components with the 'experimental' flagC ([d254f70](https://github.com/wessberg/polyfiller/commit/d254f70338beb624a5246b24fabe0c13a9286e56))
+
 ## [0.0.98](https://github.com/wessberg/polyfiller/compare/v0.0.97...v0.0.98) (2020-03-06)
 
 ## [0.0.97](https://github.com/wessberg/polyfiller/compare/v0.0.96...v0.0.97) (2020-03-04)

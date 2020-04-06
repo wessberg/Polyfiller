@@ -2832,7 +2832,8 @@ export const constant: IConstant = {
 			features: ["shadowdomv1"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES__WEBCOMPONENTS_SHADYDOM,
 			dependencies: ["es", "template", "mutation-observer", "event", "node.contains", "queryselector"],
-			contexts: WINDOW_CONTEXT
+			contexts: WINDOW_CONTEXT,
+			mustComeAfter: ["pointer-event"]
 		},
 		queryselector: {
 			library: "polyfill-library",

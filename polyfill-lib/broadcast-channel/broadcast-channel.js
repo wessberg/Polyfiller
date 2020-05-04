@@ -1,36 +1,3 @@
-/**
-  @class BroadcastChannel
-  A simple BroadcastChannel polyfill that works with all major browsers.
-  Please refer to the official MDN documentation of the Broadcast Channel API.
-  @see <a href="https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API">Broadcast Channel API on MDN</a>
-  @author Alessandro Piana
-  @version 1.0.0
- */
-
-/*
-  MIT License
-
-  Copyright (c) 2019 Alessandro Piana
-
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
-
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
-
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-  SOFTWARE.
-*/
-
 (function (context) {
 	// Internal variables
 	var _channels = null, // List of channels
@@ -49,6 +16,20 @@
 			text += possible.charAt(Math.floor(Math.random() * possible.length));
 		}
 		return text;
+	}
+
+	function flattenEventListenerOptions(options) {
+		return {
+			capture: typeof options === "boolean" ? options : options == null || options.capture == null ? false : options.capture
+		};
+	}
+
+	function flattenAddEventListenerOptions(options) {
+		return {
+			capture: typeof options === "boolean" ? options : options == null || options.capture == null ? false : options.capture,
+			passive: options == null || typeof options === "boolean" || options.passive == null ? false : options.passive,
+			once: options == null || typeof options === "boolean" || options.once == null ? false : options.once
+		};
 	}
 
 	/**
@@ -74,22 +55,45 @@
 		return new Date().getTime();
 	}
 
-	/**
-	 * Build a "similar" response as done in the real BroadcastChannel API
-	 */
-	function buildResponse(data) {
+	function getVirtualMessageEvent(type, eventInitDict) {
 		return {
-			timestamp: getTimestamp(),
+			type: type,
 			isTrusted: true,
-			target: null, // Since we are using JSON stringify, we cannot pass references.
+			bubbles: eventInitDict != null && eventInitDict.bubbles != null ? eventInitDict.bubbles : true,
+			cancelable: eventInitDict != null && eventInitDict.cancelable != null ? eventInitDict.cancelable : true,
+			data: eventInitDict != null && eventInitDict.data !== undefined ? eventInitDict.data : undefined,
+			origin: eventInitDict != null && eventInitDict.origin != null ? eventInitDict.origin : window.location.protocol + "//" + window.location.host,
+			lastEventId: eventInitDict != null && eventInitDict.lastEventId != null ? eventInitDict.lastEventId : 12,
+			source: eventInitDict != null && eventInitDict.source != null ? eventInitDict.source : undefined,
+			ports: eventInitDict != null && eventInitDict.ports != null ? eventInitDict.ports : [],
+			timestamp: getTimestamp(),
+			target: null,
 			currentTarget: null,
-			data: data,
-			bubbles: false,
-			cancelable: false,
-			defaultPrevented: false,
-			lastEventId: "",
-			origin: context.location.origin
+			defaultPrevented: false
 		};
+	}
+
+	function constructMessageEvent(type, eventInitDict) {
+		try {
+			return new MessageEvent(type, eventInitDict);
+		} catch (ex) {
+			var msgEvent = document.createEvent("MessageEvent");
+
+			if ("initMessageEvent" in msgEvent) {
+				msgEvent.initMessageEvent(
+					type,
+					eventInitDict != null && eventInitDict.bubbles != null ? eventInitDict.bubbles : true,
+					eventInitDict != null && eventInitDict.cancelable != null ? eventInitDict.cancelable : true,
+					eventInitDict != null && eventInitDict.data !== undefined ? eventInitDict.data : undefined,
+					eventInitDict != null && eventInitDict.origin != null ? eventInitDict.origin : window.location.protocol + "//" + window.location.host,
+					eventInitDict != null && eventInitDict.lastEventId != null ? eventInitDict.lastEventId : 12,
+					eventInitDict != null && eventInitDict.source != null ? eventInitDict.source : window,
+					eventInitDict != null && eventInitDict.ports != null ? eventInitDict.ports : null
+				);
+			}
+
+			return msgEvent;
+		}
 	}
 
 	/**
@@ -133,6 +137,174 @@
 	 */
 	BroadcastChannel.prototype.onmessage = function (ev) {};
 
+	// BroadcastChannel inherits from EventTarget
+	if (typeof EventTarget !== "undefined") {
+		Object.setPrototypeOf(BroadcastChannel.prototype, EventTarget.prototype);
+	}
+
+	BroadcastChannel.prototype.dispatchEvent = function dispatchEvent(event) {
+		if (arguments.length < 1) {
+			throw new TypeError(
+				"Failed to execute " +
+					this.dispatchEvent.name +
+					" on " +
+					this.constructor.name +
+					": 1 argument required, but only " +
+					arguments.length +
+					" present."
+			);
+		}
+
+		// Ensure that the first argument is a proper Event
+		if (!(event instanceof Event)) {
+			throw new TypeError("Failed to execute " + this.dispatchEvent.name + " on " + this.constructor.name + ": parameter 1 is not of type 'Event'.");
+		}
+
+		if (this._listeners == null) {
+			return !event.cancelable;
+		}
+
+		if (this._listeners[event.type] == null) {
+			return !event.cancelable;
+		}
+
+		var entries = this._listeners[event.type];
+
+		for (var i = 0; i < entries.length; i++) {
+			var entry = entries[i];
+			entry[1](event);
+		}
+
+		return !(event.cancelable && event.defaultPrevented);
+	};
+
+	BroadcastChannel.prototype.addEventListener = function addEventListener(type, eventListener, options) {
+		// Ensure that 'addEventListener' is invoked with an appropriate amount of arguments
+		if (arguments.length < 2) {
+			throw new TypeError(
+				"Failed to execute " +
+					this.addEventListener.name +
+					" on " +
+					this.constructor.name +
+					": 2 arguments required, but only " +
+					arguments.length +
+					" present."
+			);
+		}
+
+		// Ensure that the eventListener argument is valid
+		if (eventListener != null && typeof eventListener !== "function" && typeof eventListener !== "object") {
+			throw new TypeError(
+				"Failed to execute " +
+					this.addEventListener.name +
+					" on " +
+					this.constructor.name +
+					": The callback provided as parameter 2 is not an object."
+			);
+		}
+
+		// If listener’s callback is null, then return.
+		if (eventListener == null || (typeof eventListener !== "function" && typeof eventListener.handleEvent == null)) return;
+
+		if (this._listeners == null) {
+			this._listeners = {};
+		}
+
+		if (this._listeners[type] == null) {
+			this._listeners[type] = [];
+		}
+
+		var flattenedOptions = flattenAddEventListenerOptions(options);
+
+		var allListeners = this._listeners[type];
+		for (var i = 0; i < allListeners.length; i++) {
+			var currentListener = allListeners[i];
+			if (
+				currentListener[0] !== eventListener ||
+				currentListener[1].capture !== flattenedOptions.capture ||
+				currentListener[1].passive !== flattenedOptions.passive ||
+				currentListener[1].once !== flattenedOptions.once
+			)
+				continue;
+
+			// If we got this far, there already exists an event listener for this specific combination
+			// of type, listener, and options
+			return;
+		}
+
+		// Wrap the event listener
+		var wrappedListener = function (e) {
+			if (flattenedOptions.passive) {
+				// Overwrite preventDefault to ensure that it throws when invoked
+				e.preventDefault = function preventDefault() {
+					throw new TypeError("Unable to preventDefault inside passive event listener invocation.");
+				};
+			}
+
+			// Call the event listener. Preserve any implicit this-binding it may have
+			typeof eventListener === "function" ? eventListener(e) : eventListener.handleEvent(e);
+
+			// Immediately remove the event listener if 'once' is true
+			if (flattenedOptions.once) {
+				this.removeEventListener(type, wrappedListener, flattenedOptions);
+			}
+		};
+
+		this._listeners[type].push([eventListener, wrappedListener, flattenedOptions]);
+	};
+
+	BroadcastChannel.prototype.removeEventListener = function removeEventListener(type, eventListener, options) {
+		// Ensure that 'removeEventListener' is invoked with an appropriate amount of arguments
+		if (arguments.length < 2) {
+			throw new TypeError(
+				"Failed to execute " +
+					this.removeEventListener.name +
+					" on " +
+					this.constructor.name +
+					": 2 arguments required, but only " +
+					arguments.length +
+					" present."
+			);
+		}
+
+		// Ensure that the eventListener argument is valid
+		if (eventListener != null && typeof eventListener !== "function" && typeof eventListener !== "object") {
+			throw new TypeError(
+				"Failed to execute " +
+					this.removeEventListener.name +
+					" on " +
+					this.constructor.name +
+					": The callback provided as parameter 2 is not an object."
+			);
+		}
+
+		var flattenedOptions = flattenEventListenerOptions(options);
+		if (eventListener == null || (typeof eventListener !== "function" && typeof eventListener.handleEvent == null)) return;
+
+		if (this._listeners == null) {
+			return;
+		}
+
+		if (this._listeners[type] == null) {
+			return;
+		}
+
+		var allListeners = this._listeners[type];
+		for (var i = 0; i < allListeners.length; i++) {
+			var currentListener = allListeners[i];
+			if (
+				currentListener[0] !== eventListener ||
+				currentListener[1].capture !== flattenedOptions.capture ||
+				currentListener[1].passive !== flattenedOptions.passive ||
+				currentListener[1].once !== flattenedOptions.once
+			)
+				continue;
+
+			this._listeners[type].splice(i, 1);
+			break;
+		}
+	};
+
 	/**
 	 * Sends the message to different channels.
 	 * @param {Object} data - the data to be sent ( actually, it can be any JS type ).
@@ -146,7 +318,14 @@
 		}
 
 		// Build the event-like response.
-		var msgObj = buildResponse(data);
+		var virtualMsgEvent = getVirtualMessageEvent("message", {
+			data: data,
+			bubbles: false,
+			cancelable: false,
+			composed: false
+		});
+
+		var msgEvent = constructMessageEvent("message", virtualMsgEvent);
 
 		// SAME-TAB communication.
 		var subscribers = _channels[this.channelId] || [];
@@ -155,8 +334,9 @@
 			if (subscribers[j].closed || subscribers[j].name === this.name) continue;
 
 			if (subscribers[j].onmessage) {
-				subscribers[j].onmessage(msgObj);
+				subscribers[j].onmessage(msgEvent);
 			}
+			subscribers[j].dispatchEvent(msgEvent);
 		}
 
 		// CROSS-TAB communication.
@@ -165,8 +345,9 @@
 			channelId: this.channelId,
 			bcId: this.name,
 			tabId: _tabId,
-			message: msgObj
+			message: virtualMsgEvent
 		};
+
 		try {
 			var editedJSON = JSON.stringify(editedObj),
 				lsKey = "eomBCmessage_" + getRandomString() + "_" + this.channelId;
@@ -206,9 +387,14 @@
 
 			if (obj.tabId !== _tabId && obj.channelId && _channels && _channels[obj.channelId]) {
 				var subscribers = _channels[obj.channelId];
+				var msgEvent = constructMessageEvent("message", obj.message);
 				for (var j in subscribers) {
-					if (!subscribers[j].closed && subscribers[j].onmessage) {
-						subscribers[j].onmessage(obj.message);
+					if (!subscribers[j].closed) {
+						if (subscribers[j].onmessage) {
+							subscribers[j].onmessage(msgEvent);
+						}
+
+						subscribers[j].dispatchEvent(msgEvent);
 					}
 				}
 				// Remove the item for safety.

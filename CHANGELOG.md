@@ -1,3 +1,9 @@
+## [0.0.101](https://github.com/wessberg/polyfiller/compare/v0.0.100...v0.0.101) (2020-05-04)
+
+### Bug Fixes
+
+- add support for QQ browser and MiuiBrower. Closes [#14](https://github.com/wessberg/polyfiller/issues/14). Closes [#16](https://github.com/wessberg/polyfiller/issues/16) ([5e2d710](https://github.com/wessberg/polyfiller/commit/5e2d710aeeafafa79ddea04cdad71c435e7e11ac))
+
 ## [0.0.100](https://github.com/wessberg/polyfiller/compare/v0.0.99...v0.0.100) (2020-04-06)
 
 ### Bug Fixes

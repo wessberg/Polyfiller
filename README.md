@@ -759,4 +759,5 @@ And, if you request `performance.now`, `date.now` will also be included since th
 - `intersection-observer`
 - `mutation-observer`
 - `resize-observer`
+- `broadcast-channel`
 - `proto`

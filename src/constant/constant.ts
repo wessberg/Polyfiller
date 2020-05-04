@@ -3012,6 +3012,13 @@ export const constant: IConstant = {
 			dependencies: ["es.weak-map", "es.object.create", "mutation-observer", "get-computed-style", "requestanimationframe"],
 			contexts: WINDOW_CONTEXT
 		},
+		"broadcast-channel": {
+			localPaths: ["polyfill-lib/broadcast-channel/broadcast-channel.js"],
+			features: ["broadcastchannel"],
+			version: "1.0.0",
+			dependencies: [],
+			contexts: WINDOW_CONTEXT
+		},
 		setimmediate: {
 			polyfills: ["set-immediate"]
 		},

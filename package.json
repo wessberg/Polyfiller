@@ -24,7 +24,7 @@
 		"rollup": "rollup -c rollup.config.js",
 		"rollup:test": "rollup -c rollup.test.config.js",
 		"scripts:markdown-format-feature-names": "ts-node --project scripts/tsconfig.json scripts/markdown-format-feature-names.ts",
-		"preversion": "npm run lint && NODE_ENV=production npm run build",
+		"preversion": "NODE_ENV=production npm run build",
 		"version": "npm run generate:all && git add .",
 		"postpublish": "npm run deploy",
 		"release": "np --no-cleanup --no-yarn",

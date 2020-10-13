@@ -258,7 +258,11 @@ export class CacheRegistryService implements ICacheRegistryService {
 	 * @returns
 	 */
 	private async flushCache(): Promise<void> {
-		await this.fileSaver.remove(constant.path.cacheRoot);
+		try {
+			await this.fileSaver.remove(constant.path.cacheRoot);
+		} catch {
+			// The environment does not allow writing to the cache root
+		}
 	}
 
 	/**
@@ -269,7 +273,11 @@ export class CacheRegistryService implements ICacheRegistryService {
 	 * @returns
 	 */
 	private async writeToCache(path: string, content: Buffer): Promise<void> {
-		await this.fileSaver.save(path, content);
+		try {
+			await this.fileSaver.save(path, content);
+		} catch {
+			// The environment does not allow writing to the cache root
+		}
 	}
 
 	/**

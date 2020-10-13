@@ -27,7 +27,7 @@
 		"scripts:markdown-format-feature-names": "ts-node --project scripts/tsconfig.json scripts/markdown-format-feature-names.ts",
 		"preversion": "npm test && NODE_ENV=production npm run build",
 		"version": "npm run generate:all && git commit -am \"docs: update CHANGELOG\" && git push",
-		"release": "npm run version && node publish.js",
+		"release": "NODE_ENV=production npm run version && node publish.js",
 		"update": "npx npm-check-updates -u -x np --dep dev,prod && npm update && npm install"
 	},
 	"keywords": [

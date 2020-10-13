@@ -1,6 +1,5 @@
 {
 	"name": "@wessberg/polyfiller",
-	"private": true,
 	"version": "0.0.105",
 	"description": "Never worry about polyfills again.",
 	"files": [
@@ -8,8 +7,7 @@
 		"polyfill-lib/**/*.*"
 	],
 	"scripts": {
-		"serve": "node ./dist/index.js",
-		"serve:production": "NODE_ENV=production CLEAR_CACHE=true npm run serve",
+		"start": "nodemon ./dist/index.js",
 		"generate:scaffold": "scaffold all --yes",
 		"generate:changelog": "standard-changelog --first-release",
 		"generate:all": "npm run generate:scaffold && npm run generate:changelog",
@@ -23,9 +21,9 @@
 		"rollup": "rollup -c rollup.config.js",
 		"rollup:test": "rollup -c rollup.test.config.js",
 		"scripts:markdown-format-feature-names": "ts-node --project scripts/tsconfig.json scripts/markdown-format-feature-names.ts",
-		"preversion": "npm test && NODE_ENV=production npm run build",
-		"version": "npm run generate:all && git commit -am \"docs: update CHANGELOG\" && git push",
-		"release": "NODE_ENV=production npm run version && node publish.js && npm publish",
+		"preversion": "NODE_ENV=production npm run build",
+		"version": "npm run generate:all && git add .",
+		"release": "np --no-cleanup --no-yarn",
 		"update": "npx npm-check-updates -u -x np --dep dev,prod && npm update && npm install"
 	},
 	"keywords": [
@@ -44,8 +42,14 @@
 		"@types/semver": "7.3.4",
 		"@typescript-eslint/eslint-plugin": "4.4.1",
 		"@typescript-eslint/parser": "4.4.1",
+		"@wessberg/di-compiler": "2.1.1",
+		"@wessberg/rollup-plugin-ts": "1.3.5",
+		"typescript": "4.0.3",
+		"useragent-generator": "1.1.1-amkt-22079-finish.0",
+		"@wessberg/ts-config": "1.0.19",
 		"@wessberg/scaffold": "1.0.32",
 		"ava": "3.13.0",
+		"np": "^6.5.0",
 		"eslint": "7.11.0",
 		"eslint-config-prettier": "6.12.0",
 		"eslint-plugin-import": "2.22.1",
@@ -59,11 +63,6 @@
 		"ts-node": "9.0.0"
 	},
 	"dependencies": {
-		"@wessberg/di-compiler": "2.1.1",
-		"@wessberg/rollup-plugin-ts": "1.3.5",
-		"typescript": "4.0.3",
-		"useragent-generator": "1.1.1-amkt-22079-finish.0",
-		"@wessberg/ts-config": "1.0.19",
 		"@babel/core": "7.11.6",
 		"@babel/plugin-transform-block-scoping": "7.11.1",
 		"@webcomponents/custom-elements": "1.4.2",

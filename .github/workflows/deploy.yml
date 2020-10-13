@@ -1,0 +1,56 @@
+name: "Deploy"
+
+on:
+  push:
+    branches:
+      - master
+  release:
+    types: ["published"]
+
+jobs:
+  deploy:
+    name: "Deploy"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Setup Node.js
+        uses: actions/setup-node@master
+        with:
+          node-version: 14
+
+      - name: Install
+        run: npm ci
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: NODE_ENV=production npm run build
+
+      - name: Clean up remote dist directory
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER_NAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: rm -rf /var/www
+
+      - name: Copy local dist directory to remote
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER_NAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          source: "package.json, dist"
+          target: "/var/www"
+
+      - name: Start remote server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER_NAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: cd/var/www && NODE_ENV=production node start

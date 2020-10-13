@@ -29,10 +29,12 @@ writeFileSync(
 				...pkg.dependencies,
 				// These are only runtime dependencies for the standard package.json file when running on CI
 				"useragent-generator": undefined,
-				"ts-node": undefined,
 				"@wessberg/di-compiler": undefined,
 				"@wessberg/rollup-plugin-ts": undefined,
+				"@wessberg/scaffold": undefined,
+				"standard-changelog": undefined,
 				typescript: undefined,
+				"ts-node": undefined,
 				"@wessberg/ts-config": undefined
 			}
 		},

@@ -1,3 +1,9 @@
+## [0.0.104](https://github.com/wessberg/polyfiller/compare/v0.0.103...v0.0.104) (2020-10-13)
+
+### Features
+
+- **object-fit:** update object-fit implementation to one that is more dynamic, fits videos, and supports Shadow DOM ([384890c](https://github.com/wessberg/polyfiller/commit/384890c2b3cb94d336ba5a984541043117de8777))
+
 ## [0.0.103](https://github.com/wessberg/polyfiller/compare/v0.0.102...v0.0.103) (2020-07-01)
 
 ## [0.0.102](https://github.com/wessberg/polyfiller/compare/v0.0.101...v0.0.102) (2020-05-04)

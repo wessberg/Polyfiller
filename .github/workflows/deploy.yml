@@ -30,27 +30,12 @@ jobs:
       - name: Build
         run: NODE_ENV=production npm run build
 
-      - name: Clean up remote dist directory
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER_NAME }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          script: rm -rf /var/www
-
-      - name: Copy local dist directory to remote
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER_NAME }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          source: "package.json, dist"
-          target: "/var/www"
-
-      - name: Start remote server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER_NAME }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          script: cd/var/www && NODE_ENV=production node start
+      - name: Deploy
+        run: node deploy.js
+        env:
+          HOST: ${{ secrets.HOST }}
+          PORT: ${{ secrets.PORT }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER_NAME: ${{ secrets.DEPLOY_USER_NAME }}
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+          DEPLOY_DOMAIN_NAMES: ${{ secrets.DEPLOY_DOMAIN_NAMES }}

@@ -152,11 +152,7 @@ export class CacheRegistryService implements ICacheRegistryService {
 	 * @param userAgent
 	 * @returns
 	 */
-	async setPolyfillFeatureSet(
-		input: Set<IPolyfillFeatureInput>,
-		polyfillSet: Set<IPolyfillFeature>,
-		userAgent: string
-	): Promise<Set<IPolyfillFeature>> {
+	async setPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, polyfillSet: Set<IPolyfillFeature>, userAgent: string): Promise<Set<IPolyfillFeature>> {
 		// Add it to the memory cache as well as the disk cache
 		await this.writeToCache(this.getCachePathForPolyfillSet(input, userAgent), Buffer.from(JSON.stringify([...polyfillSet])));
 		return await this.memoryRegistry.setPolyfillFeatureSet(input, polyfillSet, userAgent);
@@ -217,8 +213,9 @@ export class CacheRegistryService implements ICacheRegistryService {
 
 		// Otherwise, build a map of libraries and their versions
 		const libraryToVersionMap: Map<PolyfillName, string> = new Map();
+		const entries = Object.entries(constant.polyfill) as [PolyfillName, PolyfillDictEntry][];
 		await Promise.all(
-			Object.entries(constant.polyfill).map(async ([polyfillName, polyfill]: [PolyfillName, PolyfillDictEntry]) => {
+			entries.map(async ([polyfillName, polyfill]) => {
 				// Skip aliases
 				if ("polyfills" in polyfill) return;
 

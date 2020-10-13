@@ -21,7 +21,7 @@ test.before(initializeTests);
 test("Delegates requests to '/' to the StaticController", async t => {
 	const result = await sendRequest({
 		http2: config.http2,
-		tls: true,
+		tls: false,
 		method: "GET",
 		host: config.host,
 		port: config.port,
@@ -34,7 +34,7 @@ test("Delegates requests to '/' to the StaticController", async t => {
 test("Delegates requests to '/polyfill' to the PolyfillController", async t => {
 	const result = await sendRequest({
 		http2: config.http2,
-		tls: true,
+		tls: false,
 		userAgent: chrome("66"),
 		method: "GET",
 		host: config.host,
@@ -49,9 +49,8 @@ test("Delegates requests to '/polyfill' to the PolyfillController", async t => {
 test("Will not generate polyfills for 'Element' on Chrome 69 for a Galaxy S5", async t => {
 	const result = await sendRequest({
 		http2: config.http2,
-		tls: true,
-		userAgent:
-			"Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3450.0 Mobile Safari/537.36",
+		tls: false,
+		userAgent: "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3450.0 Mobile Safari/537.36",
 		method: "GET",
 		host: config.host,
 		port: config.port,
@@ -80,9 +79,8 @@ test("Is able to generate a bundle of every available polyfill", async t => {
 
 	const result = await sendRequest({
 		http2: config.http2,
-		tls: true,
-		userAgent:
-			"Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3450.0 Mobile Safari/537.36",
+		tls: false,
+		userAgent: "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3450.0 Mobile Safari/537.36",
 		method: "GET",
 		host: config.host,
 		port: config.port,
@@ -96,7 +94,7 @@ test("Is able to generate a bundle of every available polyfill", async t => {
 test("Will generate correct polyfills for IE11", async t => {
 	const result = await sendRequest({
 		http2: config.http2,
-		tls: true,
+		tls: false,
 		userAgent: ie("11"),
 		method: "GET",
 		host: config.host,
@@ -109,33 +107,24 @@ test("Will generate correct polyfills for IE11", async t => {
 });
 
 test("Will correctly parse meta information for SystemJS. #1", async t => {
-	const polyfillRequest = getPolyfillRequestFromUrl(
-		new URL("?features=systemjs|variant=s", `https://my-polyfill-service.app${constant.endpoint.polyfill}`),
-		chrome(70)
-	);
+	const polyfillRequest = getPolyfillRequestFromUrl(new URL("?features=systemjs|variant=s", `https://my-polyfill-service.app${constant.endpoint.polyfill}`), chrome(70));
 	t.true([...polyfillRequest.features].some(({meta, name}) => name === "systemjs" && meta != null && meta.variant === "s"));
 });
 
 test("Will correctly parse meta information for SystemJS. #2", async t => {
-	const polyfillRequest = getPolyfillRequestFromUrl(
-		new URL("?features=systemjs|variant=system", `https://my-polyfill-service.app${constant.endpoint.polyfill}`),
-		chrome(70)
-	);
+	const polyfillRequest = getPolyfillRequestFromUrl(new URL("?features=systemjs|variant=system", `https://my-polyfill-service.app${constant.endpoint.polyfill}`), chrome(70));
 	t.true([...polyfillRequest.features].some(({meta, name}) => name === "systemjs" && meta != null && meta.variant === "system"));
 });
 
 test("Will correctly parse meta information for Zone. #1", async t => {
-	const polyfillRequest = getPolyfillRequestFromUrl(
-		new URL("?features=zone|error", `https://my-polyfill-service.app${constant.endpoint.polyfill}`),
-		chrome(70)
-	);
+	const polyfillRequest = getPolyfillRequestFromUrl(new URL("?features=zone|error", `https://my-polyfill-service.app${constant.endpoint.polyfill}`), chrome(70));
 	t.true([...polyfillRequest.features].some(({meta, name}) => name === "zone" && meta != null && meta.error === true));
 });
 
 test("Will set a 'x-applied-polyfills' header on HTTP2 responses with a HTTP-friendly list of all applied polyfills. #1", async t => {
 	const result = await sendRequest({
 		http2: config.http2,
-		tls: true,
+		tls: false,
 		userAgent: ie("11"),
 		method: "GET",
 		host: config.host,
@@ -150,7 +139,7 @@ test("Will set a 'x-applied-polyfills' header on HTTP2 responses with a HTTP-fri
 test("Accepts OPTIONS requests. #1", async t => {
 	const result = await sendRequest({
 		http2: config.http2,
-		tls: true,
+		tls: false,
 		userAgent: ie("11"),
 		method: "OPTIONS",
 		host: config.host,
@@ -163,17 +152,11 @@ test("Accepts OPTIONS requests. #1", async t => {
 });
 
 test("Will correctly parse meta information for 'shadow-dom'. #1", async t => {
-	const polyfillRequest = getPolyfillRequestFromUrl(
-		new URL("?features=shadow-dom|experimental", `https://my-polyfill-service.app${constant.endpoint.polyfill}`),
-		chrome(70)
-	);
+	const polyfillRequest = getPolyfillRequestFromUrl(new URL("?features=shadow-dom|experimental", `https://my-polyfill-service.app${constant.endpoint.polyfill}`), chrome(70));
 	t.true([...polyfillRequest.features].some(({meta, name}) => name === "shadow-dom" && meta != null && meta.experimental === true));
 });
 
 test("Will correctly parse meta information for 'shadow-dom' when using the alias 'web-components'. #1", async t => {
-	const polyfillRequest = getPolyfillRequestFromUrl(
-		new URL("?features=web-components|experimental", `https://my-polyfill-service.app${constant.endpoint.polyfill}`),
-		chrome(70)
-	);
+	const polyfillRequest = getPolyfillRequestFromUrl(new URL("?features=web-components|experimental", `https://my-polyfill-service.app${constant.endpoint.polyfill}`), chrome(70));
 	t.true([...polyfillRequest.features].some(({meta, name}) => name === "shadow-dom" && meta != null && meta.experimental === true));
 });

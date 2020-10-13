@@ -72,9 +72,7 @@ function paintMethod(method: Request["method"]): string {
  * @param request
  */
 export function printRequest({method, url, userAgent, referer}: Request): void {
-	console.log(
-		`${paintMethod(method)} ${url.toString()} (${chalk.gray(userAgent)}) ${referer != null && referer.length > 0 ? `(${chalk.yellow(referer)})` : ``}`
-	);
+	console.log(`${paintMethod(method)} ${url.toString()} (${chalk.gray(userAgent)}) ${referer != null && referer.length > 0 ? `(${chalk.yellow(referer)})` : ``}`);
 }
 
 /**
@@ -143,7 +141,7 @@ export async function sendRequest(rawRequest: IRawRequest): Promise<Response> {
 
 		if (!rawRequest.http2) {
 			const requestOptions: HttpRequestOptions = {
-				protocol: "https:",
+				protocol: rawRequest.tls ? "https:" : "http:",
 				host: rawRequest.host,
 				port: rawRequest.port,
 				path: rawRequest.path,

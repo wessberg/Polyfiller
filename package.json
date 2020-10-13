@@ -16,9 +16,7 @@
 		"clean": "rimraf dist",
 		"lint": "tsc --noEmit && eslint \"src/**/*.ts\" --color",
 		"prettier": "prettier --write '{src,test,documentation}/**/*.{js,ts,json,html,xml,css,md}'",
-		"pretest": "rimraf compiled && npm run rollup:test",
-		"test": "HOST=polyfiller.test NODE_ENV=TEST ava",
-		"posttest": "rimraf compiled",
+		"test": "NODE_ENV=TEST ava",
 		"prebuild": "npm run clean",
 		"build": "npm run rollup",
 		"watch": "npm run rollup -- --watch",
@@ -86,7 +84,6 @@
 		"construct-style-sheets-polyfill": "2.4.2",
 		"core-js": "3.6.5",
 		"core-js-builder": "3.6.5",
-		"devcert": "1.1.3",
 		"events-polyfill": "2.1.2",
 		"find-up": "5.0.0",
 		"http-status-codes": "2.1.4",
@@ -162,15 +159,19 @@
 	},
 	"ava": {
 		"files": [
-			"compiled/*.test.*"
+			"test/**/**.test.ts"
 		],
 		"verbose": true,
-		"timeout": "40s",
+		"timeout": "300s",
 		"extensions": [
-			"js"
+			"ts"
 		],
 		"environmentVariables": {
-			"NODE_OPTIONS": "--max_old_space_size=4096"
-		}
+			"NODE_OPTIONS": "--max_old_space_size=4096",
+			"TESTING": "true"
+		},
+		"require": [
+			"@wessberg/di-compiler/register"
+		]
 	}
 }

@@ -1,4 +1,4 @@
-## [0.0.104](https://github.com/wessberg/polyfiller/compare/v0.0.103...v0.0.104) (2020-10-13)
+## [0.0.105](https://github.com/wessberg/polyfiller/compare/v0.0.103...v0.0.105) (2020-10-13)
 
 ### Features
 

@@ -31,10 +31,7 @@ writeFileSync(
 				"useragent-generator": undefined,
 				"@wessberg/di-compiler": undefined,
 				"@wessberg/rollup-plugin-ts": undefined,
-				"@wessberg/scaffold": undefined,
-				"standard-changelog": undefined,
 				typescript: undefined,
-				"ts-node": undefined,
 				"@wessberg/ts-config": undefined
 			}
 		},

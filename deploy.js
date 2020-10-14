@@ -24,24 +24,45 @@
 		);
 
 	const generateNginxConfig = () => `\
+${DEPLOY_DOMAIN_NAMES.split(/\s/)
+	.map(
+		domainName => `\
 server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    ssl_certificate /etc/letsencrypt/live/${domainName}/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/${domainName}/privkey.pem; # managed by Certbot
 
-        root /var/www/html;
+    server_name ${domainName} www.${domainName};
 
-        index index.html index.htm index.nginx-debian.html;
-        
-        server_name ${DEPLOY_DOMAIN_NAMES};
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+    location / {
+    		proxy_pass http://localhost:${PORT};
+				proxy_http_version 1.1;
+				proxy_set_header Upgrade $http_upgrade;
+				proxy_set_header Connection 'upgrade';
+				proxy_set_header Host $host;
+				proxy_cache_bypass $http_upgrade;
+    }
 
-        location / {
-                proxy_pass http://localhost:${PORT};
-								proxy_http_version 1.1;
-								proxy_set_header Upgrade $http_upgrade;
-								proxy_set_header Connection 'upgrade';
-								proxy_set_header Host $host;
-								proxy_cache_bypass $http_upgrade;
-        }
+}
+`
+	)
+	.join("\n")}
+
+server {
+		${DEPLOY_DOMAIN_NAMES.split(/\s/).map(
+			domainName => `\
+		if ($host = www.${domainName}) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+    
+    if ($host = ${domainName}) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+		`
+		)}
 }
 `;
 

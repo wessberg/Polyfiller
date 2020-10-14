@@ -1,3 +1,10 @@
+## [0.0.106](https://github.com/wessberg/polyfiller/compare/v0.0.105...v0.0.106) (2020-10-14)
+
+### Bug Fixes
+
+- **object-fit:** update object-fit dependencies ([4f4545c](https://github.com/wessberg/polyfiller/commit/4f4545c8ef421a876a2a178131c82d55e48c604a))
+- add error-handling to cache registry ([3aef454](https://github.com/wessberg/polyfiller/commit/3aef454cf082248af4175a8031f39aafbf44c7c2))
+
 ## [0.0.105](https://github.com/wessberg/polyfiller/compare/v0.0.103...v0.0.105) (2020-10-13)
 
 ### Features

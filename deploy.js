@@ -1,8 +1,10 @@
 (async () => {
 	const {NodeSSH} = require("node-ssh");
+	const {sync: rimraf} = require("rimraf");
+	const {execSync} = require("child_process");
 	const pkg = require("./package.json");
 	const {join, dirname} = require("path");
-	const {writeFileSync, readFileSync, existsSync, mkdirSync, copyFileSync} = require("fs");
+	const {writeFileSync, readFileSync, existsSync, mkdirSync, copyFileSync, chmodSync, unlinkSync} = require("fs");
 
 	const {DEPLOY_HOST, DEPLOY_USER_NAME, DEPLOY_KEY, DEPLOY_KEY_LOCATION, DEPLOY_DOMAIN_NAMES, HOST, PORT} = process.env;
 
@@ -83,9 +85,12 @@ server {
 	const LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME = join(LOCAL_WRITE_ROOT, `last-deployment-data.json`);
 	const LAST_DEPLOYMENT_DATA_REMOTE_FILE_NAME = `/var/www/last-deployment-data.json`;
 
+	rimraf(LOCAL_WRITE_ROOT);
+
 	// Write the key to desk temporarily
 	mkdirSync(dirname(SSH_KEY_LOCAL_FILE_NAME), {recursive: true});
 	writeFileSync(SSH_KEY_LOCAL_FILE_NAME, DEPLOY_KEY ?? readFileSync(DEPLOY_KEY_LOCATION, "utf8"));
+	chmodSync(SSH_KEY_LOCAL_FILE_NAME, "400");
 
 	// Write the package.json file to desk temporarily
 	mkdirSync(dirname(PACKAGE_JSON_LOCAL_FILE_NAME), {recursive: true});
@@ -204,20 +209,13 @@ server {
 
 	// Copy over the package.json and package-lock.json files
 	console.log(`Creating ${PACKAGE_JSON_REMOTE_FILE_NAME} and ${PACKAGE_LOCK_REMOTE_FILE_NAME}`);
-	await ssh.putFiles([
-		{
-			local: PACKAGE_JSON_LOCAL_FILE_NAME,
-			remote: PACKAGE_JSON_REMOTE_FILE_NAME
-		},
-		{
-			local: PACKAGE_LOCK_LOCAL_FILE_NAME,
-			remote: PACKAGE_LOCK_REMOTE_FILE_NAME
-		}
-	]);
+
+	await execSync(`scp -i ${SSH_KEY_LOCAL_FILE_NAME} ${PACKAGE_JSON_LOCAL_FILE_NAME} ${DEPLOY_USER_NAME}@${DEPLOY_HOST}:${PACKAGE_JSON_REMOTE_FILE_NAME}`);
+	await execSync(`scp -i ${SSH_KEY_LOCAL_FILE_NAME} ${PACKAGE_LOCK_LOCAL_FILE_NAME} ${DEPLOY_USER_NAME}@${DEPLOY_HOST}:${PACKAGE_LOCK_REMOTE_FILE_NAME}`);
 
 	// Copy over the built dist folder
 	console.log(`Creating ${DIST_REMOTE_FOLDER}`);
-	await ssh.putDirectory(DIST_LOCAL_FOLDER, DIST_REMOTE_FOLDER);
+	await execSync(`scp -r -i ${SSH_KEY_LOCAL_FILE_NAME} ${DIST_LOCAL_FOLDER} ${DEPLOY_USER_NAME}@${DEPLOY_HOST}:${DIST_REMOTE_FOLDER}`);
 
 	// Install
 	console.log(`Installing`);

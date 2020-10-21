@@ -224,11 +224,11 @@ server {
 
 	// Copy over the built dist folder
 	console.log(`Creating ${DIST_REMOTE_FOLDER}`);
-	await ssh.putDirectory(DIST_LOCAL_FOLDER, DIST_REMOTE_FOLDER, sftp);
+	await ssh.putDirectory(DIST_LOCAL_FOLDER, DIST_REMOTE_FOLDER, {concurrency: 1, sftp, transferOptions: {concurrency: 1}});
 
 	// Copy over the built polyfill-lib folder
 	console.log(`Creating ${POLYFILL_LIB_REMOTE_FOLDER}`);
-	await ssh.putDirectory(POLYFILL_LIB_LOCAL_FOLDER, POLYFILL_LIB_REMOTE_FOLDER, sftp);
+	await ssh.putDirectory(POLYFILL_LIB_LOCAL_FOLDER, POLYFILL_LIB_REMOTE_FOLDER, {concurrency: 1, sftp, transferOptions: {concurrency: 1}});
 
 	// Install
 	console.log(`Installing`);

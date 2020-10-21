@@ -6,7 +6,7 @@
 	const {join, dirname} = require("path");
 	const {writeFileSync, readFileSync, existsSync, mkdirSync, copyFileSync, chmodSync, unlinkSync} = require("fs");
 
-	const {DEPLOY_HOST, DEPLOY_USER_NAME, DEPLOY_KEY, DEPLOY_KEY_LOCATION, DEPLOY_DOMAIN_NAMES, HOST, PORT} = process.env;
+	const {DEPLOY_HOST, DEPLOY_USER_NAME, DEPLOY_KEY, DEPLOY_KEY_LOCATION, DEPLOY_DOMAIN_NAMES, HOST, PORT, RUNNER_TEMP} = process.env;
 
 	const generatePackageJson = () =>
 		JSON.stringify(
@@ -72,7 +72,7 @@ server {
 
 	const PREFERRED_NODE_VERSION = "14.x";
 	const APP_NAME = "polyfiller";
-	const LOCAL_WRITE_ROOT = "temp";
+	const LOCAL_WRITE_ROOT = RUNNER_TEMP ?? "temp";
 	const REMOTE_ROOT = "/var/www/polyfiller";
 	const DIST_LOCAL_FOLDER = "dist";
 	const DIST_REMOTE_FOLDER = join(REMOTE_ROOT, DIST_LOCAL_FOLDER);
@@ -190,18 +190,19 @@ server {
 		console.log(`Nginx config is up to date`);
 	}
 
+	const newDeploymentData = {
+		PORT,
+		DEPLOY_DOMAIN_NAMES
+	};
+
+	console.log({
+		lastDeploymentData,
+		newDeploymentData,
+		needsNginxUpdate
+	});
+
 	// Now, update the deployment data
-	writeFileSync(
-		LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME,
-		JSON.stringify(
-			{
-				PORT,
-				DEPLOY_DOMAIN_NAMES
-			},
-			null,
-			"  "
-		)
-	);
+	writeFileSync(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME, JSON.stringify(newDeploymentData, null, "  "));
 	console.log(`Updating cached deployment stats`);
 	await ssh.putFile(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME, LAST_DEPLOYMENT_DATA_REMOTE_FILE_NAME);
 	console.log(`Successfully updated cached deployment stats`);

@@ -90,7 +90,6 @@ server {
 	const LAST_DEPLOYMENT_DATA_REMOTE_FILE_NAME = `/var/www/last-deployment-data.json`;
 
 	console.log("Using temporary directory:", LOCAL_WRITE_ROOT);
-	rimraf(LOCAL_WRITE_ROOT);
 
 	// Write the key to desk temporarily
 	mkdirSync(dirname(SSH_KEY_LOCAL_FILE_NAME), {recursive: true});
@@ -198,12 +197,6 @@ server {
 		DEPLOY_DOMAIN_NAMES
 	};
 
-	console.log({
-		lastDeploymentData,
-		newDeploymentData,
-		needsNginxUpdate
-	});
-
 	// Now, update the deployment data
 	writeFileSync(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME, JSON.stringify(newDeploymentData, null, "  "));
 	console.log(`Updating cached deployment stats`);
@@ -218,8 +211,8 @@ server {
 	// Copy over the package.json and package-lock.json files
 	console.log(`Creating ${PACKAGE_JSON_REMOTE_FILE_NAME} and ${PACKAGE_LOCK_REMOTE_FILE_NAME}`);
 
-	await execSync(`scp -i ${SSH_KEY_LOCAL_FILE_NAME} ${PACKAGE_JSON_LOCAL_FILE_NAME} ${DEPLOY_USER_NAME}@${DEPLOY_HOST}:${PACKAGE_JSON_REMOTE_FILE_NAME}`);
-	await execSync(`scp -i ${SSH_KEY_LOCAL_FILE_NAME} ${PACKAGE_LOCK_LOCAL_FILE_NAME} ${DEPLOY_USER_NAME}@${DEPLOY_HOST}:${PACKAGE_LOCK_REMOTE_FILE_NAME}`);
+	await ssh.putFile(PACKAGE_JSON_LOCAL_FILE_NAME, PACKAGE_JSON_REMOTE_FILE_NAME);
+	await ssh.putFile(PACKAGE_LOCK_LOCAL_FILE_NAME, PACKAGE_LOCK_REMOTE_FILE_NAME);
 
 	// Copy over the built dist folder
 	console.log(`Creating ${DIST_REMOTE_FOLDER}`);

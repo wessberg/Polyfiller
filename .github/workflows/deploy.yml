@@ -1,6 +1,9 @@
 name: "Deploy"
 
 on:
+  push:
+    branches:
+      - master
   release:
     types: ["published"]
 

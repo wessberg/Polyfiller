@@ -1,12 +1,12 @@
-(function(O, F) {
+(function (O, F) {
 	"use strict";
 
-	if (!"defineProperty" in O) {
+	if (!("defineProperty" in O)) {
 		throw new Error("proto-polyfill requires Object.defineProperty");
 	}
 
 	try {
-		O.defineProperty({}, "", {get: function() {}});
+		O.defineProperty({}, "", {get: function () {}});
 	} catch (ex) {
 		// If accessors aren't supported. There's nothing we can do here.
 		return;
@@ -69,10 +69,10 @@
 			});
 		} else {
 			defineProperty(dest, name, {
-				set: function(v) {
+				set: function (v) {
 					this[P_VALUE][name] = v;
 				},
-				get: function() {
+				get: function () {
 					return name in this[P_VALUE] ? this[P_VALUE][name] : this === dest ? source[name] : dest[name];
 				},
 				enumerable: info.enumerable || false,
@@ -114,7 +114,14 @@
 		setProperties(dest, sourceConstructor);
 	}
 
-	if (!(O_PROTO in O) && !(O_PROTO in F) && getPrototypeOf instanceof F && getOwnPropertyNames instanceof F && defineProperty instanceof F && getOwnPropertyDescriptor instanceof F) {
+	if (
+		!(O_PROTO in O) &&
+		!(O_PROTO in F) &&
+		getPrototypeOf instanceof F &&
+		getOwnPropertyNames instanceof F &&
+		defineProperty instanceof F &&
+		getOwnPropertyDescriptor instanceof F
+	) {
 		O["setPrototypeOf"] = function oSetPrototypeOf(obj, proto) {
 			if (obj instanceof O && obj !== null) {
 				obj.__proto__ = proto;

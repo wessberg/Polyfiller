@@ -12,11 +12,7 @@ import {IGetPolyfillsResult} from "./i-get-polyfills-result";
  * Business logic for polyfills
  */
 export class PolyfillBl implements IPolyfillBl {
-	constructor(
-		private readonly cacheRegistry: ICacheRegistryService,
-		private readonly logger: ILoggerService,
-		private readonly builder: IPolyfillBuilderService
-	) {}
+	constructor(private readonly cacheRegistry: ICacheRegistryService, private readonly logger: ILoggerService, private readonly builder: IPolyfillBuilderService) {}
 
 	/**
 	 * Generates a chunk of polyfills that matches the given request
@@ -26,7 +22,7 @@ export class PolyfillBl implements IPolyfillBl {
 	 */
 	async getPolyfills(request: IPolyfillRequest): Promise<IGetPolyfillsResult> {
 		// Check if a polyfill set exists within the cache for the request features and the user agent of the request
-		let featureSet = await this.cacheRegistry.getPolyfillFeatureSet(request.features, request.userAgent);
+		let featureSet = await this.cacheRegistry.getPolyfillFeatureSet(request.features, request.userAgent, request.context);
 
 		// If not, resolve and order the required polyfills
 		if (featureSet == null) {
@@ -36,11 +32,12 @@ export class PolyfillBl implements IPolyfillBl {
 						// Take only valid names
 						.filter(feature => feature.name in constant.polyfill)
 				),
-				request.userAgent
+				request.userAgent,
+				request.context
 			);
 
 			// Store them within the cache
-			await this.cacheRegistry.setPolyfillFeatureSet(request.features, featureSet, request.userAgent);
+			await this.cacheRegistry.setPolyfillFeatureSet(request.features, featureSet, request.userAgent, request.context);
 		} else {
 			this.logger.debug("Matched Polyfill Set in cache!");
 		}
@@ -48,7 +45,7 @@ export class PolyfillBl implements IPolyfillBl {
 		this.logger.debug(featureSet);
 
 		// Check if a Set has already been registered for this combination
-		const existingSet = await this.cacheRegistry.get(featureSet, request.encoding);
+		const existingSet = await this.cacheRegistry.get(featureSet, request.context, request.encoding);
 		if (existingSet != null) {
 			this.logger.debug("Matched Polyfills in cache!");
 			// If it has, just return that one
@@ -56,13 +53,13 @@ export class PolyfillBl implements IPolyfillBl {
 		}
 
 		// Otherwise, build the polyfills and store them in the Cache Registry before returning them
-		const {brotli, minified, zlib} = await this.builder.buildPolyfillSet(featureSet);
+		const {brotli, minified, zlib} = await this.builder.buildPolyfillSet(featureSet, request);
 
 		// Add the polyfills to the registry
 		const [minifiedResult, brotliResult, zlibResult] = await Promise.all([
-			this.cacheRegistry.set(featureSet, minified),
-			this.cacheRegistry.set(featureSet, brotli, ContentEncodingKind.BROTLI),
-			this.cacheRegistry.set(featureSet, zlib, ContentEncodingKind.GZIP)
+			this.cacheRegistry.set(featureSet, minified, request.context),
+			this.cacheRegistry.set(featureSet, brotli, request.context, ContentEncodingKind.BROTLI),
+			this.cacheRegistry.set(featureSet, zlib, request.context, ContentEncodingKind.GZIP)
 		]);
 
 		// Return the joined Buffer

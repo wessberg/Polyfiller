@@ -45,70 +45,35 @@ export function traceAllPolyfillNamesForPolyfillName(name: PolyfillName): Set<Po
 
 /**
  * Returns a stringified key as a function of the given polyfill name(s) and encoding
- *
- * @param name
- * @param [encoding]
- * @returns
  */
 export function getPolyfillIdentifier(
 	name: IPolyfillFeature | IPolyfillFeatureInput | Set<IPolyfillFeature> | Set<IPolyfillFeatureInput>,
+	context: PolyfillContext,
 	encoding?: string
 ): string {
 	const shasum = createHash("sha1");
 	const normalizedName = name instanceof Set ? name : new Set([name]);
 	const sortedName = [...normalizedName].sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
-	const namePart = sortedName.map(part => `${part.name}${JSON.stringify(part.meta)}${part.context}`).join(",");
+	const namePart = sortedName.map(part => `${part.name}${JSON.stringify(part.meta)}${context}`).join(",");
 	shasum.update(`[${namePart}].${encoding == null ? "" : encoding}`);
 	return shasum.digest("hex");
 }
 
 /**
  * Returns a stringified key as a function of the given Set of polyfill feature inputs
- *
- * @param polyfills
- * @param userAgent
- * @returns
  */
-export function getPolyfillSetIdentifier(polyfills: Set<IPolyfillFeatureInput>, userAgent: string): string {
+export function getPolyfillSetIdentifier(polyfills: Set<IPolyfillFeatureInput>, userAgent: string, context: PolyfillContext): string {
 	const shasum = createHash("sha1");
 	const sortedName = [...polyfills].sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
-	const namePart = sortedName
-		.map(part => `${part.name}${JSON.stringify(part.meta)}${JSON.stringify(part.force)}${JSON.stringify(part.context)}`)
-		.join(",");
+	const namePart = sortedName.map(part => `${part.name}${JSON.stringify(part.meta)}${JSON.stringify(part.force)}${JSON.stringify(context)}`).join(",");
 	shasum.update(`[${namePart}].${userAgent}`);
 	return shasum.digest("hex");
 }
 
 /**
- * Returns a stringified key as a function of the given array of paths to Core-js files
- *
- * @param paths
- * @returns
- */
-export function getCoreJsBundleIdentifier(paths: string[]): string {
-	const shasum = createHash("sha1");
-	const sortedPaths = paths.sort();
-	const joinedPaths = sortedPaths.join(",");
-	shasum.update(`[${joinedPaths}].corejs`);
-	return shasum.digest("hex");
-}
-
-/**
  * Returns true if the given polyfill should be included for a particular user agent
- *
- * @param force
- * @param context
- * @param userAgent
- * @param features
- * @param supportedContexts
  */
-function shouldIncludePolyfill(
-	force: boolean,
-	context: PolyfillContext,
-	userAgent: string,
-	features: string[],
-	supportedContexts: Set<PolyfillContext>
-): boolean {
+function shouldIncludePolyfill(force: boolean, context: PolyfillContext, userAgent: string, features: string[], supportedContexts: Set<PolyfillContext>): boolean {
 	return supportedContexts.has(context) && (force || features.length < 1 || !userAgentSupportsFeatures(userAgent, ...features));
 }
 
@@ -121,15 +86,12 @@ function shouldIncludePolyfill(
  */
 function getEffectiveDependors(polyfillName: PolyfillDealiasedName, includedPolyfillNames: Set<PolyfillDealiasedName>): PolyfillDealiasedName[] {
 	const allOtherPolyfillNames = [...includedPolyfillNames].filter(name => name !== polyfillName);
-	const allOtherPolyfills = allOtherPolyfillNames.map(
-		name => [name, constant.polyfill[name]] as [PolyfillDealiasedName, IPolyfillLocalDictEntry | IPolyfillLibraryDictEntry]
-	);
+	const allOtherPolyfills = allOtherPolyfillNames.map(name => [name, constant.polyfill[name]] as [PolyfillDealiasedName, IPolyfillLocalDictEntry | IPolyfillLibraryDictEntry]);
 	return allOtherPolyfills
 		.filter(([, dict]) => {
 			const dependsOnPolyfill = dict.dependencies.some(dependency => traceAllPolyfillNamesForPolyfillName(dependency).has(polyfillName));
 			const mustComeAfterThisPolyfill =
-				dict.mustComeAfter != null &&
-				(dict.mustComeAfter === "*" || dict.mustComeAfter.some(dependency => traceAllPolyfillNamesForPolyfillName(dependency).has(polyfillName)));
+				dict.mustComeAfter != null && (dict.mustComeAfter === "*" || dict.mustComeAfter.some(dependency => traceAllPolyfillNamesForPolyfillName(dependency).has(polyfillName)));
 			return dependsOnPolyfill || mustComeAfterThisPolyfill;
 		})
 		.map(([name]) => name);
@@ -137,14 +99,11 @@ function getEffectiveDependors(polyfillName: PolyfillDealiasedName, includedPoly
 
 /**
  * Gets all those polyfills that are required for a user agent
- *
- * @param polyfillSet
- * @param userAgent
- * @returns
  */
 function getRequiredPolyfillsForUserAgent(
 	polyfillSet: Set<IPolyfillFeatureInput>,
-	userAgent: string
+	userAgent: string,
+	context: PolyfillContext
 ): [IPolyfillFeature[], Map<PolyfillDealiasedName, number>] {
 	const polyfills: IPolyfillFeature[] = [];
 	const polyfillNames: Set<PolyfillDealiasedName> = new Set();
@@ -154,13 +113,12 @@ function getRequiredPolyfillsForUserAgent(
 	polyfillSet.forEach(polyfill => {
 		const match = constant.polyfill[polyfill.name];
 
-		if (shouldIncludePolyfill(polyfill.force, polyfill.context, userAgent, match.features, match.contexts)) {
+		if (shouldIncludePolyfill(polyfill.force, context, userAgent, match.features, match.contexts)) {
 			const existingIndex = polyfillNameToPolyfillIndexMap.get(polyfill.name);
 			if (existingIndex != null) {
 				polyfills[existingIndex].meta = polyfill.meta;
-				polyfills[existingIndex].context = polyfill.context;
 			} else {
-				polyfills.push({name: polyfill.name, meta: polyfill.meta, context: polyfill.context});
+				polyfills.push({name: polyfill.name, meta: polyfill.meta});
 				polyfillNameToPolyfillIndexMap.set(polyfill.name, currentIndex++);
 				polyfillNames.add(polyfill.name);
 			}
@@ -170,8 +128,9 @@ function getRequiredPolyfillsForUserAgent(
 				match.dependencies.map(dependency => [...traceAllPolyfillNamesForPolyfillName(dependency)])
 			);
 			for (const childPolyfill of getRequiredPolyfillsForUserAgent(
-				new Set(resolvedDependencies.map(dependency => ({name: dependency, meta: {}, force: polyfill.force, context: polyfill.context}))),
-				userAgent
+				new Set(resolvedDependencies.map(dependency => ({name: dependency, meta: {}, force: polyfill.force}))),
+				userAgent,
+				context
 			)[0]) {
 				if (!polyfillNames.has(childPolyfill.name)) {
 					polyfills.push({
@@ -192,16 +151,9 @@ function getRequiredPolyfillsForUserAgent(
 
 /**
  * Orders the polyfills given in the Set, including their dependencies
- *
- * @param polyfillSet
- * @param userAgent
- * @returns
  */
-export async function getOrderedPolyfillsWithDependencies(
-	polyfillSet: Set<IPolyfillFeatureInput>,
-	userAgent: string
-): Promise<Set<IPolyfillFeature>> {
-	const [requiredPolyfills, polyfillToIndexMap] = getRequiredPolyfillsForUserAgent(polyfillSet, userAgent);
+export async function getOrderedPolyfillsWithDependencies(polyfillSet: Set<IPolyfillFeatureInput>, userAgent: string, context: PolyfillContext): Promise<Set<IPolyfillFeature>> {
+	const [requiredPolyfills, polyfillToIndexMap] = getRequiredPolyfillsForUserAgent(polyfillSet, userAgent, context);
 	const requiredPolyfillNames: Set<PolyfillDealiasedName> = new Set(polyfillToIndexMap.keys());
 	const requiredPolyfillNamesArray = [...requiredPolyfillNames];
 
@@ -229,6 +181,10 @@ export async function getOrderedPolyfillsWithDependencies(
 export function getPolyfillRequestFromUrl(url: URL, userAgent: string, encoding?: ContentEncodingKind): IPolyfillRequest {
 	const featuresRaw = url.searchParams.get("features");
 	const contextRaw = url.searchParams.get("context") as PolyfillContext;
+	const sourcemapRaw = url.searchParams.get("sourcemap");
+	const minifyRaw = url.searchParams.get("minify");
+	const sourcemap = sourcemapRaw === "" || (sourcemapRaw != null && booleanize(sourcemapRaw));
+	const minify = minifyRaw === "" || (minifyRaw != null && booleanize(minifyRaw));
 	const context: PolyfillContext = contextRaw == null || !POLYFILL_CONTEXTS.includes(contextRaw) ? "window" : contextRaw;
 
 	// Prepare a Set of features
@@ -269,8 +225,7 @@ export function getPolyfillRequestFromUrl(url: URL, userAgent: string, encoding?
 				featureSet.add({
 					name: polyfillName,
 					force,
-					meta,
-					context
+					meta
 				});
 			}
 		}
@@ -280,7 +235,10 @@ export function getPolyfillRequestFromUrl(url: URL, userAgent: string, encoding?
 	return {
 		userAgent,
 		encoding,
-		features: featureSet
+		features: featureSet,
+		context,
+		sourcemap,
+		minify
 	};
 }
 

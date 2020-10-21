@@ -172,6 +172,8 @@ When a browser (or robot) visits your site, `Polyfiller` evaluates the user agen
 It is up to you to decide which polyfills you need, but the web service will automatically make sure to include every dependency of those polyfills, but only if the browser doesn't already support them.
 See [this](#usage-in-a-web-workerservice-worker) or [this](#usage-in-node) section for details on how to use `Polyfiller` from Web Workers/ServiceWorkers and Node.
 
+You can provide options to Polyfiller via query parameters such as `minify` and `sourcemap` to adjust the received payload to your liking.
+
 ## Examples
 
 ### Example 1:
@@ -181,9 +183,10 @@ In this example:
 - `es` polyfills those EcmaScript features that the browser doesn't support.
 - `intersection-observer` is polyfilled, _even if the browser supports it_, because it has the `force` option.
 - `intl` is polyfilled, with the inclusion of `Intl.ListFormat` and `Intl.RelativeTimeFormat`, if the browser doesn't support it, and the `en` locale data is included.
+- Sourcemaps are generated, and the bundle is minified
 
 ```html
-<script crossorigin src="https://polyfill.app/api/polyfill?features=es,intersection-observer|force,intl|locale=en"></script>
+<script crossorigin src="https://polyfill.app/api/polyfill?minify&sourcemap&features=es,intersection-observer|force,intl|locale=en"></script>
 ```
 
 ### Example 2:
@@ -225,10 +228,12 @@ Retrieves a bundle of polyfills.
 
 #### Parameter overview
 
-| Parameter  | Description                                                                                                                                                                                                                                                       |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `features` | A comma-separated string of all the `feature`s you want to include in your bundle (if required by the browser). Each `feature` may receive zero or more `option`s. Some `option`s are supported for all `feature`s while others only support specific `feature`s. |
-| `context`  | Can be either `window`, `worker`, or `node`. Use this to instruct `Polyfiller` to optimize polyfills for the given environment, as well as to exclude polyfills that doesn't support the given context.                                                           |
+| Parameter   | Description                                                                                                                                                                                                                                                       |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `features`  | A comma-separated string of all the `feature`s you want to include in your bundle (if required by the browser). Each `feature` may receive zero or more `option`s. Some `option`s are supported for all `feature`s while others only support specific `feature`s. |
+| `context`   | Can be either `window`, `worker`, or `node`. Use this to instruct `Polyfiller` to optimize polyfills for the given environment, as well as to exclude polyfills that doesn't support the given context.                                                           |
+| `sourcemap` | If given, or if it has a value of `true`, `Polyfiller` will be instructed to generate SourceMaps. Use this in development for better stack traces.                                                                                                                |
+| `minify`    | If given, `Polyfiller` will send back a minified Polyfill bundle.                                                                                                                                                                                                 |
 
 #### `feature`
 
@@ -708,8 +713,13 @@ And, if you request `performance.now`, `date.now` will also be included since th
   - `dom.collections.iterator`
   - `dom.collections.for-each`
 - **`intl`**
-  - `intl.core`
+  - `intl.date-time-format`
+  - `intl.display-names`
+  - `intl.get-canonical-locales`
   - `intl.list-format`
+  - `intl.locale`
+  - `intl.number-format`
+  - `intl.plural-rules`
   - `intl.relative-time-format`
 - **`animation`**
   - `web-animations`

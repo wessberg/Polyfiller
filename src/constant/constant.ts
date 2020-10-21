@@ -27,10 +27,18 @@ export const constant: IConstant = {
 	polyfill: {
 		systemjs: {
 			library: "systemjs",
-			relativePaths: ["dist/system.min.js"],
+			relativePaths: {
+				window: ["dist/system.js"],
+				worker: ["dist/system.js"],
+				node: ["dist/system-node.cjs"]
+			},
 			meta: {
-				system: "dist/system.min.js",
-				s: "dist/s.min.js"
+				system: {
+					window: ["dist/system.js"],
+					worker: ["dist/system.js"],
+					node: ["dist/system-node.cjs"]
+				},
+				s: "dist/s.js"
 			},
 			features: [],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_SYSTEMJS,
@@ -40,17 +48,17 @@ export const constant: IConstant = {
 		zone: {
 			library: "zone.js",
 			meta: {
-				error: "bundles/zone-error.umd.min.js",
-				shadydom: "bundles/webapis-shadydom.umd.min.js",
-				mediaquery: "bundles/webapis-media-query.umd.min.js",
-				rxjs: "bundles/zone-patch-rxjs.umd.min.js",
-				fetch: "bundles/zone-patch-fetch.umd.min.js",
-				resizeobserver: "bundles/zone-patch-resize-observer.umd.min.js"
+				error: "fesm2015/zone-error.js",
+				shadydom: "fesm2015/webapis-shadydom.js",
+				mediaquery: "fesm2015/webapis-media-query.js",
+				rxjs: "fesm2015/zone-patch-rxjs.js",
+				fetch: "fesm2015/zone-patch-fetch.js",
+				resizeobserver: "fesm2015/zone-patch-resize-observer.js"
 			},
 			relativePaths: {
-				window: ["bundles/zone.umd.min.js"],
-				worker: ["bundles/zone.umd.min.js"],
-				node: ["bundles/zone-node.umd.js"]
+				window: ["fesm2015/zone.js"],
+				worker: ["fesm2015/zone.js"],
+				node: ["fesm2015/zone-node.js"]
 			},
 			features: [],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_ZONE_JS,
@@ -65,8 +73,8 @@ export const constant: IConstant = {
 				node: "performance-now"
 			},
 			relativePaths: {
-				window: ["perfnow.min.js"],
-				worker: ["perfnow.min.js"],
+				window: ["perfnow.js"],
+				worker: ["perfnow.js"],
 				node: ["lib/performance-now.js"]
 			},
 			features: ["high-resolution-time"],
@@ -76,7 +84,7 @@ export const constant: IConstant = {
 		},
 		url: {
 			library: "url-polyfill",
-			relativePaths: ["url-polyfill.min.js"],
+			relativePaths: ["url-polyfill.js"],
 			features: ["url", "urlsearchparams"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_URL_POLYFILL,
 			dependencies: ["es.object.define-properties", "es.array.for-each"],
@@ -84,9 +92,9 @@ export const constant: IConstant = {
 		},
 		"object-fit": {
 			library: "@polyfiller/object-fit",
-			relativePaths: ["polyfill/index.bundle.min.js"],
+			relativePaths: ["polyfill/index.js"],
 			features: ["object-fit"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_OBJECT_FIT_IMAGES,
+			version: environment.NPM_PACKAGE_DEPENDENCIES__POLYFILLER_OBJECT_FIT,
 			dependencies: [
 				"window",
 				"document",
@@ -1554,12 +1562,13 @@ export const constant: IConstant = {
 				"es.symbol.split",
 				"es.symbol.to-primitive",
 				"es.symbol.to-string-tag",
-				"es.symbol.unscopables"
+				"es.symbol.unscopables",
+				"es.symbol.description"
 			]
 		},
 		"es.symbol.description": {
 			library: "core-js",
-			relativePaths: ["modules/esnext.symbol.description.js"],
+			relativePaths: ["modules/es.symbol.description.js"],
 			features: ["javascript.builtins.Symbol.description"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: ["es.symbol.constructor"],
@@ -1886,7 +1895,7 @@ export const constant: IConstant = {
 		},
 		"es.set.add-all": {
 			library: "core-js",
-			relativePaths: ["modules/esnext.set.addTime-all.js"],
+			relativePaths: ["modules/esnext.set.add-all.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
@@ -2689,7 +2698,7 @@ export const constant: IConstant = {
 			polyfills: ["es.string.at", "es.string.code-points", "es.string.match-all", "es.string.replace-all"]
 		},
 		"esnext.symbol": {
-			polyfills: ["es.symbol.description", "es.symbol.pattern-match"]
+			polyfills: ["es.symbol.pattern-match"]
 		},
 		"dom.collections.iterable": {
 			polyfills: ["dom.collections.iterator", "dom.collections.for-each"]
@@ -2748,38 +2757,216 @@ export const constant: IConstant = {
 			contexts: WINDOW_CONTEXT
 		},
 		intl: {
-			polyfills: ["intl.core", "intl.list-format", "intl.relative-time-format"]
+			polyfills: [
+				"intl.date-time-format",
+				"intl.display-names",
+				"intl.get-canonical-locales",
+				"intl.list-format",
+				"intl.locale",
+				"intl.number-format",
+				"intl.plural-rules",
+				"intl.relative-time-format"
+			]
 		},
-		"intl.core": {
-			localPaths: ["polyfill-lib/intl/intl.js"],
-			meta: {
-				localeDir: "node_modules/intl/locale-data/jsonp"
-			},
-			features: ["internationalization", "javascript.builtins.Intl.PluralRules", "javascript.builtins.Intl.NumberFormat"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_INTL,
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"intl.relative-time-format": {
-			library: "intl-relative-time-format",
-			relativePaths: ["dist/index.js"],
+		"intl.date-time-format": {
+			library: "@formatjs/intl-datetimeformat",
+			relativePaths: ["lib/polyfill.js"],
 			meta: {
 				localeDir: "locale-data"
 			},
-			features: ["javascript.builtins.Intl.RelativeTimeFormat"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_INTL_RELATIVE_TIME_FORMAT,
-			dependencies: ["intl.core", "es.array.includes", "es.object.create", "es.object.is", "es.string.includes", "es.string.replace", "es.symbol.to-string-tag", "es.weak-map"],
+			features: ["javascript.builtins.Intl.DateTimeFormat"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_DATETIMEFORMAT,
+			dependencies: [
+				"intl.get-canonical-locales",
+				"intl.number-format",
+				"es.set",
+				"es.weak-map",
+				"es.object.is",
+				"es.object.keys",
+				"es.object.set-prototype-of",
+				"es.object.define-property",
+				"es.object.assign",
+				"es.object.create",
+				"es.array.is-array",
+				"es.array.map",
+				"es.array.reduce",
+				"es.array.join",
+				"es.array.filter",
+				"es.array.index-of",
+				"es.date.now",
+				"es.string.replace"
+			],
+			contexts: ALL_CONTEXTS
+		},
+		"intl.display-names": {
+			library: "@formatjs/intl-displaynames",
+			relativePaths: ["lib/polyfill.js"],
+			meta: {
+				localeDir: "locale-data"
+			},
+			features: ["javascript.builtins.Intl.DisplayNames"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_DISPLAYNAMES,
+			dependencies: [
+				"intl.get-canonical-locales",
+				"es.weak-map",
+				"es.object.keys",
+				"es.object.set-prototype-of",
+				"es.object.define-property",
+				"es.object.assign",
+				"es.object.create",
+				"es.array.is-array",
+				"es.array.map",
+				"es.array.reduce",
+				"es.array.join",
+				"es.array.filter"
+			],
+			contexts: ALL_CONTEXTS
+		},
+		"intl.get-canonical-locales": {
+			library: "@formatjs/intl-getcanonicallocales",
+			relativePaths: ["lib/polyfill.js"],
+			meta: {},
+			features: ["javascript.builtins.Intl.getCanonicalLocales"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_GETCANONICALLOCALES,
+			dependencies: ["es.array.filter", "es.array.index-of", "es.array.join", "es.array.sort", "es.object.define-property", "es.object.keys", "es.string.split"],
 			contexts: ALL_CONTEXTS
 		},
 		"intl.list-format": {
-			library: "intl-list-format",
-			relativePaths: ["dist/index.js"],
+			library: "@formatjs/intl-listformat",
+			relativePaths: ["lib/polyfill.js"],
 			meta: {
 				localeDir: "locale-data"
 			},
 			features: ["javascript.builtins.Intl.ListFormat"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_INTL_LIST_FORMAT,
-			dependencies: ["intl.core", "es.array.includes", "es.object.create", "es.string.replace", "es.symbol.to-string-tag", "es.weak-map"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_LISTFORMAT,
+			dependencies: [
+				"intl.get-canonical-locales",
+				"es.array.filter",
+				"es.array.is-array",
+				"es.array.join",
+				"es.array.map",
+				"es.array.reduce",
+				"es.object.assign",
+				"es.object.create",
+				"es.object.define-property",
+				"es.object.keys",
+				"es.object.set-prototype-of",
+				"es.weak-map"
+			],
+			contexts: ALL_CONTEXTS
+		},
+		"intl.locale": {
+			library: "@formatjs/intl-locale",
+			relativePaths: ["lib/polyfill.js"],
+			meta: {},
+			features: ["javascript.builtins.Intl.Locale"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_LOCALE,
+			dependencies: [
+				"intl.get-canonical-locales",
+				"es.array.concat",
+				"es.array.filter",
+				"es.array.for-each",
+				"es.array.index-of",
+				"es.array.is-array",
+				"es.array.join",
+				"es.array.sort",
+				"es.object.assign",
+				"es.object.create",
+				"es.object.define-property",
+				"es.object.freeze",
+				"es.object.get-own-property-descriptor",
+				"es.object.is",
+				"es.object.keys",
+				"es.object.set-prototype-of",
+				"es.string.split",
+				"es.weak-map"
+			],
+			contexts: ALL_CONTEXTS
+		},
+		"intl.number-format": {
+			library: "@formatjs/intl-numberformat",
+			relativePaths: ["lib/polyfill.js"],
+			meta: {
+				localeDir: "locale-data"
+			},
+			features: ["javascript.builtins.Intl.NumberFormat"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_NUMBERFORMAT,
+			dependencies: [
+				"intl.plural-rules",
+				"intl.get-canonical-locales",
+				"es.array.filter",
+				"es.array.index-of",
+				"es.array.is-array",
+				"es.array.join",
+				"es.array.map",
+				"es.array.reduce",
+				"es.object.assign",
+				"es.object.create",
+				"es.object.define-property",
+				"es.object.freeze",
+				"es.object.freeze",
+				"es.object.is",
+				"es.object.keys",
+				"es.object.set-prototype-of",
+				"es.string.replace",
+				"es.string.split",
+				"es.weak-map"
+			],
+			contexts: ALL_CONTEXTS
+		},
+		"intl.plural-rules": {
+			library: "@formatjs/intl-pluralrules",
+			relativePaths: ["lib/polyfill.js"],
+			meta: {
+				localeDir: "locale-data"
+			},
+			features: ["javascript.builtins.Intl.PluralRules"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_PLURALRULES,
+			dependencies: [
+				"intl.get-canonical-locales",
+				"es.array.filter",
+				"es.array.for-each",
+				"es.array.is-array",
+				"es.array.join",
+				"es.array.map",
+				"es.array.reduce",
+				"es.object.assign",
+				"es.object.create",
+				"es.object.define-property",
+				"es.object.is",
+				"es.object.keys",
+				"es.object.set-prototype-of",
+				"es.string.replace",
+				"es.string.split",
+				"es.weak-map"
+			],
+			contexts: ALL_CONTEXTS
+		},
+		"intl.relative-time-format": {
+			library: "@formatjs/intl-relativetimeformat",
+			relativePaths: ["lib/polyfill.js"],
+			meta: {
+				localeDir: "locale-data"
+			},
+			features: ["javascript.builtins.Intl.RelativeTimeFormat"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_RELATIVETIMEFORMAT,
+			dependencies: [
+				"intl.plural-rules",
+				"intl.number-format",
+				"intl.get-canonical-locales",
+				"es.array.filter",
+				"es.array.is-array",
+				"es.array.join",
+				"es.array.map",
+				"es.array.reduce",
+				"es.object.assign",
+				"es.object.create",
+				"es.object.define-property",
+				"es.object.is",
+				"es.object.keys",
+				"es.object.set-prototype-of",
+				"es.weak-map"
+			],
 			contexts: ALL_CONTEXTS
 		},
 		animation: {
@@ -2842,7 +3029,7 @@ export const constant: IConstant = {
 		},
 		queryselector: {
 			library: "polyfill-library",
-			relativePaths: ["polyfills/__dist/document.querySelector/min.js"],
+			relativePaths: ["polyfills/__dist/document.querySelector/raw.js"],
 			features: ["queryselector"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["element", "document", "document-fragment"],
@@ -2850,7 +3037,7 @@ export const constant: IConstant = {
 		},
 		"document-fragment": {
 			library: "polyfill-library",
-			relativePaths: ["polyfills/__dist/DocumentFragment/min.js"],
+			relativePaths: ["polyfills/__dist/DocumentFragment/raw.js"],
 			features: ["queryselector"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: [],
@@ -2858,7 +3045,7 @@ export const constant: IConstant = {
 		},
 		"node.parentelement": {
 			library: "node.parentelement",
-			relativePaths: ["polyfill.min.js"],
+			relativePaths: ["polyfill.js"],
 			// If 'addEventListener' isn't found, the Window interface shouldn't exist on the window
 			features: ["addeventlistener"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_NODE_PARENTELEMENT,
@@ -2875,7 +3062,7 @@ export const constant: IConstant = {
 		},
 		"focus-visible": {
 			library: "focus-visible",
-			relativePaths: ["dist/focus-visible.min.js"],
+			relativePaths: ["dist/focus-visible.js"],
 			features: ["css-focus-visible"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_FOCUS_VISIBLE,
 			dependencies: ["class-list"],
@@ -2883,7 +3070,7 @@ export const constant: IConstant = {
 		},
 		"node.contains": {
 			library: "polyfill-library",
-			relativePaths: ["polyfills/__dist/Node.prototype.contains/min.js"],
+			relativePaths: ["polyfills/__dist/Node.prototype.contains/raw.js"],
 			// If 'addEventListener' isn't found, the Window interface shouldn't exist on the window
 			features: ["addeventlistener"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
@@ -2892,7 +3079,7 @@ export const constant: IConstant = {
 		},
 		window: {
 			library: "polyfill-library",
-			relativePaths: ["polyfills/__dist/Window/min.js"],
+			relativePaths: ["polyfills/__dist/Window/raw.js"],
 			features: ["addeventlistener"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: [],
@@ -2900,7 +3087,7 @@ export const constant: IConstant = {
 		},
 		document: {
 			library: "polyfill-library",
-			relativePaths: ["polyfills/__dist/document/min.js"],
+			relativePaths: ["polyfills/__dist/document/raw.js"],
 			// If 'addEventListener' isn't found, the Document interface shouldn't exist on the window
 			features: ["addeventlistener"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
@@ -2909,7 +3096,7 @@ export const constant: IConstant = {
 		},
 		"class-list": {
 			library: "polyfill-library",
-			relativePaths: ["polyfills/__dist/Element.prototype.classList/min.js"],
+			relativePaths: ["polyfills/__dist/Element.prototype.classList/raw.js"],
 			features: ["classlist"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["dom-token-list"],
@@ -2917,7 +3104,7 @@ export const constant: IConstant = {
 		},
 		"dom-token-list": {
 			library: "polyfill-library",
-			relativePaths: ["polyfills/__dist/_DOMTokenList/min.js", "polyfills/__dist/DOMTokenList/min.js"],
+			relativePaths: ["polyfills/__dist/_DOMTokenList/raw.js", "polyfills/__dist/DOMTokenList/raw.js"],
 			features: ["rellist"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["es.object.define-property"],
@@ -2925,7 +3112,7 @@ export const constant: IConstant = {
 		},
 		element: {
 			library: "polyfill-library",
-			relativePaths: ["polyfills/__dist/Element/min.js"],
+			relativePaths: ["polyfills/__dist/Element/raw.js"],
 			// If 'addEventListener' isn't found, the Element interface shouldn't exist on the window
 			features: ["addeventlistener"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
@@ -2937,7 +3124,7 @@ export const constant: IConstant = {
 		},
 		"event.constructor": {
 			library: "polyfill-library",
-			relativePaths: ["polyfills/__dist/Event/min.js"],
+			relativePaths: ["polyfills/__dist/Event/raw.js"],
 			features: ["api.Event.Event"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["window", "document", "element", "es.object.define-property"],
@@ -2945,7 +3132,7 @@ export const constant: IConstant = {
 		},
 		"event.focusin": {
 			library: "polyfill-library",
-			relativePaths: ["polyfills/__dist/Event.focusin/min.js"],
+			relativePaths: ["polyfills/__dist/Event.focusin/raw.js"],
 			features: ["focusin-focusout-events"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["event.constructor"],
@@ -2953,7 +3140,7 @@ export const constant: IConstant = {
 		},
 		"event.hashchange": {
 			library: "polyfill-library",
-			relativePaths: ["polyfills/__dist/Event.hashchange/min.js"],
+			relativePaths: ["polyfills/__dist/Event.hashchange/raw.js"],
 			features: ["hashchange"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["event.constructor"],
@@ -2961,7 +3148,7 @@ export const constant: IConstant = {
 		},
 		"custom-event": {
 			library: "polyfill-library",
-			relativePaths: ["polyfills/__dist/CustomEvent/min.js"],
+			relativePaths: ["polyfills/__dist/CustomEvent/raw.js"],
 			features: ["customevent"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["event"],
@@ -2969,7 +3156,7 @@ export const constant: IConstant = {
 		},
 		"event-source": {
 			library: "polyfill-library",
-			relativePaths: ["polyfills/__dist/EventSource/min.js"],
+			relativePaths: ["polyfills/__dist/EventSource/raw.js"],
 			features: ["eventsource"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: [],
@@ -2977,7 +3164,7 @@ export const constant: IConstant = {
 		},
 		"get-computed-style": {
 			library: "polyfill-library",
-			relativePaths: ["polyfills/__dist/getComputedStyle/min.js"],
+			relativePaths: ["polyfills/__dist/getComputedStyle/raw.js"],
 			features: ["getcomputedstyle"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["window"],

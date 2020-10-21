@@ -1,96 +1,50 @@
 import {IPolyfillBuilderService} from "./i-polyfill-builder-service";
 import {constant} from "../../constant/constant";
-import {Buffer} from "buffer";
-import {IMinifyService} from "../minify/i-minify-service";
 import {IPolyfillFeature} from "../../polyfill/i-polyfill-feature";
-import {IFileLoader} from "@wessberg/fileloader";
 import {join} from "path";
-import {ICompressorService} from "../compression/i-compressor-service";
 import {ICompressedPolyfillSetResult} from "./i-compressed-polyfill-set-result";
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
-import builder from "core-js-builder";
-import {IPolyfillLibraryDictEntry} from "../../polyfill/polyfill-dict";
-import {ICacheRegistryService} from "../registry/cache-registry/i-cache-registry-service";
-import {ILoggerService} from "../logger/i-logger-service";
 import {ensureArray} from "../../util/ensure-array/ensure-array";
-import {PolyfillDealiasedName} from "../../polyfill/polyfill-name";
 import {sync} from "find-up";
+import {build} from "../../build/build";
+import {IPolyfillDictEntryBase} from "../../polyfill/polyfill-dict";
+import {PolyfillContext} from "../../polyfill/polyfill-context";
+import {IPolyfillRequest} from "../../polyfill/i-polyfill-request";
 
 const SYNC_OPTIONS = {cwd: __dirname};
+
+function selectMetaPaths<Meta extends Exclude<IPolyfillDictEntryBase["meta"], undefined>>(value: Meta[keyof Meta], context: PolyfillContext): string[] {
+	if (typeof value === "string") return [value];
+	if (Array.isArray(value)) return value;
+	return ensureArray((value as any)[context]);
+}
 
 /**
  * A service that can load and cache all polyfills
  */
 export class PolyfillBuilderService implements IPolyfillBuilderService {
-	constructor(
-		private readonly minifier: IMinifyService,
-		private readonly logger: ILoggerService,
-		private readonly cacheService: ICacheRegistryService,
-		private readonly compressor: ICompressorService,
-		private readonly fileLoader: IFileLoader
-	) {}
-
 	/**
 	 * Builds the given PolyfillSet and returns the result in all encodings
 	 */
-	async buildPolyfillSet(polyfillSet: Set<IPolyfillFeature>): Promise<ICompressedPolyfillSetResult> {
-		const input: {polyfillName: PolyfillDealiasedName; paths: string[]}[] = [];
-		let content = "";
-		let hasAddedCoreJsContent = false;
-
-		// Take all Core Js paths
-		const coreJsPaths = ([] as string[]).concat.apply(
-			[],
-			[...polyfillSet].map(polyfillFeature => {
-				if (!this.isCoreJs(polyfillFeature)) return [];
-
-				const match = constant.polyfill[polyfillFeature.name] as IPolyfillLibraryDictEntry;
-				const relativePaths = Array.isArray(match.relativePaths) ? match.relativePaths : match.relativePaths[polyfillFeature.context];
-				return relativePaths.map(relativePath => relativePath.replace("modules/", "").replace(".js", ""));
-			})
-		);
-
-		// Check if a bundle has been built previously for the given core js paths
-		let coreJsContent = await this.cacheService.getCoreJsBundle(coreJsPaths);
-
-		// If not, build a bundle and store within the cache
-		if (coreJsContent == null) {
-			// Build a bundle of the CoreJs paths
-			coreJsContent = Buffer.from(coreJsPaths.length < 1 ? "" : await builder({modules: coreJsPaths}));
-			// Store it within the cache
-			await this.cacheService.setCoreJsBundle(coreJsPaths, coreJsContent);
-		} else {
-			this.logger.debug(`Matched CoreJS paths in cache!`);
-		}
+	async buildPolyfillSet(polyfillSet: Set<IPolyfillFeature>, request: IPolyfillRequest): Promise<ICompressedPolyfillSetResult> {
+		const paths: string[] = [];
 
 		for (const polyfillFeature of polyfillSet) {
-			// If this polyfill feature represents Core Js, add its' content to the bundle unless it has been added previously
-			if (this.isCoreJs(polyfillFeature)) {
-				if (!hasAddedCoreJsContent) {
-					hasAddedCoreJsContent = true;
-					content += `\n${coreJsContent.toString()}`;
-				}
-				continue;
-			}
-
 			const absolutePaths: string[] = [];
 			const match = constant.polyfill[polyfillFeature.name];
 			if (match == null || "polyfills" in match) {
 				throw new TypeError(`No aliased polyfill names can be built! These must be resolved before calling ${this.buildPolyfillSet.name}!`);
 			}
 
-			const rootDirectory =
-				"library" in match ? join("node_modules", typeof match.library === "string" ? match.library : match.library[polyfillFeature.context]) : "";
+			const rootDirectory = "library" in match ? join("node_modules", typeof match.library === "string" ? match.library : match.library[request.context]) : "";
 
 			const localPaths =
 				"library" in match
 					? Array.isArray(match.relativePaths)
 						? match.relativePaths
-						: match.relativePaths[polyfillFeature.context]
+						: match.relativePaths[request.context]
 					: Array.isArray(match.localPaths)
 					? match.localPaths
-					: match.localPaths[polyfillFeature.context];
+					: match.localPaths[request.context];
 
 			const {meta} = match;
 
@@ -102,7 +56,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				"variant" in polyfillFeature.meta &&
 				(polyfillFeature.meta.variant === "s" || polyfillFeature.meta.variant === "system")
 			) {
-				for (const variant of ensureArray(meta[polyfillFeature.meta.variant])) {
+				for (const variant of selectMetaPaths(meta[polyfillFeature.meta.variant], request.context)) {
 					const metaVariantPathInput = join(rootDirectory, variant);
 					const resolvedMetaVariantPath = sync(metaVariantPathInput, SYNC_OPTIONS);
 					if (resolvedMetaVariantPath != null) {
@@ -121,7 +75,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				"experimental" in polyfillFeature.meta &&
 				polyfillFeature.meta.experimental === true
 			) {
-				for (const variant of ensureArray(meta.experimental)) {
+				for (const variant of selectMetaPaths(meta.experimental, request.context)) {
 					const metaVariantPathInput = join(rootDirectory, variant);
 					const resolvedMetaVariantPath = sync(metaVariantPathInput, SYNC_OPTIONS);
 					if (resolvedMetaVariantPath != null) {
@@ -149,7 +103,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 			if (meta != null && polyfillFeature.name === "zone") {
 				// If Zone is requested, 'zone-error' may be requested which improves the produced Stack trace when using Zone
 				if (polyfillFeature.meta != null && polyfillFeature.meta.error === true) {
-					for (const errorPath of ensureArray(meta.error)) {
+					for (const errorPath of selectMetaPaths(meta.error, request.context)) {
 						const errorPathInput = join(rootDirectory, errorPath);
 						const resolvedErrorPath = sync(errorPathInput, SYNC_OPTIONS);
 						if (resolvedErrorPath != null) {
@@ -163,7 +117,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				// If any web component polyfill has been requested, or if the 'shadydom' zone extension has been explicitly requested
 				// add it to the Zone.js polyfill buffer
 				if (polyfillFeature.meta != null && polyfillFeature.meta.shadydom === true) {
-					for (const shadydomPath of ensureArray(meta.shadydom)) {
+					for (const shadydomPath of selectMetaPaths(meta.shadydom, request.context)) {
 						const shadyDomExtensionPathInput = join(rootDirectory, shadydomPath);
 						const resolvedShadyDomExtensionPath = sync(shadyDomExtensionPathInput, SYNC_OPTIONS);
 						if (resolvedShadyDomExtensionPath != null) {
@@ -176,7 +130,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 
 				// If the Zone-patching of 'matchMedia' is requested, add it to the polyfill buffer for Zone.js
 				if (polyfillFeature.meta != null && polyfillFeature.meta.mediaquery === true) {
-					for (const mediaqueryPath of ensureArray(meta.mediaquery)) {
+					for (const mediaqueryPath of selectMetaPaths(meta.mediaquery, request.context)) {
 						const mediaQueryExtensionPathInput = join(rootDirectory, mediaqueryPath);
 						const resolvedMediaQueryExtensionPath = sync(mediaQueryExtensionPathInput, SYNC_OPTIONS);
 						if (resolvedMediaQueryExtensionPath != null) {
@@ -189,7 +143,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 
 				// If the Zone-patching of 'rxjs' is requested, add it to the polyfill buffer for Zone.js
 				if (polyfillFeature.meta != null && polyfillFeature.meta.rxjs === true) {
-					for (const rxjsPath of ensureArray(meta.rxjs)) {
+					for (const rxjsPath of selectMetaPaths(meta.rxjs, request.context)) {
 						const rxjsExtensionPathInput = join(rootDirectory, rxjsPath);
 						const resolvedRxjsExtensionPath = sync(rxjsExtensionPathInput, SYNC_OPTIONS);
 						if (resolvedRxjsExtensionPath != null) {
@@ -202,7 +156,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 
 				// If the Zone-patching of 'fetch' is requested, or if 'fetch' is requested as a polyfill along with Zone add it to the polyfill buffer for Zone.js
 				if (polyfillFeature.meta != null && polyfillFeature.meta.fetch === true) {
-					for (const fetchPath of ensureArray(meta.fetch)) {
+					for (const fetchPath of selectMetaPaths(meta.fetch, request.context)) {
 						const fetchExtensionPathInput = join(rootDirectory, fetchPath);
 						const resolvedFetchExtensionPath = sync(fetchExtensionPathInput, SYNC_OPTIONS);
 						if (resolvedFetchExtensionPath != null) {
@@ -215,7 +169,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 
 				// If the Zone-patching of 'ResizeObserver' is requested or if ResizeObserver is requested as a polyfill along with Zone.js, add it to the polyfill buffer for Zone.js
 				if (polyfillFeature.meta != null && polyfillFeature.meta.resizeobserver === true) {
-					for (const resizeobserverPath of ensureArray(meta.resizeobserver)) {
+					for (const resizeobserverPath of selectMetaPaths(meta.resizeobserver, request.context)) {
 						const resizeObserverExtensionPathInput = join(rootDirectory, resizeobserverPath);
 						const resolvedResizeObserverExtensionPath = sync(resizeObserverExtensionPathInput, SYNC_OPTIONS);
 						if (resolvedResizeObserverExtensionPath != null) {
@@ -227,7 +181,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				}
 			}
 
-			// If the Polyfill is "intl.core" and a localeDir is associated with it, also resolve the requested locales (if any)
+			// If the Polyfill is related to intl and a localeDir is associated with it, also resolve the requested locales (if any)
 			if (polyfillFeature.name.startsWith("intl.") && meta != null && "localeDir" in meta && polyfillFeature.meta.locale != null) {
 				// Normalize the requested locales to make sure we have an array to work with
 				const requestedLocales: string[] = ensureArray(polyfillFeature.meta.locale);
@@ -236,7 +190,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				await Promise.all(
 					requestedLocales.map(async requestedLocale => {
 						// Resolve the absolute path
-						for (const localeDir of ensureArray(meta.localeDir)) {
+						for (const localeDir of selectMetaPaths(meta.localeDir, request.context)) {
 							const localePathInput = join(rootDirectory, localeDir, `${requestedLocale}.js`);
 							const resolvedLocalePath = sync(localePathInput, SYNC_OPTIONS);
 							if (resolvedLocalePath != null) {
@@ -250,37 +204,24 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 			}
 
 			// Push all of the absolute paths for this specific polyfill to the input paths
-			input.push({
-				polyfillName: polyfillFeature.name,
-				paths: absolutePaths
-			});
+			paths.push(...absolutePaths);
 		}
 
-		// Load all of the input paths and add them to the generated content
-		for (const {paths} of input) {
-			for (const path of paths) {
-				content += `\n${(await this.fileLoader.load(path)).toString()}`;
-			}
-		}
-
-		// Minify the result
-		const minified = Buffer.from(await this.minifier.minify({code: content}));
-		// Compress the result
-		const {brotli, zlib} = await this.compressor.compress(minified);
+		const {brotli, zlib, raw} = await build({
+			context: request.context,
+			userAgent: request.userAgent,
+			featuresRequested: [...request.features],
+			paths: [...new Set(paths)],
+			features: [...polyfillSet],
+			minify: request.minify,
+			sourcemap: request.sourcemap
+		});
 
 		// Return all of the Buffers
 		return {
 			brotli,
-			minified,
+			minified: raw,
 			zlib
 		};
-	}
-
-	/**
-	 * Returns true if the given polyfill feature is core-js
-	 */
-	private isCoreJs(polyfillFeature: IPolyfillFeature): boolean {
-		const match = constant.polyfill[polyfillFeature.name];
-		return "library" in match && match.library === "core-js";
 	}
 }

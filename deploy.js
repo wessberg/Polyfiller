@@ -172,7 +172,7 @@ server {
 	// If we have deployed in the past, check if the nginx config needs to be updated (for example if the ports or domain names changed)
 	const needsNginxUpdate = lastDeploymentData == null || lastDeploymentData.PORT !== PORT || lastDeploymentData.DEPLOY_DOMAIN_NAMES !== DEPLOY_DOMAIN_NAMES;
 
-	if (needsNginxUpdate || true) {
+	if (needsNginxUpdate) {
 		console.log(`Nginx config needs update`);
 		// Write the nginx config to desk temporarily
 		writeFileSync(NGINX_CONFIG_LOCAL_FILE_NAME, generateNginxConfig());
@@ -189,7 +189,6 @@ server {
 	} else {
 		console.log(`Nginx config is up to date`);
 	}
-	return;
 
 	// Now, update the deployment data
 	writeFileSync(

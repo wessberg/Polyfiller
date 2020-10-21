@@ -1,7 +1,5 @@
 (async () => {
 	const {NodeSSH} = require("node-ssh");
-	const {sync: rimraf} = require("rimraf");
-	const {execSync} = require("child_process");
 	const pkg = require("./package.json");
 	const {join, dirname} = require("path");
 	const {writeFileSync, readFileSync, existsSync, mkdirSync, copyFileSync, chmodSync, readdirSync} = require("fs");
@@ -93,8 +91,10 @@ server {
 
 	// Write the key to desk temporarily
 	mkdirSync(dirname(SSH_KEY_LOCAL_FILE_NAME), {recursive: true});
-	writeFileSync(SSH_KEY_LOCAL_FILE_NAME, DEPLOY_KEY ?? readFileSync(DEPLOY_KEY_LOCATION, "utf8"));
-	chmodSync(SSH_KEY_LOCAL_FILE_NAME, "400");
+	if (!existsSync(SSH_KEY_LOCAL_FILE_NAME)) {
+		writeFileSync(SSH_KEY_LOCAL_FILE_NAME, DEPLOY_KEY ?? readFileSync(DEPLOY_KEY_LOCATION, "utf8"));
+		chmodSync(SSH_KEY_LOCAL_FILE_NAME, "400");
+	}
 
 	// Write the package.json file to desk temporarily
 	mkdirSync(dirname(PACKAGE_JSON_LOCAL_FILE_NAME), {recursive: true});
@@ -112,6 +112,9 @@ server {
 		username: DEPLOY_USER_NAME,
 		privateKey: SSH_KEY_LOCAL_FILE_NAME
 	});
+
+	const sftp = await ssh.requestSFTP();
+
 	console.log(`Successfully connected to host machine`);
 
 	console.log("Checking for make support");
@@ -165,7 +168,7 @@ server {
 	// Get the last deployment data (if any such data exists)
 	console.log(`Check if nginx config needs to be updated`);
 	try {
-		await ssh.getFile(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME, LAST_DEPLOYMENT_DATA_REMOTE_FILE_NAME, undefined);
+		await ssh.getFile(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME, LAST_DEPLOYMENT_DATA_REMOTE_FILE_NAME, sftp);
 	} catch {
 		// The file doesn't exist
 	}
@@ -181,7 +184,7 @@ server {
 
 		// Update nginx config
 		console.log(`Updating Nginx config`);
-		await ssh.putFile(NGINX_CONFIG_LOCAL_FILE_NAME, NGINX_CONFIG_REMOTE_FILE_NAME);
+		await ssh.putFile(NGINX_CONFIG_LOCAL_FILE_NAME, NGINX_CONFIG_REMOTE_FILE_NAME, sftp);
 		console.log(`Nginx config successfully updated`);
 
 		// Reload nginx
@@ -197,7 +200,7 @@ server {
 		// Now, update the deployment data
 		writeFileSync(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME, JSON.stringify(newDeploymentData, null, "  "));
 		console.log(`Updating cached deployment stats`);
-		await ssh.putFile(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME, LAST_DEPLOYMENT_DATA_REMOTE_FILE_NAME);
+		await ssh.putFile(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME, LAST_DEPLOYMENT_DATA_REMOTE_FILE_NAME, sftp);
 		console.log(`Successfully updated cached deployment stats`);
 	} else {
 		console.log(`Nginx config is up to date`);
@@ -208,35 +211,24 @@ server {
 	await ssh.execCommand(`sudo rm -rf ${DIST_REMOTE_FOLDER}`);
 	await ssh.execCommand(`mkdir -rf ${REMOTE_ROOT}`);
 
-	// Copy over the package.json and package-lock.json files
-	console.log(`Creating ${PACKAGE_JSON_REMOTE_FILE_NAME} and ${PACKAGE_LOCK_REMOTE_FILE_NAME}`);
+	// Copy over the package.json file
+	console.log(`Creating ${PACKAGE_JSON_REMOTE_FILE_NAME}`);
 
-	await ssh.putFile(PACKAGE_JSON_LOCAL_FILE_NAME, PACKAGE_JSON_REMOTE_FILE_NAME, undefined, {
-		step: (total_transferred, chunk, total) =>
-			console.log({
-				PACKAGE_JSON_REMOTE_FILE_NAME,
-				total_transferred,
-				chunk,
-				total
-			})
-	});
-	await ssh.putFile(PACKAGE_LOCK_LOCAL_FILE_NAME, PACKAGE_LOCK_REMOTE_FILE_NAME, {
-		step: (total_transferred, chunk, total) =>
-			console.log({
-				PACKAGE_LOCK_REMOTE_FILE_NAME,
-				total_transferred,
-				chunk,
-				total
-			})
+	await ssh.putFile(PACKAGE_JSON_LOCAL_FILE_NAME, PACKAGE_JSON_REMOTE_FILE_NAME, sftp);
+
+	// Copy over the package-lock.json file
+	console.log(`Creating ${PACKAGE_LOCK_REMOTE_FILE_NAME}`);
+	await ssh.putFile(PACKAGE_LOCK_LOCAL_FILE_NAME, PACKAGE_LOCK_REMOTE_FILE_NAME, sftp, {
+		concurrency: 1
 	});
 
 	// Copy over the built dist folder
 	console.log(`Creating ${DIST_REMOTE_FOLDER}`);
-	await execSync(`scp -r -i ${SSH_KEY_LOCAL_FILE_NAME} ${DIST_LOCAL_FOLDER} ${DEPLOY_USER_NAME}@${DEPLOY_HOST}:${DIST_REMOTE_FOLDER}`);
+	await ssh.putDirectory(DIST_LOCAL_FOLDER, DIST_REMOTE_FOLDER, sftp);
 
 	// Copy over the built polyfill-lib folder
 	console.log(`Creating ${POLYFILL_LIB_REMOTE_FOLDER}`);
-	await execSync(`scp -r -i ${SSH_KEY_LOCAL_FILE_NAME} ${POLYFILL_LIB_LOCAL_FOLDER} ${DEPLOY_USER_NAME}@${DEPLOY_HOST}:${POLYFILL_LIB_REMOTE_FOLDER}`);
+	await ssh.putDirectory(POLYFILL_LIB_LOCAL_FOLDER, POLYFILL_LIB_REMOTE_FOLDER, sftp);
 
 	// Install
 	console.log(`Installing`);

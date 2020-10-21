@@ -51,3 +51,4 @@ Thumbs.db
 *.csr
 /dist/
 .esm-cache
+/temp/

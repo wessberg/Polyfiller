@@ -75,7 +75,9 @@ server {
 	const LOCAL_WRITE_ROOT = "temp";
 	const REMOTE_ROOT = "/var/www/polyfiller";
 	const DIST_LOCAL_FOLDER = "dist";
-	const DIST_REMOTE_FOLDER = join(REMOTE_ROOT, "dist");
+	const DIST_REMOTE_FOLDER = join(REMOTE_ROOT, DIST_LOCAL_FOLDER);
+	const POLYFILL_LIB_LOCAL_FOLDER = "polyfill-lib";
+	const POLYFILL_LIB_REMOTE_FOLDER = join(REMOTE_ROOT, POLYFILL_LIB_LOCAL_FOLDER);
 	const PACKAGE_LOCK_LOCAL_FILE_NAME = join(LOCAL_WRITE_ROOT, `package-lock.json`);
 	const PACKAGE_LOCK_REMOTE_FILE_NAME = join(REMOTE_ROOT, `package-lock.json`);
 	const PACKAGE_JSON_LOCAL_FILE_NAME = join(LOCAL_WRITE_ROOT, `package.json`);
@@ -219,6 +221,10 @@ server {
 	// Copy over the built dist folder
 	console.log(`Creating ${DIST_REMOTE_FOLDER}`);
 	await execSync(`scp -r -i ${SSH_KEY_LOCAL_FILE_NAME} ${DIST_LOCAL_FOLDER} ${DEPLOY_USER_NAME}@${DEPLOY_HOST}:${DIST_REMOTE_FOLDER}`);
+
+	// Copy over the built polyfill-lib folder
+	console.log(`Creating ${POLYFILL_LIB_REMOTE_FOLDER}`);
+	await execSync(`scp -r -i ${SSH_KEY_LOCAL_FILE_NAME} ${POLYFILL_LIB_LOCAL_FOLDER} ${DEPLOY_USER_NAME}@${DEPLOY_HOST}:${POLYFILL_LIB_REMOTE_FOLDER}`);
 
 	// Install
 	console.log(`Installing`);

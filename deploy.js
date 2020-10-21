@@ -188,20 +188,20 @@ server {
 		console.log(`Reloading nginx`);
 		await ssh.execCommand(`sudo systemctl reload nginx`);
 		console.log(`Nginx successfully reloaded`);
+
+		const newDeploymentData = {
+			PORT,
+			DEPLOY_DOMAIN_NAMES
+		};
+
+		// Now, update the deployment data
+		writeFileSync(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME, JSON.stringify(newDeploymentData, null, "  "));
+		console.log(`Updating cached deployment stats`);
+		await ssh.putFile(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME, LAST_DEPLOYMENT_DATA_REMOTE_FILE_NAME);
+		console.log(`Successfully updated cached deployment stats`);
 	} else {
 		console.log(`Nginx config is up to date`);
 	}
-
-	const newDeploymentData = {
-		PORT,
-		DEPLOY_DOMAIN_NAMES
-	};
-
-	// Now, update the deployment data
-	writeFileSync(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME, JSON.stringify(newDeploymentData, null, "  "));
-	console.log(`Updating cached deployment stats`);
-	await ssh.putFile(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME, LAST_DEPLOYMENT_DATA_REMOTE_FILE_NAME);
-	console.log(`Successfully updated cached deployment stats`);
 
 	// Clean up the remote root
 	console.log("Cleaning up remote root");
@@ -211,8 +211,24 @@ server {
 	// Copy over the package.json and package-lock.json files
 	console.log(`Creating ${PACKAGE_JSON_REMOTE_FILE_NAME} and ${PACKAGE_LOCK_REMOTE_FILE_NAME}`);
 
-	await ssh.putFile(PACKAGE_JSON_LOCAL_FILE_NAME, PACKAGE_JSON_REMOTE_FILE_NAME);
-	await ssh.putFile(PACKAGE_LOCK_LOCAL_FILE_NAME, PACKAGE_LOCK_REMOTE_FILE_NAME);
+	await ssh.putFile(PACKAGE_JSON_LOCAL_FILE_NAME, PACKAGE_JSON_REMOTE_FILE_NAME, undefined, {
+		step: (total_transferred, chunk, total) =>
+			console.log({
+				PACKAGE_JSON_REMOTE_FILE_NAME,
+				total_transferred,
+				chunk,
+				total
+			})
+	});
+	await ssh.putFile(PACKAGE_LOCK_LOCAL_FILE_NAME, PACKAGE_LOCK_REMOTE_FILE_NAME, {
+		step: (total_transferred, chunk, total) =>
+			console.log({
+				PACKAGE_LOCK_REMOTE_FILE_NAME,
+				total_transferred,
+				chunk,
+				total
+			})
+	});
 
 	// Copy over the built dist folder
 	console.log(`Creating ${DIST_REMOTE_FOLDER}`);

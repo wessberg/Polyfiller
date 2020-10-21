@@ -1,3 +1,9 @@
+## [0.0.107](https://github.com/wessberg/polyfiller/compare/v0.0.106...v0.0.107) (2020-10-21)
+
+### Bug Fixes
+
+- update deploy script to also copy over polyfill-lib directory ([273ccc1](https://github.com/wessberg/polyfiller/commit/273ccc161a933b6769cfc42ab8d1859a993ad5cc))
+
 ## [0.0.106](https://github.com/wessberg/polyfiller/compare/v0.0.105...v0.0.106) (2020-10-14)
 
 ### Bug Fixes

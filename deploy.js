@@ -4,7 +4,7 @@
 	const {execSync} = require("child_process");
 	const pkg = require("./package.json");
 	const {join, dirname} = require("path");
-	const {writeFileSync, readFileSync, existsSync, mkdirSync, copyFileSync, chmodSync, unlinkSync} = require("fs");
+	const {writeFileSync, readFileSync, existsSync, mkdirSync, copyFileSync, chmodSync, readdirSync} = require("fs");
 
 	const {DEPLOY_HOST, DEPLOY_USER_NAME, DEPLOY_KEY, DEPLOY_KEY_LOCATION, DEPLOY_DOMAIN_NAMES, HOST, PORT, RUNNER_TEMP} = process.env;
 
@@ -89,6 +89,7 @@ server {
 	const LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME = join(LOCAL_WRITE_ROOT, `last-deployment-data.json`);
 	const LAST_DEPLOYMENT_DATA_REMOTE_FILE_NAME = `/var/www/last-deployment-data.json`;
 
+	console.log("Using temporary directory:", LOCAL_WRITE_ROOT);
 	rimraf(LOCAL_WRITE_ROOT);
 
 	// Write the key to desk temporarily
@@ -102,6 +103,8 @@ server {
 
 	// Copy the package-lock into the temp folder
 	copyFileSync("package-lock.json", PACKAGE_LOCK_LOCAL_FILE_NAME);
+
+	console.log("Temporary directory contents:", readdirSync(LOCAL_WRITE_ROOT));
 
 	// Connect to the host machine via SSH
 	console.log(`Connecting to host machine via SSH`);

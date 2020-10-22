@@ -34,8 +34,7 @@
 					start: "node dist/index.js"
 				},
 				dependencies: {
-					...pkg.dependencies,
-					pm2: "latest"
+					...pkg.dependencies
 				}
 			},
 			null,

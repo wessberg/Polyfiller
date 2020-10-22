@@ -199,7 +199,7 @@ export const constant: IConstant = {
 			polyfills: ["es"]
 		},
 		"es.promise": {
-			polyfills: ["es.promise.constructor", "es.promise.finally"]
+			polyfills: ["es.promise.constructor", "es.promise.any", "es.promise.finally"]
 		},
 		"es.promise.constructor": {
 			library: "core-js",
@@ -238,7 +238,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/esnext.promise.any.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
+			features: ["javascript.builtins.Promise.any"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: ["es.promise.constructor"],
 			contexts: ALL_CONTEXTS

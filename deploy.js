@@ -25,6 +25,8 @@
 
 	console.log("is production:", PRODUCTION);
 
+	const normalizePortSuffix = port => (String(port) === "443" || String(port) === "80" ? "" : `:${port}`);
+
 	const generatePackageJson = () =>
 		JSON.stringify(
 			{
@@ -65,7 +67,7 @@ server {
     ssl_certificate /etc/letsencrypt/live/${domainName}/fullchain.pem; # managed by Certbot
     ssl_certificate_key /etc/letsencrypt/live/${domainName}/privkey.pem; # managed by Certbot
 
-    server_name ${domainName} www.${domainName};
+    server_name ${domainName}${normalizePortSuffix(publicPort)} www.${domainName}${normalizePortSuffix(publicPort)};
 
     root /var/www/html;
     index index.html index.htm index.nginx-debian.html;

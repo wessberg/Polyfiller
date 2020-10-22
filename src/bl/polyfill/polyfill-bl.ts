@@ -22,7 +22,7 @@ export class PolyfillBl implements IPolyfillBl {
 	 */
 	async getPolyfills(request: IPolyfillRequest): Promise<IGetPolyfillsResult> {
 		// Check if a polyfill set exists within the cache for the request features and the user agent of the request
-		let featureSet = await this.cacheRegistry.getPolyfillFeatureSet(request.features, request.userAgent, request.context);
+		let featureSet = await this.cacheRegistry.getPolyfillFeatureSet(request.features, request);
 
 		// If not, resolve and order the required polyfills
 		if (featureSet == null) {
@@ -37,7 +37,7 @@ export class PolyfillBl implements IPolyfillBl {
 			);
 
 			// Store them within the cache
-			await this.cacheRegistry.setPolyfillFeatureSet(request.features, featureSet, request.userAgent, request.context);
+			await this.cacheRegistry.setPolyfillFeatureSet(request.features, featureSet, request);
 		} else {
 			this.logger.debug("Matched Polyfill Set in cache!");
 		}
@@ -45,7 +45,7 @@ export class PolyfillBl implements IPolyfillBl {
 		this.logger.debug(featureSet);
 
 		// Check if a Set has already been registered for this combination
-		const existingSet = await this.cacheRegistry.get(featureSet, request.context, request.encoding);
+		const existingSet = await this.cacheRegistry.get(featureSet, request);
 		if (existingSet != null) {
 			this.logger.debug("Matched Polyfills in cache!");
 			// If it has, just return that one
@@ -57,9 +57,9 @@ export class PolyfillBl implements IPolyfillBl {
 
 		// Add the polyfills to the registry
 		const [minifiedResult, brotliResult, zlibResult] = await Promise.all([
-			this.cacheRegistry.set(featureSet, minified, request.context),
-			this.cacheRegistry.set(featureSet, brotli, request.context, ContentEncodingKind.BROTLI),
-			this.cacheRegistry.set(featureSet, zlib, request.context, ContentEncodingKind.GZIP)
+			this.cacheRegistry.set(featureSet, minified, {...request, encoding: undefined}),
+			this.cacheRegistry.set(featureSet, brotli, {...request, encoding: ContentEncodingKind.BROTLI}),
+			this.cacheRegistry.set(featureSet, zlib, {...request, encoding: ContentEncodingKind.GZIP})
 		]);
 
 		// Return the joined Buffer

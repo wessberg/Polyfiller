@@ -92,7 +92,6 @@ server {
 
 server {
 		${normalizedDeployDomainNames
-			.split(/\s/)
 			.map(
 				domainName => `\
     if ($host = ${domainName}) {

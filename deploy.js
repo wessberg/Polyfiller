@@ -103,9 +103,6 @@ server {
 }
 `;
 
-	console.log("config:", generateNginxConfig());
-	if (2 + 2 === 4) return;
-
 	const PREFERRED_NODE_VERSION = "14.x";
 	const APP_NAME = PRODUCTION ? "polyfiller" : "polyfiller-development";
 	const LOCAL_WRITE_ROOT = RUNNER_TEMP ?? "temp";

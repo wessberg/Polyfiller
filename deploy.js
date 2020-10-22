@@ -5,27 +5,36 @@
 	const {writeFileSync, readFileSync, existsSync, mkdirSync, copyFileSync, chmodSync, readdirSync} = require("fs");
 
 	let {
+		RUNNER_TEMP,
 		DEPLOY_HOST,
 		DEPLOY_USER_NAME,
 		DEPLOY_KEY,
 		DEPLOY_KEY_LOCATION,
-		DEPLOY_DOMAIN_NAMES,
-		RUNNER_TEMP,
 		PRODUCTION,
 		INTERNAL_HOST_DEVELOPMENT,
 		INTERNAL_HOST_PRODUCTION,
 		INTERNAL_PORT_DEVELOPMENT,
 		INTERNAL_PORT_PRODUCTION,
-		EXTERNAL_PORT_DEVELOPMENT,
-		EXTERNAL_PORT_PRODUCTION
+		DOMAIN_NAMES_DEVELOPMENT,
+		DOMAIN_NAMES_PRODUCTION
 	} = process.env;
 
 	// Coerce to boolean
 	PRODUCTION = PRODUCTION === true || PRODUCTION === "true" || PRODUCTION === "1" || PRODUCTION === "y";
 
-	console.log("is production:", PRODUCTION);
+	DOMAIN_NAMES_PRODUCTION = DOMAIN_NAMES_PRODUCTION.split(/\s/)
+		.map(domainName => [domainName, `www.${domainName}`])
+		.flat();
+	DOMAIN_NAMES_DEVELOPMENT = DOMAIN_NAMES_DEVELOPMENT.split(/\s/)
+		.map(domainName => [domainName, `www.${domainName}`])
+		.flat();
 
-	const normalizePortSuffix = port => (String(port) === "443" || String(port) === "80" ? "" : `:${port}`);
+	const DOMAIN_CONFIGURATIONS = [
+		...DOMAIN_NAMES_PRODUCTION.map(domainName => ({domainName, host: INTERNAL_HOST_PRODUCTION, port: INTERNAL_PORT_PRODUCTION})),
+		...DOMAIN_NAMES_DEVELOPMENT.map(domainName => ({domainName, host: INTERNAL_HOST_DEVELOPMENT, port: INTERNAL_PORT_DEVELOPMENT}))
+	];
+
+	console.log("is production:", PRODUCTION);
 
 	const generatePackageJson = () =>
 		JSON.stringify(
@@ -43,41 +52,19 @@
 			"  "
 		);
 
-	const normalizedDeployDomainNames = DEPLOY_DOMAIN_NAMES.split(/\s/)
-		.map(domainName => [domainName, `www.${domainName}`])
-		.flat();
-
-	const serverConfigs = normalizedDeployDomainNames
-		.map(domainName => [
-			{
-				domainName,
-				publicPort: EXTERNAL_PORT_PRODUCTION,
-				privatePort: INTERNAL_PORT_PRODUCTION
-			},
-			{
-				domainName,
-				publicPort: EXTERNAL_PORT_DEVELOPMENT,
-				privatePort: INTERNAL_PORT_DEVELOPMENT
-			}
-		])
-		.flat();
-
 	const generateNginxConfig = () => `\
-${serverConfigs
-	.map(
-		({domainName, publicPort, privatePort}) => `\
+${DOMAIN_CONFIGURATIONS.map(
+	({domainName, port}) => `\
 server {
-    listen ${publicPort} ssl;
-    listen [::]:${publicPort} ssl;
+    listen 443 ssl;
+    listen [::]:443 ssl;
     ssl_certificate /etc/letsencrypt/live/${domainName}/fullchain.pem; # managed by Certbot
     ssl_certificate_key /etc/letsencrypt/live/${domainName}/privkey.pem; # managed by Certbot
 
-    server_name ${domainName}${normalizePortSuffix(publicPort)}
+    server_name ${domainName};
 
-    root /var/www/html;
-    index index.html index.htm index.nginx-debian.html;
     location / {
-    		proxy_pass http://localhost:${privatePort};
+    		proxy_pass http://localhost:${port};
 				proxy_http_version 1.1;
 				proxy_set_header Upgrade $http_upgrade;
 				proxy_set_header Connection 'upgrade';
@@ -87,19 +74,16 @@ server {
 
 }
 `
-	)
-	.join("\n")}
+).join("\n")}
 
 server {
-		${normalizedDeployDomainNames
-			.map(
-				domainName => `\
+		${DOMAIN_CONFIGURATIONS.map(
+			({domainName}) => `\
     if ($host = ${domainName}) {
         return 301 https://$host$request_uri;
     } # managed by Certbot
 		`
-			)
-			.join("\n")}
+		).join("\n")}
 }
 `;
 
@@ -216,9 +200,8 @@ server {
 		lastDeploymentData.INTERNAL_HOST_PRODUCTION !== INTERNAL_HOST_PRODUCTION ||
 		lastDeploymentData.INTERNAL_PORT_DEVELOPMENT !== INTERNAL_PORT_DEVELOPMENT ||
 		lastDeploymentData.INTERNAL_PORT_PRODUCTION !== INTERNAL_PORT_PRODUCTION ||
-		lastDeploymentData.EXTERNAL_PORT_DEVELOPMENT !== EXTERNAL_PORT_DEVELOPMENT ||
-		lastDeploymentData.EXTERNAL_PORT_PRODUCTION !== EXTERNAL_PORT_PRODUCTION ||
-		lastDeploymentData.DEPLOY_DOMAIN_NAMES !== DEPLOY_DOMAIN_NAMES;
+		lastDeploymentData.DOMAIN_NAMES_DEVELOPMENT !== DOMAIN_NAMES_DEVELOPMENT ||
+		lastDeploymentData.DOMAIN_NAMES_PRODUCTION !== DOMAIN_NAMES_PRODUCTION;
 
 	if (needsNginxUpdate) {
 		console.log(`Nginx config needs update`);
@@ -240,9 +223,8 @@ server {
 			INTERNAL_HOST_PRODUCTION,
 			INTERNAL_PORT_DEVELOPMENT,
 			INTERNAL_PORT_PRODUCTION,
-			EXTERNAL_PORT_DEVELOPMENT,
-			EXTERNAL_PORT_PRODUCTION,
-			DEPLOY_DOMAIN_NAMES
+			DOMAIN_NAMES_DEVELOPMENT,
+			DOMAIN_NAMES_PRODUCTION
 		};
 
 		// Now, update the deployment data

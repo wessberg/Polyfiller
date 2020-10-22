@@ -277,7 +277,7 @@ server {
 	await ssh.putDirectory(POLYFILL_LIB_LOCAL_FOLDER, POLYFILL_LIB_REMOTE_FOLDER, {concurrency: 1, sftp, transferOptions: {concurrency: 1}});
 
 	// Install
-	console.log(`Installing`);
+	console.log(`Installing in ${REMOTE_ROOT}`);
 	await ssh.execCommand(`npm ci`, {cwd: REMOTE_ROOT});
 
 	// Run

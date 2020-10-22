@@ -237,7 +237,6 @@ export const constant: IConstant = {
 		"es.promise.any": {
 			library: "core-js",
 			relativePaths: ["modules/esnext.promise.any.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: ["javascript.builtins.Promise.any"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: ["es.promise.constructor"],
@@ -805,7 +804,8 @@ export const constant: IConstant = {
 				"es.string.sup",
 				"es.string.trim",
 				"es.string.trim-start",
-				"es.string.trim-end"
+				"es.string.trim-end",
+				"es.string.replace-all"
 			]
 		},
 		"es.string.at": {
@@ -837,8 +837,7 @@ export const constant: IConstant = {
 		"es.string.replace-all": {
 			library: "core-js",
 			relativePaths: ["modules/esnext.string.replace-all.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
+			features: ["javascript.builtins.String.replaceAll"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: [],
 			contexts: ALL_CONTEXTS
@@ -2695,7 +2694,7 @@ export const constant: IConstant = {
 			]
 		},
 		"esnext.string": {
-			polyfills: ["es.string.at", "es.string.code-points", "es.string.match-all", "es.string.replace-all"]
+			polyfills: ["es.string.at", "es.string.code-points", "es.string.match-all"]
 		},
 		"esnext.symbol": {
 			polyfills: ["es.symbol.pattern-match"]

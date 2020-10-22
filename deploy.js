@@ -196,10 +196,10 @@ server {
 		lastDeploymentData == null ||
 		lastDeploymentData.INTERNAL_HOST_DEVELOPMENT !== INTERNAL_HOST_DEVELOPMENT ||
 		lastDeploymentData.INTERNAL_HOST_PRODUCTION !== INTERNAL_HOST_PRODUCTION ||
-		lastDeploymentData.INTERNAL_PORT_DEVELOPMENT !== INTERNAL_PORT_DEVELOPMENT ||
-		lastDeploymentData.INTERNAL_PORT_PRODUCTION !== INTERNAL_PORT_PRODUCTION ||
-		lastDeploymentData.DOMAIN_NAMES_DEVELOPMENT !== DOMAIN_NAMES_DEVELOPMENT ||
-		lastDeploymentData.DOMAIN_NAMES_PRODUCTION !== DOMAIN_NAMES_PRODUCTION;
+		String(lastDeploymentData.INTERNAL_PORT_DEVELOPMENT) !== String(INTERNAL_PORT_DEVELOPMENT) ||
+		String(lastDeploymentData.INTERNAL_PORT_PRODUCTION) !== String(INTERNAL_PORT_PRODUCTION) ||
+		JSON.stringify(lastDeploymentData.DOMAIN_NAMES_DEVELOPMENT) !== JSON.stringify(DOMAIN_NAMES_DEVELOPMENT) ||
+		JSON.stringify(lastDeploymentData.DOMAIN_NAMES_PRODUCTION) !== JSON.stringify(DOMAIN_NAMES_PRODUCTION);
 
 	if (needsNginxUpdate) {
 		console.log(`Nginx config needs update`);

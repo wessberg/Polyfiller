@@ -10,6 +10,21 @@ import {IPolyfillDictEntryBase} from "../../polyfill/polyfill-dict";
 import {PolyfillContext} from "../../polyfill/polyfill-context";
 import {IPolyfillRequest} from "../../polyfill/i-polyfill-request";
 
+function normalizeIntlLocale(locale: string): string {
+	const localeData = new (Intl as any).Locale(locale);
+	switch (localeData.basename) {
+		case "pt-BR":
+			// @formatjs does not provide data for brazilian Portuguese,
+			// so we'll have to fall back to the base language here
+			// TODO: Remove this when @formatjs eventually supports pt-BR.
+			//       Track this issue: https://github.com/formatjs/formatjs/issues/2237
+			return localeData.language;
+		default:
+			// For all other languages, use the base name
+			return localeData.basename;
+	}
+}
+
 const SYNC_OPTIONS = {cwd: __dirname};
 
 function selectMetaPaths<Meta extends Exclude<IPolyfillDictEntryBase["meta"], undefined>>(value: Meta[keyof Meta], context: PolyfillContext): string[] {
@@ -191,7 +206,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 					requestedLocales.map(async requestedLocale => {
 						// Resolve the absolute path
 						for (const localeDir of selectMetaPaths(meta.localeDir, request.context)) {
-							const localePathInput = join(rootDirectory, localeDir, `${requestedLocale}.js`);
+							const localePathInput = join(rootDirectory, localeDir, `${normalizeIntlLocale(requestedLocale)}.js`);
 							const resolvedLocalePath = sync(localePathInput, SYNC_OPTIONS);
 							if (resolvedLocalePath != null) {
 								absolutePaths.push(resolvedLocalePath);

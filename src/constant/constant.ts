@@ -3,6 +3,13 @@ import {environment} from "../environment/environment";
 import tempDirectory from "temp-dir";
 import {join} from "path";
 import {ALL_CONTEXTS, WINDOW_CONTEXT, WINDOW_NODE_CONTEXT} from "../polyfill/polyfill-context";
+import {booleanize} from "../util/booleanize/booleanize";
+
+const tempRoot = join(
+	tempDirectory,
+	environment.NPM_PACKAGE_NAME,
+	process.env.PRODUCTION != null && (process.env.PRODUCTION === "" || booleanize(process.env.PRODUCTION)) ? "production" : "development"
+);
 
 export const constant: IConstant = {
 	endpoint: {
@@ -20,8 +27,8 @@ export const constant: IConstant = {
 	},
 
 	path: {
-		cacheRoot: join(tempDirectory, environment.NPM_PACKAGE_NAME),
-		cachePackageVersionMap: join(tempDirectory, environment.NPM_PACKAGE_NAME, "cache_package_version_map.json")
+		cacheRoot: join(tempRoot),
+		cachePackageVersionMap: join(tempRoot, "cache_package_version_map.json")
 	},
 
 	polyfill: {

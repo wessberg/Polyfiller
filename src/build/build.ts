@@ -31,6 +31,7 @@ export async function build({paths, features, featuresRequested, userAgent, cont
 	const banner = `\
 /**
  * ${featuresRequestedText}
+ *
  * ${polyfillsAppliedText}
  * @preserve
  */

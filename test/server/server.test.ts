@@ -65,15 +65,12 @@ test("Is able to generate a bundle of every available polyfill", async t => {
 	const features = Object.entries(constant.polyfill)
 		.filter(([, value]) => !("polyfills" in value))
 		.map(([key, value]) => {
-			switch (key) {
-				case "zone":
-					return `${key}|${Object.keys(((value as unknown) as PolyfillDictNormalizedEntry).meta!).join("|")}|force`;
-				case "intl.core":
-				case "intl.list-format":
-				case "intl.relative-time-format":
-					return `${key}|locale=en~da|force`;
-				default:
-					return `${key}|force`;
+			if (key === "zone") {
+				return `${key}|${Object.keys(((value as unknown) as PolyfillDictNormalizedEntry).meta!).join("|")}|force`;
+			} else if (key.startsWith("intl.")) {
+				return `${key}|locale=en~da|force`;
+			} else {
+				return `${key}|force`;
 			}
 		});
 

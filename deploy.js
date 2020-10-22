@@ -57,9 +57,7 @@
 			}
 		])
 		.flat();
-	for (const serverConfig of serverConfigs) {
-		console.log(serverConfig.publicPort, normalizePortSuffix(serverConfig.publicPort));
-	}
+
 	const generateNginxConfig = () => `\
 ${serverConfigs
 	.map(
@@ -104,6 +102,9 @@ server {
 			.join("\n")}
 }
 `;
+
+	console.log("config:", generateNginxConfig());
+	if (2 + 2 === 4) return;
 
 	const PREFERRED_NODE_VERSION = "14.x";
 	const APP_NAME = PRODUCTION ? "polyfiller" : "polyfiller-development";

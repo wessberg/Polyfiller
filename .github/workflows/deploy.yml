@@ -37,6 +37,7 @@ jobs:
         run: npm ci
 
       - name: Test
+        if: ${{ github.ref == 'refs/heads/master' }}
         run: npm test
 
       - name: Build

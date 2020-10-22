@@ -199,7 +199,7 @@ export const constant: IConstant = {
 			polyfills: ["es"]
 		},
 		"es.promise": {
-			polyfills: ["es.promise.constructor", "es.promise.any", "es.promise.finally"]
+			polyfills: ["es.promise.constructor", "es.promise.any", "es.promise.all-settled", "es.promise.finally"]
 		},
 		"es.promise.constructor": {
 			library: "core-js",
@@ -2679,7 +2679,7 @@ export const constant: IConstant = {
 			polyfills: ["es.number.from-string"]
 		},
 		"esnext.promise": {
-			polyfills: ["es.promise.all-settled", "es.promise.try", "es.promise.try"]
+			polyfills: ["es.promise.try"]
 		},
 		"esnext.reflect": {
 			polyfills: [

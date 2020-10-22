@@ -57,6 +57,9 @@
 			}
 		])
 		.flat();
+	for (const serverConfig of serverConfigs) {
+		console.log(serverConfig.publicPort, normalizePortSuffix(serverConfig.publicPort));
+	}
 	const generateNginxConfig = () => `\
 ${serverConfigs
 	.map(

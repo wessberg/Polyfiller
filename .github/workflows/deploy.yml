@@ -42,7 +42,7 @@ jobs:
       - name: Build
         run: NODE_ENV=production npm run build
 
-      - name: Deploy (master)
+      - name: Deploy
         run: node deploy.js
         env:
           PRODUCTION: ${{ github.ref == 'refs/heads/master' }}

@@ -1,6 +1,9 @@
 name: "Deploy"
 
 on:
+  push:
+    branches:
+      - development
   release:
     types: ["published"]
 
@@ -39,11 +42,16 @@ jobs:
       - name: Build
         run: NODE_ENV=production npm run build
 
-      - name: Deploy
+      - name: Deploy (master)
         run: node deploy.js
         env:
-          HOST: ${{ secrets.HOST }}
-          PORT: ${{ secrets.PORT }}
+          PRODUCTION: ${{ github.ref == 'refs/heads/master' }}
+          INTERNAL_HOST_DEVELOPMENT: ${{ secrets.INTERNAL_HOST_DEVELOPMENT }}
+          INTERNAL_HOST_PRODUCTION: ${{ secrets.INTERNAL_HOST_PRODUCTION }}
+          INTERNAL_PORT_DEVELOPMENT: ${{ secrets.INTERNAL_PORT_DEVELOPMENT }}
+          EXTERNAL_PORT_DEVELOPMENT: ${{ secrets.EXTERNAL_PORT_DEVELOPMENT }}
+          INTERNAL_PORT_PRODUCTION: ${{ secrets.INTERNAL_PORT_PRODUCTION }}
+          EXTERNAL_PORT_PRODUCTION: ${{ secrets.EXTERNAL_PORT_PRODUCTION }}
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
           DEPLOY_USER_NAME: ${{ secrets.DEPLOY_USER_NAME }}
           DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}

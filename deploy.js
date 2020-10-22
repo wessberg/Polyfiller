@@ -4,7 +4,39 @@
 	const {join, dirname} = require("path");
 	const {writeFileSync, readFileSync, existsSync, mkdirSync, copyFileSync, chmodSync, readdirSync} = require("fs");
 
-	const {DEPLOY_HOST, DEPLOY_USER_NAME, DEPLOY_KEY, DEPLOY_KEY_LOCATION, DEPLOY_DOMAIN_NAMES, HOST, PORT, RUNNER_TEMP} = process.env;
+	const {
+		DEPLOY_HOST,
+		DEPLOY_USER_NAME,
+		DEPLOY_KEY,
+		DEPLOY_KEY_LOCATION,
+		DEPLOY_DOMAIN_NAMES,
+		RUNNER_TEMP,
+		PRODUCTION,
+		INTERNAL_HOST_DEVELOPMENT,
+		INTERNAL_HOST_PRODUCTION,
+		INTERNAL_PORT_DEVELOPMENT,
+		INTERNAL_PORT_PRODUCTION,
+		EXTERNAL_PORT_DEVELOPMENT,
+		EXTERNAL_PORT_PRODUCTION
+	} = process.env;
+
+	console.log("is production:", PRODUCTION);
+	console.log({
+		DEPLOY_HOST,
+		DEPLOY_USER_NAME,
+		DEPLOY_KEY,
+		DEPLOY_KEY_LOCATION,
+		DEPLOY_DOMAIN_NAMES,
+		RUNNER_TEMP,
+		PRODUCTION,
+		INTERNAL_HOST_DEVELOPMENT,
+		INTERNAL_HOST_PRODUCTION,
+		INTERNAL_PORT_DEVELOPMENT,
+		INTERNAL_PORT_PRODUCTION,
+		EXTERNAL_PORT_DEVELOPMENT,
+		EXTERNAL_PORT_PRODUCTION
+	});
+	if (2 + 2 === 4) return;
 
 	const generatePackageJson = () =>
 		JSON.stringify(
@@ -23,13 +55,27 @@
 			"  "
 		);
 
+	const serverConfigs = DEPLOY_DOMAIN_NAMES.split(/\s/)
+		.map(domainName => [
+			{
+				domainName,
+				publicPort: EXTERNAL_PORT_PRODUCTION,
+				privatePort: INTERNAL_PORT_PRODUCTION
+			},
+			{
+				domainName,
+				publicPort: EXTERNAL_PORT_DEVELOPMENT,
+				privatePort: INTERNAL_PORT_DEVELOPMENT
+			}
+		])
+		.flat();
 	const generateNginxConfig = () => `\
-${DEPLOY_DOMAIN_NAMES.split(/\s/)
+${serverConfigs
 	.map(
-		domainName => `\
+		({domainName, publicPort, privatePort}) => `\
 server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
+    listen ${publicPort} ssl;
+    listen [::]:${publicPort} ssl;
     ssl_certificate /etc/letsencrypt/live/${domainName}/fullchain.pem; # managed by Certbot
     ssl_certificate_key /etc/letsencrypt/live/${domainName}/privkey.pem; # managed by Certbot
 
@@ -38,7 +84,7 @@ server {
     root /var/www/html;
     index index.html index.htm index.nginx-debian.html;
     location / {
-    		proxy_pass http://localhost:${PORT};
+    		proxy_pass http://localhost:${privatePort};
 				proxy_http_version 1.1;
 				proxy_set_header Upgrade $http_upgrade;
 				proxy_set_header Connection 'upgrade';
@@ -71,7 +117,7 @@ server {
 	const PREFERRED_NODE_VERSION = "14.x";
 	const APP_NAME = "polyfiller";
 	const LOCAL_WRITE_ROOT = RUNNER_TEMP ?? "temp";
-	const REMOTE_ROOT = "/var/www/polyfiller";
+	const REMOTE_ROOT = PRODUCTION ? "/var/www/polyfiller" : "/var/www/polyfiller-development";
 	const DIST_LOCAL_FOLDER = "dist";
 	const DIST_REMOTE_FOLDER = join(REMOTE_ROOT, DIST_LOCAL_FOLDER);
 	const POLYFILL_LIB_LOCAL_FOLDER = "polyfill-lib";
@@ -172,10 +218,18 @@ server {
 	} catch {
 		// The file doesn't exist
 	}
-	const lastDeploymentData = existsSync(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME) ? JSON.parse(readFileSync(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME)) : undefined;
+	const lastDeploymentData = existsSync(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME) ? JSON.parse(readFileSync(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME, "utf8")) : undefined;
 
 	// If we have deployed in the past, check if the nginx config needs to be updated (for example if the ports or domain names changed)
-	const needsNginxUpdate = lastDeploymentData == null || lastDeploymentData.PORT !== PORT || lastDeploymentData.DEPLOY_DOMAIN_NAMES !== DEPLOY_DOMAIN_NAMES;
+	const needsNginxUpdate =
+		lastDeploymentData == null ||
+		lastDeploymentData.INTERNAL_HOST_DEVELOPMENT !== INTERNAL_HOST_DEVELOPMENT ||
+		lastDeploymentData.INTERNAL_HOST_PRODUCTION !== INTERNAL_HOST_PRODUCTION ||
+		lastDeploymentData.INTERNAL_PORT_DEVELOPMENT !== INTERNAL_PORT_DEVELOPMENT ||
+		lastDeploymentData.INTERNAL_PORT_PRODUCTION !== INTERNAL_PORT_PRODUCTION ||
+		lastDeploymentData.EXTERNAL_PORT_DEVELOPMENT !== EXTERNAL_PORT_DEVELOPMENT ||
+		lastDeploymentData.EXTERNAL_PORT_PRODUCTION !== EXTERNAL_PORT_PRODUCTION ||
+		lastDeploymentData.DEPLOY_DOMAIN_NAMES !== DEPLOY_DOMAIN_NAMES;
 
 	if (needsNginxUpdate) {
 		console.log(`Nginx config needs update`);
@@ -193,7 +247,12 @@ server {
 		console.log(`Nginx successfully reloaded`);
 
 		const newDeploymentData = {
-			PORT,
+			INTERNAL_HOST_DEVELOPMENT,
+			INTERNAL_HOST_PRODUCTION,
+			INTERNAL_PORT_DEVELOPMENT,
+			INTERNAL_PORT_PRODUCTION,
+			EXTERNAL_PORT_DEVELOPMENT,
+			EXTERNAL_PORT_PRODUCTION,
 			DEPLOY_DOMAIN_NAMES
 		};
 
@@ -237,10 +296,11 @@ server {
 	// Run
 	console.log(`Running`);
 	const pm2NeverRan = (await ssh.execCommand(`npx pm2 show ${APP_NAME}`, {cwd: REMOTE_ROOT})).stdout === "";
+	const envVariables = `HOST=${PRODUCTION ? INTERNAL_HOST_PRODUCTION : INTERNAL_HOST_DEVELOPMENT} PORT=${PRODUCTION ? INTERNAL_PORT_PRODUCTION : INTERNAL_PORT_DEVELOPMENT}`;
 	if (pm2NeverRan) {
-		await ssh.execCommand(`HOST=${HOST} PORT=${PORT} npx pm2 start npm --name "${APP_NAME}" -- start`, {cwd: REMOTE_ROOT});
+		await ssh.execCommand(`${envVariables} npx pm2 start npm --name "${APP_NAME}" -- start`, {cwd: REMOTE_ROOT});
 	} else {
-		await ssh.execCommand(`HOST=${HOST} PORT=${PORT} npx pm2 reload ${APP_NAME}`, {cwd: REMOTE_ROOT});
+		await ssh.execCommand(`${envVariables} npx pm2 reload ${APP_NAME}`, {cwd: REMOTE_ROOT});
 	}
 	console.log("`Done!");
 })()

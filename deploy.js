@@ -17,28 +17,10 @@
 		INTERNAL_PORT_DEVELOPMENT,
 		INTERNAL_PORT_PRODUCTION,
 		EXTERNAL_PORT_DEVELOPMENT,
-		EXTERNAL_PORT_PRODUCTION,
-		GITHUB_REF
+		EXTERNAL_PORT_PRODUCTION
 	} = process.env;
 
 	console.log("is production:", PRODUCTION);
-	console.log({
-		DEPLOY_HOST,
-		DEPLOY_USER_NAME,
-		DEPLOY_KEY,
-		DEPLOY_KEY_LOCATION,
-		DEPLOY_DOMAIN_NAMES,
-		RUNNER_TEMP,
-		PRODUCTION,
-		INTERNAL_HOST_DEVELOPMENT,
-		INTERNAL_HOST_PRODUCTION,
-		INTERNAL_PORT_DEVELOPMENT,
-		INTERNAL_PORT_PRODUCTION,
-		EXTERNAL_PORT_DEVELOPMENT,
-		EXTERNAL_PORT_PRODUCTION,
-		GITHUB_REF
-	});
-	if (2 + 2 === 4) return;
 
 	const generatePackageJson = () =>
 		JSON.stringify(
@@ -115,6 +97,9 @@ server {
 			.join("\n")}
 }
 `;
+
+	console.log(generateNginxConfig());
+	if (2 + 2 === 4) return;
 
 	const PREFERRED_NODE_VERSION = "14.x";
 	const APP_NAME = "polyfiller";

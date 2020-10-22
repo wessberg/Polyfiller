@@ -4,7 +4,7 @@
 	const {join, dirname} = require("path");
 	const {writeFileSync, readFileSync, existsSync, mkdirSync, copyFileSync, chmodSync, readdirSync} = require("fs");
 
-	const {
+	let {
 		DEPLOY_HOST,
 		DEPLOY_USER_NAME,
 		DEPLOY_KEY,
@@ -19,6 +19,9 @@
 		EXTERNAL_PORT_DEVELOPMENT,
 		EXTERNAL_PORT_PRODUCTION
 	} = process.env;
+
+	// Coerce to boolean
+	PRODUCTION = PRODUCTION === true || PRODUCTION === "true" || PRODUCTION === "1" || PRODUCTION === "y";
 
 	console.log("is production:", PRODUCTION);
 
@@ -85,7 +88,7 @@ server {
 		${DEPLOY_DOMAIN_NAMES.split(/\s/)
 			.map(
 				domainName => `\
-		if ($host = www.${domainName}) {
+    if ($host = www.${domainName}) {
         return 301 https://$host$request_uri;
     } # managed by Certbot
     
@@ -98,13 +101,10 @@ server {
 }
 `;
 
-	console.log(generateNginxConfig());
-	if (2 + 2 === 4) return;
-
 	const PREFERRED_NODE_VERSION = "14.x";
-	const APP_NAME = "polyfiller";
+	const APP_NAME = PRODUCTION ? "polyfiller" : "polyfiller-development";
 	const LOCAL_WRITE_ROOT = RUNNER_TEMP ?? "temp";
-	const REMOTE_ROOT = PRODUCTION ? "/var/www/polyfiller" : "/var/www/polyfiller-development";
+	const REMOTE_ROOT = `/var/www/${APP_NAME}`;
 	const DIST_LOCAL_FOLDER = "dist";
 	const DIST_REMOTE_FOLDER = join(REMOTE_ROOT, DIST_LOCAL_FOLDER);
 	const POLYFILL_LIB_LOCAL_FOLDER = "polyfill-lib";

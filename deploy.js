@@ -25,9 +25,7 @@
 	DOMAIN_NAMES_PRODUCTION = DOMAIN_NAMES_PRODUCTION.split(/\s/)
 		.map(domainName => [domainName, `www.${domainName}`])
 		.flat();
-	DOMAIN_NAMES_DEVELOPMENT = DOMAIN_NAMES_DEVELOPMENT.split(/\s/)
-		.map(domainName => [domainName, `www.${domainName}`])
-		.flat();
+	DOMAIN_NAMES_DEVELOPMENT = DOMAIN_NAMES_DEVELOPMENT.split(/\s/);
 
 	const DOMAIN_CONFIGURATIONS = [
 		...DOMAIN_NAMES_PRODUCTION.map(domainName => ({domainName, host: INTERNAL_HOST_PRODUCTION, port: INTERNAL_PORT_PRODUCTION})),

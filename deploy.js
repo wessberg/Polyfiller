@@ -43,7 +43,11 @@
 			"  "
 		);
 
-	const serverConfigs = DEPLOY_DOMAIN_NAMES.split(/\s/)
+	const normalizedDeployDomainNames = DEPLOY_DOMAIN_NAMES.split(/\s/)
+		.map(domainName => [domainName, `www.${domainName}`])
+		.flat();
+
+	const serverConfigs = normalizedDeployDomainNames
 		.map(domainName => [
 			{
 				domainName,
@@ -68,7 +72,7 @@ server {
     ssl_certificate /etc/letsencrypt/live/${domainName}/fullchain.pem; # managed by Certbot
     ssl_certificate_key /etc/letsencrypt/live/${domainName}/privkey.pem; # managed by Certbot
 
-    server_name ${domainName}${normalizePortSuffix(publicPort)} www.${domainName}${normalizePortSuffix(publicPort)};
+    server_name ${domainName}${normalizePortSuffix(publicPort)}
 
     root /var/www/html;
     index index.html index.htm index.nginx-debian.html;
@@ -87,13 +91,10 @@ server {
 	.join("\n")}
 
 server {
-		${DEPLOY_DOMAIN_NAMES.split(/\s/)
+		${normalizedDeployDomainNames
+			.split(/\s/)
 			.map(
 				domainName => `\
-    if ($host = www.${domainName}) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-    
     if ($host = ${domainName}) {
         return 301 https://$host$request_uri;
     } # managed by Certbot

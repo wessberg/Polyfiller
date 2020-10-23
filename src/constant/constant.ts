@@ -3023,7 +3023,7 @@ export const constant: IConstant = {
 				// The experimental variant is based on https://github.com/webcomponents/shadycss/pull/242
 				experimental: [
 					"node_modules/@webcomponents/shadydom/src/shadydom.js",
-					"polyfill-lib/shady-css/src(scoping-shim.js",
+					"polyfill-lib/shady-css/src/scoping-shim.js",
 					"node_modules/@webcomponents/shadycss/src/custom-style-interface.js"
 				]
 			},

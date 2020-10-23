@@ -18,6 +18,11 @@ const fs = require("fs");
 		match: String.raw`else that.size++;`,
 		replacement: String.raw`else {that.size++;}`
 	},
+	{
+		file: "node_modules/core-js/internals/collection-strong.js",
+		match: String.raw`else that.size--;`,
+		replacement: String.raw`else {that.size--;}`
+	},
 	// TODO: Remove this when https://github.com/swc-project/swc/issues/1179 has been resolved
 	{
 		file: "node_modules/@polyfiller/object-fit/polyfill/index.js",

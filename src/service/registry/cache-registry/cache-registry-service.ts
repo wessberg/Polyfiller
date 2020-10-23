@@ -107,9 +107,6 @@ export class CacheRegistryService implements ICacheRegistryService {
 	 * Returns true if the given polyfill name needs an update within the cache
 	 */
 	async needsUpdate(polyfillName: PolyfillName, currentVersion: string): Promise<boolean> {
-		const configChecksum = await this.getLastCachedPolyfillConfigChecksum();
-		if (configChecksum !== getPolyfillConfigChecksum()) return true;
-
 		const packageVersionMap = await this.getPackageVersionMap();
 		const cachedVersion = packageVersionMap[polyfillName];
 
@@ -163,6 +160,9 @@ export class CacheRegistryService implements ICacheRegistryService {
 	 * If 'true' is returned, the cache is valid
 	 */
 	private async validateDiskCache(): Promise<boolean> {
+		const lastCachedConfigChecksum = await this.getLastCachedPolyfillConfigChecksum();
+		if (lastCachedConfigChecksum !== getPolyfillConfigChecksum()) return true;
+
 		for (const [polyfillName, polyfill] of Object.entries(constant.polyfill)) {
 			// Skip aliases
 			if ("polyfills" in polyfill) continue;

@@ -289,7 +289,6 @@ For example: `systemjs|variant=s` selects the _s_ variant, while `systemjs|varia
 | `error`          | Generates more readable Stack traces when using Zone                                               |
 | `shadydom`       | Makes Zone compatible with the ShadyDOM polyfill.                                                  |
 | `mediaquery`     | Patches the [Media Query API](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia)  |
-| `rxjs`           | Patches [Rxjs](https://github.com/ReactiveX/rxjs)                                                  |
 | `fetch`          | Patches the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).               |
 | `resizeobserver` | Patches the [ResizeObserver API](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver). |
 

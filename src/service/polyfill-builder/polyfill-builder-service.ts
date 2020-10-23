@@ -141,19 +141,6 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 					}
 				}
 
-				// If the Zone-patching of 'rxjs' is requested, add it to the polyfill buffer for Zone.js
-				if (polyfillFeature.meta != null && polyfillFeature.meta.rxjs === true) {
-					for (const rxjsPath of selectMetaPaths(meta.rxjs, request.context)) {
-						const rxjsExtensionPathInput = join(rootDirectory, rxjsPath);
-						const resolvedRxjsExtensionPath = sync(rxjsExtensionPathInput, SYNC_OPTIONS);
-						if (resolvedRxjsExtensionPath != null) {
-							absolutePaths.push(resolvedRxjsExtensionPath);
-						} else {
-							throw new ReferenceError(`Unresolved path: '${rxjsExtensionPathInput}'`);
-						}
-					}
-				}
-
 				// If the Zone-patching of 'fetch' is requested, or if 'fetch' is requested as a polyfill along with Zone add it to the polyfill buffer for Zone.js
 				if (polyfillFeature.meta != null && polyfillFeature.meta.fetch === true) {
 					for (const fetchPath of selectMetaPaths(meta.fetch, request.context)) {

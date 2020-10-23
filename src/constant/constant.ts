@@ -59,7 +59,6 @@ export const constant: IConstant = {
 				error: "fesm2015/zone-error.js",
 				shadydom: "fesm2015/webapis-shadydom.js",
 				mediaquery: "fesm2015/webapis-media-query.js",
-				rxjs: "fesm2015/zone-patch-rxjs.js",
 				fetch: "fesm2015/zone-patch-fetch.js",
 				resizeobserver: "fesm2015/zone-patch-resize-observer.js"
 			},

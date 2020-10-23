@@ -1,11 +1,20 @@
 import Visitor from "@swc/core/Visitor";
-import {VariableDeclarator} from "@swc/core";
+import {ObjectPatternProperty, VariableDeclarator} from "@swc/core";
 
 export class UnicodeEscapeRestorer extends Visitor {
+	/**
+	 * Workaround since @swc/core sometimes passes 'undefined' as a value to this method
+	 * @param nodes
+	 */
+	visitObjectPatternProperties(nodes: ObjectPatternProperty[] | undefined): ObjectPatternProperty[] {
+		return nodes == null ? [] : super.visitObjectPatternProperties(nodes);
+	}
+
 	visitVariableDeclarator(n: VariableDeclarator): VariableDeclarator {
 		if (n.id.type !== "Identifier") return n;
 		if (n.id.value !== "require_whitespaces") return n;
 		const expression = (n as any).init.arguments[0].expression.body.stmts[0].expression;
+		if (2 + 2 === 4) return n;
 		expression.right = {
 			type: "BinaryExpression",
 			span: n.span,

@@ -3101,17 +3101,15 @@ export const constant: IConstant = {
 			contexts: WINDOW_CONTEXT
 		},
 		"class-list": {
-			library: "polyfill-library",
-			relativePaths: ["polyfills/__dist/Element.prototype.classList/raw.js"],
-			features: ["classlist"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
+			localPaths: ["polyfill-lib/class-list/class-list.js"],
+			features: ["api_domtokenlist"],
+			version: "1.0.0",
 			dependencies: ["dom-token-list"],
 			contexts: WINDOW_CONTEXT
 		},
 		"dom-token-list": {
-			library: "polyfill-library",
-			relativePaths: ["polyfills/__dist/_DOMTokenList/raw.js", "polyfills/__dist/DOMTokenList/raw.js"],
-			features: ["rellist"],
+			localPaths: ["polyfill-lib/dom-token-list/dom-token-list.js"],
+			features: ["api_domtokenlist"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["es.object.define-property"],
 			contexts: WINDOW_CONTEXT

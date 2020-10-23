@@ -162,7 +162,9 @@ export class CacheRegistryService implements ICacheRegistryService {
 	 */
 	private async validateDiskCache(): Promise<boolean> {
 		const lastCachedConfigChecksum = await this.getLastCachedPolyfillConfigChecksum();
-		if (lastCachedConfigChecksum !== getPolyfillConfigChecksum()) return true;
+
+		// If the config changed, the disk cache needs to be flushed
+		if (lastCachedConfigChecksum !== getPolyfillConfigChecksum()) return false;
 
 		for (const [polyfillName, polyfill] of Object.entries(constant.polyfill)) {
 			// Skip aliases

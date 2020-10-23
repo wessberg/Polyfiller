@@ -109,6 +109,7 @@ export const constant: IConstant = {
 				"event",
 				"mutation-observer",
 				"get-computed-style",
+				"dom.collections.iterable",
 				"request-animation-frame",
 				"es.array.concat",
 				"es.array.filter",

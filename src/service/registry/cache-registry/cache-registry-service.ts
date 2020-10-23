@@ -152,6 +152,7 @@ export class CacheRegistryService implements ICacheRegistryService {
 
 		// Update the disk cache
 		await this.updatePackageVersionMap(libraryToVersionMap.entries());
+		await this.updateCachedPolyfillConfigChecksumPackageVersionMap();
 	}
 
 	/**
@@ -214,7 +215,7 @@ export class CacheRegistryService implements ICacheRegistryService {
 		return buffer != null ? buffer.toString("utf8") : undefined;
 	}
 
-	async updateCachedPolyfillConfigChecksumPackageVersionMap(): Promise<void> {
+	private async updateCachedPolyfillConfigChecksumPackageVersionMap(): Promise<void> {
 		await this.fileSaver.save(constant.path.configChecksum, getPolyfillConfigChecksum());
 	}
 

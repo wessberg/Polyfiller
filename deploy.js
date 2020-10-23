@@ -122,6 +122,9 @@ server {
 	// Copy the package-lock into the temp folder
 	copyFileSync("package-lock.json", PACKAGE_LOCK_LOCAL_FILE_NAME);
 
+	// Copy the file-content-injector into the temp folder
+	copyFileSync("file-content-injector.js", FILE_CONTENT_INJECTOR_LOCAL_FILE_NAME);
+
 	console.log("Temporary directory contents:", readdirSync(LOCAL_WRITE_ROOT));
 
 	// Connect to the host machine via SSH

@@ -12,7 +12,7 @@ const fs = require("fs");
 		replacement: String.raw`if ((this instanceof ConnectionObserver ? this.constructor : void 0) === undefined) {`
 	},
 	{
-		file: "/Users/wessberg/coding/polyfiller/node_modules/@polyfiller/object-fit/polyfill/index.js",
+		file: "node_modules/@polyfiller/object-fit/polyfill/index.js",
 		match: String.raw`if (new.target === undefined) {`,
 		replacement: String.raw`if ((this instanceof ComputedStyleObserver ? this.constructor : void 0) === undefined) {`
 	}

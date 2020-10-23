@@ -3007,7 +3007,7 @@ export const constant: IConstant = {
 		},
 		"custom-elements": {
 			library: "@webcomponents/custom-elements",
-			relativePaths: ["custom-elements.min.js"],
+			relativePaths: ["src/custom-elements.js"],
 			features: ["custom-elementsv1"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES__WEBCOMPONENTS_CUSTOM_ELEMENTS,
 			dependencies: ["es", "mutation-observer"],
@@ -3015,16 +3015,16 @@ export const constant: IConstant = {
 		},
 		"shadow-dom": {
 			localPaths: [
-				"node_modules/@webcomponents/shadydom/shadydom.min.js",
-				"node_modules/@webcomponents/shadycss/scoping-shim.min.js",
-				"node_modules/@webcomponents/shadycss/custom-style-interface.min.js"
+				"node_modules/@webcomponents/shadydom/src/shadydom.js",
+				"node_modules/@webcomponents/shadycss/src/scoping-shim.js",
+				"node_modules/@webcomponents/shadycss/src/custom-style-interface.js"
 			],
 			meta: {
 				// The experimental variant is based on https://github.com/webcomponents/shadycss/pull/242
 				experimental: [
-					"node_modules/@webcomponents/shadydom/shadydom.min.js",
-					"polyfill-lib/shady-css/scoping-shim.min.js",
-					"node_modules/@webcomponents/shadycss/custom-style-interface.min.js"
+					"node_modules/@webcomponents/shadydom/src/shadydom.js",
+					"polyfill-lib/shady-css/src(scoping-shim.js",
+					"node_modules/@webcomponents/shadycss/src/custom-style-interface.js"
 				]
 			},
 			features: ["shadowdomv1"],

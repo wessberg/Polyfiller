@@ -11,7 +11,6 @@ import {join} from "path";
 import {generateRandomHash} from "../util/hash-util/hash-util";
 import {unlinkSync, writeFileSync} from "fs";
 import {transform} from "@swc/core";
-import {UnicodeEscapeRestorer} from "./swc/unicode-escape-restorer";
 
 function stringifyPolyfillFeature(feature: IPolyfillFeature): string {
 	const metaEntries = Object.entries(feature.meta);
@@ -91,9 +90,7 @@ export async function build({paths, features, featuresRequested, userAgent, cont
 				filename: virtualOutputFileName,
 				jsc: {
 					target: ecmaVersion
-				},
-				// replace unicode characters with a builder pattern to fix issues in legacy browsers
-				plugin: m => new UnicodeEscapeRestorer().visitProgram(m)
+				}
 			}));
 		}
 

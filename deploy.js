@@ -93,6 +93,8 @@ server {
 	const DIST_REMOTE_FOLDER = join(REMOTE_ROOT, DIST_LOCAL_FOLDER);
 	const POLYFILL_LIB_LOCAL_FOLDER = "polyfill-lib";
 	const POLYFILL_LIB_REMOTE_FOLDER = join(REMOTE_ROOT, POLYFILL_LIB_LOCAL_FOLDER);
+	const FILE_CONTENT_INJECTOR_LOCAL_FILE_NAME = join(LOCAL_WRITE_ROOT, `file-content-injector.js`);
+	const FILE_CONTENT_INJECTOR_REMOTE_FILE_NAME = join(REMOTE_ROOT, `file-content-injector.js`);
 	const PACKAGE_LOCK_LOCAL_FILE_NAME = join(LOCAL_WRITE_ROOT, `package-lock.json`);
 	const PACKAGE_LOCK_REMOTE_FILE_NAME = join(REMOTE_ROOT, `package-lock.json`);
 	const PACKAGE_JSON_LOCAL_FILE_NAME = join(LOCAL_WRITE_ROOT, `package.json`);
@@ -250,6 +252,12 @@ server {
 		concurrency: 1
 	});
 
+	// Copy over the file-content-injector.js file
+	console.log(`Creating ${FILE_CONTENT_INJECTOR_REMOTE_FILE_NAME}`);
+	await ssh.putFile(FILE_CONTENT_INJECTOR_LOCAL_FILE_NAME, FILE_CONTENT_INJECTOR_REMOTE_FILE_NAME, sftp, {
+		concurrency: 1
+	});
+
 	// Copy over the built dist folder
 	console.log(`Creating ${DIST_REMOTE_FOLDER}`);
 	await ssh.putDirectory(DIST_LOCAL_FOLDER, DIST_REMOTE_FOLDER, {concurrency: 1, sftp, transferOptions: {concurrency: 1}});
@@ -261,6 +269,10 @@ server {
 	// Install
 	console.log(`Installing in ${REMOTE_ROOT}`);
 	await ssh.execCommand(`npm ci`, {cwd: REMOTE_ROOT});
+
+	// Inject
+	console.log(`Injecting file content replacements in ${REMOTE_ROOT}`);
+	await ssh.execCommand(`node file-content-injector.js`, {cwd: REMOTE_ROOT});
 
 	// Run
 	console.log(`Running`);

@@ -60,6 +60,15 @@ export function getPolyfillIdentifier(
 }
 
 /**
+ * Returns a checksum for the polyfill configuration file
+ */
+export function getPolyfillConfigChecksum(): string {
+	const shasum = createHash("sha1");
+
+	return shasum.update(JSON.stringify(constant.polyfill)).digest("hex");
+}
+
+/**
  * Returns a stringified key as a function of the given Set of polyfill feature inputs
  */
 export function getPolyfillSetIdentifier(polyfills: Set<IPolyfillFeatureInput>, context: PolyfillCachingContext): string {

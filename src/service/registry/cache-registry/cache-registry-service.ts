@@ -1,7 +1,7 @@
 import {ICacheRegistryService} from "./i-cache-registry-service";
 import {IFileSaver} from "@wessberg/filesaver";
 import {IPolyfillFeature, IPolyfillFeatureInput} from "../../../polyfill/i-polyfill-feature";
-import {getPolyfillIdentifier, getPolyfillSetIdentifier} from "../../../util/polyfill/polyfill-util";
+import {getPolyfillConfigChecksum, getPolyfillIdentifier, getPolyfillSetIdentifier} from "../../../util/polyfill/polyfill-util";
 import {join} from "path";
 import {constant} from "../../../constant/constant";
 import {IFileLoader} from "@wessberg/fileloader";
@@ -107,6 +107,9 @@ export class CacheRegistryService implements ICacheRegistryService {
 	 * Returns true if the given polyfill name needs an update within the cache
 	 */
 	async needsUpdate(polyfillName: PolyfillName, currentVersion: string): Promise<boolean> {
+		const configChecksum = await this.getLastCachedPolyfillConfigChecksum();
+		if (configChecksum !== getPolyfillConfigChecksum()) return true;
+
 		const packageVersionMap = await this.getPackageVersionMap();
 		const cachedVersion = packageVersionMap[polyfillName];
 
@@ -204,6 +207,15 @@ export class CacheRegistryService implements ICacheRegistryService {
 	private async getPackageVersionMap(): Promise<{[key: string]: string}> {
 		const packageVersionMapRaw = await this.getFromCache(constant.path.cachePackageVersionMap);
 		return packageVersionMapRaw == null ? {} : JSON.parse(packageVersionMapRaw.toString());
+	}
+
+	private async getLastCachedPolyfillConfigChecksum(): Promise<string | undefined> {
+		const buffer = await this.getFromCache(constant.path.configChecksum);
+		return buffer != null ? buffer.toString("utf8") : undefined;
+	}
+
+	async updateCachedPolyfillConfigChecksumPackageVersionMap(): Promise<void> {
+		await this.fileSaver.save(constant.path.configChecksum, getPolyfillConfigChecksum());
 	}
 
 	/**

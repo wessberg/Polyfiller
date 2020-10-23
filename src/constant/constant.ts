@@ -28,7 +28,8 @@ export const constant: IConstant = {
 
 	path: {
 		cacheRoot: join(tempRoot),
-		cachePackageVersionMap: join(tempRoot, "cache_package_version_map.json")
+		cachePackageVersionMap: join(tempRoot, "cache_package_version_map.json"),
+		configChecksum: join(tempRoot, "config_checksum")
 	},
 
 	polyfill: {
@@ -3017,15 +3018,15 @@ export const constant: IConstant = {
 		"shadow-dom": {
 			localPaths: [
 				"node_modules/@webcomponents/shadydom/src/shadydom.js",
-				"node_modules/@webcomponents/shadycss/src/scoping-shim.js",
-				"node_modules/@webcomponents/shadycss/src/custom-style-interface.js"
+				"node_modules/@webcomponents/shadycss/entrypoints/scoping-shim.js",
+				"node_modules/@webcomponents/shadycss/entrypoints/custom-style-interface.js"
 			],
 			meta: {
 				// The experimental variant is based on https://github.com/webcomponents/shadycss/pull/242
 				experimental: [
 					"node_modules/@webcomponents/shadydom/src/shadydom.js",
-					"polyfill-lib/shady-css/src/scoping-shim.js",
-					"node_modules/@webcomponents/shadycss/src/custom-style-interface.js"
+					"polyfill-lib/shady-css/entrypoints/scoping-shim.js",
+					"node_modules/@webcomponents/shadycss/entrypoints/custom-style-interface.js"
 				]
 			},
 			features: ["shadowdomv1"],

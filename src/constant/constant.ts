@@ -3102,7 +3102,7 @@ export const constant: IConstant = {
 		},
 		"class-list": {
 			localPaths: ["polyfill-lib/class-list/class-list.js"],
-			features: ["api.DOMTokenList"],
+			features: ["api.Element.classList"],
 			version: "1.0.0",
 			dependencies: ["dom-token-list"],
 			contexts: WINDOW_CONTEXT

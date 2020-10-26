@@ -30,11 +30,6 @@ const fs = require("fs");
 		file: "node_modules/core-js/internals/collection-strong.js",
 		match: String.raw`else that.size--;`,
 		replacement: String.raw`else {that.size--;}`
-	},
-	// TODO: Remove this when @swc/core has been published to NPM
-	{
-		file: "node_modules/@swc/core-darwin/swc.darwin.node",
-		replacementFile: "polyfill-lib/swc.darwin.node"
 	}
 ].forEach(replace);
 

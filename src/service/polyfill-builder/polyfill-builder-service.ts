@@ -17,6 +17,8 @@ function normalizeLocale(locale: string): string {
 		// nb and no are identical languages from a data perspective
 		case "no":
 			return "nb";
+		default:
+			return locale;
 	}
 }
 

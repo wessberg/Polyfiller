@@ -5,7 +5,9 @@ const defineGetter = function (object, name, fn, configurable) {
 			configurable: false === dpSupport ? true : !!configurable,
 			get: fn
 		});
-	else object.__defineGetter__(name, fn);
+	else {
+		object.__defineGetter__(name, fn);
+	}
 };
 /** Ensure the browser allows Object.defineProperty to be used on native JavaScript objects. */
 try {
@@ -51,7 +53,9 @@ const addProp = function (o, name, attr) {
 				visage || (visage = mirror.appendChild(document.createElement("div")));
 
 				tokenList = DOMTokenList.call(visage, THIS, attr);
-			} else tokenList = new DOMTokenList(THIS, attr);
+			} else {
+				tokenList = new DOMTokenList(THIS, attr);
+			}
 
 			defineGetter(THIS, name, function () {
 				return tokenList;

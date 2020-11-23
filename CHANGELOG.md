@@ -1,3 +1,10 @@
+## [0.0.113](https://github.com/wessberg/polyfiller/compare/v0.0.112...v0.0.113) (2020-11-23)
+
+### Bug Fixes
+
+- ensure that pm2 will update env variables on restart ([cae9fa1](https://github.com/wessberg/polyfiller/commit/cae9fa12900cb8e123e8083f255cbaeda360e461))
+- work around swc problem ([2524457](https://github.com/wessberg/polyfiller/commit/2524457f5f675a91894120836abd0eb7f4793ce5))
+
 ## [0.0.112](https://github.com/wessberg/polyfiller/compare/v0.0.107...v0.0.112) (2020-11-23)
 
 ### Bug Fixes

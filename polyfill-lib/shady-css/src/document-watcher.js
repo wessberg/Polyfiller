@@ -131,7 +131,7 @@ function handler(mxns) {
 			if (n.nodeType !== Node.ELEMENT_NODE) {
 				continue;
 			}
-			n = /** @type {HTMLElement} */ (n); // eslint-disable-line no-self-assign
+
 			let root = n.getRootNode();
 			let currentScope = getCurrentScope(n);
 			// node was scoped, but now is in document

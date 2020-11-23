@@ -4,8 +4,7 @@ on:
   push:
     branches:
       - development
-  release:
-    types: ["published"]
+      - master
 
 jobs:
   deploy:

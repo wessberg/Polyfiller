@@ -645,7 +645,7 @@ And, if you request `performance.now`, `date.now` will also be included since th
   - `es.map.reduce`
   - `es.map.some`
   - `es.map.update`
-  - `es.map.upsert`
+  - `es.map.emplace`
 - **`esnext.weak-map`**
   - `es.weak-map.from`
   - `es.weak-map.of`

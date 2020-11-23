@@ -24,7 +24,7 @@ function normalizeLocale(locale: string): string {
 
 function selectMetaPaths<Meta extends Exclude<IPolyfillDictEntryBase["meta"], undefined>>(value: Meta[keyof Meta], context: PolyfillContext): string[] {
 	if (typeof value === "string") return [value];
-	if (Array.isArray(value)) return value;
+	if (Array.isArray(value)) return value as string[];
 	return ensureArray((value as any)[context]);
 }
 

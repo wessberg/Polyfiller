@@ -244,7 +244,7 @@ export const constant: IConstant = {
 		},
 		"es.promise.any": {
 			library: "core-js",
-			relativePaths: ["modules/esnext.promise.any.js"],
+			relativePaths: ["modules/es.promise.any.js"],
 			features: ["javascript.builtins.Promise.any"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: ["es.promise.constructor"],
@@ -844,7 +844,7 @@ export const constant: IConstant = {
 		},
 		"es.string.replace-all": {
 			library: "core-js",
-			relativePaths: ["modules/esnext.string.replace-all.js"],
+			relativePaths: ["modules/es.string.replace-all.js"],
 			features: ["javascript.builtins.String.replaceAll"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: [],
@@ -1857,9 +1857,9 @@ export const constant: IConstant = {
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
-		"es.map.upsert": {
+		"es.map.emplace": {
 			library: "core-js",
-			relativePaths: ["modules/esnext.map.upsert.js"],
+			relativePaths: ["modules/esnext.map.emplace.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
@@ -2635,7 +2635,7 @@ export const constant: IConstant = {
 				"es.map.reduce",
 				"es.map.some",
 				"es.map.update",
-				"es.map.upsert"
+				"es.map.emplace"
 			]
 		},
 		"esnext.weak-map": {
@@ -2784,7 +2784,7 @@ export const constant: IConstant = {
 			features: ["javascript.builtins.Intl.DateTimeFormat"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_DATETIMEFORMAT,
 			dependencies: [
-				"intl.get-canonical-locales",
+				"intl.locale",
 				"intl.number-format",
 				"es.set",
 				"es.weak-map",
@@ -2814,7 +2814,7 @@ export const constant: IConstant = {
 			features: ["javascript.builtins.Intl.DisplayNames"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_DISPLAYNAMES,
 			dependencies: [
-				"intl.get-canonical-locales",
+				"intl.locale",
 				"es.weak-map",
 				"es.object.keys",
 				"es.object.set-prototype-of",
@@ -2847,7 +2847,7 @@ export const constant: IConstant = {
 			features: ["javascript.builtins.Intl.ListFormat"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_LISTFORMAT,
 			dependencies: [
-				"intl.get-canonical-locales",
+				"intl.locale",
 				"es.array.filter",
 				"es.array.is-array",
 				"es.array.join",
@@ -2900,7 +2900,7 @@ export const constant: IConstant = {
 			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_NUMBERFORMAT,
 			dependencies: [
 				"intl.plural-rules",
-				"intl.get-canonical-locales",
+				"intl.locale",
 				"es.array.filter",
 				"es.array.index-of",
 				"es.array.is-array",
@@ -2930,7 +2930,7 @@ export const constant: IConstant = {
 			features: ["javascript.builtins.Intl.PluralRules"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_PLURALRULES,
 			dependencies: [
-				"intl.get-canonical-locales",
+				"intl.locale",
 				"es.array.filter",
 				"es.array.for-each",
 				"es.array.is-array",
@@ -2960,7 +2960,7 @@ export const constant: IConstant = {
 			dependencies: [
 				"intl.plural-rules",
 				"intl.number-format",
-				"intl.get-canonical-locales",
+				"intl.locale",
 				"es.array.filter",
 				"es.array.is-array",
 				"es.array.join",

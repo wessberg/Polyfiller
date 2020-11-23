@@ -12,9 +12,19 @@ import {IPolyfillRequest} from "../../polyfill/i-polyfill-request";
 
 const SYNC_OPTIONS = {cwd: __dirname};
 
+function normalizeLocale(locale: string): string {
+	switch (locale) {
+		// nb and no are identical languages from a data perspective
+		case "no":
+			return "nb";
+		default:
+			return locale;
+	}
+}
+
 function selectMetaPaths<Meta extends Exclude<IPolyfillDictEntryBase["meta"], undefined>>(value: Meta[keyof Meta], context: PolyfillContext): string[] {
 	if (typeof value === "string") return [value];
-	if (Array.isArray(value)) return value;
+	if (Array.isArray(value)) return value as string[];
 	return ensureArray((value as any)[context]);
 }
 
@@ -141,19 +151,6 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 					}
 				}
 
-				// If the Zone-patching of 'rxjs' is requested, add it to the polyfill buffer for Zone.js
-				if (polyfillFeature.meta != null && polyfillFeature.meta.rxjs === true) {
-					for (const rxjsPath of selectMetaPaths(meta.rxjs, request.context)) {
-						const rxjsExtensionPathInput = join(rootDirectory, rxjsPath);
-						const resolvedRxjsExtensionPath = sync(rxjsExtensionPathInput, SYNC_OPTIONS);
-						if (resolvedRxjsExtensionPath != null) {
-							absolutePaths.push(resolvedRxjsExtensionPath);
-						} else {
-							throw new ReferenceError(`Unresolved path: '${rxjsExtensionPathInput}'`);
-						}
-					}
-				}
-
 				// If the Zone-patching of 'fetch' is requested, or if 'fetch' is requested as a polyfill along with Zone add it to the polyfill buffer for Zone.js
 				if (polyfillFeature.meta != null && polyfillFeature.meta.fetch === true) {
 					for (const fetchPath of selectMetaPaths(meta.fetch, request.context)) {
@@ -191,12 +188,20 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 					requestedLocales.map(async requestedLocale => {
 						// Resolve the absolute path
 						for (const localeDir of selectMetaPaths(meta.localeDir, request.context)) {
-							const localePathInput = join(rootDirectory, localeDir, `${requestedLocale}.js`);
-							const resolvedLocalePath = sync(localePathInput, SYNC_OPTIONS);
-							if (resolvedLocalePath != null) {
-								absolutePaths.push(resolvedLocalePath);
-							} else {
-								throw new ReferenceError(`Unresolved path: '${localePathInput}'`);
+							const locale = new (Intl as any).Locale(requestedLocale);
+							let addedLocale = false;
+							for (const currentLocale of new Set([locale.baseName, normalizeLocale(locale.baseName), locale.language, normalizeLocale(locale.language)])) {
+								const localePathInput = join(rootDirectory, localeDir, `${currentLocale}.js`);
+								const resolvedLocalePath = sync(localePathInput, SYNC_OPTIONS);
+								if (resolvedLocalePath != null) {
+									addedLocale = true;
+									absolutePaths.push(resolvedLocalePath);
+									break;
+								}
+							}
+
+							if (!addedLocale) {
+								throw new ReferenceError(`Unresolved locale: '${requestedLocale}'`);
 							}
 						}
 					})

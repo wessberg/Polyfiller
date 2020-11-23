@@ -32,6 +32,7 @@ export default {
 		"https",
 		"http2",
 		"net",
+		"os",
 		"url"
 	]
 };

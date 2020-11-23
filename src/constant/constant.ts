@@ -3,6 +3,13 @@ import {environment} from "../environment/environment";
 import tempDirectory from "temp-dir";
 import {join} from "path";
 import {ALL_CONTEXTS, WINDOW_CONTEXT, WINDOW_NODE_CONTEXT} from "../polyfill/polyfill-context";
+import {booleanize} from "../util/booleanize/booleanize";
+
+const tempRoot = join(
+	tempDirectory,
+	environment.NPM_PACKAGE_NAME,
+	process.env.PRODUCTION != null && (process.env.PRODUCTION === "" || booleanize(process.env.PRODUCTION)) ? "production" : "development"
+);
 
 export const constant: IConstant = {
 	endpoint: {
@@ -20,8 +27,9 @@ export const constant: IConstant = {
 	},
 
 	path: {
-		cacheRoot: join(tempDirectory, environment.NPM_PACKAGE_NAME),
-		cachePackageVersionMap: join(tempDirectory, environment.NPM_PACKAGE_NAME, "cache_package_version_map.json")
+		cacheRoot: join(tempRoot),
+		cachePackageVersionMap: join(tempRoot, "cache_package_version_map.json"),
+		configChecksum: join(tempRoot, "config_checksum")
 	},
 
 	polyfill: {
@@ -51,7 +59,6 @@ export const constant: IConstant = {
 				error: "fesm2015/zone-error.js",
 				shadydom: "fesm2015/webapis-shadydom.js",
 				mediaquery: "fesm2015/webapis-media-query.js",
-				rxjs: "fesm2015/zone-patch-rxjs.js",
 				fetch: "fesm2015/zone-patch-fetch.js",
 				resizeobserver: "fesm2015/zone-patch-resize-observer.js"
 			},
@@ -102,6 +109,7 @@ export const constant: IConstant = {
 				"event",
 				"mutation-observer",
 				"get-computed-style",
+				"dom.collections.iterable",
 				"request-animation-frame",
 				"es.array.concat",
 				"es.array.filter",
@@ -199,7 +207,7 @@ export const constant: IConstant = {
 			polyfills: ["es"]
 		},
 		"es.promise": {
-			polyfills: ["es.promise.constructor", "es.promise.finally"]
+			polyfills: ["es.promise.constructor", "es.promise.any", "es.promise.all-settled", "es.promise.finally"]
 		},
 		"es.promise.constructor": {
 			library: "core-js",
@@ -236,9 +244,8 @@ export const constant: IConstant = {
 		},
 		"es.promise.any": {
 			library: "core-js",
-			relativePaths: ["modules/esnext.promise.any.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
+			relativePaths: ["modules/es.promise.any.js"],
+			features: ["javascript.builtins.Promise.any"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: ["es.promise.constructor"],
 			contexts: ALL_CONTEXTS
@@ -805,7 +812,8 @@ export const constant: IConstant = {
 				"es.string.sup",
 				"es.string.trim",
 				"es.string.trim-start",
-				"es.string.trim-end"
+				"es.string.trim-end",
+				"es.string.replace-all"
 			]
 		},
 		"es.string.at": {
@@ -836,9 +844,8 @@ export const constant: IConstant = {
 		},
 		"es.string.replace-all": {
 			library: "core-js",
-			relativePaths: ["modules/esnext.string.replace-all.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
+			relativePaths: ["modules/es.string.replace-all.js"],
+			features: ["javascript.builtins.String.replaceAll"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
 			dependencies: [],
 			contexts: ALL_CONTEXTS
@@ -1850,9 +1857,9 @@ export const constant: IConstant = {
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
-		"es.map.upsert": {
+		"es.map.emplace": {
 			library: "core-js",
-			relativePaths: ["modules/esnext.map.upsert.js"],
+			relativePaths: ["modules/esnext.map.emplace.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
@@ -2628,7 +2635,7 @@ export const constant: IConstant = {
 				"es.map.reduce",
 				"es.map.some",
 				"es.map.update",
-				"es.map.upsert"
+				"es.map.emplace"
 			]
 		},
 		"esnext.weak-map": {
@@ -2679,7 +2686,7 @@ export const constant: IConstant = {
 			polyfills: ["es.number.from-string"]
 		},
 		"esnext.promise": {
-			polyfills: ["es.promise.all-settled", "es.promise.try", "es.promise.try"]
+			polyfills: ["es.promise.try"]
 		},
 		"esnext.reflect": {
 			polyfills: [
@@ -2695,7 +2702,7 @@ export const constant: IConstant = {
 			]
 		},
 		"esnext.string": {
-			polyfills: ["es.string.at", "es.string.code-points", "es.string.match-all", "es.string.replace-all"]
+			polyfills: ["es.string.at", "es.string.code-points", "es.string.match-all"]
 		},
 		"esnext.symbol": {
 			polyfills: ["es.symbol.pattern-match"]
@@ -2727,6 +2734,7 @@ export const constant: IConstant = {
 			version: environment.NPM_PACKAGE_DEPENDENCIES__WESSBERG_POINTER_EVENTS,
 			dependencies: [
 				// TODO: Also relies on "elementFromPoint" which there isn't a polyfill for yet. Add it to the dependencies when the polyfill is ready
+				// TODO: Also relies on EventTarget and will throw in browsers where EventTarget is not defined
 				"es.array.from",
 				"es.array.some",
 				"es.array.every",
@@ -2777,7 +2785,7 @@ export const constant: IConstant = {
 			features: ["javascript.builtins.Intl.DateTimeFormat"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_DATETIMEFORMAT,
 			dependencies: [
-				"intl.get-canonical-locales",
+				"intl.locale",
 				"intl.number-format",
 				"es.set",
 				"es.weak-map",
@@ -2807,7 +2815,7 @@ export const constant: IConstant = {
 			features: ["javascript.builtins.Intl.DisplayNames"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_DISPLAYNAMES,
 			dependencies: [
-				"intl.get-canonical-locales",
+				"intl.locale",
 				"es.weak-map",
 				"es.object.keys",
 				"es.object.set-prototype-of",
@@ -2840,7 +2848,7 @@ export const constant: IConstant = {
 			features: ["javascript.builtins.Intl.ListFormat"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_LISTFORMAT,
 			dependencies: [
-				"intl.get-canonical-locales",
+				"intl.locale",
 				"es.array.filter",
 				"es.array.is-array",
 				"es.array.join",
@@ -2893,7 +2901,7 @@ export const constant: IConstant = {
 			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_NUMBERFORMAT,
 			dependencies: [
 				"intl.plural-rules",
-				"intl.get-canonical-locales",
+				"intl.locale",
 				"es.array.filter",
 				"es.array.index-of",
 				"es.array.is-array",
@@ -2923,7 +2931,7 @@ export const constant: IConstant = {
 			features: ["javascript.builtins.Intl.PluralRules"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_PLURALRULES,
 			dependencies: [
-				"intl.get-canonical-locales",
+				"intl.locale",
 				"es.array.filter",
 				"es.array.for-each",
 				"es.array.is-array",
@@ -2953,7 +2961,7 @@ export const constant: IConstant = {
 			dependencies: [
 				"intl.plural-rules",
 				"intl.number-format",
-				"intl.get-canonical-locales",
+				"intl.locale",
 				"es.array.filter",
 				"es.array.is-array",
 				"es.array.join",
@@ -3001,7 +3009,7 @@ export const constant: IConstant = {
 		},
 		"custom-elements": {
 			library: "@webcomponents/custom-elements",
-			relativePaths: ["custom-elements.min.js"],
+			relativePaths: ["src/custom-elements.js"],
 			features: ["custom-elementsv1"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES__WEBCOMPONENTS_CUSTOM_ELEMENTS,
 			dependencies: ["es", "mutation-observer"],
@@ -3009,16 +3017,16 @@ export const constant: IConstant = {
 		},
 		"shadow-dom": {
 			localPaths: [
-				"node_modules/@webcomponents/shadydom/shadydom.min.js",
-				"node_modules/@webcomponents/shadycss/scoping-shim.min.js",
-				"node_modules/@webcomponents/shadycss/custom-style-interface.min.js"
+				"node_modules/@webcomponents/shadydom/src/shadydom.js",
+				"node_modules/@webcomponents/shadycss/entrypoints/scoping-shim.js",
+				"node_modules/@webcomponents/shadycss/entrypoints/custom-style-interface.js"
 			],
 			meta: {
 				// The experimental variant is based on https://github.com/webcomponents/shadycss/pull/242
 				experimental: [
-					"node_modules/@webcomponents/shadydom/shadydom.min.js",
-					"polyfill-lib/shady-css/scoping-shim.min.js",
-					"node_modules/@webcomponents/shadycss/custom-style-interface.min.js"
+					"node_modules/@webcomponents/shadydom/src/shadydom.js",
+					"polyfill-lib/shady-css/entrypoints/scoping-shim.js",
+					"node_modules/@webcomponents/shadycss/entrypoints/custom-style-interface.js"
 				]
 			},
 			features: ["shadowdomv1"],
@@ -3095,17 +3103,15 @@ export const constant: IConstant = {
 			contexts: WINDOW_CONTEXT
 		},
 		"class-list": {
-			library: "polyfill-library",
-			relativePaths: ["polyfills/__dist/Element.prototype.classList/raw.js"],
-			features: ["classlist"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
+			localPaths: ["polyfill-lib/class-list/class-list.js"],
+			features: ["api.Element.classList"],
+			version: "1.0.0",
 			dependencies: ["dom-token-list"],
 			contexts: WINDOW_CONTEXT
 		},
 		"dom-token-list": {
-			library: "polyfill-library",
-			relativePaths: ["polyfills/__dist/_DOMTokenList/raw.js", "polyfills/__dist/DOMTokenList/raw.js"],
-			features: ["rellist"],
+			localPaths: ["polyfill-lib/dom-token-list/dom-token-list.js"],
+			features: ["api.DOMTokenList"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["es.object.define-property"],
 			contexts: WINDOW_CONTEXT

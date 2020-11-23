@@ -1,19 +1,17 @@
 import {ICacheRegistryService} from "./i-cache-registry-service";
 import {IFileSaver} from "@wessberg/filesaver";
 import {IPolyfillFeature, IPolyfillFeatureInput} from "../../../polyfill/i-polyfill-feature";
-import {ContentEncodingKind} from "../../../encoding/content-encoding-kind";
-import {getPolyfillIdentifier, getPolyfillSetIdentifier} from "../../../util/polyfill/polyfill-util";
+import {getPolyfillConfigChecksum, getPolyfillIdentifier, getPolyfillSetIdentifier} from "../../../util/polyfill/polyfill-util";
 import {join} from "path";
 import {constant} from "../../../constant/constant";
 import {IFileLoader} from "@wessberg/fileloader";
-import {IMemoryRegistryService} from "../polyfill-registry/i-memory-registry-service";
+import {IMemoryRegistryService, PolyfillCachingContext} from "../polyfill-registry/i-memory-registry-service";
 import {PolyfillName} from "../../../polyfill/polyfill-name";
 import {coerce, gt} from "semver";
 import {IConfig} from "../../../config/i-config";
 import {IRegistryGetResult} from "../polyfill-registry/i-registry-get-result";
 import {ILoggerService} from "../../logger/i-logger-service";
 import {PolyfillDictEntry} from "../../../polyfill/polyfill-dict";
-import {PolyfillContext} from "../../../polyfill/polyfill-context";
 
 /**
  * A class that can cache generated Polyfills on disk
@@ -42,67 +40,67 @@ export class CacheRegistryService implements ICacheRegistryService {
 	/**
 	 * Gets the contents for the polyfill with the given name and with the given encoding
 	 */
-	async get(name: IPolyfillFeature | Set<IPolyfillFeature>, context: PolyfillContext, encoding?: ContentEncodingKind): Promise<IRegistryGetResult | undefined> {
+	async get(name: IPolyfillFeature | Set<IPolyfillFeature>, context: PolyfillCachingContext): Promise<IRegistryGetResult | undefined> {
 		// Attempt to fetch it from the in-memory registry
-		const memoryHit = await this.memoryRegistry.get(name, context, encoding);
+		const memoryHit = await this.memoryRegistry.get(name, context);
 		if (memoryHit != null) return memoryHit;
 
 		// Otherwise, attempt to get it from cache
-		const buffer = await this.getFromCache(this.getCachePath(name, context, encoding));
+		const buffer = await this.getFromCache(this.getCachePath(name, context));
 		// If not possible, return undefined
 		if (buffer == null) return undefined;
 
 		// Otherwise, store it in the memory registry and return the Buffer
-		return await this.memoryRegistry.set(name, buffer, context, encoding);
+		return await this.memoryRegistry.set(name, buffer, context);
 	}
 
 	/**
 	 * Gets the Set of Polyfill feature inputs that matches the given input
 	 */
-	async getPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, userAgent: string, context: PolyfillContext): Promise<Set<IPolyfillFeature> | undefined> {
+	async getPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, context: PolyfillCachingContext): Promise<Set<IPolyfillFeature> | undefined> {
 		// Attempt to fetch it from the in-memory registry
-		const memoryHit = await this.memoryRegistry.getPolyfillFeatureSet(input, userAgent, context);
+		const memoryHit = await this.memoryRegistry.getPolyfillFeatureSet(input, context);
 		if (memoryHit != null) return memoryHit;
 
 		// Otherwise, attempt to get it from cache
-		const buffer = await this.getFromCache(this.getCachePathForPolyfillSet(input, userAgent, context));
+		const buffer = await this.getFromCache(this.getCachePathForPolyfillSet(input, context));
 		// If not possible, return undefined
 		if (buffer == null) return undefined;
 
 		// Otherwise, store it in the memory registry and return the Buffer
-		return await this.memoryRegistry.setPolyfillFeatureSet(input, new Set(JSON.parse(buffer.toString())), userAgent, context);
+		return await this.memoryRegistry.setPolyfillFeatureSet(input, new Set(JSON.parse(buffer.toString())), context);
 	}
 
 	/**
 	 * Returns true if a polyfill wil the given name exists
 	 */
-	async has(name: IPolyfillFeature | Set<IPolyfillFeature>, context: PolyfillContext, encoding?: ContentEncodingKind): Promise<boolean> {
-		return (await this.get(name, context, encoding)) != null;
+	async has(name: IPolyfillFeature | Set<IPolyfillFeature>, context: PolyfillCachingContext): Promise<boolean> {
+		return (await this.get(name, context)) != null;
 	}
 
 	/**
 	 * Returns true if there is a PolyfillFeature Set in the cache that matches the given input Set
 	 */
-	async hasPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, userAgent: string, context: PolyfillContext): Promise<boolean> {
-		return (await this.getPolyfillFeatureSet(input, userAgent, context)) != null;
+	async hasPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, context: PolyfillCachingContext): Promise<boolean> {
+		return (await this.getPolyfillFeatureSet(input, context)) != null;
 	}
 
 	/**
 	 * Sets the contents for the polyfill with the given name and of the given encoding
 	 */
-	async set(name: IPolyfillFeature | Set<IPolyfillFeature>, contents: Buffer, context: PolyfillContext, encoding?: ContentEncodingKind): Promise<IRegistryGetResult> {
+	async set(name: IPolyfillFeature | Set<IPolyfillFeature>, contents: Buffer, context: PolyfillCachingContext): Promise<IRegistryGetResult> {
 		// Add it to the memory cache as well as the disk cache
-		await this.writeToCache(this.getCachePath(name, context, encoding), contents);
-		return await this.memoryRegistry.set(name, contents, context, encoding);
+		await this.writeToCache(this.getCachePath(name, context), contents);
+		return await this.memoryRegistry.set(name, contents, context);
 	}
 
 	/**
 	 * Sets the given PolyfillFeature Set for the given Set of PolyfillFeature inputs
 	 */
-	async setPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, polyfillSet: Set<IPolyfillFeature>, userAgent: string, context: PolyfillContext): Promise<Set<IPolyfillFeature>> {
+	async setPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, polyfillSet: Set<IPolyfillFeature>, context: PolyfillCachingContext): Promise<Set<IPolyfillFeature>> {
 		// Add it to the memory cache as well as the disk cache
-		await this.writeToCache(this.getCachePathForPolyfillSet(input, userAgent, context), Buffer.from(JSON.stringify([...polyfillSet])));
-		return await this.memoryRegistry.setPolyfillFeatureSet(input, polyfillSet, userAgent, context);
+		await this.writeToCache(this.getCachePathForPolyfillSet(input, context), Buffer.from(JSON.stringify([...polyfillSet])));
+		return await this.memoryRegistry.setPolyfillFeatureSet(input, polyfillSet, context);
 	}
 
 	/**
@@ -154,6 +152,7 @@ export class CacheRegistryService implements ICacheRegistryService {
 
 		// Update the disk cache
 		await this.updatePackageVersionMap(libraryToVersionMap.entries());
+		await this.updateCachedPolyfillConfigChecksumPackageVersionMap();
 	}
 
 	/**
@@ -162,6 +161,11 @@ export class CacheRegistryService implements ICacheRegistryService {
 	 * If 'true' is returned, the cache is valid
 	 */
 	private async validateDiskCache(): Promise<boolean> {
+		const lastCachedConfigChecksum = await this.getLastCachedPolyfillConfigChecksum();
+
+		// If the config changed, the disk cache needs to be flushed
+		if (lastCachedConfigChecksum !== getPolyfillConfigChecksum()) return false;
+
 		for (const [polyfillName, polyfill] of Object.entries(constant.polyfill)) {
 			// Skip aliases
 			if ("polyfills" in polyfill) continue;
@@ -208,6 +212,15 @@ export class CacheRegistryService implements ICacheRegistryService {
 		return packageVersionMapRaw == null ? {} : JSON.parse(packageVersionMapRaw.toString());
 	}
 
+	private async getLastCachedPolyfillConfigChecksum(): Promise<string | undefined> {
+		const buffer = await this.getFromCache(constant.path.configChecksum);
+		return buffer != null ? buffer.toString("utf8") : undefined;
+	}
+
+	private async updateCachedPolyfillConfigChecksumPackageVersionMap(): Promise<void> {
+		await this.fileSaver.save(constant.path.configChecksum, getPolyfillConfigChecksum());
+	}
+
 	/**
 	 * Returns the contents on the given path from the cache
 	 *
@@ -225,14 +238,14 @@ export class CacheRegistryService implements ICacheRegistryService {
 	/**
 	 * Gets the cache path to the given name and encoding
 	 */
-	private getCachePath(name: IPolyfillFeature | Set<IPolyfillFeature>, context: PolyfillContext, encoding?: ContentEncodingKind): string {
-		return join(constant.path.cacheRoot, getPolyfillIdentifier(name, context, encoding));
+	private getCachePath(name: IPolyfillFeature | Set<IPolyfillFeature>, context: PolyfillCachingContext): string {
+		return join(constant.path.cacheRoot, getPolyfillIdentifier(name, context));
 	}
 
 	/**
 	 * Gets the cache path to the given Polyfill Feature Set
 	 */
-	private getCachePathForPolyfillSet(input: Set<IPolyfillFeatureInput>, userAgent: string, context: PolyfillContext): string {
-		return join(constant.path.cacheRoot, getPolyfillSetIdentifier(input, userAgent, context));
+	private getCachePathForPolyfillSet(input: Set<IPolyfillFeatureInput>, context: PolyfillCachingContext): string {
+		return join(constant.path.cacheRoot, getPolyfillSetIdentifier(input, context));
 	}
 }

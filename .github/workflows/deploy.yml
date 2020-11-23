@@ -1,6 +1,9 @@
 name: "Deploy"
 
 on:
+  push:
+    branches:
+      - development
   release:
     types: ["published"]
 
@@ -33,7 +36,11 @@ jobs:
       - name: Install
         run: npm ci
 
+      - name: Inject
+        run: node file-content-injector.js
+
       - name: Test
+        if: ${{ github.ref == 'refs/heads/master' }}
         run: npm test
 
       - name: Build
@@ -42,9 +49,13 @@ jobs:
       - name: Deploy
         run: node deploy.js
         env:
-          HOST: ${{ secrets.HOST }}
-          PORT: ${{ secrets.PORT }}
+          PRODUCTION: ${{ github.ref == 'refs/heads/master' }}
+          INTERNAL_HOST_DEVELOPMENT: ${{ secrets.INTERNAL_HOST_DEVELOPMENT }}
+          INTERNAL_HOST_PRODUCTION: ${{ secrets.INTERNAL_HOST_PRODUCTION }}
+          INTERNAL_PORT_DEVELOPMENT: ${{ secrets.INTERNAL_PORT_DEVELOPMENT }}
+          INTERNAL_PORT_PRODUCTION: ${{ secrets.INTERNAL_PORT_PRODUCTION }}
+          DOMAIN_NAMES_DEVELOPMENT: ${{ secrets.DOMAIN_NAMES_DEVELOPMENT }}
+          DOMAIN_NAMES_PRODUCTION: ${{ secrets.DOMAIN_NAMES_PRODUCTION }}
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
           DEPLOY_USER_NAME: ${{ secrets.DEPLOY_USER_NAME }}
           DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-          DEPLOY_DOMAIN_NAMES: ${{ secrets.DEPLOY_DOMAIN_NAMES }}

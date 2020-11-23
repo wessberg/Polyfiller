@@ -15,6 +15,7 @@ export interface IMetaConstant {
 export interface IPathConstant {
 	cacheRoot: string;
 	cachePackageVersionMap: string;
+	configChecksum: string;
 }
 
 export interface IHeaderConstant {

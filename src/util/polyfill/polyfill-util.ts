@@ -17,6 +17,7 @@ import {IPolyfillLibraryDictEntry, IPolyfillLocalDictEntry} from "../../polyfill
 // @ts-ignore
 import toposort from "toposort";
 import {POLYFILL_CONTEXTS, PolyfillContext} from "../../polyfill/polyfill-context";
+import {PolyfillCachingContext} from "../../service/registry/polyfill-registry/i-memory-registry-service";
 
 /**
  * Traces all polyfill names that matches the given name. It may be an alias, and it may refer to additional aliases
@@ -48,25 +49,33 @@ export function traceAllPolyfillNamesForPolyfillName(name: PolyfillName): Set<Po
  */
 export function getPolyfillIdentifier(
 	name: IPolyfillFeature | IPolyfillFeatureInput | Set<IPolyfillFeature> | Set<IPolyfillFeatureInput>,
-	context: PolyfillContext,
-	encoding?: string
+	context: PolyfillCachingContext
 ): string {
 	const shasum = createHash("sha1");
 	const normalizedName = name instanceof Set ? name : new Set([name]);
 	const sortedName = [...normalizedName].sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
 	const namePart = sortedName.map(part => `${part.name}${JSON.stringify(part.meta)}${context}`).join(",");
-	shasum.update(`[${namePart}].${encoding == null ? "" : encoding}`);
+	shasum.update(`[${namePart}].${context.sourcemap}.${context.minify}.${context.encoding || "none"}`);
 	return shasum.digest("hex");
+}
+
+/**
+ * Returns a checksum for the polyfill configuration file
+ */
+export function getPolyfillConfigChecksum(): string {
+	const shasum = createHash("sha1");
+
+	return shasum.update(JSON.stringify(constant.polyfill)).digest("hex");
 }
 
 /**
  * Returns a stringified key as a function of the given Set of polyfill feature inputs
  */
-export function getPolyfillSetIdentifier(polyfills: Set<IPolyfillFeatureInput>, userAgent: string, context: PolyfillContext): string {
+export function getPolyfillSetIdentifier(polyfills: Set<IPolyfillFeatureInput>, context: PolyfillCachingContext): string {
 	const shasum = createHash("sha1");
 	const sortedName = [...polyfills].sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
 	const namePart = sortedName.map(part => `${part.name}${JSON.stringify(part.meta)}${JSON.stringify(part.force)}${JSON.stringify(context)}`).join(",");
-	shasum.update(`[${namePart}].${userAgent}`);
+	shasum.update(`[${namePart}].${context.userAgent}.${context.context}`);
 	return shasum.digest("hex");
 }
 

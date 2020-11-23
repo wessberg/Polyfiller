@@ -4,7 +4,35 @@
 	const {join, dirname} = require("path");
 	const {writeFileSync, readFileSync, existsSync, mkdirSync, copyFileSync, chmodSync, readdirSync} = require("fs");
 
-	const {DEPLOY_HOST, DEPLOY_USER_NAME, DEPLOY_KEY, DEPLOY_KEY_LOCATION, DEPLOY_DOMAIN_NAMES, HOST, PORT, RUNNER_TEMP} = process.env;
+	let {
+		RUNNER_TEMP,
+		DEPLOY_HOST,
+		DEPLOY_USER_NAME,
+		DEPLOY_KEY,
+		DEPLOY_KEY_LOCATION,
+		PRODUCTION,
+		INTERNAL_HOST_DEVELOPMENT,
+		INTERNAL_HOST_PRODUCTION,
+		INTERNAL_PORT_DEVELOPMENT,
+		INTERNAL_PORT_PRODUCTION,
+		DOMAIN_NAMES_DEVELOPMENT,
+		DOMAIN_NAMES_PRODUCTION
+	} = process.env;
+
+	// Coerce to boolean
+	PRODUCTION = PRODUCTION === true || PRODUCTION === "true" || PRODUCTION === "1" || PRODUCTION === "y";
+
+	DOMAIN_NAMES_PRODUCTION = DOMAIN_NAMES_PRODUCTION.split(/\s/)
+		.map(domainName => [domainName, `www.${domainName}`])
+		.flat();
+	DOMAIN_NAMES_DEVELOPMENT = DOMAIN_NAMES_DEVELOPMENT.split(/\s/);
+
+	const DOMAIN_CONFIGURATIONS = [
+		...DOMAIN_NAMES_PRODUCTION.map(domainName => ({domainName, host: INTERNAL_HOST_PRODUCTION, port: INTERNAL_PORT_PRODUCTION})),
+		...DOMAIN_NAMES_DEVELOPMENT.map(domainName => ({domainName, host: INTERNAL_HOST_DEVELOPMENT, port: INTERNAL_PORT_DEVELOPMENT}))
+	];
+
+	console.log("is production:", PRODUCTION);
 
 	const generatePackageJson = () =>
 		JSON.stringify(
@@ -15,8 +43,7 @@
 					start: "node dist/index.js"
 				},
 				dependencies: {
-					...pkg.dependencies,
-					pm2: "latest"
+					...pkg.dependencies
 				}
 			},
 			null,
@@ -24,21 +51,18 @@
 		);
 
 	const generateNginxConfig = () => `\
-${DEPLOY_DOMAIN_NAMES.split(/\s/)
-	.map(
-		domainName => `\
+${DOMAIN_CONFIGURATIONS.map(
+	({domainName, port}) => `\
 server {
     listen 443 ssl;
     listen [::]:443 ssl;
     ssl_certificate /etc/letsencrypt/live/${domainName}/fullchain.pem; # managed by Certbot
     ssl_certificate_key /etc/letsencrypt/live/${domainName}/privkey.pem; # managed by Certbot
 
-    server_name ${domainName} www.${domainName};
+    server_name ${domainName};
 
-    root /var/www/html;
-    index index.html index.htm index.nginx-debian.html;
     location / {
-    		proxy_pass http://localhost:${PORT};
+    		proxy_pass http://localhost:${port};
 				proxy_http_version 1.1;
 				proxy_set_header Upgrade $http_upgrade;
 				proxy_set_header Connection 'upgrade';
@@ -48,34 +72,29 @@ server {
 
 }
 `
-	)
-	.join("\n")}
+).join("\n")}
 
 server {
-		${DEPLOY_DOMAIN_NAMES.split(/\s/)
-			.map(
-				domainName => `\
-		if ($host = www.${domainName}) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-    
+		${DOMAIN_CONFIGURATIONS.map(
+			({domainName}) => `\
     if ($host = ${domainName}) {
         return 301 https://$host$request_uri;
     } # managed by Certbot
 		`
-			)
-			.join("\n")}
+		).join("\n")}
 }
 `;
 
 	const PREFERRED_NODE_VERSION = "14.x";
-	const APP_NAME = "polyfiller";
+	const APP_NAME = PRODUCTION ? "polyfiller" : "polyfiller-development";
 	const LOCAL_WRITE_ROOT = RUNNER_TEMP ?? "temp";
-	const REMOTE_ROOT = "/var/www/polyfiller";
+	const REMOTE_ROOT = `/var/www/${APP_NAME}`;
 	const DIST_LOCAL_FOLDER = "dist";
 	const DIST_REMOTE_FOLDER = join(REMOTE_ROOT, DIST_LOCAL_FOLDER);
 	const POLYFILL_LIB_LOCAL_FOLDER = "polyfill-lib";
 	const POLYFILL_LIB_REMOTE_FOLDER = join(REMOTE_ROOT, POLYFILL_LIB_LOCAL_FOLDER);
+	const FILE_CONTENT_INJECTOR_LOCAL_FILE_NAME = join(LOCAL_WRITE_ROOT, `file-content-injector.js`);
+	const FILE_CONTENT_INJECTOR_REMOTE_FILE_NAME = join(REMOTE_ROOT, `file-content-injector.js`);
 	const PACKAGE_LOCK_LOCAL_FILE_NAME = join(LOCAL_WRITE_ROOT, `package-lock.json`);
 	const PACKAGE_LOCK_REMOTE_FILE_NAME = join(REMOTE_ROOT, `package-lock.json`);
 	const PACKAGE_JSON_LOCAL_FILE_NAME = join(LOCAL_WRITE_ROOT, `package.json`);
@@ -102,6 +121,9 @@ server {
 
 	// Copy the package-lock into the temp folder
 	copyFileSync("package-lock.json", PACKAGE_LOCK_LOCAL_FILE_NAME);
+
+	// Copy the file-content-injector into the temp folder
+	copyFileSync("file-content-injector.js", FILE_CONTENT_INJECTOR_LOCAL_FILE_NAME);
 
 	console.log("Temporary directory contents:", readdirSync(LOCAL_WRITE_ROOT));
 
@@ -172,10 +194,17 @@ server {
 	} catch {
 		// The file doesn't exist
 	}
-	const lastDeploymentData = existsSync(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME) ? JSON.parse(readFileSync(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME)) : undefined;
+	const lastDeploymentData = existsSync(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME) ? JSON.parse(readFileSync(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME, "utf8")) : undefined;
 
 	// If we have deployed in the past, check if the nginx config needs to be updated (for example if the ports or domain names changed)
-	const needsNginxUpdate = lastDeploymentData == null || lastDeploymentData.PORT !== PORT || lastDeploymentData.DEPLOY_DOMAIN_NAMES !== DEPLOY_DOMAIN_NAMES;
+	const needsNginxUpdate =
+		lastDeploymentData == null ||
+		lastDeploymentData.INTERNAL_HOST_DEVELOPMENT !== INTERNAL_HOST_DEVELOPMENT ||
+		lastDeploymentData.INTERNAL_HOST_PRODUCTION !== INTERNAL_HOST_PRODUCTION ||
+		String(lastDeploymentData.INTERNAL_PORT_DEVELOPMENT) !== String(INTERNAL_PORT_DEVELOPMENT) ||
+		String(lastDeploymentData.INTERNAL_PORT_PRODUCTION) !== String(INTERNAL_PORT_PRODUCTION) ||
+		JSON.stringify(lastDeploymentData.DOMAIN_NAMES_DEVELOPMENT) !== JSON.stringify(DOMAIN_NAMES_DEVELOPMENT) ||
+		JSON.stringify(lastDeploymentData.DOMAIN_NAMES_PRODUCTION) !== JSON.stringify(DOMAIN_NAMES_PRODUCTION);
 
 	if (needsNginxUpdate) {
 		console.log(`Nginx config needs update`);
@@ -193,8 +222,12 @@ server {
 		console.log(`Nginx successfully reloaded`);
 
 		const newDeploymentData = {
-			PORT,
-			DEPLOY_DOMAIN_NAMES
+			INTERNAL_HOST_DEVELOPMENT,
+			INTERNAL_HOST_PRODUCTION,
+			INTERNAL_PORT_DEVELOPMENT,
+			INTERNAL_PORT_PRODUCTION,
+			DOMAIN_NAMES_DEVELOPMENT,
+			DOMAIN_NAMES_PRODUCTION
 		};
 
 		// Now, update the deployment data
@@ -222,6 +255,12 @@ server {
 		concurrency: 1
 	});
 
+	// Copy over the file-content-injector.js file
+	console.log(`Creating ${FILE_CONTENT_INJECTOR_REMOTE_FILE_NAME}`);
+	await ssh.putFile(FILE_CONTENT_INJECTOR_LOCAL_FILE_NAME, FILE_CONTENT_INJECTOR_REMOTE_FILE_NAME, sftp, {
+		concurrency: 1
+	});
+
 	// Copy over the built dist folder
 	console.log(`Creating ${DIST_REMOTE_FOLDER}`);
 	await ssh.putDirectory(DIST_LOCAL_FOLDER, DIST_REMOTE_FOLDER, {concurrency: 1, sftp, transferOptions: {concurrency: 1}});
@@ -231,16 +270,21 @@ server {
 	await ssh.putDirectory(POLYFILL_LIB_LOCAL_FOLDER, POLYFILL_LIB_REMOTE_FOLDER, {concurrency: 1, sftp, transferOptions: {concurrency: 1}});
 
 	// Install
-	console.log(`Installing`);
+	console.log(`Installing in ${REMOTE_ROOT}`);
 	await ssh.execCommand(`npm ci`, {cwd: REMOTE_ROOT});
+
+	// Inject
+	console.log(`Injecting file content replacements in ${REMOTE_ROOT}`);
+	await ssh.execCommand(`node file-content-injector.js`, {cwd: REMOTE_ROOT});
 
 	// Run
 	console.log(`Running`);
 	const pm2NeverRan = (await ssh.execCommand(`npx pm2 show ${APP_NAME}`, {cwd: REMOTE_ROOT})).stdout === "";
+	const envVariables = `HOST=${PRODUCTION ? INTERNAL_HOST_PRODUCTION : INTERNAL_HOST_DEVELOPMENT} PORT=${PRODUCTION ? INTERNAL_PORT_PRODUCTION : INTERNAL_PORT_DEVELOPMENT}`;
 	if (pm2NeverRan) {
-		await ssh.execCommand(`HOST=${HOST} PORT=${PORT} npx pm2 start npm --name "${APP_NAME}" -- start`, {cwd: REMOTE_ROOT});
+		await ssh.execCommand(`${envVariables} npx pm2 start npm --name "${APP_NAME}" -- start`, {cwd: REMOTE_ROOT});
 	} else {
-		await ssh.execCommand(`HOST=${HOST} PORT=${PORT} npx pm2 reload ${APP_NAME}`, {cwd: REMOTE_ROOT});
+		await ssh.execCommand(`${envVariables} npx pm2 reload ${APP_NAME} --update-env`, {cwd: REMOTE_ROOT});
 	}
 	console.log("`Done!");
 })()

@@ -48,7 +48,7 @@ export class PolyfillController extends Controller implements IPolyfillControlle
 
 			// Return an OK
 			return {
-				contentType: "application/javascript",
+				contentType: "application/javascript; charset=utf-8",
 				statusCode: request.http2 ? constants.HTTP_STATUS_OK : OK,
 				body: buffer,
 				cacheControl: "public,max-age=31536000,immutable",
@@ -61,7 +61,7 @@ export class PolyfillController extends Controller implements IPolyfillControlle
 			const statusCode = request.http2 ? constants.HTTP_STATUS_INTERNAL_SERVER_ERROR : INTERNAL_SERVER_ERROR;
 
 			return {
-				contentType: "text/html",
+				contentType: "text/html; charset=utf-8",
 				statusCode,
 				body: generateErrorHtml(ex, statusCode)
 			};

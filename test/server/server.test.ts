@@ -65,15 +65,12 @@ test("Is able to generate a bundle of every available polyfill", async t => {
 	const features = Object.entries(constant.polyfill)
 		.filter(([, value]) => !("polyfills" in value))
 		.map(([key, value]) => {
-			switch (key) {
-				case "zone":
-					return `${key}|${Object.keys(((value as unknown) as PolyfillDictNormalizedEntry).meta!).join("|")}|force`;
-				case "intl.core":
-				case "intl.list-format":
-				case "intl.relative-time-format":
-					return `${key}|locale=en~da|force`;
-				default:
-					return `${key}|force`;
+			if (key === "zone") {
+				return `${key}|${Object.keys(((value as unknown) as PolyfillDictNormalizedEntry).meta!).join("|")}|force`;
+			} else if (key.startsWith("intl.")) {
+				return `${key}|locale=en~da|force`;
+			} else {
+				return `${key}|force`;
 			}
 		});
 
@@ -99,7 +96,7 @@ test("Will generate correct polyfills for IE11", async t => {
 		method: "GET",
 		host: config.host,
 		port: config.port,
-		path: `${constant.endpoint.polyfill}?features=web-components,es,class-list,systemjs|variant=system,custom-event,url,fetch,object-fit,intersection-observer,animation,regenerator-runtime,requestanimationframe,requestidlecallback,resize-observer,pointer-event,dom.collections.iterable,scroll-behavior,zone|error|rxjs|shadydom,esnext.reflect,intl|force|locale=en~da`,
+		path: `${constant.endpoint.polyfill}?features=web-components,es,class-list,systemjs|variant=system,custom-event,url,fetch,object-fit,intersection-observer,animation,regenerator-runtime,requestanimationframe,requestidlecallback,resize-observer,pointer-event,dom.collections.iterable,scroll-behavior,zone|error|shadydom,esnext.reflect,intl|force|locale=en~da`,
 		acceptEncoding: undefined
 	});
 

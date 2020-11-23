@@ -2734,6 +2734,7 @@ export const constant: IConstant = {
 			version: environment.NPM_PACKAGE_DEPENDENCIES__WESSBERG_POINTER_EVENTS,
 			dependencies: [
 				// TODO: Also relies on "elementFromPoint" which there isn't a polyfill for yet. Add it to the dependencies when the polyfill is ready
+				// TODO: Also relies on EventTarget and will throw in browsers where EventTarget is not defined
 				"es.array.from",
 				"es.array.some",
 				"es.array.every",

@@ -52,3 +52,4 @@ Thumbs.db
 /dist/
 .esm-cache
 /temp/
+ssh_key

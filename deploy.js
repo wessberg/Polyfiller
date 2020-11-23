@@ -284,7 +284,7 @@ server {
 	if (pm2NeverRan) {
 		await ssh.execCommand(`${envVariables} npx pm2 start npm --name "${APP_NAME}" -- start`, {cwd: REMOTE_ROOT});
 	} else {
-		await ssh.execCommand(`${envVariables} npx pm2 reload ${APP_NAME}`, {cwd: REMOTE_ROOT});
+		await ssh.execCommand(`${envVariables} npx pm2 reload ${APP_NAME} --update-env`, {cwd: REMOTE_ROOT});
 	}
 	console.log("`Done!");
 })()

@@ -1,3 +1,9 @@
+## [0.0.114](https://github.com/wessberg/polyfiller/compare/v0.0.113...v0.0.114) (2020-11-24)
+
+### Bug Fixes
+
+- generate unique cache keys grouped by ecma version ([ac601a4](https://github.com/wessberg/polyfiller/commit/ac601a44b99c8f5d3145b53aca0a63e7e9f2139e))
+
 ## [0.0.113](https://github.com/wessberg/polyfiller/compare/v0.0.112...v0.0.113) (2020-11-23)
 
 ### Bug Fixes

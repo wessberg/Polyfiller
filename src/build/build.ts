@@ -1,6 +1,5 @@
 import {BuildOptions} from "./build-options";
 import {BuildResult} from "./build-result";
-import {generateBrowserslistFromUseragent, getAppropriateEcmaVersionForBrowserslist} from "@wessberg/browserslist-generator";
 import {brotliEncode, gzipEncode} from "./util/encoding";
 import {BROTLI_OPTIONS} from "./options/brotli-options";
 import {ZLIB_OPTIONS} from "./options/zlib-options";
@@ -49,7 +48,7 @@ function stringifyPolyfillFeature(feature: IPolyfillFeature): string {
 	return `${feature.name}${metaEntriesText.length === 0 ? "" : ` (${metaEntriesText})`}`;
 }
 
-export async function build({paths, features, featuresRequested, userAgent, context, sourcemap = false, minify = false}: BuildOptions): Promise<BuildResult> {
+export async function build({paths, features, featuresRequested, ecmaVersion, context, sourcemap = false, minify = false}: BuildOptions): Promise<BuildResult> {
 	const entryText = paths.map(path => `import "${path}";`).join("\n");
 
 	// Generate the intro text
@@ -69,13 +68,12 @@ export async function build({paths, features, featuresRequested, userAgent, cont
 
 	writeFileSync(tempInputFileLocation, entryText);
 
-	let ecmaVersion = userAgent == null ? "es3" : getAppropriateEcmaVersionForBrowserslist(generateBrowserslistFromUseragent(userAgent));
-
 	// esbuild only supports transforming down to es2015
 	const canUseOnlyEsbuild = ecmaVersion !== "es3" && ecmaVersion !== "es5";
 
 	try {
 		const result = await esbuild({
+			banner,
 			write: false,
 			format: "iife",
 			outfile: virtualOutputFileName,
@@ -125,10 +123,6 @@ export async function build({paths, features, featuresRequested, userAgent, cont
 					target: ecmaVersion
 				}
 			}));
-		}
-
-		if (!sourcemap) {
-			code = `${banner}${code}`;
 		}
 
 		// Apply encoding based on the given options

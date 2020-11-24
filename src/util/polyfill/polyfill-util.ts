@@ -10,7 +10,7 @@ import {polyfillRawForceName} from "../../polyfill/polyfill-raw-force-name";
 import {polyfillOptionValueSeparator} from "../../polyfill/polyfill-option-value-separator";
 import {createHash} from "crypto";
 import {constant} from "../../constant/constant";
-import {userAgentSupportsFeatures} from "@wessberg/browserslist-generator";
+import {generateBrowserslistFromUseragent, getAppropriateEcmaVersionForBrowserslist, userAgentSupportsFeatures} from "@wessberg/browserslist-generator";
 import {truncate} from "@wessberg/stringutil";
 import {IPolyfillLibraryDictEntry, IPolyfillLocalDictEntry} from "../../polyfill/polyfill-dict";
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
@@ -22,9 +22,6 @@ import {PolyfillCachingContext} from "../../service/registry/polyfill-registry/i
 /**
  * Traces all polyfill names that matches the given name. It may be an alias, and it may refer to additional aliases
  * within the given features
- *
- * @param name
- * @returns
  */
 export function traceAllPolyfillNamesForPolyfillName(name: PolyfillName): Set<PolyfillDealiasedName> {
 	// Get the PolyfillDict that matches the given name
@@ -55,7 +52,7 @@ export function getPolyfillIdentifier(
 	const normalizedName = name instanceof Set ? name : new Set([name]);
 	const sortedName = [...normalizedName].sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
 	const namePart = sortedName.map(part => `${part.name}${JSON.stringify(part.meta)}${context}`).join(",");
-	shasum.update(`[${namePart}].${context.sourcemap}.${context.minify}.${context.encoding || "none"}`);
+	shasum.update(`[${namePart}].${context.sourcemap}.${context.minify}.${context.ecmaVersion}.${context.encoding || "none"}`);
 	return shasum.digest("hex");
 }
 
@@ -181,11 +178,6 @@ export async function getOrderedPolyfillsWithDependencies(polyfillSet: Set<IPoly
 
 /**
  * Generates an IPolyfillRequest from the given URL
- *
- * @param url
- * @param userAgent
- * @param [encoding]
- * @returns
  */
 export function getPolyfillRequestFromUrl(url: URL, userAgent: string, encoding?: ContentEncodingKind): IPolyfillRequest {
 	const featuresRaw = url.searchParams.get("features");
@@ -243,6 +235,7 @@ export function getPolyfillRequestFromUrl(url: URL, userAgent: string, encoding?
 	// Return the IPolyfillRequest
 	return {
 		userAgent,
+		ecmaVersion: getAppropriateEcmaVersionForBrowserslist(generateBrowserslistFromUseragent(userAgent)),
 		encoding,
 		features: featureSet,
 		context,

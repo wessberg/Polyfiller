@@ -215,6 +215,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 		const {brotli, zlib, raw} = await build({
 			context: request.context,
 			userAgent: request.userAgent,
+			ecmaVersion: request.ecmaVersion,
 			featuresRequested: [...request.features],
 			paths: [...new Set(paths)],
 			features: [...polyfillSet],

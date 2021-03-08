@@ -2,7 +2,7 @@ import {IConstant} from "./i-constant";
 import {environment} from "../environment/environment";
 import tempDirectory from "temp-dir";
 import {join} from "path";
-import {ALL_CONTEXTS, WINDOW_CONTEXT, WINDOW_NODE_CONTEXT} from "../polyfill/polyfill-context";
+import {ALL_CONTEXTS, WINDOW_CONTEXT, WINDOW_NODE_CONTEXT, WINDOW_WORKER_CONTEXT} from "../polyfill/polyfill-context";
 import {booleanize} from "../util/booleanize/booleanize";
 
 const tempRoot = join(
@@ -152,6 +152,17 @@ export const constant: IConstant = {
 			version: environment.NPM_PACKAGE_DEPENDENCIES_BLOB_POLYFILL,
 			dependencies: ["base64", "url"],
 			contexts: ALL_CONTEXTS
+		},
+		formdata: {
+			polyfills: ["form-data"]
+		},
+		"form-data": {
+			library: "formdata-polyfill",
+			relativePaths: ["FormData.js"],
+			features: ["api.FormData", "api.FormData.get"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES_FORMDATA_POLYFILL,
+			dependencies: ["base64", "url"],
+			contexts: WINDOW_WORKER_CONTEXT
 		},
 		requestidlecallback: {
 			polyfills: ["request-idle-callback"]

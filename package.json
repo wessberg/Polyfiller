@@ -121,7 +121,8 @@
 		"xhr-polyfill": "0.1.8",
 		"focus-visible": "5.2.0",
 		"zone.js": "0.11.3",
-		"pm2": "4.5.0"
+		"pm2": "4.5.0",
+		"formdata-polyfill": "3.0.20"
 	},
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",

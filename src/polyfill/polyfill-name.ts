@@ -40,6 +40,7 @@ export declare type PolyfillName =
 	| "requestidlecallback"
 	| "setimmediate"
 	| "globalthis"
+	| "formdata"
 	| "adopted-style-sheets";
 
 export declare type PolyfillDealiasedName =
@@ -357,6 +358,7 @@ export declare type PolyfillDealiasedName =
 	| "web-animations"
 	| "global-this"
 	| "broadcast-channel"
+	| "form-data"
 	| "constructable-style-sheets"
 	| "proto"
 	| "focus-visible";

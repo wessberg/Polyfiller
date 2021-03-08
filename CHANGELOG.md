@@ -1,3 +1,9 @@
+## [0.0.115](https://github.com/wessberg/polyfiller/compare/v0.0.114...v0.0.115) (2021-03-08)
+
+### Bug Fixes
+
+- **Intl.NumberFormat:** add check for the 'unit' option ([c5c2f72](https://github.com/wessberg/polyfiller/commit/c5c2f7250ef36d6cc07b43a87608ca97376c24ab))
+
 ## [0.0.114](https://github.com/wessberg/polyfiller/compare/v0.0.113...v0.0.114) (2020-11-24)
 
 ### Bug Fixes

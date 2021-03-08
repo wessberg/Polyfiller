@@ -382,6 +382,8 @@ And, if you request `performance.now`, `date.now` will also be included since th
 
 **Bold**-formatted polyfills are _aliases_ for one or several other related `feature`s.
 
+- **`formdata`**
+  - `form-data`
 - **`requestidlecallback`**
   - `request-idle-callback`
 - **`requestanimationframe`**
@@ -406,6 +408,8 @@ And, if you request `performance.now`, `date.now` will also be included since th
   - `es`
 - **`es.promise`**
   - `es.promise.constructor`
+  - `es.promise.any`
+  - `es.promise.all-settled`
   - `es.promise.finally`
 - **`es.object`**
   - `es.object.assign`
@@ -497,6 +501,7 @@ And, if you request `performance.now`, `date.now` will also be included since th
   - `es.string.trim`
   - `es.string.trim-start`
   - `es.string.trim-end`
+  - `es.string.replace-all`
 - **`es.regexp`**
   - `es.regexp.constructor`
   - `es.regexp.flags`
@@ -553,6 +558,7 @@ And, if you request `performance.now`, `date.now` will also be included since th
   - `es.symbol.to-primitive`
   - `es.symbol.to-string-tag`
   - `es.symbol.unscopables`
+  - `es.symbol.description`
 - **`es.collections`**
   - `es.map`
   - `es.weak-map`
@@ -687,8 +693,6 @@ And, if you request `performance.now`, `date.now` will also be included since th
 - **`esnext.number`**
   - `es.number.from-string`
 - **`esnext.promise`**
-  - `es.promise.all-settled`
-  - `es.promise.try`
   - `es.promise.try`
 - **`esnext.reflect`**
   - `es.reflect.define-metadata`
@@ -704,9 +708,7 @@ And, if you request `performance.now`, `date.now` will also be included since th
   - `es.string.at`
   - `es.string.code-points`
   - `es.string.match-all`
-  - `es.string.replace-all`
 - **`esnext.symbol`**
-  - `es.symbol.description`
   - `es.symbol.pattern-match`
 - **`dom.collections.iterable`**
   - `dom.collections.iterator`
@@ -745,7 +747,6 @@ And, if you request `performance.now`, `date.now` will also be included since th
 - `base64`
 - `blob`
 - `proxy`
-- `es.promise.any`
 - `es.string.replace`
 - `pointer-event`
 - `xhr`

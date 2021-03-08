@@ -2897,7 +2897,7 @@ export const constant: IConstant = {
 			meta: {
 				localeDir: "locale-data"
 			},
-			features: ["javascript.builtins.Intl.NumberFormat"],
+			features: ["javascript.builtins.Intl.NumberFormat", "javascript.builtins.Intl.NumberFormat.NumberFormat.unit"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_NUMBERFORMAT,
 			dependencies: [
 				"intl.plural-rules",

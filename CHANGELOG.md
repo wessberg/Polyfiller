@@ -1,3 +1,9 @@
+## [0.0.116](https://github.com/wessberg/polyfiller/compare/v0.0.115...v0.0.116) (2021-03-08)
+
+### Features
+
+- **FormData:** add FormData polyfill ([c25ff7e](https://github.com/wessberg/polyfiller/commit/c25ff7e971c82f723b30a7a76e5c0eb6c3ac303a))
+
 ## [0.0.115](https://github.com/wessberg/polyfiller/compare/v0.0.114...v0.0.115) (2021-03-08)
 
 ### Bug Fixes

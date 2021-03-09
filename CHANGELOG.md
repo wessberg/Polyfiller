@@ -1,3 +1,10 @@
+## [0.0.119](https://github.com/wessberg/polyfiller/compare/v0.0.118...v0.0.119) (2021-03-09)
+
+### Bug Fixes
+
+- **swc:** fix a bug where regenerator-runtime would be marked as external. ([53bda66](https://github.com/wessberg/polyfiller/commit/53bda663d419e96705b692f4a2e30e6722ab233d))
+- **swc:** fix a bug where regenerator-runtime would be marked as external. ([da13b33](https://github.com/wessberg/polyfiller/commit/da13b33fdec85565a58ef6073e3bf47298eaa6f9))
+
 ## [0.0.118](https://github.com/wessberg/polyfiller/compare/v0.0.117...v0.0.118) (2021-03-09)
 
 ### Bug Fixes

@@ -1,3 +1,9 @@
+## [0.0.117](https://github.com/wessberg/polyfiller/compare/v0.0.116...v0.0.117) (2021-03-09)
+
+### Bug Fixes
+
+- **env:** respect environment ([54e2ca0](https://github.com/wessberg/polyfiller/commit/54e2ca07cd4311d3bbbcb082fba7112aad4a946a))
+
 ## [0.0.116](https://github.com/wessberg/polyfiller/compare/v0.0.115...v0.0.116) (2021-03-08)
 
 ### Features

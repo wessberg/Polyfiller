@@ -118,7 +118,6 @@ test("Will inline regenerator-runtime if required. #1", async t => {
 	if (!("body" in result)) {
 		t.false("The API didn't have a body");
 	} else {
-		require("fs").writeFileSync("/Users/Wessberg/Desktop/foo.js", result.body);
 		t.false(result.body.toString().includes(`require("regenerator-runtime")`));
 	}
 });

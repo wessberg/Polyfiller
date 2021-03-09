@@ -10,7 +10,7 @@ import {join} from "path";
 import {generateRandomHash} from "../util/hash-util/hash-util";
 import {unlinkSync, writeFileSync} from "fs";
 import {transform} from "@swc/core";
-import {REGENERATOR_SOURCE} from "../constant/regenerator-source";
+import {REGENERATOR_SOURCE, REGENERATOR_SOURCE_MINIFIED} from "../constant/regenerator-source";
 
 const swcBug1461Match = /var regeneratorRuntime\s*=\s*require\(["'`]regenerator-runtime["'`]\);/;
 const unicodeEscape = /(\\+)u\{([0-9a-fA-F]+)\}/g;
@@ -44,8 +44,8 @@ function workAroundSwcBug1227(str: string): string {
 /**
  * TODO: Remove this when https://github.com/swc-project/swc/issues/1461 has been resolved
  */
-function workAroundSwcBug1461(str: string): string {
-	return str.replace(swcBug1461Match, REGENERATOR_SOURCE);
+function workAroundSwcBug1461(str: string, minify = false): string {
+	return str.replace(swcBug1461Match, minify ? REGENERATOR_SOURCE_MINIFIED : REGENERATOR_SOURCE);
 }
 
 function stringifyPolyfillFeature(feature: IPolyfillFeature): string {
@@ -135,7 +135,7 @@ export async function build({paths, features, featuresRequested, ecmaVersion, co
 
 			// TODO: Remove this when https://github.com/swc-project/swc/issues/1461 has been resolved
 			if (swcBug1461Match.test(code)) {
-				code = workAroundSwcBug1461(code);
+				code = workAroundSwcBug1461(code, minify);
 			}
 		}
 

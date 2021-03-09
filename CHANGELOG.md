@@ -1,3 +1,9 @@
+## [0.0.123](https://github.com/wessberg/polyfiller/compare/v0.0.122...v0.0.123) (2021-03-09)
+
+### Bug Fixes
+
+- **polyfill:** don't use arrow function ([0592eb0](https://github.com/wessberg/polyfiller/commit/0592eb0ccad169ba548de433cb9fa0bb664c5b14))
+
 ## [0.0.122](https://github.com/wessberg/polyfiller/compare/v0.0.121...v0.0.122) (2021-03-09)
 
 ### Bug Fixes

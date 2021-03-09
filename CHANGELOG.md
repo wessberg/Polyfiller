@@ -1,3 +1,9 @@
+## [0.0.121](https://github.com/wessberg/polyfiller/compare/v0.0.120...v0.0.121) (2021-03-09)
+
+### Bug Fixes
+
+- **polyfill:** add string detection for minified output ([441d6d4](https://github.com/wessberg/polyfiller/commit/441d6d413bb3652726c1a1e9d5ba3e90b9c5b112))
+
 ## [0.0.120](https://github.com/wessberg/polyfiller/compare/v0.0.119...v0.0.120) (2021-03-09)
 
 ### Bug Fixes

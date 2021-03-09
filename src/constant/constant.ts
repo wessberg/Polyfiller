@@ -8,7 +8,7 @@ import {booleanize} from "../util/booleanize/booleanize";
 const tempRoot = join(
 	tempDirectory,
 	environment.NPM_PACKAGE_NAME,
-	process.env.PRODUCTION != null && (process.env.PRODUCTION === "" || booleanize(process.env.PRODUCTION)) ? "production" : "development"
+	(process.env.PRODUCTION != null && (process.env.PRODUCTION === "" || booleanize(process.env.PRODUCTION))) || process.env.NODE_ENV === "production" ? "production" : "development"
 );
 
 export const constant: IConstant = {

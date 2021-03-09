@@ -138,6 +138,7 @@ test("Will correctly escape unicode escape sequences. #1", async t => {
 		t.false("The API didn't have a body");
 	} else {
 		t.false(result.body.toString().includes(`u{1e950}`));
+		t.false(result.body.toString().includes(`u{660}`));
 	}
 });
 

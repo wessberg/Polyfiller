@@ -13,13 +13,12 @@ import {transform} from "@swc/core";
 import {REGENERATOR_SOURCE} from "../constant/regenerator-source";
 
 const swcBug1461String = `var regeneratorRuntime = require("regenerator-runtime");`;
+const unicodeEscape = /(\\+)u\{([0-9a-fA-F]+)\}/g;
 
 /**
  * TODO: Remove this when https://github.com/swc-project/swc/issues/1227 has been resolved
  */
 function workAroundSwcBug1227(str: string): string {
-	const unicodeEscape = /(\\+)u\{([0-9a-fA-F]+)\}/g;
-
 	function escape(code: any) {
 		let str = code.toString(16);
 		// Sigh, node 6 doesn't have padStart
@@ -119,11 +118,6 @@ export async function build({paths, features, featuresRequested, ecmaVersion, co
 				ecmaVersion = "es2019";
 			}
 
-			// TODO: Remove this when https://github.com/swc-project/swc/issues/1227 has been resolved
-			if (code.includes("\\u{")) {
-				code = workAroundSwcBug1227(code);
-			}
-
 			({code, map} = await transform(code, {
 				sourceMaps: sourcemap ? "inline" : false,
 				inputSourceMap: map,
@@ -133,6 +127,11 @@ export async function build({paths, features, featuresRequested, ecmaVersion, co
 					target: ecmaVersion
 				}
 			}));
+
+			// TODO: Remove this when https://github.com/swc-project/swc/issues/1227 has been resolved
+			if (code.includes("\\u{")) {
+				code = workAroundSwcBug1227(code);
+			}
 
 			// TODO: Remove this when https://github.com/swc-project/swc/issues/1461 has been resolved
 			if (code.includes(swcBug1461String)) {

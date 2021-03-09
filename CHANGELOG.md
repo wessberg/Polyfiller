@@ -1,3 +1,9 @@
+## [0.0.122](https://github.com/wessberg/polyfiller/compare/v0.0.121...v0.0.122) (2021-03-09)
+
+### Bug Fixes
+
+- **polyfill:** use minified regenerator-runtime source when minifying ([b255887](https://github.com/wessberg/polyfiller/commit/b2558878c25eccc2879381c3ed1aa0d6d60c4c21))
+
 ## [0.0.121](https://github.com/wessberg/polyfiller/compare/v0.0.120...v0.0.121) (2021-03-09)
 
 ### Bug Fixes

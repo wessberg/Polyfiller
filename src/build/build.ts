@@ -10,33 +10,15 @@ import {join} from "path";
 import {generateRandomHash} from "../util/hash-util/hash-util";
 import {unlinkSync, writeFileSync} from "fs";
 import {transform} from "@swc/core";
+import {REGENERATOR_SOURCE} from "../constant/regenerator-source";
+
+const swcBug1461String = `var regeneratorRuntime = require("regenerator-runtime");`;
 
 /**
- * TODO: Remove this when https://github.com/swc-project/swc/issues/1227 has been resolved
+ * TODO: Remove this when https://github.com/swc-project/swc/issues/1461 has been resolved
  */
-function workAroundSwcBug(str: string): string {
-	const unicodeEscape = /(\\+)u\{([0-9a-fA-F]+)\}/g;
-
-	function escape(code: any) {
-		let str = code.toString(16);
-		// Sigh, node 6 doesn't have padStart
-		// TODO: Remove in Babel 8, when we drop node 6.
-		while (str.length < 4) str = "0" + str;
-		return "\\u" + str;
-	}
-
-	function replacer(match: any, backslashes: any, code: any) {
-		if (backslashes.length % 2 === 0) {
-			return match;
-		}
-
-		const char = String.fromCodePoint(parseInt(code, 16));
-		const escaped = backslashes.slice(0, -1) + escape(char.charCodeAt(0));
-
-		return char.length === 1 ? escaped : escaped + escape(char.charCodeAt(1));
-	}
-
-	return str.replace(unicodeEscape, replacer);
+function workAroundSwcBug1461(str: string): string {
+	return str.replace(swcBug1461String, REGENERATOR_SOURCE);
 }
 
 function stringifyPolyfillFeature(feature: IPolyfillFeature): string {
@@ -109,11 +91,6 @@ export async function build({paths, features, featuresRequested, ecmaVersion, co
 				ecmaVersion = "es2019";
 			}
 
-			// TODO: Remove this when https://github.com/swc-project/swc/issues/1227 has been resolved
-			if (code.includes("\\u{")) {
-				code = workAroundSwcBug(code);
-			}
-
 			({code, map} = await transform(code, {
 				sourceMaps: sourcemap ? "inline" : false,
 				inputSourceMap: map,
@@ -123,6 +100,11 @@ export async function build({paths, features, featuresRequested, ecmaVersion, co
 					target: ecmaVersion
 				}
 			}));
+
+			// TODO: Remove this when https://github.com/swc-project/swc/issues/1461 has been resolved
+			if (code.includes(swcBug1461String)) {
+				code = workAroundSwcBug1461(code);
+			}
 		}
 
 		// Apply encoding based on the given options

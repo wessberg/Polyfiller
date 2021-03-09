@@ -77,7 +77,7 @@
 		"@wessberg/pointer-events": "1.0.9",
 		"@wessberg/stringutil": "1.0.19",
 		"esbuild": "0.8.12",
-		"@swc/core": "1.2.39",
+		"@swc/core": "1.2.50",
 		"Base64": "1.1.0",
 		"astring": "1.4.3",
 		"blob-polyfill": "4.0.20200601",

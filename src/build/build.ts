@@ -15,6 +15,34 @@ import {REGENERATOR_SOURCE} from "../constant/regenerator-source";
 const swcBug1461String = `var regeneratorRuntime = require("regenerator-runtime");`;
 
 /**
+ * TODO: Remove this when https://github.com/swc-project/swc/issues/1227 has been resolved
+ */
+function workAroundSwcBug1227(str: string): string {
+	const unicodeEscape = /(\\+)u\{([0-9a-fA-F]+)\}/g;
+
+	function escape(code: any) {
+		let str = code.toString(16);
+		// Sigh, node 6 doesn't have padStart
+		// TODO: Remove in Babel 8, when we drop node 6.
+		while (str.length < 4) str = "0" + str;
+		return "\\u" + str;
+	}
+
+	function replacer(match: any, backslashes: any, code: any) {
+		if (backslashes.length % 2 === 0) {
+			return match;
+		}
+
+		const char = String.fromCodePoint(parseInt(code, 16));
+		const escaped = backslashes.slice(0, -1) + escape(char.charCodeAt(0));
+
+		return char.length === 1 ? escaped : escaped + escape(char.charCodeAt(1));
+	}
+
+	return str.replace(unicodeEscape, replacer);
+}
+
+/**
  * TODO: Remove this when https://github.com/swc-project/swc/issues/1461 has been resolved
  */
 function workAroundSwcBug1461(str: string): string {
@@ -89,6 +117,11 @@ export async function build({paths, features, featuresRequested, ecmaVersion, co
 			// swc doesn't support es2020 as a target
 			if (ecmaVersion === "es2020") {
 				ecmaVersion = "es2019";
+			}
+
+			// TODO: Remove this when https://github.com/swc-project/swc/issues/1227 has been resolved
+			if (code.includes("\\u{")) {
+				code = workAroundSwcBug1227(code);
 			}
 
 			({code, map} = await transform(code, {

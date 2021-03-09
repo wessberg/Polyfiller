@@ -122,6 +122,25 @@ test("Will inline regenerator-runtime if required. #1", async t => {
 	}
 });
 
+test("Will correctly escape unicode escape sequences. #1", async t => {
+	const result = await sendRequest({
+		http2: config.http2,
+		tls: false,
+		userAgent: ie("11"),
+		method: "GET",
+		host: config.host,
+		port: config.port,
+		path: `${constant.endpoint.polyfill}?features=intl.number-format`,
+		acceptEncoding: undefined
+	});
+
+	if (!("body" in result)) {
+		t.false("The API didn't have a body");
+	} else {
+		t.false(result.body.toString().includes(`u{1e950}`));
+	}
+});
+
 test("Will correctly parse meta information for SystemJS. #1", async t => {
 	const polyfillRequest = getPolyfillRequestFromUrl(new URL("?features=systemjs|variant=s", `https://my-polyfill-service.app${constant.endpoint.polyfill}`), chrome(70));
 	t.true([...polyfillRequest.features].some(({meta, name}) => name === "systemjs" && meta != null && meta.variant === "s"));

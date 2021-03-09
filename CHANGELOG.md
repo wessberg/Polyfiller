@@ -1,3 +1,9 @@
+## [0.0.124](https://github.com/wessberg/polyfiller/compare/v0.0.123...v0.0.124) (2021-03-09)
+
+### Bug Fixes
+
+- **polyfill:** add whitespace ([7216729](https://github.com/wessberg/polyfiller/commit/7216729d4109d75e15a2a24a4a56d88cb7694215))
+
 ## [0.0.123](https://github.com/wessberg/polyfiller/compare/v0.0.122...v0.0.123) (2021-03-09)
 
 ### Bug Fixes

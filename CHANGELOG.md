@@ -1,3 +1,9 @@
+## [0.0.125](https://github.com/wessberg/polyfiller/compare/v0.0.124...v0.0.125) (2021-04-10)
+
+### Bug Fixes
+
+- **chromium:** add support for Chrome Canary v92 ([1e21f55](https://github.com/wessberg/polyfiller/commit/1e21f55064cf101bd1cbb7b9f4ae3587aa633928))
+
 ## [0.0.124](https://github.com/wessberg/polyfiller/compare/v0.0.123...v0.0.124) (2021-03-09)
 
 ### Bug Fixes

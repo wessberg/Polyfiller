@@ -1,3 +1,11 @@
+## [0.0.127](https://github.com/wessberg/polyfiller/compare/v0.0.126...v0.0.127) (2021-05-17)
+
+### Features
+
+- **form-data:** change to more reliable FormData implementation ([63ca455](https://github.com/wessberg/polyfiller/commit/63ca4552ee597044377eb404205be5e09669f1f9))
+- **form-data:** change to more reliable FormData implementation ([61f1f49](https://github.com/wessberg/polyfiller/commit/61f1f49a80dc63d3013d092e98284119b824520a))
+- **form-data:** change to more reliable FormData implementation ([e413d41](https://github.com/wessberg/polyfiller/commit/e413d41e225f413015da017cf6c26db527b765af))
+
 ## [0.0.126](https://github.com/wessberg/polyfiller/compare/v0.0.124...v0.0.126) (2021-04-10)
 
 ### Bug Fixes

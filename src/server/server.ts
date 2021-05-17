@@ -1,7 +1,7 @@
 import {IServer} from "./i-server";
 import {createSecureServer, createServer, Http2SecureServer, Http2Server, Http2ServerRequest, Http2ServerResponse} from "http2";
-import {createServer as createHttpServer, IncomingMessage as HttpIncomingMessage, ServerResponse as HttpServerResponse} from "http";
-import {createServer as createHttpsServer} from "https";
+import {createServer as createHttpServer, IncomingMessage as HttpIncomingMessage, ServerResponse as HttpServerResponse, Server as HttpServer} from "http";
+import {createServer as createHttpsServer, Server as HttpSecureServer} from "https";
 import {IRequestHandler} from "./request-handler/i-request-handler";
 import {getRequestFromIncomingHeaders} from "../util/request-util/request-util";
 import {respondToRequest} from "../util/response-util/response-util";
@@ -30,7 +30,7 @@ export class Server implements IServer {
 	 * The constructed Server
 	 * @type {Http2SecureServer|Http2Server|null}
 	 */
-	private server: Http2SecureServer | Http2Server | null = null;
+	private server: Http2SecureServer | Http2Server | HttpServer | HttpSecureServer | null = null;
 
 	/**
 	 * All callbacks that will be invoked when the server has initialized
@@ -55,21 +55,16 @@ export class Server implements IServer {
 
 		// Only run a TLS-encrypted server if a key and cert is given
 		const shouldRunSecureServer = options.key != null && options.cert != null;
-		const http2RequestHandler = async (
-			request: HttpIncomingMessage | Http2ServerRequest,
-			response: HttpServerResponse | Http2ServerResponse,
-			tls: boolean
-		) => this.onRequest(request, response, options, tls);
+		const http2RequestHandler = async (request: HttpIncomingMessage | Http2ServerRequest, response: HttpServerResponse | Http2ServerResponse, tls: boolean) =>
+			this.onRequest(request, response, options, tls);
 
 		if (options.http2) {
 			// Create HTTP2 server
 			this.server = shouldRunSecureServer
-				? createSecureServer({key: options.key, cert: options.cert, allowHTTP1: true}, async (request, response) =>
-						http2RequestHandler(request, response, true)
-				  )
+				? createSecureServer({key: options.key, cert: options.cert, allowHTTP1: true}, async (request, response) => http2RequestHandler(request, response, true))
 				: createServer({}, async (request, response) => http2RequestHandler(request, response, false));
 		} else {
-			// Create HTTP2 server
+			// Create HTTP server
 			this.server = shouldRunSecureServer
 				? createHttpsServer({key: options.key, cert: options.cert}, async (request, response) => http2RequestHandler(request, response, true))
 				: createHttpServer(async (request, response) => http2RequestHandler(request, response, false));

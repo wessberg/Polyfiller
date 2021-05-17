@@ -103,25 +103,6 @@ test("Will generate correct polyfills for IE11. #1", async t => {
 	t.true(result.statusCode === constants.HTTP_STATUS_OK);
 });
 
-test("Will inline regenerator-runtime if required. #1", async t => {
-	const result = await sendRequest({
-		http2: config.http2,
-		tls: false,
-		userAgent: ie("11"),
-		method: "GET",
-		host: config.host,
-		port: config.port,
-		path: `${constant.endpoint.polyfill}?features=form-data`,
-		acceptEncoding: undefined
-	});
-
-	if (!("body" in result)) {
-		t.false("The API didn't have a body");
-	} else {
-		t.false(result.body.toString().includes(`require("regenerator-runtime")`));
-	}
-});
-
 test("Will correctly escape unicode escape sequences. #1", async t => {
 	const result = await sendRequest({
 		http2: config.http2,

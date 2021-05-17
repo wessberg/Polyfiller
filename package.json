@@ -153,11 +153,6 @@
 		"node": ">=10.16.0"
 	},
 	"license": "MIT",
-	"husky": {
-		"hooks": {
-			"pre-commit": "pretty-quick --staged"
-		}
-	},
 	"ava": {
 		"files": [
 			"test/**/**.test.ts"

@@ -41,7 +41,7 @@ jobs:
         run: node file-content-injector.js
 
       - name: Test
-        if: ${{ github.event.base_ref == 'refs/heads/master' }}
+        if: ${{ github.event_name == 'release' }}
         run: npm test
 
       - name: Build

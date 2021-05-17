@@ -97,6 +97,17 @@ export const constant: IConstant = {
 			dependencies: ["es.object.define-properties", "es.array.for-each"],
 			contexts: ALL_CONTEXTS
 		},
+		formdata: {
+			polyfills: ["form-data"]
+		},
+		"form-data": {
+			library: "@polyfiller/object-fit",
+			relativePaths: ["polyfill/index.js"],
+			features: ["api.FormData", "api.FormData.get", "api.FormData.getAll", "api.FormData.has", "api.FormData.set", "api.FormData.entries"],
+			version: environment.NPM_PACKAGE_DEPENDENCIES__POLYFILLER_FORM_DATA,
+			dependencies: ["es.symbol.iterator", "es.symbol.to-string-tag", "es.symbol.constructor", "es.object.define-property"],
+			contexts: WINDOW_WORKER_CONTEXT
+		},
 		"object-fit": {
 			library: "@polyfiller/object-fit",
 			relativePaths: ["polyfill/index.js"],
@@ -152,17 +163,6 @@ export const constant: IConstant = {
 			version: environment.NPM_PACKAGE_DEPENDENCIES_BLOB_POLYFILL,
 			dependencies: ["base64", "url"],
 			contexts: ALL_CONTEXTS
-		},
-		formdata: {
-			polyfills: ["form-data"]
-		},
-		"form-data": {
-			library: "formdata-polyfill",
-			relativePaths: ["FormData.js"],
-			features: ["api.FormData", "api.FormData.get"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_FORMDATA_POLYFILL,
-			dependencies: ["base64", "url"],
-			contexts: WINDOW_WORKER_CONTEXT
 		},
 		requestidlecallback: {
 			polyfills: ["request-idle-callback"]

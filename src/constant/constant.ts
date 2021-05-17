@@ -105,7 +105,7 @@ export const constant: IConstant = {
 			relativePaths: ["polyfill/index.js"],
 			features: ["api.FormData", "api.FormData.get", "api.FormData.getAll", "api.FormData.has", "api.FormData.set", "api.FormData.entries"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES__POLYFILLER_FORM_DATA,
-			dependencies: ["es.symbol.iterator", "es.symbol.to-string-tag", "es.symbol.constructor", "es.object.define-property"],
+			dependencies: [],
 			contexts: WINDOW_WORKER_CONTEXT
 		},
 		"object-fit": {

@@ -4,10 +4,9 @@ on:
   push:
     branches:
       - development
+
   release:
     types: ["published"]
-    tags:
-      - v*
 
 jobs:
   deploy:
@@ -51,8 +50,7 @@ jobs:
       - name: Deploy
         run: node deploy.js
         env:
-          BASE_REF: ${{ github.event.base_ref }},
-          REF: ${{ github.ref }}
+          EVENT_NAME: ${{ github.event_name }}
           PRODUCTION: ${{ github.event.base_ref == 'refs/heads/master' }}
           INTERNAL_HOST_DEVELOPMENT: ${{ secrets.INTERNAL_HOST_DEVELOPMENT }}
           INTERNAL_HOST_PRODUCTION: ${{ secrets.INTERNAL_HOST_PRODUCTION }}

@@ -101,7 +101,7 @@ export const constant: IConstant = {
 			polyfills: ["form-data"]
 		},
 		"form-data": {
-			library: "@polyfiller/object-fit",
+			library: "@polyfiller/form-data",
 			relativePaths: ["polyfill/index.js"],
 			features: ["api.FormData", "api.FormData.get", "api.FormData.getAll", "api.FormData.has", "api.FormData.set", "api.FormData.entries"],
 			version: environment.NPM_PACKAGE_DEPENDENCIES__POLYFILLER_FORM_DATA,

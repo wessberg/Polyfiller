@@ -21,8 +21,6 @@ const unicodeEscape = /(\\+)u\{([0-9a-fA-F]+)\}/g;
 function workAroundSwcBug1227(str: string): string {
 	function escape(code: any) {
 		let str = code.toString(16);
-		// Sigh, node 6 doesn't have padStart
-		// TODO: Remove in Babel 8, when we drop node 6.
 		while (str.length < 4) str = "0" + str;
 		return "\\u" + str;
 	}
@@ -82,7 +80,9 @@ export async function build({paths, features, featuresRequested, ecmaVersion, co
 
 	try {
 		const result = await esbuild({
-			banner,
+			banner: {
+				js: banner
+			},
 			write: false,
 			format: "iife",
 			outfile: virtualOutputFileName,

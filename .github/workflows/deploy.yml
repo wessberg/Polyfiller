@@ -40,7 +40,7 @@ jobs:
         run: node file-content-injector.js
 
       - name: Test
-        if: ${{ github.ref == 'refs/heads/master' }}
+        if: ${{ github.event.base_ref == 'refs/heads/master' }}
         run: npm test
 
       - name: Build
@@ -49,8 +49,7 @@ jobs:
       - name: Deploy
         run: node deploy.js
         env:
-          REF: ${{ github.ref }}
-          PRODUCTION: ${{ github.ref == 'refs/heads/master' }}
+          PRODUCTION: ${{ github.event.base_ref == 'refs/heads/master' }}
           INTERNAL_HOST_DEVELOPMENT: ${{ secrets.INTERNAL_HOST_DEVELOPMENT }}
           INTERNAL_HOST_PRODUCTION: ${{ secrets.INTERNAL_HOST_PRODUCTION }}
           INTERNAL_PORT_DEVELOPMENT: ${{ secrets.INTERNAL_PORT_DEVELOPMENT }}

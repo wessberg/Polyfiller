@@ -5,6 +5,7 @@
 	const {writeFileSync, readFileSync, existsSync, mkdirSync, copyFileSync, chmodSync, readdirSync} = require("fs");
 
 	let {
+		REF,
 		RUNNER_TEMP,
 		DEPLOY_HOST,
 		DEPLOY_USER_NAME,
@@ -18,6 +19,9 @@
 		DOMAIN_NAMES_DEVELOPMENT,
 		DOMAIN_NAMES_PRODUCTION
 	} = process.env;
+
+	console.log(REF);
+	process.exit(1);
 
 	// Coerce to boolean
 	PRODUCTION = PRODUCTION === true || PRODUCTION === "true" || PRODUCTION === "1" || PRODUCTION === "y";

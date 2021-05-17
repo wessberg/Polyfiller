@@ -49,6 +49,7 @@ jobs:
       - name: Deploy
         run: node deploy.js
         env:
+          REF: ${{ github.ref }}
           PRODUCTION: ${{ github.ref == 'refs/heads/master' }}
           INTERNAL_HOST_DEVELOPMENT: ${{ secrets.INTERNAL_HOST_DEVELOPMENT }}
           INTERNAL_HOST_PRODUCTION: ${{ secrets.INTERNAL_HOST_PRODUCTION }}

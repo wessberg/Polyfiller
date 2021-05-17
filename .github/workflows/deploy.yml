@@ -6,6 +6,8 @@ on:
       - development
   release:
     types: ["published"]
+    tags:
+      - v*
 
 jobs:
   deploy:

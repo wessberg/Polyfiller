@@ -50,8 +50,7 @@ jobs:
       - name: Deploy
         run: node deploy.js
         env:
-          EVENT_NAME: ${{ github.event_name }}
-          PRODUCTION: ${{ github.event.base_ref == 'refs/heads/master' }}
+          PRODUCTION: ${{ github.event_name == 'release' }}
           INTERNAL_HOST_DEVELOPMENT: ${{ secrets.INTERNAL_HOST_DEVELOPMENT }}
           INTERNAL_HOST_PRODUCTION: ${{ secrets.INTERNAL_HOST_PRODUCTION }}
           INTERNAL_PORT_DEVELOPMENT: ${{ secrets.INTERNAL_PORT_DEVELOPMENT }}

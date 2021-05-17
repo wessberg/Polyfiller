@@ -21,6 +21,7 @@
 	} = process.env;
 
 	console.log("REF:", REF);
+	process.exit(1);
 
 	// Coerce to boolean
 	PRODUCTION = PRODUCTION === true || PRODUCTION === "true" || PRODUCTION === "1" || PRODUCTION === "y";

@@ -23,7 +23,8 @@
 		"preversion": "NODE_ENV=production npm run build",
 		"version": "npm run generate:all && git add .",
 		"release": "np --no-cleanup --no-yarn",
-		"update": "npx npm-check-updates -u -x np --dep dev,prod && npm update && npm install"
+		"update:check": "npx npm-check-updates -x np --dep dev,prod",
+		"update:commit": "npx npm-check-updates -u -x np --dep dev,prod && npm update && npm install"
 	},
 	"keywords": [
 		"polyfills",
@@ -65,14 +66,14 @@
 	"dependencies": {
 		"@babel/core": "~7.14.2",
 		"@babel/plugin-transform-block-scoping": "7.14.2",
-		"@formatjs/intl-datetimeformat": "3.0.0",
-		"@formatjs/intl-displaynames": "4.0.0",
-		"@formatjs/intl-getcanonicallocales": "1.5.1",
-		"@formatjs/intl-listformat": "5.0.0",
-		"@formatjs/intl-locale": "2.4.7",
-		"@formatjs/intl-numberformat": "6.0.0",
-		"@formatjs/intl-pluralrules": "4.0.0",
-		"@formatjs/intl-relativetimeformat": "8.0.0",
+		"@formatjs/intl-datetimeformat": "4.1.0",
+		"@formatjs/intl-displaynames": "5.1.0",
+		"@formatjs/intl-getcanonicallocales": "1.6.0",
+		"@formatjs/intl-listformat": "6.1.0",
+		"@formatjs/intl-locale": "2.4.26",
+		"@formatjs/intl-numberformat": "7.1.0",
+		"@formatjs/intl-pluralrules": "4.0.20",
+		"@formatjs/intl-relativetimeformat": "9.1.0",
 		"@polyfiller/form-data": "0.0.40",
 		"@polyfiller/object-fit": "0.0.39",
 		"@swc/core": "1.2.50",

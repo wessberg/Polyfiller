@@ -1,3 +1,18 @@
+## [0.0.130](https://github.com/wessberg/polyfiller/compare/v0.0.129...v0.0.130) (2021-05-18)
+
+### Bug Fixes
+
+- **swc:** make sure regenerator-runtime is always inlined ([c9c6114](https://github.com/wessberg/polyfiller/commit/c9c61147972a0d25ffcf719e548e7ba3d7e56625))
+- **swc:** make sure regenerator-runtime is always inlined ([8f0f4d9](https://github.com/wessberg/polyfiller/commit/8f0f4d9e534a9999b4a608fe111641efda685346))
+- **ts:** fix type issue ([9b23786](https://github.com/wessberg/polyfiller/commit/9b23786e85ada198ea4280eb514bd9369b9a84c8))
+- **ts:** fix type issue ([b938bbd](https://github.com/wessberg/polyfiller/commit/b938bbd44ba54b8c430996fadc90ef4016a0c878))
+
+### Features
+
+- **blob:** update Blob polyfill dependency ([780d06d](https://github.com/wessberg/polyfiller/commit/780d06ddc5b82a994fa7313dc02552022e43a688))
+- **ecma-262:** update core-js dependency ([14eb2aa](https://github.com/wessberg/polyfiller/commit/14eb2aaf166444b5c3355f914f5203cd4676ab6a))
+- **intl:** bump dependencies for Intl polyfills ([86ab121](https://github.com/wessberg/polyfiller/commit/86ab121ab441bce99b76b6109df0b645c8f9c991))
+
 ## [0.0.129](https://github.com/wessberg/polyfiller/compare/v0.0.128...v0.0.129) (2021-05-17)
 
 ## [0.0.128](https://github.com/wessberg/polyfiller/compare/v0.0.127...v0.0.128) (2021-05-17)

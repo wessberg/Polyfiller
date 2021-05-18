@@ -16,7 +16,7 @@ const swcBug1461Match = /var regeneratorRuntime\d?\s*=\s*require\(["'`]regenerat
 const swcBug1461MatchReference = /regeneratorRuntime\d\./g;
 const unicodeEscape = /(\\+)u\{([0-9a-fA-F]+)\}/g;
 
-/**
+/**¨
  * TODO: Remove this when https://github.com/swc-project/swc/issues/1227 has been resolved
  */
 function workAroundSwcBug1227(str: string): string {

@@ -16,7 +16,7 @@ export class Server implements IServer {
 	async initialize(): Promise<void> {
 		const app = express();
 
-		await this.metricsService.initialize();
+		await this.metricsService.initialize(app);
 		await this.metricsService.configureRequestHandlers(app);
 
 		// Options

@@ -79,6 +79,7 @@
 		"@polyfiller/form-data": "0.0.40",
 		"@polyfiller/object-fit": "0.0.39",
 		"@sentry/node": "6.4.0",
+		"@sentry/tracing": "6.4.0",
 		"@swc/core": "1.2.57",
 		"@webcomponents/custom-elements": "1.4.3",
 		"@webcomponents/shadycss": "1.10.2",

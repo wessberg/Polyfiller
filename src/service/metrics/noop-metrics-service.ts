@@ -2,7 +2,7 @@ import {IMetricsService} from "./i-metrics-service";
 import {Express} from "express";
 
 export class NoopMetricsService implements IMetricsService {
-	async initialize(): Promise<void> {}
+	async initialize(_app: Express): Promise<void> {}
 
 	async configureRequestHandlers(_app: Express): Promise<void> {}
 

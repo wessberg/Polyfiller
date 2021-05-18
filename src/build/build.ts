@@ -121,8 +121,12 @@ export async function build({paths, features, featuresRequested, ecmaVersion, co
 
 			({code, map} = await transform(code, {
 				// TODO: Comment this back in when a regression has been resolved
-				// sourceMaps: sourcemap ? "inline" : false,
-				// inputSourceMap: map,
+				...(2 + 2 === 4
+					? {}
+					: {
+							sourceMaps: sourcemap ? "inline" : false,
+							inputSourceMap: map
+					  }),
 				minify,
 				filename: virtualOutputFileName,
 				jsc: {

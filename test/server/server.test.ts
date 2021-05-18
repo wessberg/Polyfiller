@@ -157,6 +157,25 @@ test("Will inline regenerator-runtime if required. #1", async t => {
 	}
 });
 
+test("Generates SourceMap if required. #1", async t => {
+	const result = await sendRequest({
+		http2: config.http2,
+		tls: false,
+		userAgent: ie("11"),
+		method: "GET",
+		host: config.host,
+		port: config.port,
+		path: `${constant.endpoint.polyfill}?features=form-data&sourcemap`,
+		acceptEncoding: undefined
+	});
+
+	if (!("body" in result)) {
+		t.false("The API didn't have a body");
+	} else {
+		t.true(result.body.toString().includes(`//# sourceMappingURL=data:application/json;base64`));
+	}
+});
+
 test("Will set a 'x-applied-polyfills' header on HTTP2 responses with a HTTP-friendly list of all applied polyfills. #1", async t => {
 	const result = await sendRequest({
 		http2: config.http2,

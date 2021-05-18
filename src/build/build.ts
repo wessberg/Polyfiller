@@ -16,6 +16,10 @@ const swcBug1461Match = /var regeneratorRuntime\d?\s*=\s*require\(["'`]regenerat
 const swcBug1461MatchReference = /regeneratorRuntime\d\./g;
 const unicodeEscape = /(\\+)u\{([0-9a-fA-F]+)\}/g;
 
+// TODO: Input SourceMaps are broken in the current version of @swc/core
+//       Remove this when the problem has been resolved
+const allowInputSourceMapsForSwc = false;
+
 /**¨
  * TODO: Remove this when https://github.com/swc-project/swc/issues/1227 has been resolved
  */
@@ -56,17 +60,14 @@ function stringifyPolyfillFeature(feature: IPolyfillFeature): string {
 	return `${feature.name}${metaEntriesText.length === 0 ? "" : ` (${metaEntriesText})`}`;
 }
 
-export async function build({paths, features, featuresRequested, ecmaVersion, context, sourcemap = false, minify = false}: BuildOptions): Promise<BuildResult> {
+export async function build({paths, features, ecmaVersion, context, sourcemap = false, minify = false}: BuildOptions): Promise<BuildResult> {
 	const entryText = paths.map(path => `import "${path}";`).join("\n");
 
 	// Generate the intro text
-	const featuresRequestedText = featuresRequested.length < 1 ? `No features requested` : `Features requested: ${featuresRequested.map(stringifyPolyfillFeature).join(", ")}`;
 	const polyfillsAppliedText = features.length < 1 ? `No polyfills applied` : `Polyfills applied (in order): ${features.map(stringifyPolyfillFeature).join(", ")}`;
 
 	const banner = `\
 /**
- * ${featuresRequestedText}
- *
  * ${polyfillsAppliedText}
  * @preserve
  */
@@ -91,13 +92,12 @@ export async function build({paths, features, featuresRequested, ecmaVersion, co
 			bundle: true,
 			target: "esnext",
 			mainFields: context === "node" ? ["module", "es2015", "main"] : ["browser", "module", "es2015", "main"],
-			sourcemap,
+			sourcemap: sourcemap ? (canUseOnlyEsbuild ? "inline" : true) : false,
 			entryPoints: [tempInputFileLocation],
 			...(canUseOnlyEsbuild
 				? {
 						minify,
-						target: ecmaVersion,
-						sourcemap: sourcemap ? "inline" : false
+						target: ecmaVersion
 				  }
 				: {})
 		});
@@ -111,7 +111,6 @@ export async function build({paths, features, featuresRequested, ecmaVersion, co
 
 		let code = Buffer.from(codeOutputFile.contents).toString("utf8");
 		let map = mapOutputFile == null ? undefined : Buffer.from(mapOutputFile.contents).toString("utf8");
-
 		// We might need to apply transformations in a separate step using swc if the target is ES5 or below
 		if (!canUseOnlyEsbuild) {
 			// swc doesn't support es2020 as a target
@@ -119,14 +118,9 @@ export async function build({paths, features, featuresRequested, ecmaVersion, co
 				ecmaVersion = "es2019";
 			}
 
-			({code, map} = await transform(code, {
-				// TODO: Comment this back in when a regression has been resolved
-				...(2 + 2 === 4
-					? {}
-					: {
-							sourceMaps: sourcemap ? "inline" : false,
-							inputSourceMap: map
-					  }),
+			({code} = await transform(code, {
+				sourceMaps: sourcemap ? "inline" : false,
+				inputSourceMap: allowInputSourceMapsForSwc ? map : undefined,
 				minify,
 				filename: virtualOutputFileName,
 				jsc: {

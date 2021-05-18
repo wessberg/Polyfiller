@@ -1,5 +1,8 @@
 import {PolyfillDealiasedName, PolyfillName} from "./polyfill-name";
 import {PolyfillContext} from "./polyfill-context";
+import pkg from "../../package.json";
+
+export type PkgDependency = keyof typeof pkg.dependencies;
 
 export interface IPolyfillDictAlias {
 	polyfills: PolyfillName[];
@@ -8,7 +11,6 @@ export interface IPolyfillDictAlias {
 export interface IPolyfillDictEntryBase {
 	features: string[];
 	meta?: Record<string, string[] | string | Record<PolyfillContext, string[]>>;
-	version: string;
 	contexts: Set<PolyfillContext>;
 	dependencies: PolyfillName[];
 	mustComeAfter?: PolyfillName[] | "*";
@@ -16,12 +18,14 @@ export interface IPolyfillDictEntryBase {
 }
 
 export interface IPolyfillLibraryDictEntry extends IPolyfillDictEntryBase {
-	library: string | Record<PolyfillContext, string>;
+	library: PkgDependency | Record<PolyfillContext, PkgDependency>;
 	relativePaths: string[] | Record<PolyfillContext, string[]>;
+	version?: string;
 }
 
 export interface IPolyfillLocalDictEntry extends IPolyfillDictEntryBase {
 	localPaths: string[] | Record<PolyfillContext, string[]>;
+	version: string;
 }
 
 export declare type PolyfillDictNormalizedEntry = IPolyfillLibraryDictEntry | IPolyfillLocalDictEntry;

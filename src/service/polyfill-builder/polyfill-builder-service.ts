@@ -1,14 +1,14 @@
 import {IPolyfillBuilderService} from "./i-polyfill-builder-service";
 import {constant} from "../../constant/constant";
-import {IPolyfillFeature} from "../../polyfill/i-polyfill-feature";
+import {PolyfillFeature} from "../../polyfill/polyfill-feature";
 import {join} from "path";
 import {ICompressedPolyfillSetResult} from "./i-compressed-polyfill-set-result";
-import {ensureArray} from "../../util/ensure-array/ensure-array";
 import {sync} from "find-up";
 import {build} from "../../build/build";
 import {IPolyfillDictEntryBase} from "../../polyfill/polyfill-dict";
 import {PolyfillContext} from "../../polyfill/polyfill-context";
-import {IPolyfillRequest} from "../../polyfill/i-polyfill-request";
+import {PolyfillRequest} from "../../polyfill/polyfill-request";
+import {ensureArray} from "../../common/util/util";
 
 const SYNC_OPTIONS = {cwd: __dirname};
 
@@ -35,7 +35,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 	/**
 	 * Builds the given PolyfillSet and returns the result in all encodings
 	 */
-	async buildPolyfillSet(polyfillSet: Set<IPolyfillFeature>, request: IPolyfillRequest): Promise<ICompressedPolyfillSetResult> {
+	async buildPolyfillSet(polyfillSet: Set<PolyfillFeature>, request: PolyfillRequest): Promise<ICompressedPolyfillSetResult> {
 		const paths: string[] = [];
 
 		for (const polyfillFeature of polyfillSet) {

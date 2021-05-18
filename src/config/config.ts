@@ -1,8 +1,8 @@
 import {environment} from "../environment/environment";
 import {IConfig} from "./i-config";
 import {readFileSync} from "fs";
-import {booleanize} from "../util/booleanize/booleanize";
 import {Buffer} from "buffer";
+import {booleanize} from "../common/util/util";
 
 export const config: IConfig = {
 	...environment,
@@ -13,11 +13,9 @@ export const config: IConfig = {
 	debug: booleanize(environment.DEBUG),
 	verbose: booleanize(environment.VERBOSE),
 	clearCache: booleanize(environment.CLEAR_CACHE),
-	http2: booleanize(environment.HTTP2),
 	https: booleanize(environment.HTTPS),
 	host: environment.HOST,
 	port: parseInt(environment.PORT),
-	email: environment.EMAIL != null && environment.EMAIL !== "" ? environment.EMAIL : undefined,
 	key:
 		environment.KEY == null || environment.KEY === ""
 			? undefined

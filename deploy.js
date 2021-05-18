@@ -16,7 +16,9 @@
 		INTERNAL_PORT_DEVELOPMENT,
 		INTERNAL_PORT_PRODUCTION,
 		DOMAIN_NAMES_DEVELOPMENT,
-		DOMAIN_NAMES_PRODUCTION
+		DOMAIN_NAMES_PRODUCTION,
+		SENTRY_DSN_DEVELOPMENT,
+		SENTRY_DSN_PRODUCTION
 	} = process.env;
 
 	// Coerce to boolean
@@ -280,9 +282,16 @@ server {
 	// Run
 	console.log(`Running`);
 	const pm2NeverRan = (await ssh.execCommand(`npx pm2 show ${APP_NAME}`, {cwd: REMOTE_ROOT})).stdout === "";
-	const envVariables = `PRODUCTION=${String(PRODUCTION)} HOST=${PRODUCTION ? INTERNAL_HOST_PRODUCTION : INTERNAL_HOST_DEVELOPMENT} PORT=${
-		PRODUCTION ? INTERNAL_PORT_PRODUCTION : INTERNAL_PORT_DEVELOPMENT
-	}`;
+
+	const envVariables = Object.entries({
+		PRODUCTION: String(PRODUCTION),
+		HOST: PRODUCTION ? INTERNAL_HOST_PRODUCTION : INTERNAL_HOST_DEVELOPMENT,
+		PORT: PRODUCTION ? INTERNAL_PORT_PRODUCTION : INTERNAL_PORT_DEVELOPMENT,
+		SENTRY_DSN: PRODUCTION ? SENTRY_DSN_PRODUCTION : SENTRY_DSN_DEVELOPMENT
+	})
+		.map(([key, value]) => `${key}=${value}`)
+		.join(" ");
+
 	if (pm2NeverRan) {
 		await ssh.execCommand(`${envVariables} npx pm2 start npm --name "${APP_NAME}" -- start`, {cwd: REMOTE_ROOT});
 	} else {

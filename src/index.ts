@@ -6,7 +6,7 @@ import {ICacheRegistryService} from "./service/registry/cache-registry/i-cache-r
 container
 	.get<ICacheRegistryService>()
 	.initialize()
-	.then(async () => container.get<IApiService>().launch());
+	.then(async () => container.get<IApiService>().start());
 
 // Exports
 export {PolyfillName} from "./polyfill/polyfill-name";

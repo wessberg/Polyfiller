@@ -1,4 +1,1 @@
-export enum ContentEncodingKind {
-	GZIP = "gzip",
-	BROTLI = "br"
-}
+export type ContentEncodingKind = "gzip" | "br";

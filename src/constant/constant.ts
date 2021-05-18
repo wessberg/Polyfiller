@@ -1,13 +1,13 @@
 import {IConstant} from "./i-constant";
-import {environment} from "../environment/environment";
 import tempDirectory from "temp-dir";
 import {join} from "path";
 import {ALL_CONTEXTS, WINDOW_CONTEXT, WINDOW_NODE_CONTEXT, WINDOW_WORKER_CONTEXT} from "../polyfill/polyfill-context";
-import {booleanize} from "../util/booleanize/booleanize";
+import pkg from "../../package.json";
+import {booleanize} from "../common/util/util";
 
 const tempRoot = join(
 	tempDirectory,
-	environment.NPM_PACKAGE_NAME,
+	pkg.name,
 	(process.env.PRODUCTION != null && (process.env.PRODUCTION === "" || booleanize(process.env.PRODUCTION))) || process.env.NODE_ENV === "production" ? "production" : "development"
 );
 
@@ -18,12 +18,15 @@ export const constant: IConstant = {
 	},
 	header: {
 		polyfills: "x-applied-polyfills",
+		cache: {
+			immutable: "public,max-age=31536000,immutable"
+		},
 		maxChars: 600
 	},
 	meta: {
-		name: environment.NPM_PACKAGE_NAME,
-		version: environment.NPM_PACKAGE_VERSION,
-		github: environment.NPM_PACKAGE_HOMEPAGE
+		name: pkg.name,
+		version: pkg.version,
+		github: pkg.repository.url
 	},
 
 	path: {
@@ -49,7 +52,7 @@ export const constant: IConstant = {
 				s: "dist/s.js"
 			},
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_SYSTEMJS,
+
 			dependencies: ["es.object.create", "es.object.freeze", "es.object.define-property", "es.promise", "fetch"],
 			contexts: ALL_CONTEXTS
 		},
@@ -68,7 +71,7 @@ export const constant: IConstant = {
 				node: ["fesm2015/zone-node.js"]
 			},
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_ZONE_JS,
+
 			dependencies: [],
 			mustComeAfter: "*",
 			contexts: WINDOW_NODE_CONTEXT
@@ -85,7 +88,7 @@ export const constant: IConstant = {
 				node: ["lib/performance-now.js"]
 			},
 			features: ["high-resolution-time"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_PERFNOW,
+
 			dependencies: ["es.date.now"],
 			contexts: ALL_CONTEXTS
 		},
@@ -93,7 +96,7 @@ export const constant: IConstant = {
 			library: "url-polyfill",
 			relativePaths: ["url-polyfill.js"],
 			features: ["url", "urlsearchparams"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_URL_POLYFILL,
+
 			dependencies: ["es.object.define-properties", "es.array.for-each"],
 			contexts: ALL_CONTEXTS
 		},
@@ -104,7 +107,7 @@ export const constant: IConstant = {
 			library: "@polyfiller/form-data",
 			relativePaths: ["polyfill/index.js"],
 			features: ["api.FormData", "api.FormData.get", "api.FormData.getAll", "api.FormData.has", "api.FormData.set", "api.FormData.entries"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES__POLYFILLER_FORM_DATA,
+
 			dependencies: [],
 			contexts: WINDOW_WORKER_CONTEXT
 		},
@@ -112,7 +115,7 @@ export const constant: IConstant = {
 			library: "@polyfiller/object-fit",
 			relativePaths: ["polyfill/index.js"],
 			features: ["object-fit"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES__POLYFILLER_OBJECT_FIT,
+
 			dependencies: [
 				"window",
 				"document",
@@ -144,7 +147,7 @@ export const constant: IConstant = {
 			library: "console-polyfill",
 			relativePaths: ["index.js"],
 			features: ["console-basic", "console-time"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CONSOLE_POLYFILL,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -152,7 +155,7 @@ export const constant: IConstant = {
 			library: "Base64",
 			relativePaths: ["base64.js"],
 			features: ["atob-btoa"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_BASE64,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -160,7 +163,7 @@ export const constant: IConstant = {
 			library: "blob-polyfill",
 			relativePaths: ["Blob.js"],
 			features: ["blobbuilder", "bloburls"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_BLOB_POLYFILL,
+
 			dependencies: ["base64", "url"],
 			contexts: ALL_CONTEXTS
 		},
@@ -174,7 +177,7 @@ export const constant: IConstant = {
 			library: "requestidlecallback",
 			relativePaths: ["index.js"],
 			features: ["requestidlecallback"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_REQUESTIDLECALLBACK,
+
 			dependencies: ["requestanimationframe"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -182,7 +185,7 @@ export const constant: IConstant = {
 			library: "requestanimationframe",
 			relativePaths: ["app/requestAnimationFrame.js"],
 			features: ["requestanimationframe"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_REQUESTANIMATIONFRAME,
+
 			dependencies: ["es.date.now", "performance.now"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -190,7 +193,7 @@ export const constant: IConstant = {
 			library: "proxy-polyfill",
 			relativePaths: ["proxy.min.js"],
 			features: ["proxy"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_PROXY_POLYFILL,
+
 			dependencies: ["es"],
 			contexts: ALL_CONTEXTS
 		},
@@ -224,7 +227,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.promise.js"],
 			features: ["promises"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -232,7 +235,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.promise.finally.js"],
 			features: ["javascript.builtins.Promise.finally"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.promise.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -240,7 +243,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.promise.all-settled.js"],
 			features: ["javascript.builtins.Promise.allSettled"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.promise.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -249,7 +252,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.promise.try.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.promise.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -257,7 +260,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.promise.any.js"],
 			features: ["javascript.builtins.Promise.any"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.promise.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -294,7 +297,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.lookup-getter.js"],
 			features: ["javascript.builtins.Object.lookupGetter"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -302,7 +305,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.from-entries.js"],
 			features: ["javascript.builtins.Object.fromEntries"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -310,7 +313,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.lookup-setter.js"],
 			features: ["javascript.builtins.Object.lookupSetter"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -318,7 +321,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.define-getter.js"],
 			features: ["javascript.builtins.Object.defineGetter"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -326,7 +329,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.define-setter.js"],
 			features: ["javascript.builtins.Object.defineSetter"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -334,7 +337,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.entries.js"],
 			features: ["javascript.builtins.Object.entries"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -342,7 +345,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.values.js"],
 			features: ["object-values"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -350,7 +353,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.get-own-property-descriptors.js"],
 			features: ["javascript.builtins.Object.getOwnPropertyDescriptors"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -358,7 +361,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.assign.js"],
 			features: ["javascript.builtins.Object.assign"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -366,7 +369,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.create.js"],
 			features: ["javascript.builtins.Object.create"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -374,7 +377,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.define-properties.js"],
 			features: ["javascript.builtins.Object.defineProperties"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -382,7 +385,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.define-property.js"],
 			features: ["javascript.builtins.Object.defineProperty"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -390,7 +393,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.freeze.js"],
 			features: ["javascript.builtins.Object.freeze"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -398,7 +401,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.get-own-property-descriptor.js"],
 			features: ["javascript.builtins.Object.getOwnPropertyDescriptor"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -406,7 +409,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.get-own-property-names.js"],
 			features: ["javascript.builtins.Object.getOwnPropertyNames"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -414,7 +417,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.get-prototype-of.js"],
 			features: ["javascript.builtins.Object.getPrototypeOf"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["proto"],
 			contexts: ALL_CONTEXTS
 		},
@@ -422,7 +425,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.is-extensible.js"],
 			features: ["javascript.builtins.Object.isExtensible"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -430,7 +433,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.is-frozen.js"],
 			features: ["javascript.builtins.Object.isFrozen"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -438,7 +441,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.is-sealed.js"],
 			features: ["javascript.builtins.Object.isSealed"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -446,7 +449,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.is.js"],
 			features: ["javascript.builtins.Object.is"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -454,7 +457,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.keys.js"],
 			features: ["javascript.builtins.Object.keys"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -462,7 +465,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.prevent-extensions.js"],
 			features: ["javascript.builtins.Object.preventExtensions"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -470,7 +473,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.seal.js"],
 			features: ["javascript.builtins.Object.seal"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -478,7 +481,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.set-prototype-of.js"],
 			features: ["javascript.builtins.Object.setPrototypeOf"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["proto"],
 			contexts: ALL_CONTEXTS
 		},
@@ -486,7 +489,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.object.to-string.js"],
 			features: ["javascript.builtins.Object.toString"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -497,7 +500,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.function.bind.js"],
 			features: ["javascript.builtins.Function.bind"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -505,7 +508,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.function.name.js"],
 			features: ["javascript.builtins.Function.name"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -544,7 +547,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.concat.js"],
 			features: ["javascript.builtins.Array.concat"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -552,7 +555,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.flat.js"],
 			features: ["javascript.builtins.Array.flat"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -560,7 +563,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.flat-map.js"],
 			features: ["javascript.builtins.Array.flatMap"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -569,7 +572,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.array.last-index.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -578,7 +581,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.array.last-item.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -586,7 +589,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.copy-within.js"],
 			features: ["javascript.builtins.Array.copyWithin"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -594,7 +597,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.every.js"],
 			features: ["javascript.builtins.Array.every"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -602,7 +605,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.fill.js"],
 			features: ["javascript.builtins.Array.fill"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -610,7 +613,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.filter.js"],
 			features: ["javascript.builtins.Array.filter"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -618,7 +621,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.find-index.js"],
 			features: ["javascript.builtins.Array.findIndex"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -626,7 +629,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.find.js"],
 			features: ["javascript.builtins.Array.find"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -634,7 +637,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.for-each.js"],
 			features: ["javascript.builtins.Array.forEach"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -642,7 +645,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.from.js"],
 			features: ["javascript.builtins.Array.from"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -650,7 +653,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.includes.js"],
 			features: ["javascript.builtins.Array.includes"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -658,7 +661,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.index-of.js"],
 			features: ["javascript.builtins.Array.indexOf"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -666,7 +669,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.is-array.js"],
 			features: ["javascript.builtins.Array.isArray"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -674,7 +677,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.iterator.js"],
 			features: ["javascript.builtins.Array.@@iterator"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.iterator"],
 			contexts: ALL_CONTEXTS
 		},
@@ -682,7 +685,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.join.js"],
 			features: ["javascript.builtins.Array.join"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -690,7 +693,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.last-index-of.js"],
 			features: ["javascript.builtins.Array.lastIndexOf"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -698,7 +701,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.map.js"],
 			features: ["javascript.builtins.Array.map"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -706,7 +709,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.of.js"],
 			features: ["javascript.builtins.Array.of"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -714,7 +717,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.reduce-right.js"],
 			features: ["javascript.builtins.Array.reduceRight"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -722,7 +725,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.reduce.js"],
 			features: ["javascript.builtins.Array.reduce"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -730,7 +733,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.slice.js"],
 			features: ["javascript.builtins.Array.slice"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -738,7 +741,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.some.js"],
 			features: ["javascript.builtins.Array.some"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -746,7 +749,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.sort.js"],
 			features: ["javascript.builtins.Array.sort"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -754,7 +757,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.species.js"],
 			features: ["javascript.builtins.Array.@@species"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.species"],
 			contexts: ALL_CONTEXTS
 		},
@@ -762,7 +765,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array.splice.js"],
 			features: ["javascript.builtins.Array.splice"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -773,7 +776,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array-buffer.constructor.js"],
 			features: ["javascript.builtins.ArrayBuffer"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -781,7 +784,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array-buffer.is-view.js"],
 			features: ["javascript.builtins.ArrayBuffer.isView"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.array-buffer.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -789,7 +792,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.array-buffer.slice.js"],
 			features: ["javascript.builtins.ArrayBuffer.slice"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.array-buffer.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -832,7 +835,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.string.at.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -841,7 +844,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.string.code-points.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -849,7 +852,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.match-all.js"],
 			features: ["javascript.builtins.String.matchAll"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -857,7 +860,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.replace-all.js"],
 			features: ["javascript.builtins.String.replaceAll"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -865,7 +868,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.trim-start.js"],
 			features: ["javascript.builtins.String.trimStart"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -873,7 +876,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.trim-end.js"],
 			features: ["javascript.builtins.String.trimEnd"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -881,7 +884,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.anchor.js"],
 			features: ["javascript.builtins.String.anchor"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -889,7 +892,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.big.js"],
 			features: ["javascript.builtins.String.big"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -897,7 +900,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.blink.js"],
 			features: ["javascript.builtins.String.blink"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -905,7 +908,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.bold.js"],
 			features: ["javascript.builtins.String.bold"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -913,7 +916,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.code-point-at.js"],
 			features: ["javascript.builtins.String.codePointAt"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -921,7 +924,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.ends-with.js"],
 			features: ["javascript.builtins.String.endsWith"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -929,7 +932,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.fixed.js"],
 			features: ["javascript.builtins.String.fixed"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -937,7 +940,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.fontcolor.js"],
 			features: ["javascript.builtins.String.fontcolor"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -945,7 +948,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.fontsize.js"],
 			features: ["javascript.builtins.String.fontsize"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -953,7 +956,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.from-code-point.js"],
 			features: ["javascript.builtins.String.fromCodePoint"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -961,7 +964,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.includes.js"],
 			features: ["javascript.builtins.String.includes"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -969,7 +972,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.italics.js"],
 			features: ["javascript.builtins.String.italics"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -977,7 +980,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.iterator.js"],
 			features: ["javascript.builtins.String.@@iterator"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.iterator"],
 			contexts: ALL_CONTEXTS
 		},
@@ -985,7 +988,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.link.js"],
 			features: ["javascript.builtins.String.link"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -993,7 +996,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.match.js"],
 			features: ["javascript.builtins.String.match"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1001,7 +1004,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.pad-end.js"],
 			features: ["javascript.builtins.String.padEnd"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1009,7 +1012,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.pad-start.js"],
 			features: ["javascript.builtins.String.padStart"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1017,7 +1020,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.raw.js"],
 			features: ["javascript.builtins.String.raw"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1025,7 +1028,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.repeat.js"],
 			features: ["javascript.builtins.String.repeat"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1033,7 +1036,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.replace.js"],
 			features: ["javascript.builtins.String.replace"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1041,7 +1044,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.search.js"],
 			features: ["javascript.builtins.String.search"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1049,7 +1052,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.small.js"],
 			features: ["javascript.builtins.String.small"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1057,7 +1060,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.split.js"],
 			features: ["javascript.builtins.String.split"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1065,7 +1068,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.starts-with.js"],
 			features: ["javascript.builtins.String.startsWith"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1073,7 +1076,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.strike.js"],
 			features: ["javascript.builtins.String.strike"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1081,7 +1084,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.sub.js"],
 			features: ["javascript.builtins.String.sub"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1089,7 +1092,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.sup.js"],
 			features: ["javascript.builtins.String.sup"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1097,7 +1100,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.string.trim.js"],
 			features: ["javascript.builtins.String.trim"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1108,7 +1111,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.regexp.constructor.js"],
 			features: ["javascript.builtins.RegExp"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1116,7 +1119,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.regexp.flags.js"],
 			features: ["javascript.builtins.RegExp.flags"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.regexp.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1124,7 +1127,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.regexp.to-string.js"],
 			features: ["javascript.builtins.RegExp.toString"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.regexp.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1149,7 +1152,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.number.from-string.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1157,7 +1160,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.number.constructor.js"],
 			features: ["javascript.builtins.Number"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1165,7 +1168,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.number.epsilon.js"],
 			features: ["javascript.builtins.Number.EPSILON"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1173,7 +1176,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.number.is-finite.js"],
 			features: ["javascript.builtins.Number.isFinite"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1181,7 +1184,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.number.is-integer.js"],
 			features: ["javascript.builtins.Number.isInteger"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1189,7 +1192,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.number.is-nan.js"],
 			features: ["javascript.builtins.Number.isNaN"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1197,7 +1200,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.number.is-safe-integer.js"],
 			features: ["javascript.builtins.Number.isSafeInteger"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1205,7 +1208,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.number.max-safe-integer.js"],
 			features: ["javascript.builtins.Number.MAX_SAFE_INTEGER"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1213,7 +1216,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.number.min-safe-integer.js"],
 			features: ["javascript.builtins.Number.MIN_SAFE_INTEGER"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1221,7 +1224,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.number.parse-float.js"],
 			features: ["javascript.builtins.Number.parseFloat"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1229,7 +1232,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.number.parse-int.js"],
 			features: ["javascript.builtins.Number.parseInt"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1237,7 +1240,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.number.to-fixed.js"],
 			features: ["javascript.builtins.Number.toFixed"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1245,7 +1248,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.number.to-precision.js"],
 			features: ["javascript.builtins.Number.toPrecision"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1275,7 +1278,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.math.clamp.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1284,7 +1287,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.math.deg-per-rad.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1293,7 +1296,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.math.degrees.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1302,7 +1305,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.math.fscale.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1311,7 +1314,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.math.iaddh.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1320,7 +1323,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.math.imulh.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1329,7 +1332,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.math.isubh.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1338,7 +1341,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.math.rad-per-deg.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1347,7 +1350,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.math.radians.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1356,7 +1359,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.math.scale.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1365,7 +1368,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.math.signbit.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1374,7 +1377,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.math.umulh.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1382,7 +1385,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.math.acosh.js"],
 			features: ["javascript.builtins.Math.acosh"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1390,7 +1393,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.math.asinh.js"],
 			features: ["javascript.builtins.Math.asinh"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1398,7 +1401,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.math.atanh.js"],
 			features: ["javascript.builtins.Math.atanh"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1406,7 +1409,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.math.cbrt.js"],
 			features: ["javascript.builtins.Math.cbrt"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1414,7 +1417,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.math.clz32.js"],
 			features: ["javascript.builtins.Math.clz32"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1422,7 +1425,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.math.cosh.js"],
 			features: ["javascript.builtins.Math.cosh"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1430,7 +1433,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.math.expm1.js"],
 			features: ["javascript.builtins.Math.expm1"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1438,7 +1441,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.math.fround.js"],
 			features: ["javascript.builtins.Math.fround"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1446,7 +1449,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.math.hypot.js"],
 			features: ["javascript.builtins.Math.hypot"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1454,7 +1457,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.math.imul.js"],
 			features: ["javascript.builtins.Math.imul"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1462,7 +1465,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.math.log1p.js"],
 			features: ["javascript.builtins.Math.log1p"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1470,7 +1473,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.math.log2.js"],
 			features: ["javascript.builtins.Math.log2"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1478,7 +1481,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.math.log10.js"],
 			features: ["javascript.builtins.Math.log10"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1486,7 +1489,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.math.sign.js"],
 			features: ["javascript.builtins.Math.sign"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1494,7 +1497,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.math.sinh.js"],
 			features: ["javascript.builtins.Math.sinh"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1502,7 +1505,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.math.tanh.js"],
 			features: ["javascript.builtins.Math.tanh"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1510,7 +1513,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.math.trunc.js"],
 			features: ["javascript.builtins.Math.trunc"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1518,7 +1521,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.data-view.js"],
 			features: ["javascript.builtins.DataView"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1529,7 +1532,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.date.now.js"],
 			features: ["javascript.builtins.Date.now"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1537,7 +1540,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.date.to-iso-string.js"],
 			features: ["javascript.builtins.Date.toISOString"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1545,7 +1548,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.date.to-json.js"],
 			features: ["javascript.builtins.Date.toJSON"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1553,7 +1556,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.date.to-primitive.js"],
 			features: ["javascript.builtins.Date.@@toPrimitive"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.to-primitive"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1561,7 +1564,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.date.to-string.js"],
 			features: ["javascript.builtins.Date.toString"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1588,7 +1591,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.symbol.description.js"],
 			features: ["javascript.builtins.Symbol.description"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1597,7 +1600,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.symbol.pattern-match.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1605,7 +1608,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.symbol.js"],
 			features: ["javascript.builtins.Symbol"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1613,7 +1616,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.symbol.async-iterator.js"],
 			features: ["javascript.builtins.Symbol.asyncIterator"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1621,7 +1624,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.symbol.has-instance.js", "modules/es.function.has-instance.js"],
 			features: ["javascript.builtins.Symbol.hasInstance"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1629,7 +1632,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.symbol.is-concat-spreadable.js"],
 			features: ["javascript.builtins.Symbol.isConcatSpreadable"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1637,7 +1640,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.symbol.iterator.js"],
 			features: ["javascript.builtins.Symbol.iterator"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1645,7 +1648,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.symbol.match.js"],
 			features: ["javascript.builtins.Symbol.match"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1653,7 +1656,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.symbol.match-all.js"],
 			features: ["javascript.builtins.Symbol.matchAll"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1661,7 +1664,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.symbol.replace.js"],
 			features: ["javascript.builtins.Symbol.replace"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1669,7 +1672,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.symbol.search.js"],
 			features: ["javascript.builtins.Symbol.search"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1677,7 +1680,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.symbol.species.js"],
 			features: ["javascript.builtins.Symbol.species"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1685,7 +1688,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.symbol.split.js"],
 			features: ["javascript.builtins.Symbol.split"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1693,7 +1696,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.symbol.to-primitive.js"],
 			features: ["javascript.builtins.Symbol.toPrimitive"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1701,7 +1704,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.symbol.to-string-tag.js", "modules/es.json.to-string-tag.js", "modules/es.math.to-string-tag.js"],
 			features: ["javascript.builtins.Symbol.toStringTag"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1709,7 +1712,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.symbol.unscopables.js"],
 			features: ["javascript.builtins.Symbol.unscopables"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.constructor"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1720,7 +1723,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.map.js"],
 			features: ["javascript.builtins.Map", "javascript.builtins.Map.@@iterator"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1729,7 +1732,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.map.every.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1738,7 +1741,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.map.filter.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1747,7 +1750,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.map.find.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1756,7 +1759,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.map.find-key.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1765,7 +1768,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.map.from.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1774,7 +1777,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.map.group-by.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1783,7 +1786,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.map.includes.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1792,7 +1795,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.map.key-by.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1801,7 +1804,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.map.key-of.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1810,7 +1813,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.map.map-keys.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1819,7 +1822,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.map.map-values.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1828,7 +1831,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.map.merge.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1837,7 +1840,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.map.of.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1846,7 +1849,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.map.reduce.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1855,7 +1858,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.map.some.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1864,7 +1867,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.map.update.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1873,7 +1876,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.map.emplace.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.map"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1881,7 +1884,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.weak-map.js"],
 			features: ["javascript.builtins.WeakMap"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1890,7 +1893,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.weak-map.from.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.weak-map"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1899,7 +1902,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.weak-map.of.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.weak-map"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1907,7 +1910,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.set.js"],
 			features: ["javascript.builtins.Set", "javascript.builtins.Set.@@iterator"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -1916,7 +1919,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.set.add-all.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1925,7 +1928,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.set.delete-all.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1934,7 +1937,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.set.difference.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1943,7 +1946,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.set.every.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1952,7 +1955,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.set.filter.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1961,7 +1964,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.set.find.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1970,7 +1973,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.set.from.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1979,7 +1982,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.set.intersection.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1988,7 +1991,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.set.join.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -1997,7 +2000,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.set.map.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -2006,7 +2009,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.set.of.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -2015,7 +2018,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.set.reduce.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -2024,7 +2027,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.set.some.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -2033,7 +2036,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.set.symmetric-difference.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -2042,7 +2045,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.set.union.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -2051,7 +2054,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.set.is-disjoint-from.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -2060,7 +2063,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.set.is-subset-of.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -2069,7 +2072,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.set.is-superset-of.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -2077,7 +2080,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.weak-set.js"],
 			features: ["javascript.builtins.WeakSet"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2086,7 +2089,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.weak-set.from.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.weak-set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -2095,7 +2098,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.weak-set.of.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.weak-set"],
 			contexts: ALL_CONTEXTS
 		},
@@ -2141,7 +2144,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.copy-within.js"],
 			features: ["javascript.builtins.TypedArray.copyWithin"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2149,7 +2152,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.every.js"],
 			features: ["javascript.builtins.TypedArray.every"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2157,7 +2160,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.fill.js"],
 			features: ["javascript.builtins.TypedArray.fill"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2165,7 +2168,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.filter.js"],
 			features: ["javascript.builtins.TypedArray.filter"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2173,7 +2176,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.find.js"],
 			features: ["javascript.builtins.TypedArray.find"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2181,7 +2184,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.find-index.js"],
 			features: ["javascript.builtins.TypedArray.findIndex"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2189,7 +2192,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.float32-array.js"],
 			features: ["javascript.builtins.Float32Array"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2197,7 +2200,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.float64-array.js"],
 			features: ["javascript.builtins.Float64Array"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2205,7 +2208,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.for-each.js"],
 			features: ["javascript.builtins.TypedArray.forEach"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2213,7 +2216,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.from.js"],
 			features: ["javascript.builtins.TypedArray.from"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2221,7 +2224,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.includes.js"],
 			features: ["javascript.builtins.TypedArray.includes"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2229,7 +2232,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.index-of.js"],
 			features: ["javascript.builtins.TypedArray.indexOf"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2237,7 +2240,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.int8-array.js"],
 			features: ["javascript.builtins.Int8Array"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2245,7 +2248,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.int16-array.js"],
 			features: ["javascript.builtins.Int16Array"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2253,7 +2256,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.int32-array.js"],
 			features: ["javascript.builtins.Int32Array"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2261,7 +2264,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.iterator.js"],
 			features: ["javascript.builtins.TypedArray.@@iterator"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.iterator"],
 			contexts: ALL_CONTEXTS
 		},
@@ -2269,7 +2272,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.join.js"],
 			features: ["javascript.builtins.TypedArray.join"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2277,7 +2280,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.last-index-of.js"],
 			features: ["javascript.builtins.TypedArray.lastIndexOf"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2285,7 +2288,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.map.js"],
 			features: ["javascript.builtins.TypedArray.map"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2293,7 +2296,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.of.js"],
 			features: ["javascript.builtins.TypedArray.of"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2301,7 +2304,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.reduce.js"],
 			features: ["javascript.builtins.TypedArray.reduce"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2309,7 +2312,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.reduce-right.js"],
 			features: ["javascript.builtins.TypedArray.reduceRight"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2317,7 +2320,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.reverse.js"],
 			features: ["javascript.builtins.TypedArray.reverse"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2325,7 +2328,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.set.js"],
 			features: ["javascript.builtins.TypedArray.set"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2333,7 +2336,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.slice.js"],
 			features: ["javascript.builtins.TypedArray.slice"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2341,7 +2344,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.some.js"],
 			features: ["javascript.builtins.TypedArray.some"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2349,7 +2352,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.sort.js"],
 			features: ["javascript.builtins.TypedArray.sort"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2357,7 +2360,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.subarray.js"],
 			features: ["javascript.builtins.TypedArray.subarray"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2365,7 +2368,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.to-locale-string.js"],
 			features: ["javascript.builtins.TypedArray.toLocaleString"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2373,7 +2376,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.to-string.js"],
 			features: ["javascript.builtins.TypedArray.toString"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2381,7 +2384,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.uint8-array.js"],
 			features: ["javascript.builtins.Uint8Array"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2389,7 +2392,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.uint8-clamped-array.js"],
 			features: ["javascript.builtins.Uint8ClampedArray"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2397,7 +2400,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.uint16-array.js"],
 			features: ["javascript.builtins.Uint16Array"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2405,7 +2408,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.typed-array.uint32-array.js"],
 			features: ["javascript.builtins.Uint32Array"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2432,7 +2435,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.reflect.define-metadata.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2441,7 +2444,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.reflect.delete-metadata.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2450,7 +2453,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.reflect.get-metadata.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2459,7 +2462,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.reflect.get-metadata-keys.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2468,7 +2471,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.reflect.get-own-metadata.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2477,7 +2480,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.reflect.get-own-metadata-keys.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2486,7 +2489,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.reflect.has-metadata.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2495,7 +2498,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.reflect.has-own-metadata.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2504,7 +2507,7 @@ export const constant: IConstant = {
 			relativePaths: ["modules/esnext.reflect.metadata.js"],
 			// TODO: Update when MDN or Caniuse Compatibility is added
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2512,7 +2515,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.reflect.apply.js"],
 			features: ["javascript.builtins.Reflect.apply"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2520,7 +2523,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.reflect.construct.js"],
 			features: ["javascript.builtins.Reflect.construct"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2528,7 +2531,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.reflect.define-property.js"],
 			features: ["javascript.builtins.Reflect.defineProperty"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2536,7 +2539,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.reflect.delete-property.js"],
 			features: ["javascript.builtins.Reflect.deleteProperty"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2544,7 +2547,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.reflect.get.js"],
 			features: ["javascript.builtins.Reflect.get"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2552,7 +2555,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.reflect.get-own-property-descriptor.js"],
 			features: ["javascript.builtins.Reflect.getOwnPropertyDescriptor"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2560,7 +2563,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.reflect.get-prototype-of.js"],
 			features: ["javascript.builtins.Reflect.getPrototypeOf"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["proto"],
 			contexts: ALL_CONTEXTS
 		},
@@ -2568,7 +2571,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.reflect.has.js"],
 			features: ["javascript.builtins.Reflect.has"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2576,7 +2579,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.reflect.is-extensible.js"],
 			features: ["javascript.builtins.Reflect.isExtensible"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2584,7 +2587,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.reflect.own-keys.js"],
 			features: ["javascript.builtins.Reflect.ownKeys"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2592,7 +2595,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.reflect.prevent-extensions.js"],
 			features: ["javascript.builtins.Reflect.preventExtensions"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2600,7 +2603,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.reflect.set.js"],
 			features: ["javascript.builtins.Reflect.set"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -2608,7 +2611,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.reflect.set-prototype-of.js"],
 			features: ["javascript.builtins.Reflect.setPrototypeOf"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["proto"],
 			contexts: ALL_CONTEXTS
 		},
@@ -2725,7 +2728,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/web.dom-collections.iterator.js"],
 			features: ["api.NodeList.forEach"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.iterator"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -2733,7 +2736,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/web.dom-collections.for-each.js"],
 			features: ["api.NodeList.forEach"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: ["es.symbol.iterator"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -2742,7 +2745,7 @@ export const constant: IConstant = {
 			library: "@wessberg/pointer-events",
 			relativePaths: ["dist/index.js"],
 			features: ["pointer"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES__WESSBERG_POINTER_EVENTS,
+
 			dependencies: [
 				// TODO: Also relies on "elementFromPoint" which there isn't a polyfill for yet. Add it to the dependencies when the polyfill is ready
 				// TODO: Also relies on EventTarget and will throw in browsers where EventTarget is not defined
@@ -2764,14 +2767,14 @@ export const constant: IConstant = {
 			library: "xhr-polyfill",
 			relativePaths: ["dist/xhr-polyfill.js"],
 			features: ["xhr2"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_XHR_POLYFILL,
+
 			dependencies: [],
 			contexts: WINDOW_CONTEXT
 		},
 		fetch: {
 			localPaths: ["polyfill-lib/fetch/fetch.js"],
 			features: ["fetch"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_WHATWG_FETCH,
+			version: "1.0.0",
 			dependencies: ["es.array.for-each", "es.object.get-own-property-names", "es.promise", "xhr"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -2794,7 +2797,7 @@ export const constant: IConstant = {
 				localeDir: "locale-data"
 			},
 			features: ["javascript.builtins.Intl.DateTimeFormat"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_DATETIMEFORMAT,
+
 			dependencies: [
 				"intl.locale",
 				"intl.number-format",
@@ -2824,7 +2827,7 @@ export const constant: IConstant = {
 				localeDir: "locale-data"
 			},
 			features: ["javascript.builtins.Intl.DisplayNames"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_DISPLAYNAMES,
+
 			dependencies: [
 				"intl.locale",
 				"es.weak-map",
@@ -2846,7 +2849,7 @@ export const constant: IConstant = {
 			relativePaths: ["lib/polyfill.js"],
 			meta: {},
 			features: ["javascript.builtins.Intl.getCanonicalLocales"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_GETCANONICALLOCALES,
+
 			dependencies: ["es.array.filter", "es.array.index-of", "es.array.join", "es.array.sort", "es.object.define-property", "es.object.keys", "es.string.split"],
 			contexts: ALL_CONTEXTS
 		},
@@ -2857,7 +2860,7 @@ export const constant: IConstant = {
 				localeDir: "locale-data"
 			},
 			features: ["javascript.builtins.Intl.ListFormat"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_LISTFORMAT,
+
 			dependencies: [
 				"intl.locale",
 				"es.array.filter",
@@ -2879,7 +2882,7 @@ export const constant: IConstant = {
 			relativePaths: ["lib/polyfill.js"],
 			meta: {},
 			features: ["javascript.builtins.Intl.Locale"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_LOCALE,
+
 			dependencies: [
 				"intl.get-canonical-locales",
 				"es.array.concat",
@@ -2909,7 +2912,7 @@ export const constant: IConstant = {
 				localeDir: "locale-data"
 			},
 			features: ["javascript.builtins.Intl.NumberFormat", "javascript.builtins.Intl.NumberFormat.NumberFormat.unit"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_NUMBERFORMAT,
+
 			dependencies: [
 				"intl.plural-rules",
 				"intl.locale",
@@ -2940,7 +2943,7 @@ export const constant: IConstant = {
 				localeDir: "locale-data"
 			},
 			features: ["javascript.builtins.Intl.PluralRules"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_PLURALRULES,
+
 			dependencies: [
 				"intl.locale",
 				"es.array.filter",
@@ -2968,7 +2971,7 @@ export const constant: IConstant = {
 				localeDir: "locale-data"
 			},
 			features: ["javascript.builtins.Intl.RelativeTimeFormat"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES__FORMATJS_INTL_RELATIVETIMEFORMAT,
+
 			dependencies: [
 				"intl.plural-rules",
 				"intl.number-format",
@@ -2995,7 +2998,7 @@ export const constant: IConstant = {
 			library: "web-animations-js",
 			relativePaths: ["web-animations.min.js"],
 			features: ["web-animation"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_WEB_ANIMATIONS_JS,
+
 			dependencies: ["element", "requestanimationframe"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3003,7 +3006,7 @@ export const constant: IConstant = {
 			library: "regenerator-runtime",
 			relativePaths: ["runtime.js"],
 			features: [],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_REGENERATOR_RUNTIME,
+
 			dependencies: ["es.promise"],
 			contexts: ALL_CONTEXTS
 		},
@@ -3011,7 +3014,7 @@ export const constant: IConstant = {
 			library: "@webcomponents/template",
 			relativePaths: ["template.js"],
 			features: ["template"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES__WEBCOMPONENTS_TEMPLATE,
+
 			dependencies: ["es"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3022,7 +3025,7 @@ export const constant: IConstant = {
 			library: "@webcomponents/custom-elements",
 			relativePaths: ["src/custom-elements.js"],
 			features: ["custom-elementsv1"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES__WEBCOMPONENTS_CUSTOM_ELEMENTS,
+
 			dependencies: ["es", "mutation-observer"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3041,7 +3044,7 @@ export const constant: IConstant = {
 				]
 			},
 			features: ["shadowdomv1"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES__WEBCOMPONENTS_SHADYDOM,
+			version: pkg.dependencies["@webcomponents/shadydom"],
 			dependencies: ["es", "template", "mutation-observer", "event", "node.contains", "queryselector"],
 			contexts: WINDOW_CONTEXT,
 			mustComeAfter: ["pointer-event"]
@@ -3050,7 +3053,6 @@ export const constant: IConstant = {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/document.querySelector/raw.js"],
 			features: ["queryselector"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["element", "document", "document-fragment"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3058,7 +3060,6 @@ export const constant: IConstant = {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/DocumentFragment/raw.js"],
 			features: ["queryselector"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: [],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3067,7 +3068,7 @@ export const constant: IConstant = {
 			relativePaths: ["polyfill.js"],
 			// If 'addEventListener' isn't found, the Window interface shouldn't exist on the window
 			features: ["addeventlistener"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_NODE_PARENTELEMENT,
+
 			dependencies: ["document"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3075,7 +3076,7 @@ export const constant: IConstant = {
 			library: "scroll-behavior-polyfill",
 			relativePaths: ["dist/index.js"],
 			features: ["css-scroll-behavior", "scrollintoview"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_SCROLL_BEHAVIOR_POLYFILL,
+
 			dependencies: ["es.object.define-property", "es.object.get-own-property-descriptor", "requestanimationframe"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3083,7 +3084,6 @@ export const constant: IConstant = {
 			library: "focus-visible",
 			relativePaths: ["dist/focus-visible.js"],
 			features: ["css-focus-visible"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_FOCUS_VISIBLE,
 			dependencies: ["class-list"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3092,7 +3092,6 @@ export const constant: IConstant = {
 			relativePaths: ["polyfills/__dist/Node.prototype.contains/raw.js"],
 			// If 'addEventListener' isn't found, the Window interface shouldn't exist on the window
 			features: ["addeventlistener"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: ["element"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3100,7 +3099,6 @@ export const constant: IConstant = {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/Window/raw.js"],
 			features: ["addeventlistener"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: [],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3109,7 +3107,6 @@ export const constant: IConstant = {
 			relativePaths: ["polyfills/__dist/document/raw.js"],
 			// If 'addEventListener' isn't found, the Document interface shouldn't exist on the window
 			features: ["addeventlistener"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
 			dependencies: [],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3123,7 +3120,7 @@ export const constant: IConstant = {
 		"dom-token-list": {
 			localPaths: ["polyfill-lib/dom-token-list/dom-token-list.js"],
 			features: ["api.DOMTokenList"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
+			version: "1.0.0",
 			dependencies: ["es.object.define-property"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3132,7 +3129,7 @@ export const constant: IConstant = {
 			relativePaths: ["polyfills/__dist/Element/raw.js"],
 			// If 'addEventListener' isn't found, the Element interface shouldn't exist on the window
 			features: ["addeventlistener"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
+
 			dependencies: ["document"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3143,7 +3140,7 @@ export const constant: IConstant = {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/Event/raw.js"],
 			features: ["api.Event.Event"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
+
 			dependencies: ["window", "document", "element", "es.object.define-property"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3151,7 +3148,7 @@ export const constant: IConstant = {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/Event.focusin/raw.js"],
 			features: ["focusin-focusout-events"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
+
 			dependencies: ["event.constructor"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3159,7 +3156,7 @@ export const constant: IConstant = {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/Event.hashchange/raw.js"],
 			features: ["hashchange"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
+
 			dependencies: ["event.constructor"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3167,7 +3164,7 @@ export const constant: IConstant = {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/CustomEvent/raw.js"],
 			features: ["customevent"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
+
 			dependencies: ["event"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3175,7 +3172,7 @@ export const constant: IConstant = {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/EventSource/raw.js"],
 			features: ["eventsource"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
+
 			dependencies: [],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3183,7 +3180,7 @@ export const constant: IConstant = {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/getComputedStyle/raw.js"],
 			features: ["getcomputedstyle"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_POLYFILL_LIBRARY,
+
 			dependencies: ["window"],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3191,7 +3188,7 @@ export const constant: IConstant = {
 			library: "intersection-observer",
 			relativePaths: ["intersection-observer.js"],
 			features: ["intersectionobserver"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_INTERSECTION_OBSERVER,
+
 			dependencies: [
 				"get-computed-style",
 				"es.array.is-array",
@@ -3210,7 +3207,7 @@ export const constant: IConstant = {
 			library: "mutationobserver-shim",
 			relativePaths: ["dist/mutationobserver.min.js"],
 			features: ["mutationobserver"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_MUTATIONOBSERVER_SHIM,
+
 			dependencies: [],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3235,7 +3232,7 @@ export const constant: IConstant = {
 			library: "setimmediate",
 			relativePaths: ["setImmediate.js"],
 			features: ["setimmediate"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_SETIMMEDIATE,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -3246,7 +3243,7 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.global-this.js"],
 			features: ["javascript.builtins.globalThis"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CORE_JS,
+
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
@@ -3257,7 +3254,7 @@ export const constant: IConstant = {
 			library: "construct-style-sheets-polyfill",
 			relativePaths: ["dist/adoptedStyleSheets.js"],
 			features: ["api.DocumentOrShadowRoot.adoptedStyleSheets"],
-			version: environment.NPM_PACKAGE_DEPENDENCIES_CONSTRUCT_STYLE_SHEETS_POLYFILL,
+
 			dependencies: ["shadow-dom"],
 			contexts: ALL_CONTEXTS
 		},

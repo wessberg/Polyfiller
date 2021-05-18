@@ -1,5 +1,5 @@
 import {IMemoryRegistryService, PolyfillCachingContext} from "./i-memory-registry-service";
-import {IPolyfillFeature, IPolyfillFeatureInput} from "../../../polyfill/i-polyfill-feature";
+import {PolyfillFeature, PolyfillFeatureInput} from "../../../polyfill/polyfill-feature";
 import {getPolyfillIdentifier, getPolyfillSetIdentifier} from "../../../util/polyfill/polyfill-util";
 import {IRegistryGetResult} from "./i-registry-get-result";
 
@@ -15,14 +15,14 @@ export class MemoryRegistryService implements IMemoryRegistryService {
 
 	/**
 	 * A map between keys for registered polyfill sets and and their actual sets
-	 * @type {Map<string, Set<IPolyfillFeature>>}
+	 * @type {Map<string, Set<PolyfillFeature>>}
 	 */
-	private readonly registeredPolyfillSets: Map<string, Set<IPolyfillFeature>> = new Map();
+	private readonly registeredPolyfillSets: Map<string, Set<PolyfillFeature>> = new Map();
 
 	/**
 	 * Gets the contents for the polyfill with the given name and with the given encoding
 	 */
-	async get(name: IPolyfillFeature | Set<IPolyfillFeature>, context: PolyfillCachingContext): Promise<IRegistryGetResult | undefined> {
+	async get(name: PolyfillFeature | Set<PolyfillFeature>, context: PolyfillCachingContext): Promise<IRegistryGetResult | undefined> {
 		const checksum = getPolyfillIdentifier(name, context);
 		const buffer = this.registeredPolyfills.get(checksum);
 
@@ -32,7 +32,7 @@ export class MemoryRegistryService implements IMemoryRegistryService {
 	/**
 	 * Gets the Set of Polyfill feature inputs that matches the given input
 	 */
-	async getPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, context: PolyfillCachingContext): Promise<Set<IPolyfillFeature> | undefined> {
+	async getPolyfillFeatureSet(input: Set<PolyfillFeatureInput>, context: PolyfillCachingContext): Promise<Set<PolyfillFeature> | undefined> {
 		const checksum = getPolyfillSetIdentifier(input, context);
 		return this.registeredPolyfillSets.get(checksum);
 	}
@@ -40,21 +40,21 @@ export class MemoryRegistryService implements IMemoryRegistryService {
 	/**
 	 * Returns true if a polyfill wil the given name exists
 	 */
-	async has(name: IPolyfillFeature | Set<IPolyfillFeature>, context: PolyfillCachingContext): Promise<boolean> {
+	async has(name: PolyfillFeature | Set<PolyfillFeature>, context: PolyfillCachingContext): Promise<boolean> {
 		return this.registeredPolyfills.has(getPolyfillIdentifier(name, context));
 	}
 
 	/**
 	 * Returns true if a Set of PolyfillFeatures exist in cache for the given PolyfillFeature input Set
 	 */
-	async hasPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, context: PolyfillCachingContext): Promise<boolean> {
+	async hasPolyfillFeatureSet(input: Set<PolyfillFeatureInput>, context: PolyfillCachingContext): Promise<boolean> {
 		return this.registeredPolyfillSets.has(getPolyfillSetIdentifier(input, context));
 	}
 
 	/**
 	 * Sets the contents for the polyfill with the given name and of the given encoding
 	 */
-	async set(name: IPolyfillFeature | Set<IPolyfillFeature>, buffer: Buffer, context: PolyfillCachingContext): Promise<IRegistryGetResult> {
+	async set(name: PolyfillFeature | Set<PolyfillFeature>, buffer: Buffer, context: PolyfillCachingContext): Promise<IRegistryGetResult> {
 		const checksum = getPolyfillIdentifier(name, context);
 
 		this.registeredPolyfills.set(checksum, buffer);
@@ -64,7 +64,7 @@ export class MemoryRegistryService implements IMemoryRegistryService {
 	/**
 	 * Sets the given PolyfillFeature Set for the given Set of PolyfillFeature inputs
 	 */
-	async setPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, polyfillSet: Set<IPolyfillFeature>, context: PolyfillCachingContext): Promise<Set<IPolyfillFeature>> {
+	async setPolyfillFeatureSet(input: Set<PolyfillFeatureInput>, polyfillSet: Set<PolyfillFeature>, context: PolyfillCachingContext): Promise<Set<PolyfillFeature>> {
 		const checksum = getPolyfillSetIdentifier(input, context);
 
 		this.registeredPolyfillSets.set(checksum, polyfillSet);

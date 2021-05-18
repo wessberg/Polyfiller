@@ -36,6 +36,7 @@
 		"polyfills-as-a-service"
 	],
 	"devDependencies": {
+		"@rollup/plugin-json": "4.1.0",
 		"@types/express": "4.17.11",
 		"@types/mime": "2.0.3",
 		"@types/node": "15.3.0",

@@ -1,3 +1,12 @@
+## [0.0.131](https://github.com/wessberg/polyfiller/compare/v0.0.130...v0.0.131) (2021-05-18)
+
+### Bug Fixes
+
+- **polyfill:** temporarily disable sourcemaps via [@swc](https://github.com/swc) as it breaks the service ([706ac97](https://github.com/wessberg/polyfiller/commit/706ac978be5fbde9228c8e4fe8ef6d55336e4330))
+- **polyfill:** temporarily disable sourcemaps via [@swc](https://github.com/swc) as it breaks the service ([5c925f1](https://github.com/wessberg/polyfiller/commit/5c925f183ec39a6c70942ed6982bceb84b13b510))
+- **polyfill:** temporarily disable sourcemaps via [@swc](https://github.com/swc) as it breaks the service ([fd2fead](https://github.com/wessberg/polyfiller/commit/fd2fead24bc668ce533b65be22c889bce2a2db27))
+- **polyfill:** work around issue in @swc/core ([9ba9dc8](https://github.com/wessberg/polyfiller/commit/9ba9dc8d848ec9a813b8ce382654ae9b978d2c72))
+
 ## [0.0.130](https://github.com/wessberg/polyfiller/compare/v0.0.129...v0.0.130) (2021-05-18)
 
 ### Bug Fixes

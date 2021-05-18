@@ -66,7 +66,7 @@ test("Is able to generate a bundle of every available polyfill", async t => {
 		.filter(([, value]) => !("polyfills" in value))
 		.map(([key, value]) => {
 			if (key === "zone") {
-				return `${key}|${Object.keys(((value as unknown) as PolyfillDictNormalizedEntry).meta!).join("|")}|force`;
+				return `${key}|${Object.keys((value as unknown as PolyfillDictNormalizedEntry).meta!).join("|")}|force`;
 			} else if (key.startsWith("intl.")) {
 				return `${key}|locale=en~da|force`;
 			} else {
@@ -136,6 +136,25 @@ test("Will correctly parse meta information for SystemJS. #2", async t => {
 test("Will correctly parse meta information for Zone. #1", async t => {
 	const polyfillRequest = getPolyfillRequestFromUrl(new URL("?features=zone|error", `https://my-polyfill-service.app${constant.endpoint.polyfill}`), chrome(70));
 	t.true([...polyfillRequest.features].some(({meta, name}) => name === "zone" && meta != null && meta.error === true));
+});
+
+test("Will inline regenerator-runtime if required. #1", async t => {
+	const result = await sendRequest({
+		http2: config.http2,
+		tls: false,
+		userAgent: ie("11"),
+		method: "GET",
+		host: config.host,
+		port: config.port,
+		path: `${constant.endpoint.polyfill}?features=form-data`,
+		acceptEncoding: undefined
+	});
+
+	if (!("body" in result)) {
+		t.false("The API didn't have a body");
+	} else {
+		t.false(result.body.toString().includes(`require("regenerator-runtime")`));
+	}
 });
 
 test("Will set a 'x-applied-polyfills' header on HTTP2 responses with a HTTP-friendly list of all applied polyfills. #1", async t => {

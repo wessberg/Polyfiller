@@ -1,3 +1,9 @@
+## [0.0.134](https://github.com/wessberg/polyfiller/compare/v0.0.133...v0.0.134) (2021-05-19)
+
+### Bug Fixes
+
+- **ua:** handle special case with the old stock Android browser ([0ae62a7](https://github.com/wessberg/polyfiller/commit/0ae62a7e43c9f11668cf7b4890e4dd2902840c21))
+
 ## [0.0.133](https://github.com/wessberg/polyfiller/compare/v0.0.132-rerelease...v0.0.133) (2021-05-19)
 
 ### Bug Fixes

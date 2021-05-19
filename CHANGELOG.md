@@ -1,3 +1,15 @@
+## [0.0.133](https://github.com/wessberg/polyfiller/compare/v0.0.132-rerelease...v0.0.133) (2021-05-19)
+
+### Bug Fixes
+
+- **ua:** fix detection of Facebook on iOS and Edge Mobile on Android ([91a8de2](https://github.com/wessberg/polyfiller/commit/91a8de2d239527dea10894c466bc81c29037ab18))
+
+## [0.0.132-rerelease](https://github.com/wessberg/polyfiller/compare/v0.0.132...v0.0.132-rerelease) (2021-05-19)
+
+### Bug Fixes
+
+- set NODE_ENV as an environment variable ([6957429](https://github.com/wessberg/polyfiller/commit/69574293e5ad0879bd2118b836686a20e84303c1))
+
 ## [0.0.132](https://github.com/wessberg/polyfiller/compare/v0.0.131...v0.0.132) (2021-05-19)
 
 ### Bug Fixes

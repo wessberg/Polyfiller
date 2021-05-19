@@ -24,7 +24,7 @@
 		"version": "npm run generate:all && git add .",
 		"release": "np --no-cleanup --no-yarn",
 		"update:check": "npx npm-check-updates -x np --dep dev,prod",
-		"update:commit": "npx npm-check-updates -u -x np --dep dev,prod && npm update && npm install"
+		"update:commit": "npx npm-check-updates -u -x np --dep dev,prod && npm update --force && npm install --force"
 	},
 	"keywords": [
 		"polyfills",

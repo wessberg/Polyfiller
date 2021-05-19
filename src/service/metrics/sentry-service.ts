@@ -30,6 +30,7 @@ export class SentryService implements IMetricsService {
 		init({
 			dsn: this.config.sentryDsn,
 			environment: this.config.environment,
+			release: this.config.version,
 			integrations: [
 				// enable HTTP calls tracing
 				new Integrations.Http({tracing: true}),

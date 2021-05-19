@@ -3253,7 +3253,7 @@ export const constant: IConstant = {
 		"constructable-style-sheets": {
 			library: "construct-style-sheets-polyfill",
 			relativePaths: ["dist/adoptedStyleSheets.js"],
-			features: ["api.DocumentOrShadowRoot.adoptedStyleSheets"],
+			features: ["api.Document.adoptedStyleSheets", "api.ShadowRoot.adoptedStyleSheets"],
 
 			dependencies: ["shadow-dom"],
 			contexts: ALL_CONTEXTS

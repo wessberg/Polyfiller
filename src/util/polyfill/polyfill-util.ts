@@ -77,7 +77,7 @@ export function getPolyfillSetIdentifier(polyfills: Set<PolyfillFeatureInput>, c
  * Returns true if the given polyfill should be included for a particular user agent
  */
 function shouldIncludePolyfill(force: boolean, context: PolyfillContext, userAgent: string | undefined, features: string[], supportedContexts: Set<PolyfillContext>): boolean {
-	return supportedContexts.has(context) && (force || features.length < 1 || userAgent == null || !userAgentSupportsFeatures(userAgent, ...features));
+	return supportedContexts.has(context) && (force || features.length < 1 || (userAgent != null && !userAgentSupportsFeatures(userAgent, ...features)));
 }
 
 /**

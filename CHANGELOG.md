@@ -1,3 +1,9 @@
+## [0.0.136](https://github.com/wessberg/polyfiller/compare/v0.0.135...v0.0.136) (2021-05-19)
+
+### Features
+
+- **ua:** add support for detecting browsers based on Gecko/Firefox like Iceweasel and IceDragon ([a794c4c](https://github.com/wessberg/polyfiller/commit/a794c4ca5ed186261c91965f31a9cc0277d0b361))
+
 ## [0.0.135](https://github.com/wessberg/polyfiller/compare/v0.0.134...v0.0.135) (2021-05-19)
 
 ### Bug Fixes

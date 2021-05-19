@@ -5,12 +5,26 @@ import {encodeFeatureSetForHttpHeader, getPolyfillRequestFromUrl} from "../../ut
 import {StatusCodes} from "http-status-codes";
 import {IPolyfillBl} from "../../bl/polyfill/i-polyfill-bl";
 import {pickEncoding} from "../util/util";
+import {IMetricsService} from "../../service/metrics/i-metrics-service";
+import {generateBrowserslistFromUseragent} from "browserslist-generator";
 
 export class PolyfillApiController {
-	constructor(private polyfillBl: IPolyfillBl) {}
+	constructor(private polyfillBl: IPolyfillBl, private metricsService: IMetricsService) {}
 
 	@GET({path: constant.endpoint.polyfill})
 	async onPolyfillRequested(request: ApiRequest): Promise<ApiResponse> {
+		// Attempt to parse the user agent into a proper Browserslist
+		if (request.userAgent != null) {
+			try {
+				generateBrowserslistFromUseragent(request.userAgent);
+			} catch (ex) {
+				// Un-set the user agent
+				request.userAgent = undefined;
+				// Capture the exception, but allow it
+				this.metricsService.captureException(ex);
+			}
+		}
+
 		// Normalize the polyfill request
 		const polyfillRequest = getPolyfillRequestFromUrl(request.url, request.userAgent, pickEncoding(request.acceptEncoding));
 

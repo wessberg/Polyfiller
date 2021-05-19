@@ -4,7 +4,7 @@ import {PolyfillContext} from "./polyfill-context";
 import {EcmaVersion} from "../util/type/ecma-version";
 
 export interface PolyfillRequest {
-	userAgent: string;
+	userAgent: string | undefined;
 	ecmaVersion: EcmaVersion;
 	encoding?: ContentEncodingKind;
 	features: Set<PolyfillFeatureInput>;

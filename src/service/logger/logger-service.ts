@@ -21,7 +21,7 @@ export class LoggerService implements ILoggerService {
 	/**
 	 * The prefix to attach to log messages
 	 */
-	private readonly INFO_PREFIX: string = this.padPrefix("");
+	private readonly INFO_PREFIX: string = "";
 
 	constructor(private config: Config) {}
 

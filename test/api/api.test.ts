@@ -9,6 +9,8 @@ import {URL} from "url";
 import {PolyfillDictNormalizedEntry} from "../../src/polyfill/polyfill-dict";
 import {sendRequest} from "./util";
 import {StatusCodes} from "http-status-codes";
+import {IMetricsService} from "../../src/service/metrics/i-metrics-service";
+import {container} from "../../src/services";
 
 test.before(initializeTests);
 
@@ -54,6 +56,22 @@ test(`Generates an JSON-formatted welcome payload when a request is sent to '${c
 		t.fail(data);
 	} else {
 		t.true("title" in data && data.title.includes("Welcome to"));
+	}
+});
+
+test.only(`Sends metrics data when an unsupported User-Agent header is discovered, but still responds with OK`, async t => {
+	const metricsService = container.get<IMetricsService>();
+	const result = await sendRequest({
+		path: `${constant.endpoint.polyfill}?features=intersection-observer`,
+		headers: {
+			"User-Agent": "Fake UA"
+		}
+	});
+
+	if (!result.ok) {
+		t.fail("Expected an OK response");
+	} else {
+		t.true(metricsService.hasCapturedExceptions);
 	}
 });
 

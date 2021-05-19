@@ -18,7 +18,7 @@ export type ServerOptions = HttpServerOptions | HttpsServerOptions;
 export interface ApiRequest {
 	request: Request;
 	url: URL;
-	userAgent: string;
+	userAgent: string | undefined;
 	cachedChecksum: string | undefined;
 	acceptEncoding: Set<ContentEncodingKind> | undefined;
 }

@@ -1,3 +1,16 @@
+## [0.0.132](https://github.com/wessberg/polyfiller/compare/v0.0.131...v0.0.132) (2021-05-19)
+
+### Bug Fixes
+
+- add environment to sentry configuration ([cd145fc](https://github.com/wessberg/polyfiller/commit/cd145fcd7a0b767d449c0233c1ed306b7fb73a5f))
+- track unsupported UA exceptions via Sentry ([e3ce123](https://github.com/wessberg/polyfiller/commit/e3ce1238f09110b3bd168a42e97327312a858d51))
+
+### Features
+
+- **api:** add request logging ([a58e2c5](https://github.com/wessberg/polyfiller/commit/a58e2c530eb4461399798ff98d8a28eac66fe7e0))
+- **metrics:** integrate Sentry metrics ([67ede53](https://github.com/wessberg/polyfiller/commit/67ede5312c02f41ef5d29a3c7bf972f7bd2429ef))
+- **metrics:** integrate Sentry tracing ([929baa4](https://github.com/wessberg/polyfiller/commit/929baa4a5158eab0a7e9356aa300f9f9531b47e5))
+
 ## [0.0.131](https://github.com/wessberg/polyfiller/compare/v0.0.130...v0.0.131) (2021-05-18)
 
 ### Bug Fixes

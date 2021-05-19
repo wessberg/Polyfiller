@@ -1,3 +1,10 @@
+## [0.0.135](https://github.com/wessberg/polyfiller/compare/v0.0.134...v0.0.135) (2021-05-19)
+
+### Bug Fixes
+
+- **ua:** add better error handling ([45ef899](https://github.com/wessberg/polyfiller/commit/45ef8992ee49c55387a7eaf460fad0ba961fa0d6))
+- **ua:** add support for Google AdsBot ([5600d4d](https://github.com/wessberg/polyfiller/commit/5600d4d0042a8fcfe7c946945fc6e641126934c1))
+
 ## [0.0.134](https://github.com/wessberg/polyfiller/compare/v0.0.133...v0.0.134) (2021-05-19)
 
 ### Bug Fixes

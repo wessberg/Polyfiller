@@ -1,9 +1,8 @@
-import {Path} from "../server/path";
 import {PolyfillDict} from "../polyfill/polyfill-dict";
 
 export interface IEndpointConstant {
-	index: Path[] | Path;
-	polyfill: Path;
+	index: string;
+	polyfill: string;
 }
 
 export interface IMetaConstant {
@@ -20,6 +19,9 @@ export interface IPathConstant {
 
 export interface IHeaderConstant {
 	polyfills: string;
+	cache: {
+		immutable: string;
+	};
 	maxChars: number;
 }
 

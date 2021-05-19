@@ -3,14 +3,14 @@ import {BuildResult} from "./build-result";
 import {brotliEncode, gzipEncode} from "./util/encoding";
 import {BROTLI_OPTIONS} from "./options/brotli-options";
 import {ZLIB_OPTIONS} from "./options/zlib-options";
-import {IPolyfillFeature} from "../polyfill/i-polyfill-feature";
+import {PolyfillFeature} from "../polyfill/polyfill-feature";
 import {build as esbuild} from "esbuild";
 import {tmpdir} from "os";
 import {join} from "path";
-import {generateRandomHash} from "../util/hash-util/hash-util";
 import {unlinkSync, writeFileSync} from "fs";
 import {transform} from "@swc/core";
 import {REGENERATOR_SOURCE, REGENERATOR_SOURCE_MINIFIED} from "../constant/regenerator-source";
+import {generateRandomHash} from "../api/util";
 
 const swcBug1461Match = /var regeneratorRuntime\d?\s*=\s*require\(["'`]regenerator-runtime["'`]\);/;
 const swcBug1461MatchReference = /regeneratorRuntime\d\./g;
@@ -51,7 +51,7 @@ function workAroundSwcBug1461(str: string, minify = false): string {
 	return str.replace(swcBug1461Match, minify ? REGENERATOR_SOURCE_MINIFIED : REGENERATOR_SOURCE).replace(swcBug1461MatchReference, "regeneratorRuntime.");
 }
 
-function stringifyPolyfillFeature(feature: IPolyfillFeature): string {
+function stringifyPolyfillFeature(feature: PolyfillFeature): string {
 	const metaEntries = Object.entries(feature.meta);
 	const metaEntriesText = metaEntries
 		.filter(([key, value]) => key !== "force" || value === true)

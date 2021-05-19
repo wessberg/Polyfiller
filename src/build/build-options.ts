@@ -1,11 +1,11 @@
-import {IPolyfillFeature} from "../polyfill/i-polyfill-feature";
+import {PolyfillFeature} from "../polyfill/polyfill-feature";
 import {PolyfillContext} from "../polyfill/polyfill-context";
 import {EcmaVersion} from "../util/type/ecma-version";
 
 export interface BuildOptions {
 	context: PolyfillContext;
-	features: IPolyfillFeature[];
-	featuresRequested: IPolyfillFeature[];
+	features: PolyfillFeature[];
+	featuresRequested: PolyfillFeature[];
 	ecmaVersion: EcmaVersion;
 	paths: string[];
 	sourcemap?: boolean;

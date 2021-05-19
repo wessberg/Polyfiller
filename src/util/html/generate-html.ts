@@ -1,4 +1,5 @@
 import {constant} from "../../constant/constant";
+import {ApiError} from "../../api/lib/api-error";
 
 /**
  * Generates some HTML contents with the given message
@@ -30,12 +31,8 @@ export function generateHtml(message: string): string {
 
 /**
  * Generates some HTML contents with the given message
- *
- * @param message
- * @param code
- * @returns
  */
-export function generateErrorHtml(message: Error, code: number): string {
+export function generateErrorHtml(error: ApiError): string {
 	// language=HTML
 	return `
 		<!DOCTYPE html>
@@ -46,10 +43,9 @@ export function generateErrorHtml(message: Error, code: number): string {
 		</head>
 		<body>
 			<h1>An Error occurred.</h1>
-			<h5>Code: ${code}</h5>
-			<p>${message.name}</p>
-			<p>${message.stack}</p>
-			${message}
+			<h5>Code: ${error.status}</h5>
+			<p>${error.message}</p>
+			${error.stack == null ? "" : `<p>${error.stack}</p>`}
 		</body>
 		</html>
 	`;

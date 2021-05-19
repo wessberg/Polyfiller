@@ -1,14 +1,14 @@
-import {IPolyfillFeature, IPolyfillFeatureInput} from "../../../polyfill/i-polyfill-feature";
+import {PolyfillFeature, PolyfillFeatureInput} from "../../../polyfill/polyfill-feature";
 import {IRegistryGetResult} from "./i-registry-get-result";
-import {IPolyfillRequest} from "../../../polyfill/i-polyfill-request";
+import {PolyfillRequest} from "../../../polyfill/polyfill-request";
 
-export interface PolyfillCachingContext extends Omit<IPolyfillRequest, "features"> {}
+export interface PolyfillCachingContext extends Omit<PolyfillRequest, "features"> {}
 
 export interface IMemoryRegistryService {
-	get(name: IPolyfillFeature | Set<IPolyfillFeature>, context: PolyfillCachingContext): Promise<IRegistryGetResult | undefined>;
-	getPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, context: PolyfillCachingContext): Promise<Set<IPolyfillFeature> | undefined>;
-	set(name: IPolyfillFeature | Set<IPolyfillFeature>, contents: Buffer, context: PolyfillCachingContext): Promise<IRegistryGetResult>;
-	setPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, polyfillSet: Set<IPolyfillFeature>, context: PolyfillCachingContext): Promise<Set<IPolyfillFeature>>;
-	has(name: IPolyfillFeature | Set<IPolyfillFeature>, context: PolyfillCachingContext): Promise<boolean>;
-	hasPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, context: PolyfillCachingContext): Promise<boolean>;
+	get(name: PolyfillFeature | Set<PolyfillFeature>, context: PolyfillCachingContext): Promise<IRegistryGetResult | undefined>;
+	getPolyfillFeatureSet(input: Set<PolyfillFeatureInput>, context: PolyfillCachingContext): Promise<Set<PolyfillFeature> | undefined>;
+	set(name: PolyfillFeature | Set<PolyfillFeature>, contents: Buffer, context: PolyfillCachingContext): Promise<IRegistryGetResult>;
+	setPolyfillFeatureSet(input: Set<PolyfillFeatureInput>, polyfillSet: Set<PolyfillFeature>, context: PolyfillCachingContext): Promise<Set<PolyfillFeature>>;
+	has(name: PolyfillFeature | Set<PolyfillFeature>, context: PolyfillCachingContext): Promise<boolean>;
+	hasPolyfillFeatureSet(input: Set<PolyfillFeatureInput>, context: PolyfillCachingContext): Promise<boolean>;
 }

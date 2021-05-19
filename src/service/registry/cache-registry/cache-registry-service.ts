@@ -1,6 +1,6 @@
 import {ICacheRegistryService} from "./i-cache-registry-service";
 import {IFileSaver} from "@wessberg/filesaver";
-import {IPolyfillFeature, IPolyfillFeatureInput} from "../../../polyfill/i-polyfill-feature";
+import {PolyfillFeature, PolyfillFeatureInput} from "../../../polyfill/polyfill-feature";
 import {getPolyfillConfigChecksum, getPolyfillIdentifier, getPolyfillSetIdentifier} from "../../../util/polyfill/polyfill-util";
 import {join} from "path";
 import {constant} from "../../../constant/constant";
@@ -8,10 +8,11 @@ import {IFileLoader} from "@wessberg/fileloader";
 import {IMemoryRegistryService, PolyfillCachingContext} from "../polyfill-registry/i-memory-registry-service";
 import {PolyfillName} from "../../../polyfill/polyfill-name";
 import {coerce, gt} from "semver";
-import {IConfig} from "../../../config/i-config";
 import {IRegistryGetResult} from "../polyfill-registry/i-registry-get-result";
 import {ILoggerService} from "../../logger/i-logger-service";
-import {PolyfillDictEntry} from "../../../polyfill/polyfill-dict";
+import {PolyfillDictEntry, PolyfillDictNormalizedEntry} from "../../../polyfill/polyfill-dict";
+import pkg from "../../../../package.json";
+import {Config} from "../../../config/config";
 
 /**
  * A class that can cache generated Polyfills on disk
@@ -22,7 +23,7 @@ export class CacheRegistryService implements ICacheRegistryService {
 		private readonly logger: ILoggerService,
 		private readonly fileLoader: IFileLoader,
 		private readonly memoryRegistry: IMemoryRegistryService,
-		private readonly config: IConfig
+		private readonly config: Config
 	) {}
 
 	/**
@@ -40,7 +41,7 @@ export class CacheRegistryService implements ICacheRegistryService {
 	/**
 	 * Gets the contents for the polyfill with the given name and with the given encoding
 	 */
-	async get(name: IPolyfillFeature | Set<IPolyfillFeature>, context: PolyfillCachingContext): Promise<IRegistryGetResult | undefined> {
+	async get(name: PolyfillFeature | Set<PolyfillFeature>, context: PolyfillCachingContext): Promise<IRegistryGetResult | undefined> {
 		// Attempt to fetch it from the in-memory registry
 		const memoryHit = await this.memoryRegistry.get(name, context);
 		if (memoryHit != null) return memoryHit;
@@ -57,7 +58,7 @@ export class CacheRegistryService implements ICacheRegistryService {
 	/**
 	 * Gets the Set of Polyfill feature inputs that matches the given input
 	 */
-	async getPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, context: PolyfillCachingContext): Promise<Set<IPolyfillFeature> | undefined> {
+	async getPolyfillFeatureSet(input: Set<PolyfillFeatureInput>, context: PolyfillCachingContext): Promise<Set<PolyfillFeature> | undefined> {
 		// Attempt to fetch it from the in-memory registry
 		const memoryHit = await this.memoryRegistry.getPolyfillFeatureSet(input, context);
 		if (memoryHit != null) return memoryHit;
@@ -74,21 +75,21 @@ export class CacheRegistryService implements ICacheRegistryService {
 	/**
 	 * Returns true if a polyfill wil the given name exists
 	 */
-	async has(name: IPolyfillFeature | Set<IPolyfillFeature>, context: PolyfillCachingContext): Promise<boolean> {
+	async has(name: PolyfillFeature | Set<PolyfillFeature>, context: PolyfillCachingContext): Promise<boolean> {
 		return (await this.get(name, context)) != null;
 	}
 
 	/**
 	 * Returns true if there is a PolyfillFeature Set in the cache that matches the given input Set
 	 */
-	async hasPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, context: PolyfillCachingContext): Promise<boolean> {
+	async hasPolyfillFeatureSet(input: Set<PolyfillFeatureInput>, context: PolyfillCachingContext): Promise<boolean> {
 		return (await this.getPolyfillFeatureSet(input, context)) != null;
 	}
 
 	/**
 	 * Sets the contents for the polyfill with the given name and of the given encoding
 	 */
-	async set(name: IPolyfillFeature | Set<IPolyfillFeature>, contents: Buffer, context: PolyfillCachingContext): Promise<IRegistryGetResult> {
+	async set(name: PolyfillFeature | Set<PolyfillFeature>, contents: Buffer, context: PolyfillCachingContext): Promise<IRegistryGetResult> {
 		// Add it to the memory cache as well as the disk cache
 		await this.writeToCache(this.getCachePath(name, context), contents);
 		return await this.memoryRegistry.set(name, contents, context);
@@ -97,7 +98,7 @@ export class CacheRegistryService implements ICacheRegistryService {
 	/**
 	 * Sets the given PolyfillFeature Set for the given Set of PolyfillFeature inputs
 	 */
-	async setPolyfillFeatureSet(input: Set<IPolyfillFeatureInput>, polyfillSet: Set<IPolyfillFeature>, context: PolyfillCachingContext): Promise<Set<IPolyfillFeature>> {
+	async setPolyfillFeatureSet(input: Set<PolyfillFeatureInput>, polyfillSet: Set<PolyfillFeature>, context: PolyfillCachingContext): Promise<Set<PolyfillFeature>> {
 		// Add it to the memory cache as well as the disk cache
 		await this.writeToCache(this.getCachePathForPolyfillSet(input, context), Buffer.from(JSON.stringify([...polyfillSet])));
 		return await this.memoryRegistry.setPolyfillFeatureSet(input, polyfillSet, context);
@@ -125,6 +126,25 @@ export class CacheRegistryService implements ICacheRegistryService {
 		await this.fileSaver.save(constant.path.cachePackageVersionMap, JSON.stringify(packageVersionMap, null, " "));
 	}
 
+	private pickVersionForPolyfillEntry(entry: PolyfillDictNormalizedEntry): string {
+		if ("library" in entry) {
+			if (typeof entry.library === "string") {
+				return pkg.dependencies[entry.library];
+			}
+
+			let combinedVersionSet = new Set<string>();
+
+			for (const key of ["window", "worker", "node"] as const) {
+				if (entry.library[key] == null) continue;
+				combinedVersionSet.add(pkg.dependencies[entry.library[key]]);
+				return [...combinedVersionSet].join(":");
+			}
+			throw new ReferenceError(`It wasn't possible to detect a version for the library: ${entry.library}`);
+		} else {
+			return entry.version;
+		}
+	}
+
 	/**
 	 * Updates the disk cache. If the cache is already valid, there is nothing to do.
 	 * Otherwise, it will store all polyfilled libraries and their current versions
@@ -145,7 +165,7 @@ export class CacheRegistryService implements ICacheRegistryService {
 
 				// Map the version to the library name
 				if (!libraryToVersionMap.has(polyfillName)) {
-					libraryToVersionMap.set(polyfillName, polyfill.version);
+					libraryToVersionMap.set(polyfillName, this.pickVersionForPolyfillEntry(polyfill));
 				}
 			})
 		);
@@ -171,7 +191,7 @@ export class CacheRegistryService implements ICacheRegistryService {
 			if ("polyfills" in polyfill) continue;
 
 			// If the local copy of the polyfill needs to be updated, flush the entire cache
-			if (await this.needsUpdate(polyfillName as PolyfillName, polyfill.version)) {
+			if (await this.needsUpdate(polyfillName as PolyfillName, this.pickVersionForPolyfillEntry(polyfill))) {
 				this.logger.debug(`${polyfillName} needs an update! Flushing cache...`);
 				await this.flushCache();
 				return false;
@@ -238,14 +258,14 @@ export class CacheRegistryService implements ICacheRegistryService {
 	/**
 	 * Gets the cache path to the given name and encoding
 	 */
-	private getCachePath(name: IPolyfillFeature | Set<IPolyfillFeature>, context: PolyfillCachingContext): string {
+	private getCachePath(name: PolyfillFeature | Set<PolyfillFeature>, context: PolyfillCachingContext): string {
 		return join(constant.path.cacheRoot, getPolyfillIdentifier(name, context));
 	}
 
 	/**
 	 * Gets the cache path to the given Polyfill Feature Set
 	 */
-	private getCachePathForPolyfillSet(input: Set<IPolyfillFeatureInput>, context: PolyfillCachingContext): string {
+	private getCachePathForPolyfillSet(input: Set<PolyfillFeatureInput>, context: PolyfillCachingContext): string {
 		return join(constant.path.cacheRoot, getPolyfillSetIdentifier(input, context));
 	}
 }

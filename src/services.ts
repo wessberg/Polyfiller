@@ -3,17 +3,7 @@ import {FileLoader, IFileLoader} from "@wessberg/fileloader";
 import {FileSaver, IFileSaver} from "@wessberg/filesaver";
 import {ILoggerService} from "./service/logger/i-logger-service";
 import {LoggerService} from "./service/logger/logger-service";
-import {IConfig} from "./config/i-config";
-import {config} from "./config/config";
-import {IServer} from "./server/i-server";
-import {Server} from "./server/server";
-import {IRequestHandler} from "./server/request-handler/i-request-handler";
-import {RequestHandler} from "./server/request-handler/request-handler";
-import {RegisteredControllers} from "./controller/controller/registered-controllers";
-import {IStaticController} from "./controller/static/i-static-controller";
-import {StaticController} from "./controller/static/static-controller";
-import {IPolyfillController} from "./controller/polyfill/i-polyfill-controller";
-import {PolyfillController} from "./controller/polyfill/polyfill-controller";
+import {Config, config} from "./config/config";
 import {IStaticBl} from "./bl/static/i-static-bl";
 import {StaticBl} from "./bl/static/static-bl";
 import {IPolyfillBl} from "./bl/polyfill/i-polyfill-bl";
@@ -26,6 +16,13 @@ import {ICacheRegistryService} from "./service/registry/cache-registry/i-cache-r
 import {CacheRegistryService} from "./service/registry/cache-registry/cache-registry-service";
 import {IApiService} from "./service/api/i-api-service";
 import {ApiService} from "./service/api/api-service";
+import {IMetricsService} from "./service/metrics/i-metrics-service";
+import {SentryService} from "./service/metrics/sentry-service";
+import {ApiControllers, IServer} from "./api/server/i-server";
+import {Server} from "./api/server/server";
+import {PolyfillApiController} from "./api/controller/polyfill-api-controller";
+import {StaticApiController} from "./api/controller/static-api-controller";
+import {NoopMetricsService} from "./service/metrics/noop-metrics-service";
 
 export const container = new DIContainer();
 
@@ -40,18 +37,19 @@ container.registerSingleton<ICacheRegistryService, CacheRegistryService>();
 container.registerSingleton<IPolyfillBuilderService, PolyfillBuilderService>();
 container.registerSingleton<IApiService, ApiService>();
 
+config.testing ? container.registerSingleton<IMetricsService, NoopMetricsService>() : container.registerSingleton<IMetricsService, SentryService>();
+
 // Configuration
-container.registerSingleton<IConfig>(() => config);
+container.registerSingleton<Config>(() => config);
 
 // Server
 container.registerSingleton<IServer, Server>();
-container.registerSingleton<IRequestHandler, RequestHandler>();
 
 // Business Logic
 container.registerSingleton<IStaticBl, StaticBl>();
 container.registerSingleton<IPolyfillBl, PolyfillBl>();
 
 // Controller
-container.registerSingleton<IStaticController, StaticController>();
-container.registerSingleton<IPolyfillController, PolyfillController>();
-container.registerSingleton<RegisteredControllers>(() => [container.get<IStaticController>(), container.get<IPolyfillController>()]);
+container.registerSingleton<StaticApiController>();
+container.registerSingleton<PolyfillApiController>();
+container.registerSingleton<ApiControllers>(() => [container.get<PolyfillApiController>(), container.get<StaticApiController>()]);

@@ -1,12 +1,11 @@
 import {IPolyfillBl} from "./i-polyfill-bl";
-import {IPolyfillRequest} from "../../polyfill/i-polyfill-request";
+import {PolyfillRequest} from "../../polyfill/polyfill-request";
 import {constant} from "../../constant/constant";
 import {ICacheRegistryService} from "../../service/registry/cache-registry/i-cache-registry-service";
 import {getOrderedPolyfillsWithDependencies} from "../../util/polyfill/polyfill-util";
 import {ILoggerService} from "../../service/logger/i-logger-service";
-import {ContentEncodingKind} from "../../encoding/content-encoding-kind";
 import {IPolyfillBuilderService} from "../../service/polyfill-builder/i-polyfill-builder-service";
-import {IGetPolyfillsResult} from "./i-get-polyfills-result";
+import {PolyfillResponse} from "../../polyfill/polyfill-response";
 
 /**
  * Business logic for polyfills
@@ -16,11 +15,8 @@ export class PolyfillBl implements IPolyfillBl {
 
 	/**
 	 * Generates a chunk of polyfills that matches the given request
-	 *
-	 * @param request
-	 * @returns
 	 */
-	async getPolyfills(request: IPolyfillRequest): Promise<IGetPolyfillsResult> {
+	async getPolyfills(request: PolyfillRequest): Promise<PolyfillResponse> {
 		// Check if a polyfill set exists within the cache for the request features and the user agent of the request
 		let featureSet = await this.cacheRegistry.getPolyfillFeatureSet(request.features, request);
 
@@ -49,7 +45,7 @@ export class PolyfillBl implements IPolyfillBl {
 		if (existingSet != null) {
 			this.logger.debug("Matched Polyfills in cache!");
 			// If it has, just return that one
-			return {result: existingSet, featureSet};
+			return {...existingSet, featureSet};
 		}
 
 		// Otherwise, build the polyfills and store them in the Cache Registry before returning them
@@ -58,18 +54,18 @@ export class PolyfillBl implements IPolyfillBl {
 		// Add the polyfills to the registry
 		const [minifiedResult, brotliResult, zlibResult] = await Promise.all([
 			this.cacheRegistry.set(featureSet, minified, {...request, encoding: undefined}),
-			this.cacheRegistry.set(featureSet, brotli, {...request, encoding: ContentEncodingKind.BROTLI}),
-			this.cacheRegistry.set(featureSet, zlib, {...request, encoding: ContentEncodingKind.GZIP})
+			this.cacheRegistry.set(featureSet, brotli, {...request, encoding: "br"}),
+			this.cacheRegistry.set(featureSet, zlib, {...request, encoding: "gzip"})
 		]);
 
 		// Return the joined Buffer
 		switch (request.encoding) {
-			case ContentEncodingKind.BROTLI:
-				return {result: brotliResult, featureSet};
-			case ContentEncodingKind.GZIP:
-				return {result: zlibResult, featureSet};
+			case "br":
+				return {...brotliResult, featureSet};
+			case "gzip":
+				return {...zlibResult, featureSet};
 			case undefined:
-				return {result: minifiedResult, featureSet};
+				return {...minifiedResult, featureSet};
 		}
 	}
 }

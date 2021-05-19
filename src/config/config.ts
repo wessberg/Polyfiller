@@ -1,23 +1,34 @@
 import {environment} from "../environment/environment";
-import {IConfig} from "./i-config";
 import {readFileSync} from "fs";
-import {booleanize} from "../util/booleanize/booleanize";
 import {Buffer} from "buffer";
+import {booleanize} from "../api/util";
+import {LogLevel} from "../service/logger/i-logger-service";
+import {parseLogLevel} from "../api/util/util";
 
-export const config: IConfig = {
-	...environment,
-	development: environment.NODE_ENV == null || environment.NODE_ENV === "" || environment.NODE_ENV.toLowerCase() === "development",
-	staging: environment.NODE_ENV != null && environment.NODE_ENV.toLowerCase() === "staging",
+export interface Config {
+	sentryDsn: string | undefined;
+	environment: string;
+	production: boolean;
+	logLevel: LogLevel;
+	testing: boolean;
+	clearCache: boolean;
+	https: boolean;
+	port: number;
+	host: string;
+	key: Buffer | undefined;
+	cert: Buffer | undefined;
+}
+
+export const config: Config = {
+	sentryDsn: environment.SENTRY_DSN,
+	environment: environment.NODE_ENV,
 	production: environment.NODE_ENV != null && environment.NODE_ENV.toLowerCase() === "production",
 	testing: booleanize(environment.TESTING),
-	debug: booleanize(environment.DEBUG),
-	verbose: booleanize(environment.VERBOSE),
+	logLevel: parseLogLevel(environment.LOG_LEVEL) ?? "info",
 	clearCache: booleanize(environment.CLEAR_CACHE),
-	http2: booleanize(environment.HTTP2),
 	https: booleanize(environment.HTTPS),
 	host: environment.HOST,
 	port: parseInt(environment.PORT),
-	email: environment.EMAIL != null && environment.EMAIL !== "" ? environment.EMAIL : undefined,
 	key:
 		environment.KEY == null || environment.KEY === ""
 			? undefined

@@ -1,7 +1,7 @@
-import {IPolyfillFeature} from "../../polyfill/i-polyfill-feature";
+import {PolyfillFeature} from "../../polyfill/polyfill-feature";
 import {ICompressedPolyfillSetResult} from "./i-compressed-polyfill-set-result";
-import {IPolyfillRequest} from "../../polyfill/i-polyfill-request";
+import {PolyfillRequest} from "../../polyfill/polyfill-request";
 
 export interface IPolyfillBuilderService {
-	buildPolyfillSet(polyfillSet: Set<IPolyfillFeature>, request: IPolyfillRequest): Promise<ICompressedPolyfillSetResult>;
+	buildPolyfillSet(polyfillSet: Set<PolyfillFeature>, request: PolyfillRequest): Promise<ICompressedPolyfillSetResult>;
 }

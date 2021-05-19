@@ -52,7 +52,7 @@
 		"eslint": "7.26.0",
 		"eslint-config-prettier": "8.3.0",
 		"eslint-plugin-import": "~2.23.2",
-		"eslint-plugin-jsdoc": "34.7.0",
+		"eslint-plugin-jsdoc": "34.8.1",
 		"husky": "6.0.0",
 		"node-fetch": "2.6.1",
 		"node-ssh": "^11.1.1",
@@ -68,7 +68,7 @@
 		"useragent-generator": "1.1.1-amkt-22079-finish.0"
 	},
 	"dependencies": {
-		"@babel/core": "7.14.2",
+		"@babel/core": "7.14.3",
 		"@babel/plugin-transform-block-scoping": "7.14.2",
 		"@formatjs/intl-datetimeformat": "4.1.0",
 		"@formatjs/intl-displaynames": "5.1.0",
@@ -100,7 +100,7 @@
 		"console-polyfill": "0.3.0",
 		"construct-style-sheets-polyfill": "2.4.16",
 		"core-js": "3.12.1",
-		"esbuild": "0.11.23",
+		"esbuild": "0.12.1",
 		"events-polyfill": "2.1.2",
 		"express": "4.17.1",
 		"find-up": "5.0.0",

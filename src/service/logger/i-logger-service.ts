@@ -1,9 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+export type LogLevel = "silent" | "info" | "verbose" | "debug";
+
+export const logLevelHierarchy = {
+	silent: 0,
+	info: 1,
+	verbose: 2,
+	debug: 3
+};
+
 export interface ILoggerService {
-	log(...messages: any[]): any[];
-	debug(...messages: any[]): any[];
+	info(...messages: any[]): any[];
 	verbose(...messages: any[]): any[];
-	setDebug(debug: boolean): void;
-	setVerbose(verbose: boolean): void;
+	debug(...messages: any[]): any[];
 }

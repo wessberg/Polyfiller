@@ -1,5 +1,6 @@
 import {ApiMethod, ContentType} from "../server/i-server";
 import {ContentEncodingKind} from "../../encoding/content-encoding-kind";
+import {LogLevel} from "../../service/logger/i-logger-service";
 
 export function parseApiMethod(method: string): ApiMethod | undefined {
 	const uppercased = method.toUpperCase();
@@ -21,6 +22,20 @@ export function parseContentEncodingKind(encoding: string | undefined): ContentE
 	switch (lowercased) {
 		case "gzip":
 		case "br":
+			return lowercased;
+		default:
+			return undefined;
+	}
+}
+
+export function parseLogLevel(level: string | undefined): LogLevel | undefined {
+	if (level == null) return undefined;
+	const lowercased = level.toUpperCase();
+	switch (lowercased) {
+		case "silent":
+		case "info":
+		case "verbose":
+		case "debug":
 			return lowercased;
 		default:
 			return undefined;

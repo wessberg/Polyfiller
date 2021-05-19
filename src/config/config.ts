@@ -2,15 +2,14 @@ import {environment} from "../environment/environment";
 import {readFileSync} from "fs";
 import {Buffer} from "buffer";
 import {booleanize} from "../api/util";
+import {LogLevel} from "../service/logger/i-logger-service";
+import {parseLogLevel} from "../api/util/util";
 
 export interface Config {
 	sentryDsn: string | undefined;
 	production: boolean;
-	development: boolean;
-	staging: boolean;
+	logLevel: LogLevel;
 	testing: boolean;
-	debug: boolean;
-	verbose: boolean;
 	clearCache: boolean;
 	https: boolean;
 	port: number;
@@ -21,12 +20,9 @@ export interface Config {
 
 export const config: Config = {
 	sentryDsn: environment.SENTRY_DSN,
-	development: environment.NODE_ENV == null || environment.NODE_ENV === "" || environment.NODE_ENV.toLowerCase() === "development",
-	staging: environment.NODE_ENV != null && environment.NODE_ENV.toLowerCase() === "staging",
 	production: environment.NODE_ENV != null && environment.NODE_ENV.toLowerCase() === "production",
 	testing: booleanize(environment.TESTING),
-	debug: booleanize(environment.DEBUG),
-	verbose: booleanize(environment.VERBOSE),
+	logLevel: parseLogLevel(environment.LOG_LEVEL) ?? "info",
 	clearCache: booleanize(environment.CLEAR_CACHE),
 	https: booleanize(environment.HTTPS),
 	host: environment.HOST,

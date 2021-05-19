@@ -1,4 +1,5 @@
 import express, {Express} from "express";
+import morgan from "morgan";
 import {ApiControllers, IServer, ServerOptions} from "./i-server";
 import {IMetricsService} from "../../service/metrics/i-metrics-service";
 import {createServer as createHttpServer, Server as HttpServer} from "http";
@@ -22,6 +23,13 @@ export class Server implements IServer {
 
 		// Options
 		app.enable("etag");
+
+		// Add request logging
+		app.use(
+			morgan("combined", {
+				skip: () => this.config.logLevel === "silent"
+			})
+		);
 
 		// Setup CORS.
 		app.use((_, res, next) => {
@@ -55,7 +63,7 @@ export class Server implements IServer {
 				: createHttpServer(this.app);
 
 		server.listen(port, host, () => {
-			this.loggerService.log(`${"https" in options && options.https ? "Https" : "Http"} server started on host ${host} and port ${port}`);
+			this.loggerService.info(`${"https" in options && options.https ? "Https" : "Http"} server started on host ${host} and port ${port}`);
 		});
 
 		this.server = server;

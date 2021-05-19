@@ -22,7 +22,7 @@ export interface Config {
 }
 
 export const config: Config = {
-	version: `${pkg.name}@${pkg.version}:${Date.now()}`,
+	version: `${pkg.name}@${pkg.version}:${Date.now()}`.replace(/\//g, "_"),
 	sentryDsn: environment.SENTRY_DSN,
 	environment: environment.NODE_ENV,
 	production: environment.NODE_ENV != null && environment.NODE_ENV.toLowerCase() === "production",

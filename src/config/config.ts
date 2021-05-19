@@ -7,6 +7,7 @@ import {parseLogLevel} from "../api/util/util";
 
 export interface Config {
 	sentryDsn: string | undefined;
+	environment: string;
 	production: boolean;
 	logLevel: LogLevel;
 	testing: boolean;
@@ -20,6 +21,7 @@ export interface Config {
 
 export const config: Config = {
 	sentryDsn: environment.SENTRY_DSN,
+	environment: environment.NODE_ENV,
 	production: environment.NODE_ENV != null && environment.NODE_ENV.toLowerCase() === "production",
 	testing: booleanize(environment.TESTING),
 	logLevel: parseLogLevel(environment.LOG_LEVEL) ?? "info",

@@ -1,3 +1,13 @@
+## [0.0.137](https://github.com/wessberg/polyfiller/compare/v0.0.136...v0.0.137) (2021-05-19)
+
+### Bug Fixes
+
+- **polyfill:** fix feature detection for Constructable Stylesheets ([7f5b1ec](https://github.com/wessberg/polyfiller/commit/7f5b1ecc5568784ec6cbf47b2ab8ceb3f770295c))
+
+### Features
+
+- **ua:** add handling or Sogou Explorer, Chromium on Smart TVs, Dalvik VMs, and others ([134030d](https://github.com/wessberg/polyfiller/commit/134030d927b01ee3b399e8d19d94866483352549))
+
 ## [0.0.136](https://github.com/wessberg/polyfiller/compare/v0.0.135...v0.0.136) (2021-05-19)
 
 ### Features

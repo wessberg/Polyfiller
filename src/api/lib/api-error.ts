@@ -35,16 +35,10 @@ export class ApiError extends Error {
 
 	static ensureApiError(data: Error | ApiError | ApiErrorRecord): ApiError {
 		if (data instanceof ApiError) return data;
-		if ("status" in data) return ApiError.fromJSON(data);
+		const status = "status" in data && typeof data.status === "number" ? data.status : StatusCodes.INTERNAL_SERVER_ERROR;
+		const message = data.message || ("name" in data ? data.name : undefined) || "Unknown Error";
+		const stack = data.stack;
 
-		if ("status" in data && typeof status === "number") {
-			const castData = data as Error & {status: number};
-			return ApiError.fromJSON(castData);
-		} else {
-			return ApiError.fromJSON({
-				status: StatusCodes.INTERNAL_SERVER_ERROR,
-				...data
-			});
-		}
+		return ApiError.fromJSON({status, message, stack});
 	}
 }

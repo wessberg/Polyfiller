@@ -1,12 +1,12 @@
 import {IApiService} from "./i-api-service";
-import {IConfig} from "../../config/i-config";
 import {IServer} from "../../api/server/i-server";
+import {Config} from "../../config/config";
 
 /**
  * Helps with working with the API
  */
 export class ApiService implements IApiService {
-	constructor(private readonly server: IServer, private readonly config: IConfig) {}
+	constructor(private readonly server: IServer, private readonly config: Config) {}
 
 	/**
 	 * Launches the API.

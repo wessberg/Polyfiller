@@ -32,6 +32,7 @@ export interface ApiResponse<T = unknown> {
 export type ApiRequestHandler = (request: ApiRequest) => Promise<ApiResponse>;
 
 export type ApiMethod = "GET" | "PUT" | "POST" | "DELETE" | "OPTIONS";
+export type ContentType = "application/json" | "text/html";
 export type ApiPath = string | RegExp;
 export type ApiPaths = MaybeArray<ApiPath>;
 export type RegisteredApiMethods<T> = {[Key in ApiMethod]?: Map<ApiPath, keyof T & string>};

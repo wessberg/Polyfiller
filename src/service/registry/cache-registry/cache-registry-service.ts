@@ -8,11 +8,11 @@ import {IFileLoader} from "@wessberg/fileloader";
 import {IMemoryRegistryService, PolyfillCachingContext} from "../polyfill-registry/i-memory-registry-service";
 import {PolyfillName} from "../../../polyfill/polyfill-name";
 import {coerce, gt} from "semver";
-import {IConfig} from "../../../config/i-config";
 import {IRegistryGetResult} from "../polyfill-registry/i-registry-get-result";
 import {ILoggerService} from "../../logger/i-logger-service";
 import {PolyfillDictEntry, PolyfillDictNormalizedEntry} from "../../../polyfill/polyfill-dict";
 import pkg from "../../../../package.json";
+import {Config} from "../../../config/config";
 
 /**
  * A class that can cache generated Polyfills on disk
@@ -23,7 +23,7 @@ export class CacheRegistryService implements ICacheRegistryService {
 		private readonly logger: ILoggerService,
 		private readonly fileLoader: IFileLoader,
 		private readonly memoryRegistry: IMemoryRegistryService,
-		private readonly config: IConfig
+		private readonly config: Config
 	) {}
 
 	/**

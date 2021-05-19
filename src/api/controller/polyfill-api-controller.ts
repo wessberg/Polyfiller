@@ -33,7 +33,7 @@ export class PolyfillApiController {
 			statusCode: StatusCodes.OK,
 			body: buffer,
 			headers: {
-				"Content-Type": "application/javascript; charset=utf-8",
+				"Content-Type": "application/javascript",
 				"Cache-Control": constant.header.cache.immutable,
 				...(polyfillRequest.encoding == null
 					? {}

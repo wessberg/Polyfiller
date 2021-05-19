@@ -3,8 +3,7 @@ import {FileLoader, IFileLoader} from "@wessberg/fileloader";
 import {FileSaver, IFileSaver} from "@wessberg/filesaver";
 import {ILoggerService} from "./service/logger/i-logger-service";
 import {LoggerService} from "./service/logger/logger-service";
-import {IConfig} from "./config/i-config";
-import {config} from "./config/config";
+import {Config, config} from "./config/config";
 import {IStaticBl} from "./bl/static/i-static-bl";
 import {StaticBl} from "./bl/static/static-bl";
 import {IPolyfillBl} from "./bl/polyfill/i-polyfill-bl";
@@ -41,7 +40,7 @@ container.registerSingleton<IApiService, ApiService>();
 config.testing ? container.registerSingleton<IMetricsService, NoopMetricsService>() : container.registerSingleton<IMetricsService, SentryService>();
 
 // Configuration
-container.registerSingleton<IConfig>(() => config);
+container.registerSingleton<Config>(() => config);
 
 // Server
 container.registerSingleton<IServer, Server>();
@@ -53,4 +52,4 @@ container.registerSingleton<IPolyfillBl, PolyfillBl>();
 // Controller
 container.registerSingleton<StaticApiController>();
 container.registerSingleton<PolyfillApiController>();
-container.registerSingleton<ApiControllers>(() => [container.get<StaticApiController>(), container.get<PolyfillApiController>()]);
+container.registerSingleton<ApiControllers>(() => [container.get<PolyfillApiController>(), container.get<StaticApiController>()]);

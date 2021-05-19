@@ -1,4 +1,4 @@
-import {ApiMethod} from "../server/i-server";
+import {ApiMethod, ContentType} from "../server/i-server";
 import {ContentEncodingKind} from "../../encoding/content-encoding-kind";
 
 export function parseApiMethod(method: string): ApiMethod | undefined {
@@ -35,4 +35,19 @@ export function pickEncoding(encodings: Set<string> | undefined): ContentEncodin
 	if (encodings.has("br")) return "br";
 	if (encodings.has("gzip")) return "gzip";
 	return undefined;
+}
+
+export function pickAccept(accept: string | undefined): ContentType {
+	if (accept == null) return "text/html";
+	const lowercased = accept.toLowerCase();
+
+	if (lowercased.startsWith("text/html")) {
+		return "text/html";
+	}
+
+	if (lowercased.startsWith("application/json")) {
+		return "application/json";
+	}
+
+	return "text/html";
 }

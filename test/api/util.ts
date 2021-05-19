@@ -1,9 +1,9 @@
 import fetch, {Response} from "node-fetch";
 import {container} from "../../src/services";
-import {IConfig} from "../../src/config/i-config";
 import {ApiMethod} from "../../src/api/server/i-server";
+import {Config} from "../../src/config/config";
 
-const config = container.get<IConfig>();
+const config = container.get<Config>();
 
 export interface SendRequestOptions {
 	path: string;
@@ -11,6 +11,7 @@ export interface SendRequestOptions {
 	headers?: Partial<{
 		"User-Agent": string;
 		"Accept-Encoding": string;
+		Accept: string;
 	}>;
 }
 

@@ -1,9 +1,8 @@
 import {PolyfillDict} from "../polyfill/polyfill-dict";
-import {ApiPath, ApiPaths} from "../api/server/i-server";
 
 export interface IEndpointConstant {
-	index: ApiPaths;
-	polyfill: ApiPath;
+	index: string;
+	polyfill: string;
 }
 
 export interface IMetaConstant {

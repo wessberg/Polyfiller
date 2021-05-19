@@ -3,7 +3,7 @@ import tempDirectory from "temp-dir";
 import {join} from "path";
 import {ALL_CONTEXTS, WINDOW_CONTEXT, WINDOW_NODE_CONTEXT, WINDOW_WORKER_CONTEXT} from "../polyfill/polyfill-context";
 import pkg from "../../package.json";
-import {booleanize} from "../common/util/util";
+import {booleanize} from "../api/util";
 
 const tempRoot = join(
 	tempDirectory,
@@ -13,7 +13,7 @@ const tempRoot = join(
 
 export const constant: IConstant = {
 	endpoint: {
-		index: ["/api", "/api/"],
+		index: "/api",
 		polyfill: "/api/polyfill"
 	},
 	header: {

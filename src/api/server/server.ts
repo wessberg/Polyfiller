@@ -4,14 +4,15 @@ import {IMetricsService} from "../../service/metrics/i-metrics-service";
 import {createServer as createHttpServer, Server as HttpServer} from "http";
 import {createServer as createHttpsServer, Server as HttpsServer} from "https";
 import {ILoggerService} from "../../service/logger/i-logger-service";
-import {controllerMiddleware} from "../middleware/controller-middleware";
 import {errorMiddleware} from "../middleware/error-middleware";
+import {setupControllers} from "../middleware/setup-controllers";
+import {Config} from "../../config/config";
 
 export class Server implements IServer {
 	private app: Express | undefined;
 	private server: HttpServer | HttpsServer | undefined;
 
-	constructor(private metricsService: IMetricsService, private loggerService: ILoggerService, private controllers: ApiControllers) {}
+	constructor(private config: Config, private metricsService: IMetricsService, private loggerService: ILoggerService, private controllers: ApiControllers) {}
 
 	async initialize(): Promise<void> {
 		const app = express();
@@ -30,13 +31,13 @@ export class Server implements IServer {
 			next();
 		});
 
-		// Apply API controllers
-		app.use(controllerMiddleware({controllers: this.controllers}));
+		// Setup controller methods
+		setupControllers({app, controllers: this.controllers});
 
 		await this.metricsService.configureErrorHandlers(app);
 
 		// Apply fall-through error middleware
-		app.use(errorMiddleware);
+		app.use(errorMiddleware({removeStackTrace: this.config.production}));
 		this.app = app;
 	}
 

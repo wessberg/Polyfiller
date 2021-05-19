@@ -12,6 +12,51 @@ import {StatusCodes} from "http-status-codes";
 
 test.before(initializeTests);
 
+test(`Generates an HTML-formatted welcome page when a request is sent to '${constant.endpoint.index}'`, async t => {
+	const result = await sendRequest({
+		path: constant.endpoint.index
+	});
+
+	const buffer = await result.buffer();
+
+	if (!result.ok) {
+		t.fail(buffer.toString());
+	} else {
+		t.true(buffer.toString().includes("Welcome to "));
+	}
+});
+
+test(`Generates an HTML-formatted welcome page when a request is sent to '/'`, async t => {
+	const result = await sendRequest({
+		path: "/"
+	});
+
+	const buffer = await result.buffer();
+
+	if (!result.ok) {
+		t.fail(buffer.toString());
+	} else {
+		t.true(buffer.toString().includes("Welcome to "));
+	}
+});
+
+test(`Generates an JSON-formatted welcome payload when a request is sent to '${constant.endpoint.index}' with the {Accept: application/json} header`, async t => {
+	const result = await sendRequest({
+		path: constant.endpoint.index,
+		headers: {
+			Accept: "application/json"
+		}
+	});
+
+	const data = await result.json();
+
+	if (!result.ok) {
+		t.fail(data);
+	} else {
+		t.true("title" in data && data.title.includes("Welcome to"));
+	}
+});
+
 test("Delegates requests to '/' to the StaticController", async t => {
 	const result = await sendRequest({
 		path: (Array.isArray(constant.endpoint.index) ? constant.endpoint.index[0] : constant.endpoint.index) as string
@@ -100,8 +145,12 @@ test("Will correctly escape unicode escape sequences. #1", async t => {
 
 	const body = await result.buffer();
 
-	t.false(body.toString().includes(`u{1e950}`));
-	t.false(body.toString().includes(`u{660}`));
+	if (!result.ok) {
+		t.fail(body.toString());
+	} else {
+		t.false(body.toString().includes(`u{1e950}`));
+		t.false(body.toString().includes(`u{660}`));
+	}
 });
 
 test("Will correctly parse meta information for SystemJS. #1", async t => {
@@ -128,7 +177,12 @@ test("Will inline regenerator-runtime if required. #1", async t => {
 	});
 
 	const body = await result.buffer();
-	t.false(body.toString().includes(`require("regenerator-runtime")`));
+
+	if (!result.ok) {
+		t.fail(body.toString());
+	} else {
+		t.false(body.toString().includes(`require("regenerator-runtime")`));
+	}
 });
 
 test("Generates SourceMap if required. #1", async t => {
@@ -141,7 +195,11 @@ test("Generates SourceMap if required. #1", async t => {
 
 	const body = await result.buffer();
 
-	t.true(body.toString().includes(`//# sourceMappingURL=data:application/json;base64`));
+	if (!result.ok) {
+		t.fail(body.toString());
+	} else {
+		t.true(body.toString().includes(`//# sourceMappingURL=data:application/json;base64`));
+	}
 });
 
 test("Will set a 'x-applied-polyfills' header on HTTP responses with a HTTP-friendly list of all applied polyfills. #1", async t => {

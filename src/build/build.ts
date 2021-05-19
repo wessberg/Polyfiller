@@ -10,7 +10,7 @@ import {join} from "path";
 import {unlinkSync, writeFileSync} from "fs";
 import {transform} from "@swc/core";
 import {REGENERATOR_SOURCE, REGENERATOR_SOURCE_MINIFIED} from "../constant/regenerator-source";
-import {generateRandomHash} from "../common/util/util";
+import {generateRandomHash} from "../api/util";
 
 const swcBug1461Match = /var regeneratorRuntime\d?\s*=\s*require\(["'`]regenerator-runtime["'`]\);/;
 const swcBug1461MatchReference = /regeneratorRuntime\d\./g;

@@ -1,5 +1,7 @@
 export const environmentDefaults = {
-	SENTRY_DSN: "",
+	SENTRY_DSN: undefined as string | undefined,
+	KEY: undefined as string | undefined,
+	CERT: undefined as string | undefined,
 	NODE_ENV: "development",
 	TESTING: "false",
 	DEBUG: "false",
@@ -7,7 +9,5 @@ export const environmentDefaults = {
 	HTTPS: "false",
 	CLEAR_CACHE: "false",
 	HOST: "0.0.0.0",
-	PORT: "3000",
-	KEY: "",
-	CERT: ""
+	PORT: "3000"
 };

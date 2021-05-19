@@ -17,7 +17,7 @@ import {IPolyfillLibraryDictEntry, IPolyfillLocalDictEntry} from "../../polyfill
 import toposort from "toposort";
 import {POLYFILL_CONTEXTS, PolyfillContext} from "../../polyfill/polyfill-context";
 import {PolyfillCachingContext} from "../../service/registry/polyfill-registry/i-memory-registry-service";
-import {booleanize} from "../../common/util/util";
+import {booleanize} from "../../api/util";
 
 /**
  * Traces all polyfill names that matches the given name. It may be an alias, and it may refer to additional aliases

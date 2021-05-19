@@ -1,15 +1,25 @@
 import {NextFunction, Request, Response} from "express";
-import {ApiControllers} from "../server/i-server";
-import {StatusCodes} from "http-status-codes";
+import {ApiError} from "../lib/api-error";
 import {generateErrorHtml} from "../../util/html/generate-html";
+import {pickAccept} from "../util/util";
 
-export interface ControllerMiddlewareOptions {
-	controllers: ApiControllers;
+interface ErrorMiddlewareOptions {
+	removeStackTrace: boolean;
 }
 
-export const errorMiddleware = async (ex: Error, _req: Request, res: Response, _: NextFunction): Promise<void> => {
-	res.setHeader("Content-Type", "text/html; charset=utf-8");
-	const statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+export const errorMiddleware =
+	(options: Partial<ErrorMiddlewareOptions> = {}) =>
+	async (ex: Error | ApiError, req: Request, res: Response, _: NextFunction): Promise<void> => {
+		const apiError = ApiError.ensureApiError(ex);
+		if (options.removeStackTrace) {
+			apiError.stack = undefined;
+		}
 
-	return res.status(statusCode).send(generateErrorHtml(ex, statusCode)).end();
-};
+		const contentType = pickAccept(req.header("accept"));
+
+		res.setHeader("Content-Type", contentType);
+		res
+			.status(apiError.status)
+			.send(contentType === "text/html" ? generateErrorHtml(apiError) : apiError.toJSON())
+			.end();
+	};

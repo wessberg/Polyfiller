@@ -1,11 +1,26 @@
 import {environment} from "../environment/environment";
-import {IConfig} from "./i-config";
 import {readFileSync} from "fs";
 import {Buffer} from "buffer";
-import {booleanize} from "../common/util/util";
+import {booleanize} from "../api/util";
 
-export const config: IConfig = {
-	...environment,
+export interface Config {
+	sentryDsn: string | undefined;
+	production: boolean;
+	development: boolean;
+	staging: boolean;
+	testing: boolean;
+	debug: boolean;
+	verbose: boolean;
+	clearCache: boolean;
+	https: boolean;
+	port: number;
+	host: string;
+	key: Buffer | undefined;
+	cert: Buffer | undefined;
+}
+
+export const config: Config = {
+	sentryDsn: environment.SENTRY_DSN,
 	development: environment.NODE_ENV == null || environment.NODE_ENV === "" || environment.NODE_ENV.toLowerCase() === "development",
 	staging: environment.NODE_ENV != null && environment.NODE_ENV.toLowerCase() === "staging",
 	production: environment.NODE_ENV != null && environment.NODE_ENV.toLowerCase() === "production",

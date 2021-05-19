@@ -1,5 +1,5 @@
 import {ApiController, ApiMethod, ApiPaths} from "../../server/i-server";
-import {ensureArray} from "../../../common/util/util";
+import {ensureArray} from "../../util";
 
 export interface ApiMethodDecoratorOptions {
 	path: ApiPaths;

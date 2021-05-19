@@ -8,7 +8,7 @@ import {build} from "../../build/build";
 import {IPolyfillDictEntryBase} from "../../polyfill/polyfill-dict";
 import {PolyfillContext} from "../../polyfill/polyfill-context";
 import {PolyfillRequest} from "../../polyfill/polyfill-request";
-import {ensureArray} from "../../common/util/util";
+import {ensureArray} from "../../api/util";
 
 const SYNC_OPTIONS = {cwd: __dirname};
 

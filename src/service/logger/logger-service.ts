@@ -1,6 +1,6 @@
 import {ILoggerService} from "./i-logger-service";
 import chalk from "chalk";
-import {IConfig} from "../../config/i-config";
+import {Config} from "../../config/config";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -36,7 +36,7 @@ export class LoggerService implements ILoggerService {
 	 */
 	private _verbose = false;
 
-	constructor(config: IConfig) {
+	constructor(config: Config) {
 		this.setDebug(config.debug);
 		this.setVerbose(config.verbose);
 	}

@@ -13,6 +13,8 @@ import {ILoggerService} from "../../logger/i-logger-service";
 import {PolyfillDictEntry, PolyfillDictNormalizedEntry} from "../../../polyfill/polyfill-dict";
 import pkg from "../../../../package.json";
 import {Config} from "../../../config/config";
+import {ApiError} from "../../../api/lib/api-error";
+import {StatusCodes} from "http-status-codes";
 
 /**
  * A class that can cache generated Polyfills on disk
@@ -67,9 +69,15 @@ export class CacheRegistryService implements ICacheRegistryService {
 		const buffer = await this.getFromCache(this.getCachePathForPolyfillSet(input, context));
 		// If not possible, return undefined
 		if (buffer == null) return undefined;
+		let polyfillFeatures: PolyfillFeature[];
 
 		// Otherwise, store it in the memory registry and return the Buffer
-		return await this.memoryRegistry.setPolyfillFeatureSet(input, new Set(JSON.parse(buffer.toString())), context);
+		try {
+			polyfillFeatures = JSON.parse(buffer.toString());
+		} catch (ex) {
+			throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, `Could not decode polyfill features based on the buffer: ${buffer.toString()}`);
+		}
+		return await this.memoryRegistry.setPolyfillFeatureSet(input, new Set(polyfillFeatures), context);
 	}
 
 	/**
@@ -229,7 +237,11 @@ export class CacheRegistryService implements ICacheRegistryService {
 	 */
 	private async getPackageVersionMap(): Promise<{[key: string]: string}> {
 		const packageVersionMapRaw = await this.getFromCache(constant.path.cachePackageVersionMap);
-		return packageVersionMapRaw == null ? {} : JSON.parse(packageVersionMapRaw.toString());
+		try {
+			return packageVersionMapRaw == null ? {} : JSON.parse(packageVersionMapRaw.toString());
+		} catch (ex) {
+			throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Could not decode package version Map");
+		}
 	}
 
 	private async getLastCachedPolyfillConfigChecksum(): Promise<string | undefined> {

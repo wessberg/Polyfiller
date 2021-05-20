@@ -59,7 +59,7 @@ test(`Generates an JSON-formatted welcome payload when a request is sent to '${c
 	}
 });
 
-test.only(`Sends metrics data when an unsupported User-Agent header is discovered, but still responds with OK`, async t => {
+test(`Sends metrics data when an unsupported User-Agent header is discovered, but still responds with OK`, async t => {
 	const metricsService = container.get<IMetricsService>();
 	const result = await sendRequest({
 		path: `${constant.endpoint.polyfill}?features=intersection-observer`,

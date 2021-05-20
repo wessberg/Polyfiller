@@ -3,17 +3,12 @@ import {ApiError} from "../lib/api-error";
 import {generateErrorHtml} from "../../util/html/generate-html";
 import {pickAccept} from "../util/util";
 
-interface ErrorMiddlewareOptions {
-	removeStackTrace: boolean;
-}
+interface ErrorMiddlewareOptions {}
 
 export const errorMiddleware =
-	(options: Partial<ErrorMiddlewareOptions> = {}) =>
+	(_options: Partial<ErrorMiddlewareOptions> = {}) =>
 	async (ex: Error | ApiError, req: Request, res: Response, _: NextFunction): Promise<void> => {
 		const apiError = ApiError.ensureApiError(ex);
-		if (options.removeStackTrace) {
-			apiError.stack = undefined;
-		}
 
 		const contentType = pickAccept(req.header("accept"));
 

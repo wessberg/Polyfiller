@@ -45,7 +45,7 @@ export class Server implements IServer {
 		await this.metricsService.configureErrorHandlers(app);
 
 		// Apply fall-through error middleware
-		app.use(errorMiddleware());
+		app.use(errorMiddleware({removeStackTrace: this.config.production}));
 		this.app = app;
 	}
 

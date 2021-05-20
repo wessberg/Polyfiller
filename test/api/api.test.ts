@@ -153,6 +153,17 @@ test("Will generate correct polyfills for IE11. #1", async t => {
 	t.true(result.status === StatusCodes.OK);
 });
 
+test("Won't crash for invalid URLs. #1", async t => {
+	const result = await sendRequest({
+		path: `//?foo`,
+		headers: {
+			"User-Agent": ie("11")
+		}
+	});
+
+	t.true(result.status === StatusCodes.OK);
+});
+
 test("Will correctly escape unicode escape sequences. #1", async t => {
 	const result = await sendRequest({
 		path: `${constant.endpoint.polyfill}?features=intl.number-format`,

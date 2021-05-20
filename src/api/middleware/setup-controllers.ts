@@ -29,7 +29,7 @@ function toApiRequest(request: Request): ApiRequest {
 		request,
 		url: new URL(
 			// Replace all literal "+" with its literal encoded variant
-			request.url.replace(/\+/g, "%2B"),
+			(request.url.startsWith("//") ? request.url.slice(1) : request.url).replace(/\+/g, "%2B"),
 			`${request.protocol}://${request.get("host")}`
 		),
 		userAgent: request.header("user-agent") ?? "",

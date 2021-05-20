@@ -32,7 +32,7 @@ export function generateHtml(message: string): string {
 /**
  * Generates some HTML contents with the given message
  */
-export function generateErrorHtml(error: ApiError): string {
+export function generateErrorHtml(error: ApiError, removeStackTrace = false): string {
 	// language=HTML
 	return `
 		<!DOCTYPE html>
@@ -45,7 +45,7 @@ export function generateErrorHtml(error: ApiError): string {
 			<h1>An Error occurred.</h1>
 			<h5>Code: ${error.status}</h5>
 			<p>${error.message}</p>
-			${error.stack == null ? "" : `<p>${error.stack}</p>`}
+			${error.stack == null || removeStackTrace ? "" : `<p>${error.stack}</p>`}
 		</body>
 		</html>
 	`;

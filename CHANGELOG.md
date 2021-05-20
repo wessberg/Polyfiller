@@ -1,3 +1,11 @@
+## [0.0.140](https://github.com/wessberg/polyfiller/compare/v0.0.139-rerelease...v0.0.140) (2021-05-20)
+
+### Bug Fixes
+
+- fix problems where bad URLs such as // could cause crashes ([b20d9e9](https://github.com/wessberg/polyfiller/commit/b20d9e9ba06eba9576f21adb9d140543cacabcac))
+
+## [0.0.139-rerelease](https://github.com/wessberg/polyfiller/compare/v0.0.139...v0.0.139-rerelease) (2021-05-20)
+
 ## [0.0.139](https://github.com/wessberg/polyfiller/compare/v0.0.138...v0.0.139) (2021-05-20)
 
 ### Features

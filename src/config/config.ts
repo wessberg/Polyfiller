@@ -3,7 +3,7 @@ import {readFileSync} from "fs";
 import {Buffer} from "buffer";
 import {booleanize} from "../api/util";
 import {LogLevel} from "../service/logger/i-logger-service";
-import {parseLogLevel} from "../api/util/util";
+import {generateReleaseName, parseLogLevel} from "../api/util/util";
 import pkg from "../../package.json";
 
 export interface Config {
@@ -22,7 +22,7 @@ export interface Config {
 }
 
 export const config: Config = {
-	version: `${pkg.name}@${pkg.version}:${Date.now()}`.replace(/\//g, "_"),
+	version: generateReleaseName(pkg),
 	sentryDsn: environment.SENTRY_DSN,
 	environment: environment.NODE_ENV,
 	production: environment.NODE_ENV != null && environment.NODE_ENV.toLowerCase() === "production",

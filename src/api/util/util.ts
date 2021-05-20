@@ -66,3 +66,9 @@ export function pickAccept(accept: string | undefined): ContentType {
 
 	return "text/html";
 }
+
+export function generateReleaseName(pkg: {name: string; version: string}): string {
+	const slashIndex = pkg.name.lastIndexOf("/");
+	const sanitizedName = slashIndex === -1 ? pkg.name : pkg.name.slice(slashIndex + 1);
+	return `${sanitizedName}@${pkg.version}`;
+}

@@ -1,3 +1,15 @@
+## [0.0.141](https://github.com/wessberg/polyfiller/compare/v0.0.140-rerelease...v0.0.141) (2021-05-20)
+
+### Bug Fixes
+
+- cleanup invalid cache entries if they're not decodable ([a2d3376](https://github.com/wessberg/polyfiller/commit/a2d337693f2577eaf3e0ff9841bcea9e1429af61))
+
+## [0.0.140-rerelease](https://github.com/wessberg/polyfiller/compare/v0.0.140...v0.0.140-rerelease) (2021-05-20)
+
+### Bug Fixes
+
+- more descriptive error names ([292d9f5](https://github.com/wessberg/polyfiller/commit/292d9f540a61967399221e42e0c6be47682d8fe3))
+
 ## [0.0.140](https://github.com/wessberg/polyfiller/compare/v0.0.139-rerelease...v0.0.140) (2021-05-20)
 
 ### Bug Fixes

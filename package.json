@@ -88,8 +88,6 @@
 		"@webcomponents/shadydom": "1.8.0",
 		"@webcomponents/template": "1.4.4",
 		"@wessberg/di": "2.0.3",
-		"@wessberg/fileloader": "1.1.12",
-		"@wessberg/filesaver": "1.0.11",
 		"@wessberg/pointer-events": "1.0.9",
 		"@wessberg/stringutil": "1.0.19",
 		"Base64": "1.1.0",

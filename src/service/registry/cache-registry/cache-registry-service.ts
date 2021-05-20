@@ -1,10 +1,8 @@
 import {ICacheRegistryService} from "./i-cache-registry-service";
-import {IFileSaver} from "@wessberg/filesaver";
 import {PolyfillFeature, PolyfillFeatureInput} from "../../../polyfill/polyfill-feature";
 import {getPolyfillConfigChecksum, getPolyfillIdentifier, getPolyfillSetIdentifier} from "../../../util/polyfill/polyfill-util";
 import {join} from "path";
 import {constant} from "../../../constant/constant";
-import {IFileLoader} from "@wessberg/fileloader";
 import {IMemoryRegistryService, PolyfillCachingContext} from "../polyfill-registry/i-memory-registry-service";
 import {PolyfillName} from "../../../polyfill/polyfill-name";
 import {coerce, gt} from "semver";
@@ -13,18 +11,18 @@ import {ILoggerService} from "../../logger/i-logger-service";
 import {PolyfillDictEntry, PolyfillDictNormalizedEntry} from "../../../polyfill/polyfill-dict";
 import pkg from "../../../../package.json";
 import {Config} from "../../../config/config";
-import {ApiError} from "../../../api/lib/api-error";
-import {StatusCodes} from "http-status-codes";
+import {IMetricsService} from "../../metrics/i-metrics-service";
+import {FileSystem} from "../../../common/lib/file-system/file-system";
 
 /**
  * A class that can cache generated Polyfills on disk
  */
 export class CacheRegistryService implements ICacheRegistryService {
 	constructor(
-		private readonly fileSaver: IFileSaver,
+		private readonly fileSystem: FileSystem,
 		private readonly logger: ILoggerService,
-		private readonly fileLoader: IFileLoader,
 		private readonly memoryRegistry: IMemoryRegistryService,
+		private readonly metricsService: IMetricsService,
 		private readonly config: Config
 	) {}
 
@@ -66,18 +64,22 @@ export class CacheRegistryService implements ICacheRegistryService {
 		if (memoryHit != null) return memoryHit;
 
 		// Otherwise, attempt to get it from cache
-		const buffer = await this.getFromCache(this.getCachePathForPolyfillSet(input, context));
+		const cachePath = this.getCachePathForPolyfillSet(input, context);
+		const buffer = await this.getFromCache(cachePath);
+
 		// If not possible, return undefined
 		if (buffer == null) return undefined;
-		let polyfillFeatures: PolyfillFeature[];
 
 		// Otherwise, store it in the memory registry and return the Buffer
 		try {
-			polyfillFeatures = JSON.parse(buffer.toString());
+			const polyfillFeatures = JSON.parse(buffer.toString());
+			return await this.memoryRegistry.setPolyfillFeatureSet(input, new Set(polyfillFeatures), context);
 		} catch (ex) {
-			throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, `Could not decode polyfill features based on the buffer: ${buffer.toString()}`);
+			// It wasn't possible to parse that buffer. The disk cache is in an invalid state, and should be cleaned up
+			await this.deleteFromCache(cachePath);
+			this.metricsService.captureMessage(`Wiped bad cache entry at path: ${cachePath}`);
+			return undefined;
 		}
-		return await this.memoryRegistry.setPolyfillFeatureSet(input, new Set(polyfillFeatures), context);
 	}
 
 	/**
@@ -131,7 +133,7 @@ export class CacheRegistryService implements ICacheRegistryService {
 			packageVersionMap[name] = version;
 		}
 
-		await this.fileSaver.save(constant.path.cachePackageVersionMap, JSON.stringify(packageVersionMap, null, " "));
+		await this.fileSystem.writeFile(constant.path.cachePackageVersionMap, JSON.stringify(packageVersionMap, null, " "));
 	}
 
 	private pickVersionForPolyfillEntry(entry: PolyfillDictNormalizedEntry): string {
@@ -211,23 +213,15 @@ export class CacheRegistryService implements ICacheRegistryService {
 	/**
 	 * Flushes the cache entirely
 	 */
-	private async flushCache(): Promise<void> {
-		try {
-			await this.fileSaver.remove(constant.path.cacheRoot);
-		} catch {
-			// The environment does not allow writing to the cache root
-		}
+	private async flushCache(): Promise<boolean> {
+		return this.fileSystem.delete(constant.path.cacheRoot);
 	}
 
 	/**
 	 * Writes the given Buffer to cache
 	 */
 	private async writeToCache(path: string, content: Buffer): Promise<void> {
-		try {
-			await this.fileSaver.save(path, content);
-		} catch {
-			// The environment does not allow writing to the cache root
-		}
+		return this.fileSystem.writeFile(path, content);
 	}
 
 	/**
@@ -240,7 +234,10 @@ export class CacheRegistryService implements ICacheRegistryService {
 		try {
 			return packageVersionMapRaw == null ? {} : JSON.parse(packageVersionMapRaw.toString());
 		} catch (ex) {
-			throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Could not decode package version Map");
+			// If it couldn't be decoded, fall back to an empty cache map, but also flush that entry from the cache
+			await this.deleteFromCache(constant.path.cachePackageVersionMap);
+			this.metricsService.captureMessage(`Wiped bad package version map from the cache at path: ${constant.path.cachePackageVersionMap}`);
+			return {};
 		}
 	}
 
@@ -250,21 +247,21 @@ export class CacheRegistryService implements ICacheRegistryService {
 	}
 
 	private async updateCachedPolyfillConfigChecksumPackageVersionMap(): Promise<void> {
-		await this.fileSaver.save(constant.path.configChecksum, getPolyfillConfigChecksum());
+		await this.fileSystem.writeFile(constant.path.configChecksum, getPolyfillConfigChecksum());
 	}
 
 	/**
 	 * Returns the contents on the given path from the cache
-	 *
-	 * @param path
-	 * @returns
 	 */
 	private async getFromCache(path: string): Promise<Buffer | undefined> {
-		try {
-			return await this.fileLoader.load(path);
-		} catch {
-			return undefined;
-		}
+		return this.fileSystem.readFile(path);
+	}
+
+	/**
+	 * Deletes the contents on the given path from the cache
+	 */
+	private async deleteFromCache(path: string): Promise<boolean> {
+		return this.fileSystem.delete(path);
 	}
 
 	/**

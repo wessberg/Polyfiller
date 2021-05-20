@@ -1,6 +1,4 @@
 import {DIContainer} from "@wessberg/di";
-import {FileLoader, IFileLoader} from "@wessberg/fileloader";
-import {FileSaver, IFileSaver} from "@wessberg/filesaver";
 import {ILoggerService} from "./service/logger/i-logger-service";
 import {LoggerService} from "./service/logger/logger-service";
 import {Config, config} from "./config/config";
@@ -23,12 +21,13 @@ import {Server} from "./api/server/server";
 import {PolyfillApiController} from "./api/controller/polyfill-api-controller";
 import {StaticApiController} from "./api/controller/static-api-controller";
 import {NoopMetricsService} from "./service/metrics/noop-metrics-service";
+import {FileSystem} from "./common/lib/file-system/file-system";
+import {realFileSystem} from "./common/lib/file-system/real-file-system";
 
 export const container = new DIContainer();
 
 // Utilities
-container.registerSingleton<IFileLoader, FileLoader>();
-container.registerSingleton<IFileSaver, FileSaver>();
+container.registerSingleton<FileSystem>(() => realFileSystem);
 
 // Services
 container.registerSingleton<ILoggerService, LoggerService>();

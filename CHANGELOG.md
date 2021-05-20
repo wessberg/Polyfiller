@@ -1,3 +1,9 @@
+## [0.0.139](https://github.com/wessberg/polyfiller/compare/v0.0.138...v0.0.139) (2021-05-20)
+
+### Features
+
+- **api:** generate better version names in the API config ([38907eb](https://github.com/wessberg/polyfiller/commit/38907eb284f85af12aaef0013fa8adae9a718b33))
+
 ## [0.0.138](https://github.com/wessberg/polyfiller/compare/v0.0.137...v0.0.138) (2021-05-19)
 
 ## [0.0.137](https://github.com/wessberg/polyfiller/compare/v0.0.136...v0.0.137) (2021-05-19)

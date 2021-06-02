@@ -93,7 +93,7 @@
 		"Base64": "1.1.0",
 		"blob-polyfill": "5.0.20210201",
 		"browserslist": "4.16.6",
-		"browserslist-generator": "1.0.58",
+		"browserslist-generator": "1.0.59",
 		"chalk": "4.1.1",
 		"console-polyfill": "0.3.0",
 		"construct-style-sheets-polyfill": "2.4.16",

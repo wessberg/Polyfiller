@@ -89,3 +89,9 @@ export class Server implements IServer {
 		});
 	}
 }
+
+export function dynamicFuncName<T extends CallableFunction>(impl: CallableFunction, name: string): T {
+	return {
+		[name]: impl
+	}[name] as T;
+}

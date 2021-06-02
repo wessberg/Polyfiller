@@ -14,7 +14,8 @@ const tempRoot = join(
 export const constant: IConstant = {
 	endpoint: {
 		index: "/api",
-		polyfill: "/api/polyfill"
+		polyfill: "/api/polyfill",
+		polyfillNew: "/api/polyfill/new"
 	},
 	header: {
 		polyfills: "x-applied-polyfills",

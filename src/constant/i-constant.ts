@@ -3,6 +3,7 @@ import {PolyfillDict} from "../polyfill/polyfill-dict";
 export interface IEndpointConstant {
 	index: string;
 	polyfill: string;
+	polyfillNew: string;
 }
 
 export interface IMetaConstant {

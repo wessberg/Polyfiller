@@ -5818,7 +5818,17 @@
 			window.Intl = Intl$1;
 			Intl$1.__applyLocaleSensitivePrototypes();
 		} catch (e) {
-			// can be read only property
+			// Can be read only property. Attempt to assign properties individually
+			try {
+				if (typeof Intl !== "undefined") {
+					if (typeof Intl.NumberFormat === "undefined") {
+						window.Intl.NumberFormat = Intl$1.NumberFormat;
+					}
+					if (typeof Intl.PluralRules === "undefined") {
+						window.Intl.PluralRules = Intl$1.PluralRules;
+					}
+				}
+			} catch (e) {}
 		}
 	}
 

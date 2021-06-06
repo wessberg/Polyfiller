@@ -15,7 +15,7 @@ export interface PolyfillEntry<Name extends PolyfillName> {
 	dependencies?: PolyfillName[];
 
 	// The check to run in each associated runtime to determine whether or not the feature is supported
-	check?: string;
+	check?: () => void;
 
 	// The contexts in which this polyfill can be applied. For example, some polyfills only support "window".
 	// If not given, it defaults to all contexts

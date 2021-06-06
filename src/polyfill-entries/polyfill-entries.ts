@@ -5,8 +5,7 @@ import {WINDOW_CONTEXT} from "./polyfill-context";
 export const polyfillEntries: PolyfillEntries = {
 	// Web APIs
 	"constructable-style-sheets": {
-		// language=JavaScript
-		check: `"adoptedStyleSheets" in document`,
+		check: () => "adoptedStyleSheets" in document,
 		entry: "construct-style-sheets-polyfill",
 		dependencies: ["shadow-dom"],
 		version: pkg.dependencies["construct-style-sheets-polyfill"],

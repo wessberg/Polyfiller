@@ -1,3 +1,9 @@
+## [0.0.143](https://github.com/wessberg/polyfiller/compare/v0.0.142...v0.0.143) (2021-06-02)
+
+### Bug Fixes
+
+- update dependency on browserslist-generator ([fd8e3ef](https://github.com/wessberg/polyfiller/commit/fd8e3ef953ff48eba454207bf550317a58a6405b))
+
 ## [0.0.142](https://github.com/wessberg/polyfiller/compare/v0.0.141...v0.0.142) (2021-05-21)
 
 ## [0.0.141](https://github.com/wessberg/polyfiller/compare/v0.0.140-rerelease...v0.0.141) (2021-05-20)

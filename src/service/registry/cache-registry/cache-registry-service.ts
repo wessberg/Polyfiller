@@ -213,8 +213,8 @@ export class CacheRegistryService implements ICacheRegistryService {
 	/**
 	 * Flushes the cache entirely
 	 */
-	private async flushCache(): Promise<boolean> {
-		return this.fileSystem.delete(constant.path.cacheRoot);
+	private async flushCache(): Promise<void> {
+		return this.fileSystem.unlink(constant.path.cacheRoot);
 	}
 
 	/**
@@ -260,8 +260,8 @@ export class CacheRegistryService implements ICacheRegistryService {
 	/**
 	 * Deletes the contents on the given path from the cache
 	 */
-	private async deleteFromCache(path: string): Promise<boolean> {
-		return this.fileSystem.delete(path);
+	private async deleteFromCache(path: string): Promise<void> {
+		return this.fileSystem.unlink(path);
 	}
 
 	/**

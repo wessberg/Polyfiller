@@ -1,5 +1,5 @@
 import {randomBytes} from "crypto";
-import {UppercaseKeys} from "../common/type/type-util";
+import {UppercaseKeys} from "helpertypes";
 
 export function generateRandomHash(complexity = 6): string {
 	return randomBytes(complexity).toString("hex");

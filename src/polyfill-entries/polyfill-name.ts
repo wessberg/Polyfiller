@@ -1,5 +1,5 @@
-import {ElementOf} from "../common/type/type-util";
 import {PolyfillMeta} from "./polyfill-meta";
+import {ElementOf} from "helpertypes";
 
 export const POLYFILL_DEALIASED_NAME = new Set([
 	"es.object.assign",
@@ -265,12 +265,19 @@ export const POLYFILL_DEALIASED_NAME = new Set([
 	"es.reflect.has-metadata",
 	"es.reflect.has-own-metadata",
 	"es.reflect.metadata",
-	"regenerator-runtime",
-	"systemjs",
-	"performance.now",
-	"blob",
-	"url",
-	"base64",
+
+	// API
+	"api.constructable-stylesheets",
+	"api.performance.now",
+	"api.url",
+	"api.form-data",
+	"api.console",
+	"api.base64",
+	"api.blob",
+
+	// CSS
+	"css.object-fit",
+
 	"xhr",
 	"dom.collections.iterator",
 	"dom.collections.for-each",
@@ -301,11 +308,8 @@ export const POLYFILL_DEALIASED_NAME = new Set([
 	"custom-elements",
 	"shadow-dom",
 	"template",
-	"zone",
 	"class-list",
 	"dom-token-list",
-	"object-fit",
-	"console",
 	"event.constructor",
 	"event.focusin",
 	"event.hashchange",
@@ -316,16 +320,17 @@ export const POLYFILL_DEALIASED_NAME = new Set([
 	"web-animations",
 	"global-this",
 	"broadcast-channel",
-	"form-data",
-	"constructable-style-sheets",
 	"proto",
-	"focus-visible"
+	"focus-visible",
+
+	// Library
+	"lib.regenerator-runtime",
+	"lib.systemjs"
 ] as const);
 
 export const POLYFILL_ALIASES = {
 	requestidlecallback: ["request-idle-callback"],
 	requestanimationframe: ["request-animation-frame"],
-	formdata: ["form-data"],
 	es: [
 		"es.promise",
 		"es.object",
@@ -629,7 +634,40 @@ export const POLYFILL_ALIASES = {
 	event: ["event.constructor", "event.focusin", "event.hashchange"],
 	setimmediate: ["set-immediate"],
 	globalthis: ["global-this"],
-	"adopted-style-sheets": ["constructable-style-sheets"]
+
+	// APIs
+	"api.constructable-style-sheets": ["api.constructable-stylesheets"],
+	"constructable-style-sheets": ["api.constructable-stylesheets"],
+	"adopted-style-sheets": ["api.constructable-stylesheets"],
+
+	"performance.now": ["api.performance.now"],
+	"performance-now": ["api.performance.now"],
+	performance: ["api.performance.now"],
+
+	url: ["api.url"],
+	"url-search-params": ["api.url"],
+
+	formdata: ["api.form-data"],
+	"form-data": ["api.form-data"],
+	"api.formdata": ["api.form-data"],
+
+	console: ["api.console"],
+
+	base64: ["api.base64"],
+	atob: ["api.atob"],
+	btoa: ["api.base64"],
+	"api.atob": ["api.base64"],
+	"api.btoa": ["api.base64"],
+	blob: ["api.blob"],
+
+	// CSS
+	"object-fit": ["css.object-fit"],
+	"object-position": ["css.object-fit"],
+	"css.object-position": ["css.object-fit"],
+
+	// Libs
+	systemjs: ["lib.systemjs"],
+	"regenerator-runtime": ["lib.regenerator-runtime"]
 } as const;
 
 export type PolyfillAlias = typeof POLYFILL_ALIASES;

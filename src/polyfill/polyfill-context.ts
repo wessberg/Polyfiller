@@ -1,4 +1,4 @@
-import {ElementOf} from "../common/type/type-util";
+import {ElementOf} from "helpertypes";
 
 export const POLYFILL_CONTEXTS = ["node", "window", "worker"] as const;
 

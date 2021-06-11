@@ -9,21 +9,13 @@ export const POLYFILL_META = {
 		...base,
 		experimental: false
 	},
-	systemjs: {
+	"lib.systemjs": {
 		...base,
 		variant: "system" as "system" | "s"
 	},
 	intl: {
 		...base,
 		locale: [] as string[]
-	},
-	zone: {
-		error: false,
-		shadydom: false,
-		mediaquery: false,
-		rxjs: false,
-		fetch: false,
-		resizeobserver: false
 	}
 };
 

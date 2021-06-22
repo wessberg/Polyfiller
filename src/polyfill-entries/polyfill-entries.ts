@@ -2,6 +2,7 @@ import pkg from "../../package.json";
 import {PolyfillEntries} from "./polyfill-entry";
 import {ModuleResolvable} from "../common/lib/module-resolver/module-resolver";
 import {ALL, WINDOW, WINDOW_WORKER} from "./polyfill-context";
+import {WINDOW_CONTEXT} from "../polyfill/polyfill-context";
 
 export interface GeneratePolyfillEntriesOptions {
 	resolver: ModuleResolvable;
@@ -160,6 +161,22 @@ export function generatePolyfillEntries(options: GeneratePolyfillEntriesOptions)
 			version: pkg.dependencies["blob-polyfill"],
 			dependencies: ["base64", "url"],
 			context: ALL
+		},
+		"api.request-idle-callback": {
+			entry: "requestidlecallback",
+			check: () => typeof requestIdleCallback !== "undefined",
+			features: ["requestidlecallback"],
+			version: pkg.dependencies.requestidlecallback,
+			dependencies: ["requestanimationframe"],
+			context: WINDOW
+		},
+		"api.request-animation-frame": {
+			entry: "requestanimationframe",
+			check: () => typeof requestAnimationFrame !== "undefined",
+			features: ["requestanimationframe"],
+			version: pkg.dependencies.requestanimationframe,
+			dependencies: ["es.date.now", "performance.now"],
+			context: WINDOW
 		}
 	};
 }

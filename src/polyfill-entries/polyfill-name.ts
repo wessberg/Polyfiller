@@ -274,6 +274,8 @@ export const POLYFILL_DEALIASED_NAME = new Set([
 	"api.console",
 	"api.base64",
 	"api.blob",
+	"api.request-idle-callback",
+	"api.request-animation-frame",
 
 	// CSS
 	"css.object-fit",
@@ -300,8 +302,6 @@ export const POLYFILL_DEALIASED_NAME = new Set([
 	"node.parentelement",
 	"queryselector",
 	"document-fragment",
-	"request-idle-callback",
-	"request-animation-frame",
 	"intersection-observer",
 	"mutation-observer",
 	"resize-observer",
@@ -329,8 +329,6 @@ export const POLYFILL_DEALIASED_NAME = new Set([
 ] as const);
 
 export const POLYFILL_ALIASES = {
-	requestidlecallback: ["request-idle-callback"],
-	requestanimationframe: ["request-animation-frame"],
 	es: [
 		"es.promise",
 		"es.object",
@@ -658,7 +656,16 @@ export const POLYFILL_ALIASES = {
 	btoa: ["api.base64"],
 	"api.atob": ["api.base64"],
 	"api.btoa": ["api.base64"],
+
 	blob: ["api.blob"],
+
+	requestidlecallback: ["api.request-idle-callback"],
+	"request-idle-callback": ["api.request-idle-callback"],
+	"api.requestidlecallback": ["api.request-idle-callback"],
+
+	requestanimationframe: ["api.request-animation-frame"],
+	"request-animation-frame": ["api.request-animation-frame"],
+	"api.requestanimationframe": ["api.request-animation-frame"],
 
 	// CSS
 	"object-fit": ["css.object-fit"],

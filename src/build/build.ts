@@ -12,7 +12,8 @@ import {transform} from "@swc/core";
 import {REGENERATOR_SOURCE, REGENERATOR_SOURCE_MINIFIED} from "../constant/regenerator-source";
 import {generateRandomHash} from "../api/util";
 
-const swcBug1461Match = /var regeneratorRuntime\d?\s*=\s*require\(["'`]regenerator-runtime["'`]\);/;
+const swcBug1461MatchA = /var regeneratorRuntime\d?\s*=\s*require\(["'`]regenerator-runtime["'`]\);/;
+const swcBug1461MatchB = /import\s+regeneratorRuntime\d?\s+from\s*["'`]regenerator-runtime["'`];/;
 const swcBug1461MatchReference = /regeneratorRuntime\d\./g;
 const unicodeEscape = /(\\+)u\{([0-9a-fA-F]+)\}/g;
 
@@ -48,7 +49,11 @@ function workAroundSwcBug1227(str: string): string {
  * TODO: Remove this when https://github.com/swc-project/swc/issues/1461 has been resolved
  */
 function workAroundSwcBug1461(str: string, minify = false): string {
-	return str.replace(swcBug1461Match, minify ? REGENERATOR_SOURCE_MINIFIED : REGENERATOR_SOURCE).replace(swcBug1461MatchReference, "regeneratorRuntime.");
+	return str
+		.replace(swcBug1461MatchA, minify ? REGENERATOR_SOURCE_MINIFIED : REGENERATOR_SOURCE)
+		.replace(swcBug1461MatchReference, "regeneratorRuntime.")
+		.replace(swcBug1461MatchB, minify ? REGENERATOR_SOURCE_MINIFIED : REGENERATOR_SOURCE)
+		.replace(swcBug1461MatchReference, "regeneratorRuntime.");
 }
 
 function stringifyPolyfillFeature(feature: PolyfillFeature): string {
@@ -134,7 +139,7 @@ export async function build({paths, features, ecmaVersion, context, sourcemap = 
 			}
 
 			// TODO: Remove this when https://github.com/swc-project/swc/issues/1461 has been resolved
-			if (swcBug1461Match.test(code)) {
+			if (swcBug1461MatchA.test(code) || swcBug1461MatchB.test(code)) {
 				code = workAroundSwcBug1461(code, minify);
 			}
 		}

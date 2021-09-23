@@ -214,6 +214,24 @@ test("Will inline regenerator-runtime if required. #1", async t => {
 	}
 });
 
+test("Will inline regenerator-runtime if required. #2", async t => {
+	const result = await sendRequest({
+		path: `${constant.endpoint.polyfill}?features=form-data`,
+		headers: {
+			"User-Agent": ie("11")
+		}
+	});
+
+	const body = await result.buffer();
+
+	if (!result.ok) {
+		t.fail(body.toString());
+	} else {
+		t.false(body.toString().includes(`import regeneratorRuntime from"regenerator-runtime";`));
+		t.false(body.toString().includes(`import regeneratorRuntime from "regenerator-runtime";`));
+	}
+});
+
 test("Generates SourceMap if required. #1", async t => {
 	const result = await sendRequest({
 		path: `${constant.endpoint.polyfill}?features=form-data&sourcemap`,

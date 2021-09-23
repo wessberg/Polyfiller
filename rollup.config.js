@@ -1,4 +1,4 @@
-import ts from "@wessberg/rollup-plugin-ts";
+import ts from "rollup-plugin-ts";
 import json from "@rollup/plugin-json";
 import {di} from "@wessberg/di-compiler";
 import packageJSON from "./package.json";

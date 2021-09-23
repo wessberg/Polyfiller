@@ -1,3 +1,9 @@
+## [0.0.144](https://github.com/wessberg/polyfiller/compare/v0.0.143...v0.0.144) (2021-09-23)
+
+### Bug Fixes
+
+- correctly work around swc bug ([4e695bc](https://github.com/wessberg/polyfiller/commit/4e695bc89337397356d245c818e741581696597a))
+
 ## [0.0.143](https://github.com/wessberg/polyfiller/compare/v0.0.142...v0.0.143) (2021-06-02)
 
 ### Bug Fixes

@@ -15,35 +15,6 @@ import {generateRandomHash} from "../api/util";
 const swcBug1461MatchA = /var regeneratorRuntime\d?\s*=\s*require\(["'`]regenerator-runtime["'`]\);/;
 const swcBug1461MatchB = /import\s+regeneratorRuntime\d?\s+from\s*["'`]regenerator-runtime["'`];/;
 const swcBug1461MatchReference = /regeneratorRuntime\d\./g;
-const unicodeEscape = /(\\+)u\{([0-9a-fA-F]+)\}/g;
-
-// TODO: Input SourceMaps are broken in the current version of @swc/core
-//       Remove this when the problem has been resolved
-const allowInputSourceMapsForSwc = false;
-
-/**¨
- * TODO: Remove this when https://github.com/swc-project/swc/issues/1227 has been resolved
- */
-function workAroundSwcBug1227(str: string): string {
-	function escape(code: any) {
-		let str = code.toString(16);
-		while (str.length < 4) str = "0" + str;
-		return "\\u" + str;
-	}
-
-	function replacer(match: any, backslashes: any, code: any) {
-		if (backslashes.length % 2 === 0) {
-			return match;
-		}
-
-		const char = String.fromCodePoint(parseInt(code, 16));
-		const escaped = backslashes.slice(0, -1) + escape(char.charCodeAt(0));
-
-		return char.length === 1 ? escaped : escaped + escape(char.charCodeAt(1));
-	}
-
-	return str.replace(unicodeEscape, replacer);
-}
 
 /**
  * TODO: Remove this when https://github.com/swc-project/swc/issues/1461 has been resolved
@@ -91,7 +62,7 @@ export async function build({paths, features, ecmaVersion, context, sourcemap = 
 				js: banner
 			},
 			write: false,
-			format: "iife",
+			format: "esm",
 			outfile: virtualOutputFileName,
 			platform: context === "node" ? "node" : "browser",
 			bundle: true,
@@ -125,18 +96,13 @@ export async function build({paths, features, ecmaVersion, context, sourcemap = 
 
 			({code} = await transform(code, {
 				sourceMaps: sourcemap ? "inline" : false,
-				inputSourceMap: allowInputSourceMapsForSwc ? map : undefined,
+				inputSourceMap: map,
 				minify,
 				filename: virtualOutputFileName,
 				jsc: {
 					target: ecmaVersion
 				}
 			}));
-
-			// TODO: Remove this when https://github.com/swc-project/swc/issues/1227 has been resolved
-			if (code.includes("\\u{")) {
-				code = workAroundSwcBug1227(code);
-			}
 
 			// TODO: Remove this when https://github.com/swc-project/swc/issues/1461 has been resolved
 			if (swcBug1461MatchA.test(code) || swcBug1461MatchB.test(code)) {

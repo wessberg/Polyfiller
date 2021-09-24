@@ -59,7 +59,7 @@ export function getPolyfillIdentifier(name: PolyfillFeature | PolyfillFeatureInp
 export function getPolyfillConfigChecksum(): string {
 	const shasum = createHash("sha1");
 
-	return shasum.update(JSON.stringify(constant.polyfill)).digest("hex");
+	return shasum.update(JSON.stringify({...constant.polyfill, cacheVersion: constant.cacheVersion})).digest("hex");
 }
 
 /**

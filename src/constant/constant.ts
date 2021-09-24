@@ -1,6 +1,6 @@
 import {IConstant} from "./i-constant";
 import tempDirectory from "temp-dir";
-import {join} from "path";
+import {join} from "crosspath";
 import {ALL_CONTEXTS, WINDOW_CONTEXT, WINDOW_NODE_CONTEXT, WINDOW_WORKER_CONTEXT} from "../polyfill/polyfill-context";
 import pkg from "../../package.json";
 import {booleanize} from "../api/util";

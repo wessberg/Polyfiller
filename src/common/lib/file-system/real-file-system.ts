@@ -1,6 +1,6 @@
 import {FileSystem} from "./file-system";
 import {promises} from "fs";
-import {dirname} from "path";
+import {dirname} from "crosspath";
 
 export const realFileSystem: FileSystem = {
 	async exists(path: string): Promise<boolean> {

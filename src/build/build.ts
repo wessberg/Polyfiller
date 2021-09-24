@@ -6,7 +6,7 @@ import {ZLIB_OPTIONS} from "./options/zlib-options";
 import {PolyfillFeature} from "../polyfill/polyfill-feature";
 import {build as esbuild} from "esbuild";
 import {tmpdir} from "os";
-import {join} from "path";
+import {join, normalize} from "crosspath";
 import {unlinkSync, writeFileSync} from "fs";
 import {transform} from "@swc/core";
 import {REGENERATOR_SOURCE, REGENERATOR_SOURCE_MINIFIED} from "../constant/regenerator-source";
@@ -37,7 +37,7 @@ function stringifyPolyfillFeature(feature: PolyfillFeature): string {
 }
 
 export async function build({paths, features, ecmaVersion, context, sourcemap = false, minify = false}: BuildOptions): Promise<BuildResult> {
-	const entryText = paths.map(path => `import "${path}";`).join("\n");
+	const entryText = paths.map(path => `import "${normalize(path)}";`).join("\n");
 
 	// Generate the intro text
 	const polyfillsAppliedText = features.length < 1 ? `No polyfills applied` : `Polyfills applied (in order): ${features.map(stringifyPolyfillFeature).join(", ")}`;

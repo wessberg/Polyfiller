@@ -1,7 +1,7 @@
 import {ICacheRegistryService} from "./i-cache-registry-service";
 import {PolyfillFeature, PolyfillFeatureInput} from "../../../polyfill/polyfill-feature";
 import {getPolyfillConfigChecksum, getPolyfillIdentifier, getPolyfillSetIdentifier} from "../../../util/polyfill/polyfill-util";
-import {join} from "path";
+import {join} from "crosspath";
 import {constant} from "../../../constant/constant";
 import {IMemoryRegistryService, PolyfillCachingContext} from "../polyfill-registry/i-memory-registry-service";
 import {PolyfillName} from "../../../polyfill/polyfill-name";

@@ -64,7 +64,6 @@ export async function build({paths, features, ecmaVersion, context, sourcemap = 
 			write: false,
 			format: "esm",
 			outfile: virtualOutputFileName,
-			treeShaking: false,
 			platform: context === "node" ? "node" : "browser",
 			bundle: true,
 			target: "esnext",

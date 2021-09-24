@@ -98,7 +98,7 @@
 		"console-polyfill": "0.3.0",
 		"construct-style-sheets-polyfill": "2.4.16",
 		"core-js": "3.12.1",
-		"esbuild": "0.12.1",
+		"esbuild": "0.13.2",
 		"events-polyfill": "2.1.2",
 		"express": "4.17.1",
 		"find-up": "5.0.0",

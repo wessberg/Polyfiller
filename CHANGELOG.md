@@ -1,3 +1,9 @@
+## [0.0.146](https://github.com/wessberg/polyfiller/compare/v0.0.145...v0.0.146) (2021-09-24)
+
+### Bug Fixes
+
+- correctly flush cache ([f1fcdfe](https://github.com/wessberg/polyfiller/commit/f1fcdfe241e499a4c3b3d727e42fd1c170d2b293))
+
 ## [0.0.145](https://github.com/wessberg/polyfiller/compare/v0.0.144...v0.0.145) (2021-09-24)
 
 ### Bug Fixes

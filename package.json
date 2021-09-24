@@ -90,7 +90,6 @@
 		"@wessberg/di": "2.0.3",
 		"@wessberg/pointer-events": "1.0.9",
 		"@wessberg/stringutil": "1.0.19",
-		"crosspath": "0.0.9",
 		"Base64": "1.1.0",
 		"blob-polyfill": "5.0.20210201",
 		"browserslist": "4.17.1",
@@ -99,6 +98,7 @@
 		"console-polyfill": "0.3.0",
 		"construct-style-sheets-polyfill": "3.0.1",
 		"core-js": "3.18.0",
+		"crosspath": "0.0.9",
 		"esbuild": "0.13.2",
 		"events-polyfill": "2.1.2",
 		"express": "4.17.1",
@@ -128,7 +128,8 @@
 		"url-polyfill": "1.1.12",
 		"web-animations-js": "2.3.2",
 		"xhr-polyfill": "0.1.8",
-		"zone.js": "0.11.4"
+		"zone.js": "0.11.4",
+		"@webcomponents/experimental": "github:webcomponents/polyfills#pull/196/head"
 	},
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",

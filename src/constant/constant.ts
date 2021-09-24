@@ -3039,9 +3039,9 @@ export const constant: IConstant = {
 			meta: {
 				// The experimental variant is based on https://github.com/webcomponents/shadycss/pull/242
 				experimental: [
-					"node_modules/@webcomponents/shadydom/src/shadydom.js",
-					"polyfill-lib/shady-css/entrypoints/scoping-shim.js",
-					"node_modules/@webcomponents/shadycss/entrypoints/custom-style-interface.js"
+					"node_modules/@webcomponents/experimental/packages/shadydom/src/shadydom.js",
+					"node_modules/@webcomponents/experimental/packages/shadycss/entrypoints/scoping-shim.js",
+					"node_modules/@webcomponents/experimental/packages/shadycss/entrypoints/custom-style-interface.js"
 				]
 			},
 			features: ["shadowdomv1"],

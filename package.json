@@ -128,8 +128,7 @@
 		"url-polyfill": "1.1.12",
 		"web-animations-js": "2.3.2",
 		"xhr-polyfill": "0.1.8",
-		"zone.js": "0.11.4",
-		"@webcomponents/experimental": "github:webcomponents/polyfills#pull/196/head"
+		"zone.js": "0.11.4"
 	},
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",

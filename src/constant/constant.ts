@@ -12,7 +12,7 @@ const tempRoot = join(
 );
 
 export const constant: IConstant = {
-	cacheVersion: 1,
+	cacheVersion: 2,
 	endpoint: {
 		index: "/api",
 		polyfill: "/api/polyfill"

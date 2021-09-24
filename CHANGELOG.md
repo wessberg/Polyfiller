@@ -1,3 +1,9 @@
+## [0.0.145](https://github.com/wessberg/polyfiller/compare/v0.0.144...v0.0.145) (2021-09-24)
+
+### Bug Fixes
+
+- fix regenerator runtime source for older browsers ([cc1314a](https://github.com/wessberg/polyfiller/commit/cc1314a78cc0ed703f960adc7fd5954cc5dd0fe0))
+
 ## [0.0.144](https://github.com/wessberg/polyfiller/compare/v0.0.143...v0.0.144) (2021-09-23)
 
 ### Bug Fixes

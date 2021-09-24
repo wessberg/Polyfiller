@@ -26,6 +26,7 @@ export interface IHeaderConstant {
 }
 
 export interface IConstant {
+	cacheVersion: number;
 	endpoint: IEndpointConstant;
 	meta: IMetaConstant;
 	polyfill: PolyfillDict;

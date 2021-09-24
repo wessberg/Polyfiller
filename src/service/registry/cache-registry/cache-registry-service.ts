@@ -194,7 +194,11 @@ export class CacheRegistryService implements ICacheRegistryService {
 		const lastCachedConfigChecksum = await this.getLastCachedPolyfillConfigChecksum();
 
 		// If the config changed, the disk cache needs to be flushed
-		if (lastCachedConfigChecksum !== getPolyfillConfigChecksum()) return false;
+		if (lastCachedConfigChecksum !== getPolyfillConfigChecksum()) {
+			this.logger.debug(`The checksum for the config changed! Flushing cache...`);
+			await this.flushCache();
+			return false;
+		}
 
 		for (const [polyfillName, polyfill] of Object.entries(constant.polyfill)) {
 			// Skip aliases

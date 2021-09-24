@@ -50,10 +50,10 @@ test(`Generates an JSON-formatted welcome payload when a request is sent to '${c
 		}
 	});
 
-	const data = await result.json();
+	const data: any = await result.json();
 
 	if (!result.ok) {
-		t.fail(data);
+		t.fail("Expected result to be OK");
 	} else {
 		t.true("title" in data && data.title.includes("Welcome to"));
 	}
@@ -216,7 +216,7 @@ test("Will inline regenerator-runtime if required. #1", async t => {
 
 test("Will inline regenerator-runtime if required. #2", async t => {
 	const result = await sendRequest({
-		path: `${constant.endpoint.polyfill}?features=form-data`,
+		path: `${constant.endpoint.polyfill}?features=web-components`,
 		headers: {
 			"User-Agent": ie("11")
 		}

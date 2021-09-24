@@ -17,7 +17,7 @@ export class PolyfillApiController {
 		if (request.userAgent != null) {
 			try {
 				generateBrowserslistFromUseragent(request.userAgent);
-			} catch (ex) {
+			} catch (ex: any) {
 				// Un-set the user agent
 				request.userAgent = undefined;
 				// Capture the exception, but allow it

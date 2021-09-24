@@ -3256,7 +3256,8 @@ export const constant: IConstant = {
 			relativePaths: ["dist/adoptedStyleSheets.js"],
 			features: ["api.Document.adoptedStyleSheets", "api.ShadowRoot.adoptedStyleSheets"],
 
-			dependencies: ["shadow-dom"],
+			dependencies: ["es.symbol.has-instance"],
+			mustComeAfter: ["shadow-dom"],
 			contexts: ALL_CONTEXTS
 		},
 		proto: {

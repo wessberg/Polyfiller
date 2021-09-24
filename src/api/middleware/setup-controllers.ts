@@ -80,7 +80,7 @@ export const setupControllers = (options: SetupControllersOptions) => {
 					try {
 						const result = await (controller[methodName] as ApiRequestHandler).call(controller, toApiRequest(req));
 						return respondToApiMethod(result, res, next);
-					} catch (ex) {
+					} catch (ex: any) {
 						next(ApiError.ensureApiError(ex));
 					}
 				});

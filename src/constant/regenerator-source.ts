@@ -697,13 +697,13 @@ export const REGENERATOR_SOURCE = `var regeneratorRuntime = (function() {
 	};
 
 	return {
-		wrap,
-		isGeneratorFunction,
-		AsyncIterator,
-		mark,
-		awrap,
-		async,
-		keys,
-		values
+		wrap: wrap,
+		isGeneratorFunction: isGeneratorFunction,
+		AsyncIterator: AsyncIterator,
+		mark: mark,
+		awrap: awrap,
+		async: async,
+		keys: keys,
+		values: values
 	};
 })();`;

@@ -20,7 +20,7 @@
 		"watch": "npm run rollup -- --watch",
 		"rollup": "rollup -c rollup.config.js",
 		"scripts:markdown-format-feature-names": "ts-node --project scripts/tsconfig.json scripts/markdown-format-feature-names.ts",
-		"preversion": "NODE_ENV=production npm run build",
+		"preversion": "npm run build",
 		"version": "npm run generate:all && git add .",
 		"release": "np --no-cleanup --no-yarn",
 		"update:check": "npx npm-check-updates -x np --dep dev,prod",

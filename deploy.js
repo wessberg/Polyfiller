@@ -87,7 +87,7 @@ server {
 }
 `;
 
-	const PREFERRED_NODE_VERSION = "14.x";
+	const PREFERRED_NODE_VERSION = "16.x";
 	const APP_NAME = PRODUCTION ? "polyfiller" : "polyfiller-development";
 	const LOCAL_WRITE_ROOT = RUNNER_TEMP ?? "temp";
 	const REMOTE_ROOT = `/var/www/${APP_NAME}`;

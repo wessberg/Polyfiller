@@ -263,6 +263,17 @@ const fs = require("fs");
 		match: String.raw`removeCustomProps(node['cssText']);`,
 		replacement: String.raw`reduceCalc(removeCustomProps(node['cssText']));`
 	},
+	{
+		action: "replace",
+		file: "node_modules/@webcomponents/shadycss-experimental/src/style-properties.js",
+		match: String.raw`return method && method.call(this, selector);`,
+		replacement: `
+		try {
+			return method && method.call(this, selector);
+		} catch (ex) {
+			return false;
+		}`
+	},
 	// Have it remove all rules containing :focus-visible
 	{
 		action: "replace",

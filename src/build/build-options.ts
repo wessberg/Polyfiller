@@ -6,6 +6,8 @@ export interface BuildOptions {
 	context: PolyfillContext;
 	features: PolyfillFeature[];
 	featuresRequested: PolyfillFeature[];
+	browserslist: string[];
+	module: boolean;
 	ecmaVersion: EcmaVersion;
 	paths: string[];
 	sourcemap?: boolean;

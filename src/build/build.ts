@@ -8,24 +8,10 @@ import {build as esbuild} from "esbuild";
 import {tmpdir} from "os";
 import {join, normalize} from "crosspath";
 import {unlinkSync, writeFileSync} from "fs";
-import {transform} from "@swc/core";
-import {REGENERATOR_SOURCE, REGENERATOR_SOURCE_MINIFIED} from "../constant/regenerator-source";
+import {transform as swc} from "@swc/core";
+import {transformAsync as babel} from "@babel/core";
 import {generateRandomHash} from "../api/util";
-
-const swcBug1461MatchA = /var regeneratorRuntime\d?\s*=\s*require\(["'`]regenerator-runtime["'`]\);/;
-const swcBug1461MatchB = /import\s+regeneratorRuntime\d?\s+from\s*["'`]regenerator-runtime["'`];/;
-const swcBug1461MatchReference = /regeneratorRuntime\d\./g;
-
-/**
- * TODO: Remove this when https://github.com/swc-project/swc/issues/1461 has been resolved
- */
-function workAroundSwcBug1461(str: string, minify = false): string {
-	return str
-		.replace(swcBug1461MatchA, minify ? REGENERATOR_SOURCE_MINIFIED : REGENERATOR_SOURCE)
-		.replace(swcBug1461MatchReference, "regeneratorRuntime.")
-		.replace(swcBug1461MatchB, minify ? REGENERATOR_SOURCE_MINIFIED : REGENERATOR_SOURCE)
-		.replace(swcBug1461MatchReference, "regeneratorRuntime.");
-}
+import pluginTransformInlineRegenerator from "./plugin/babel/plugin-transform-inline-regenerator";
 
 function stringifyPolyfillFeature(feature: PolyfillFeature): string {
 	const metaEntries = Object.entries(feature.meta);
@@ -36,7 +22,7 @@ function stringifyPolyfillFeature(feature: PolyfillFeature): string {
 	return `${feature.name}${metaEntriesText.length === 0 ? "" : ` (${metaEntriesText})`}`;
 }
 
-export async function build({paths, features, ecmaVersion, context, sourcemap = false, minify = false}: BuildOptions): Promise<BuildResult> {
+export async function build({paths, features, browserslist, ecmaVersion, context, module, sourcemap = false, minify = false}: BuildOptions): Promise<BuildResult> {
 	const entryText = paths.map(path => `import "${normalize(path)}";`).join("\n");
 
 	// Generate the intro text
@@ -56,19 +42,28 @@ export async function build({paths, features, ecmaVersion, context, sourcemap = 
 	// esbuild only supports transforming down to es2015
 	const canUseOnlyEsbuild = ecmaVersion !== "es3" && ecmaVersion !== "es5";
 
+	// swc is still a bit too unstable for production use
+	const canUseSwc = false;
+
+	// With babel, input sourcemaps are so slow that it actually leads to the JavaScript heap being exceeded and very slow transpilation times.
+	const canUseSourcemaps = sourcemap && (canUseOnlyEsbuild || canUseSwc);
+
+	const format = module ? "esm" : "iife";
+
 	try {
 		const result = await esbuild({
+			format,
 			banner: {
 				js: banner
 			},
 			write: false,
-			format: "esm",
+
 			outfile: virtualOutputFileName,
 			platform: context === "node" ? "node" : "browser",
 			bundle: true,
 			target: "esnext",
 			mainFields: context === "node" ? ["module", "es2015", "main"] : ["browser", "module", "es2015", "main"],
-			sourcemap: sourcemap ? (canUseOnlyEsbuild ? "inline" : true) : false,
+			sourcemap: canUseSourcemaps ? (canUseOnlyEsbuild ? "inline" : true) : false,
 			entryPoints: [tempInputFileLocation],
 			...(canUseOnlyEsbuild
 				? {
@@ -86,27 +81,55 @@ export async function build({paths, features, ecmaVersion, context, sourcemap = 
 		}
 
 		let code = Buffer.from(codeOutputFile.contents).toString("utf8");
-		let map = mapOutputFile == null ? undefined : Buffer.from(mapOutputFile.contents).toString("utf8");
-		// We might need to apply transformations in a separate step using swc if the target is ES5 or below
+		const map = mapOutputFile == null ? undefined : Buffer.from(mapOutputFile.contents).toString("utf8");
+
 		if (!canUseOnlyEsbuild) {
-			// swc doesn't support es2020 as a target
-			if (ecmaVersion === "es2020") {
-				ecmaVersion = "es2019";
-			}
-
-			({code} = await transform(code, {
-				sourceMaps: sourcemap ? "inline" : false,
-				inputSourceMap: map,
-				minify,
-				filename: virtualOutputFileName,
-				jsc: {
-					target: ecmaVersion
+			if (canUseSwc) {
+				({code} = await swc(code, {
+					minify,
+					sourceMaps: sourcemap ? "inline" : false,
+					inputSourceMap: map,
+					isModule: format === "esm",
+					...(format === "esm"
+						? {
+								module: {
+									type: "es6" as "amd"
+								}
+						  }
+						: {}),
+					filename: virtualOutputFileName,
+					jsc: {
+						target: ecmaVersion
+					}
+				}));
+			} else {
+				const babelResult =
+					(await babel(code, {
+						compact: minify,
+						minified: minify,
+						comments: !minify,
+						sourceMaps: canUseSourcemaps ? "inline" : false,
+						// Unfortunately, input sourcemaps are quite slow in Babel and sometimes exceed the JavaScript heap
+						inputSourceMap: false as unknown as undefined, // map == null ? undefined : JSON.parse(map),
+						sourceType: format === "esm" ? "module" : "script",
+						filename: virtualOutputFileName,
+						plugins: [pluginTransformInlineRegenerator],
+						presets: [
+							[
+								"@babel/preset-env",
+								{
+									// core-js breaks when typeof are transformed into the _typeof helper, so we will have to turn off this plugin.
+									// this is a good thing anyway since polyfills should be treated as close to their original definitions as possible
+									exclude: ["transform-typeof-symbol"],
+									targets: browserslist,
+									modules: format === "esm" ? false : "auto"
+								}
+							]
+						]
+					})) ?? {};
+				if (babelResult.code != null) {
+					code = babelResult.code;
 				}
-			}));
-
-			// TODO: Remove this when https://github.com/swc-project/swc/issues/1461 has been resolved
-			if (swcBug1461MatchA.test(code) || swcBug1461MatchB.test(code)) {
-				code = workAroundSwcBug1461(code, minify);
 			}
 		}
 

@@ -24,8 +24,8 @@ function normalizeLocale(locale: string): string {
 
 function selectMetaPaths<Meta extends Exclude<IPolyfillDictEntryBase["meta"], undefined>>(value: Meta[keyof Meta], context: PolyfillContext): string[] {
 	if (typeof value === "string") return [value];
-	if (Array.isArray(value)) return value as string[];
-	return ensureArray((value as any)[context]);
+	if (Array.isArray(value)) return value;
+	return ensureArray((value as never)[context]);
 }
 
 /**
@@ -188,6 +188,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 					requestedLocales.map(async requestedLocale => {
 						// Resolve the absolute path
 						for (const localeDir of selectMetaPaths(meta.localeDir, request.context)) {
+							// eslint-disable-next-line @typescript-eslint/no-explicit-any
 							const locale = new (Intl as any).Locale(requestedLocale);
 							let addedLocale = false;
 							for (const currentLocale of new Set([locale.baseName, normalizeLocale(locale.baseName), locale.language, normalizeLocale(locale.language)])) {
@@ -215,7 +216,9 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 		const {brotli, zlib, raw} = await build({
 			context: request.context,
 			userAgent: request.userAgent,
+			browserslist: request.browserslist,
 			ecmaVersion: request.ecmaVersion,
+			module: request.module,
 			featuresRequested: [...request.features],
 			paths: [...new Set(paths)],
 			features: [...polyfillSet],

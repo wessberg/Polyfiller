@@ -236,7 +236,7 @@ test("Generates SourceMap if required. #1", async t => {
 	const result = await sendRequest({
 		path: `${constant.endpoint.polyfill}?features=form-data&sourcemap`,
 		headers: {
-			"User-Agent": ie("11")
+			"User-Agent": chrome("70")
 		}
 	});
 

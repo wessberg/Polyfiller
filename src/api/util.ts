@@ -17,10 +17,12 @@ export function booleanize(str: string | undefined): boolean {
 	switch (str.toLowerCase().trim()) {
 		case "true":
 		case "yes":
+		case "y":
 		case "1":
 			return true;
 		case "false":
 		case "no":
+		case "n":
 		case "0":
 		case null:
 			return false;
@@ -39,7 +41,7 @@ export function ensureArray<T>(item: T | T[]): T[] {
 /**
  * Returns a new object with all of the keys uppercased
  */
-export function uppercaseKeys<T extends object>(obj: T): UppercaseKeys<T> {
+export function uppercaseKeys<T extends Record<PropertyKey, unknown>>(obj: T): UppercaseKeys<T> {
 	const newObject = {} as UppercaseKeys<T>;
 	const entries = Object.entries(obj) as [keyof T & string, T[keyof T]][];
 	entries.forEach(([key, value]) => {

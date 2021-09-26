@@ -9,10 +9,10 @@ import {polyfillRawForceName} from "../../polyfill/polyfill-raw-force-name";
 import {polyfillOptionValueSeparator} from "../../polyfill/polyfill-option-value-separator";
 import {createHash} from "crypto";
 import {constant} from "../../constant/constant";
-import {generateBrowserslistFromUseragent, getAppropriateEcmaVersionForBrowserslist, userAgentSupportsFeatures} from "browserslist-generator";
+import {generateBrowserslistFromUseragent, browsersWithSupportForEcmaVersion, getAppropriateEcmaVersionForBrowserslist, userAgentSupportsFeatures} from "browserslist-generator";
 import {truncate} from "@wessberg/stringutil";
 import {IPolyfillLibraryDictEntry, IPolyfillLocalDictEntry} from "../../polyfill/polyfill-dict";
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import toposort from "toposort";
 import {POLYFILL_CONTEXTS, PolyfillContext} from "../../polyfill/polyfill-context";
@@ -185,8 +185,10 @@ export function getPolyfillRequestFromUrl(url: URL, userAgent: string | undefine
 	const contextRaw = url.searchParams.get("context") as PolyfillContext;
 	const sourcemapRaw = url.searchParams.get("sourcemap");
 	const minifyRaw = url.searchParams.get("minify");
+	const moduleRaw = url.searchParams.get("module");
 	const sourcemap = sourcemapRaw === "" || (sourcemapRaw != null && booleanize(sourcemapRaw));
 	const minify = minifyRaw === "" || (minifyRaw != null && booleanize(minifyRaw));
+	const module = moduleRaw === "" || (moduleRaw != null && booleanize(moduleRaw));
 	const context: PolyfillContext = contextRaw == null || !POLYFILL_CONTEXTS.includes(contextRaw) ? "window" : contextRaw;
 
 	// Prepare a Set of features
@@ -234,14 +236,17 @@ export function getPolyfillRequestFromUrl(url: URL, userAgent: string | undefine
 	}
 
 	// Return the IPolyfillRequest
-	return {
+	const browserslist = userAgent == null ? browsersWithSupportForEcmaVersion("es5") : generateBrowserslistFromUseragent(userAgent);
+	return { 
 		userAgent,
-		ecmaVersion: userAgent == null ? "es5" : getAppropriateEcmaVersionForBrowserslist(generateBrowserslistFromUseragent(userAgent)),
+		browserslist,
+		ecmaVersion: getAppropriateEcmaVersionForBrowserslist(browserslist),
 		encoding,
 		features: featureSet,
 		context,
 		sourcemap,
-		minify
+		minify,
+		module
 	};
 }
 

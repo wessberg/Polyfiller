@@ -1,3 +1,12 @@
+## [0.0.155](https://github.com/wessberg/polyfiller/compare/v0.0.154...v0.0.155) (2021-09-26)
+
+
+### Bug Fixes
+
+* increment cacheVersion ([2486201](https://github.com/wessberg/polyfiller/commit/2486201c5ce401a57fed56191741e78cf5192193))
+
+
+
 ## [0.0.154](https://github.com/wessberg/polyfiller/compare/v0.0.153...v0.0.154) (2021-09-26)
 
 

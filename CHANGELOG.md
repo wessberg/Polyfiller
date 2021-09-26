@@ -1,3 +1,12 @@
+## [0.0.154](https://github.com/wessberg/polyfiller/compare/v0.0.153...v0.0.154) (2021-09-26)
+
+
+### Features
+
+* use babel when transpiling to es5 instead of swc until it reaches maturity ([e7a02c8](https://github.com/wessberg/polyfiller/commit/e7a02c8404705aca21c56291c61046b5e8546279))
+
+
+
 ## [0.0.153](https://github.com/wessberg/polyfiller/compare/v0.0.152...v0.0.153) (2021-09-26)
 
 

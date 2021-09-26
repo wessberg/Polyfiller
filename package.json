@@ -7,6 +7,7 @@
 		"polyfill-lib/**/*.*"
 	],
 	"scripts": {
+		"postinstall": "node ./file-content-injector.js",
 		"start": "node ./dist/index.js",
 		"generate:sandhog": "sandhog all --yes",
 		"generate:changelog": "standard-changelog --first-release",

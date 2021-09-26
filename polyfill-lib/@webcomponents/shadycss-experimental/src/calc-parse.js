@@ -1,15 +1,4 @@
-const fs = require("fs");
-
-[
-	{
-		action: "copy",
-		source: "node_modules/@webcomponents/shadycss",
-		destination: "polyfill-lib/@webcomponents/shadycss-experimental"
-	},
-	{
-		action: "create",
-		file: "polyfill-lib/@webcomponents/shadycss-experimental/src/calc-parse.js",
-		text: `/**
+/**
 		@license
 		Copyright (c) 2019 The Polymer Project Authors. All rights reserved.
 		This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
@@ -44,7 +33,7 @@ const fs = require("fs");
 		* @const
 		* @type {RegExp}
 		*/
-	   const CALC_REGEXP = /calc\\(/g;
+	   const CALC_REGEXP = /calc\(/g;
 	   
 	   /**
 		* Visits and stringifies the given CssCalcExpression
@@ -54,8 +43,8 @@ const fs = require("fs");
 		*/
 	   function visitCssCalcExpression (expression, depth) {
 		   return depth === 0
-			   ? \`calc(\${visitCssExpressions(expression.children, depth + 1)})\`
-			   : \`(\${visitCssExpressions(expression.children, depth + 1)})\`;
+			   ? `calc(${visitCssExpressions(expression.children, depth + 1)})`
+			   : `(${visitCssExpressions(expression.children, depth + 1)})`;
 	   }
 	   
 	   /**
@@ -235,112 +224,4 @@ const fs = require("fs");
 		   // Otherwise, parse the expression into a syntax tree before reducing it
 		   const parseResults = parseCalc(expression);
 		   return visitCssExpressions(parseResults);
-	   }`
-	},
-	{
-		action: "replace",
-		file: "polyfill-lib/@webcomponents/shadycss-experimental/src/css-parse.js",
-		match: String.raw`/**`,
-		replacement: `import {reduceCalc} from './calc-parse.js';\n/**`
-	},
-	{
-		action: "replace",
-		file: "polyfill-lib/@webcomponents/shadycss-experimental/src/css-parse.js",
-		match: String.raw`removeCustomProps(node['cssText']);`,
-		replacement: String.raw`reduceCalc(removeCustomProps(node['cssText']));`
-	},
-	{
-		action: "replace",
-		file: "polyfill-lib/@webcomponents/shadycss-experimental/src/style-properties.js",
-		match: String.raw`return method && method.call(this, selector);`,
-		replacement: `
-		try {
-			return method && method.call(this, selector);
-		} catch (ex) {
-			return false;
-		}`
-	},
-	// Have it remove all rules containing :focus-visible
-	{
-		action: "replace",
-		file: "polyfill-lib/@webcomponents/shadycss-experimental/src/style-transformer.js",
-		match: String.raw`const MATCHES =`,
-		replacement: `const FOCUS_VISIBLE = /:(?:focus-visible)/;\nconst MATCHES =`
-	},
-	{
-		action: "replace",
-		file: "polyfill-lib/@webcomponents/shadycss-experimental/src/style-transformer.js",
-		match: String.raw`let stop = false;`,
-		replacement: String.raw`
-		let stop = false;
-		const isFocusVisible = FOCUS_VISIBLE.test(selector);
-         if (isFocusVisible) {
-        	return undefined;
-        }`
-	},
-	
-].forEach(replace);
-
-function replace(entry) {
-	switch (entry.action) {
-		case "copy": {
-			const {source, destination} = entry;
-			if (!fs.existsSync(source)) {
-				throw new ReferenceError(`Source does not exist: ${source}`);
-			}
-			fs.cpSync(source, destination, {force: true, recursive: true});
-			console.log("Copied:", source, "over to:", destination);
-			break;
-		}
-
-		case "create": {
-			const {file, text} = entry;
-
-			if (!fs.existsSync(file)) {
-				fs.writeFileSync(file, text);
-				console.log("Wrote file:", file, "to disk");
-			} else {
-				const fileContents = fs.readFileSync(file, "utf8");
-				if (fileContents !== text) {
-					fs.writeFileSync(file, text);
-					console.log("Updated contents of file:", file);
-				}
-			}
-			
-			break;
-		}
-
-		case "replace": {
-			const {file, match, replacement, replacementFile} = entry;
-
-			if (!fs.existsSync(file)) {
-				throw new ReferenceError(`No such file: ${file}`);
-			}
-
-			if (replacementFile != null) {
-				if (!fs.existsSync(replacementFile)) {
-					throw new ReferenceError(`No such file: ${replacementFile}`);
-				}
-
-				const originalBinary = fs.readFileSync(file, "binary");
-				const replacementFileBinary = fs.readFileSync(replacementFile, "binary");
-				if (originalBinary !== replacementFileBinary) {
-					fs.copyFileSync(replacementFile, file);
-					console.log("Replaced file:", file, "with:", replacementFile);
-				}
-			} else {
-				const fileContents = fs.readFileSync(file, "utf8");
-				const matchPosition = fileContents.indexOf(match);
-				const replacementPosition = fileContents.indexOf(replacement);
-				if (matchPosition < 0 && replacementPosition < 0) {
-					throw new ReferenceError(`File: ${file} does not include: ${match}`);
-				} else if (matchPosition >= 0) {
-					const updatedFileContents = fileContents.slice(0, matchPosition) + replacement + fileContents.slice(matchPosition + match.length);
-					fs.writeFileSync(file, updatedFileContents);
-					console.log("Updated contents of file:", file);
-				}
-			}
-			break;
-		}
-	}
-}
+	   }

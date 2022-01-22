@@ -54,7 +54,7 @@
 		"eslint-plugin-import": "2.24.2",
 		"eslint-plugin-jsdoc": "36.1.0",
 		"husky": "7.0.2",
-		"node-fetch": "2.6.5",
+		"node-fetch": "3.1.1",
 		"node-ssh": "^12.0.0",
 		"np": "^6.5.0",
 		"prettier": "2.4.1",

@@ -1,3 +1,12 @@
+## [0.0.157](https://github.com/wessberg/polyfiller/compare/v0.0.156...v0.0.157) (2022-01-31)
+
+
+### Bug Fixes
+
+* run tests on release ([164c50e](https://github.com/wessberg/polyfiller/commit/164c50ea3d419abc84faf3110d0e5fe29f1b6a9e))
+
+
+
 ## [0.0.156](https://github.com/wessberg/polyfiller/compare/v0.0.155...v0.0.156) (2022-01-31)
 
 

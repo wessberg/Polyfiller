@@ -10,8 +10,6 @@ export class ApiService implements IApiService {
 
 	/**
 	 * Launches the API.
-	 *
-	 * @returns
 	 */
 	async start(): Promise<void> {
 		await this.server.initialize();

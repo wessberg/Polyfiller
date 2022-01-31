@@ -1,6 +1,6 @@
 {
 	"name": "@wessberg/polyfiller",
-	"version": "0.0.156",
+	"version": "0.0.155",
 	"description": "Never worry about polyfills again.",
 	"files": [
 		"dist/**/*.*",
@@ -23,7 +23,7 @@
 		"scripts:markdown-format-feature-names": "ts-node --project scripts/tsconfig.json scripts/markdown-format-feature-names.ts",
 		"preversion": "npm run build",
 		"version": "npm run generate:all && git add .",
-		"release": "np --no-cleanup --no-yarn --no-tests",
+		"release": "np --no-cleanup --no-yarn",
 		"update:check": "npx npm-check-updates -x np --dep dev,prod",
 		"update:commit": "npx npm-check-updates -u -x np,@types/node-fetch,node-fetch,find-up --dep dev,prod && npm update && npm install"
 	},

@@ -23,7 +23,7 @@
 		"scripts:markdown-format-feature-names": "ts-node --project scripts/tsconfig.json scripts/markdown-format-feature-names.ts",
 		"preversion": "npm run build",
 		"version": "npm run generate:all && git add .",
-		"release": "np --no-cleanup --no-yarn",
+		"release": "np --no-cleanup --no-yarn --no-tests",
 		"update:check": "npx npm-check-updates -x np --dep dev,prod",
 		"update:commit": "npx npm-check-updates -u -x np,@types/node-fetch,node-fetch,find-up --dep dev,prod && npm update && npm install"
 	},

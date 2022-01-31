@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import fetch, {Response} from "node-fetch";
 import {container} from "../../src/services";
 import {ApiMethod} from "../../src/api/server/i-server";

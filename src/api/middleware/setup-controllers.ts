@@ -74,6 +74,7 @@ export const setupControllers = (options: SetupControllersOptions) => {
 			if (map == null) continue;
 
 			const lowercasedMethod = method.toLowerCase() as Lowercase<typeof method>;
+			
 
 			for (const [path, methodName] of map) {
 				options.app[lowercasedMethod](path, async (req, res, next) => {

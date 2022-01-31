@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import test from "ava";
 import {constant} from "../../src/constant/constant";
 import {initializeTests} from "./setup";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import {chrome, ie} from "useragent-generator";
 import {getPolyfillRequestFromUrl} from "../../src/util/polyfill/polyfill-util";
@@ -50,12 +52,12 @@ test(`Generates an JSON-formatted welcome payload when a request is sent to '${c
 		}
 	});
 
-	const data: any = await result.json();
+	const data: {title?: string} = await result.json();
 
 	if (!result.ok) {
 		t.fail("Expected result to be OK");
 	} else {
-		t.true("title" in data && data.title.includes("Welcome to"));
+		t.true("title" in data && data?.title?.includes("Welcome to"));
 	}
 });
 

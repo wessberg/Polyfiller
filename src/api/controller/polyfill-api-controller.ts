@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import {constant} from "../../constant/constant";
 import {GET} from "../decorator/api-method/get";
 import {ApiRequest, ApiResponse} from "../server/i-server";
@@ -9,7 +10,7 @@ import {IMetricsService} from "../../service/metrics/i-metrics-service";
 import {generateBrowserslistFromUseragent} from "browserslist-generator";
 
 export class PolyfillApiController {
-	constructor(private polyfillBl: IPolyfillBl, private metricsService: IMetricsService) {}
+	constructor(private readonly polyfillBl: IPolyfillBl, private readonly metricsService: IMetricsService) {}
 
 	@GET({path: constant.endpoint.polyfill})
 	async onPolyfillRequested(request: ApiRequest): Promise<ApiResponse> {
@@ -17,11 +18,11 @@ export class PolyfillApiController {
 		if (request.userAgent != null) {
 			try {
 				generateBrowserslistFromUseragent(request.userAgent);
-			} catch (ex: any) {
+			} catch (ex: unknown) {
 				// Un-set the user agent
 				request.userAgent = undefined;
 				// Capture the exception, but allow it
-				this.metricsService.captureException(ex);
+				this.metricsService.captureException(ex as Error);
 			}
 		}
 

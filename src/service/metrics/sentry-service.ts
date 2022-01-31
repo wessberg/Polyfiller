@@ -22,7 +22,7 @@ export class SentryService implements IMetricsService {
 		return this.#hasCapturedExceptions;
 	}
 
-	constructor(private config: Config) {}
+	constructor(private readonly config: Config) {}
 
 	async initialize(app: Express): Promise<void> {
 		if (this.config.sentryDsn == null) return;

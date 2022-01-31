@@ -23,7 +23,7 @@ export class LoggerService implements ILoggerService {
 	 */
 	private readonly INFO_PREFIX: string = "";
 
-	constructor(private config: Config) {}
+	constructor(private readonly config: Config) {}
 
 	private allowLogging(messageLevel: LogLevel): boolean {
 		return logLevelHierarchy[this.config.logLevel] >= logLevelHierarchy[messageLevel];

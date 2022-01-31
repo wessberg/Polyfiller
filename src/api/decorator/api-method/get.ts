@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import {ApiController} from "../../server/i-server";
 import {ApiMethodDecoratorOptions, apiMethodDecorator} from "./api-method-decorator";
 

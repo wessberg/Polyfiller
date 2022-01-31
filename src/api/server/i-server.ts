@@ -37,7 +37,7 @@ export type ApiPath = string | RegExp;
 export type ApiPaths = MaybeArray<ApiPath>;
 export type RegisteredApiMethods<T> = {[Key in ApiMethod]?: Map<ApiPath, keyof T & string>};
 
-export type ApiController<T = any> = {[Key in keyof T & string]: any} & {
+export type ApiController<T = unknown> = {[Key in keyof T & string]: unknown} & {
 	__apiMethods?: RegisteredApiMethods<T>;
 };
 

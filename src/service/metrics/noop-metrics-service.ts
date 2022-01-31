@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {IMetricsService} from "./i-metrics-service";
 import {Express} from "express";
 
@@ -18,11 +19,17 @@ export class NoopMetricsService implements IMetricsService {
 		return this.#hasCapturedExceptions;
 	}
 
-	async initialize(_app: Express): Promise<void> {}
+	async initialize(_app: Express): Promise<void> {
+		// Noop
+	}
 
-	async configureRequestHandlers(_app: Express): Promise<void> {}
+	async configureRequestHandlers(_app: Express): Promise<void> {
+		// Noop
+	}
 
-	async configureErrorHandlers(_app: Express): Promise<void> {}
+	async configureErrorHandlers(_app: Express): Promise<void> {
+		// Noop
+	}
 
 	async captureEvent(_event: unknown): Promise<void> {
 		this.#hasCapturedEvents = true;

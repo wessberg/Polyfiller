@@ -13,7 +13,12 @@ export class Server implements IServer {
 	private app: Express | undefined;
 	private server: HttpServer | HttpsServer | undefined;
 
-	constructor(private config: Config, private metricsService: IMetricsService, private loggerService: ILoggerService, private controllers: ApiControllers) {}
+	constructor(
+		private readonly config: Config,
+		private readonly metricsService: IMetricsService,
+		private readonly loggerService: ILoggerService,
+		private readonly controllers: ApiControllers
+	) {}
 
 	async initialize(): Promise<void> {
 		const app = express();
@@ -69,7 +74,7 @@ export class Server implements IServer {
 		this.server = server;
 	}
 
-	stop(): Promise<void> {
+	async stop(): Promise<void> {
 		return new Promise<void>((resolve, reject) => {
 			if (this.server == null) {
 				resolve();

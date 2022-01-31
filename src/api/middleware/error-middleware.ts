@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {NextFunction, Request, Response} from "express";
 import {ApiError} from "../lib/api-error";
 import {generateErrorHtml} from "../../util/html/generate-html";

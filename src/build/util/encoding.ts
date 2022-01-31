@@ -14,9 +14,6 @@ export async function brotliEncode(buffer: Buffer, options: BrotliOptions): Prom
 
 /**
  * Gzip-Encodes the given buffer based on the given options
- * @param {Buffer} buffer
- * @param {ZlibOptions} options
- * @returns {Promise<Buffer>}
  */
 export async function gzipEncode(buffer: Buffer, options: ZlibOptions): Promise<Buffer> {
 	return new Promise<Buffer>((resolve, reject) => {

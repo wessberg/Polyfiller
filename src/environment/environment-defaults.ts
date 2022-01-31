@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export const environmentDefaults = {
 	SENTRY_DSN: undefined as string | undefined,
 	KEY: undefined as string | undefined,

@@ -142,7 +142,7 @@ export class CacheRegistryService implements ICacheRegistryService {
 				return pkg.dependencies[entry.library];
 			}
 
-			let combinedVersionSet = new Set<string>();
+			const combinedVersionSet = new Set<string>();
 
 			for (const key of ["window", "worker", "node"] as const) {
 				if (entry.library[key] == null) continue;

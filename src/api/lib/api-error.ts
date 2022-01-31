@@ -10,7 +10,7 @@ export interface ApiErrorRecord {
  * An Error object representing erroneous responses from the API.
  */
 export class ApiError extends Error {
-	constructor(public readonly status: StatusCodes = StatusCodes.INTERNAL_SERVER_ERROR, message?: string) {
+	constructor(readonly status: StatusCodes = StatusCodes.INTERNAL_SERVER_ERROR, message?: string) {
 		super(message);
 	}
 

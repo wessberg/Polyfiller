@@ -54,7 +54,7 @@ function respondToApiMethod(result: ApiResponse, res: Response, next: NextFuncti
 		}
 	}
 
-	if (result.statusCode == StatusCodes.TEMPORARY_REDIRECT && typeof result.body === "string") {
+	if (result.statusCode === StatusCodes.TEMPORARY_REDIRECT && typeof result.body === "string") {
 		res.redirect(result.body);
 	} else {
 		if (result.body != null) {
@@ -80,8 +80,8 @@ export const setupControllers = (options: SetupControllersOptions) => {
 					try {
 						const result = await (controller[methodName] as ApiRequestHandler).call(controller, toApiRequest(req));
 						return respondToApiMethod(result, res, next);
-					} catch (ex: any) {
-						next(ApiError.ensureApiError(ex));
+					} catch (ex: unknown) {
+						next(ApiError.ensureApiError(ex as Error));
 					}
 				});
 			}

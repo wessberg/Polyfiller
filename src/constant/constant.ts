@@ -214,7 +214,8 @@ export const constant: IConstant = {
 				"es.symbol",
 				"es.collections",
 				"es.typed-array",
-				"es.reflect"
+				"es.reflect",
+				"es.global-this"
 			]
 		},
 		// es2015 is an alias for 'es'
@@ -2722,6 +2723,14 @@ export const constant: IConstant = {
 		"esnext.symbol": {
 			polyfills: ["es.symbol.pattern-match"]
 		},
+		"es.global-this": {
+			library: "core-js",
+			relativePaths: ["modules/es.global-this.js"],
+			features: ["javascript.builtins.globalThis"],
+
+			dependencies: [],
+			contexts: ALL_CONTEXTS
+		},
 		"dom.collections.iterable": {
 			polyfills: ["dom.collections.iterator", "dom.collections.for-each"]
 		},
@@ -3238,16 +3247,12 @@ export const constant: IConstant = {
 			contexts: ALL_CONTEXTS
 		},
 		globalthis: {
-			polyfills: ["global-this"]
+			polyfills: ["es.global-this"]
 		},
 		"global-this": {
-			library: "core-js",
-			relativePaths: ["modules/es.global-this.js"],
-			features: ["javascript.builtins.globalThis"],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
+			polyfills: ["es.global-this"]
 		},
+		
 		"adopted-style-sheets": {
 			polyfills: ["constructable-style-sheets"]
 		},

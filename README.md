@@ -404,6 +404,7 @@ And, if you request `performance.now`, `date.now` will also be included since th
   - `es.collections`
   - `es.typed-array`
   - `es.reflect`
+  - `es.global-this`
 - **`es2015`**
   - `es`
 - **`es.promise`**
@@ -735,7 +736,9 @@ And, if you request `performance.now`, `date.now` will also be included since th
 - **`setimmediate`**
   - `set-immediate`
 - **`globalthis`**
-  - `global-this`
+  - `es.global-this`
+- **`global-this`**
+  - `es.global-this`
 - **`adopted-style-sheets`**
   - `constructable-style-sheets`
 - `systemjs`

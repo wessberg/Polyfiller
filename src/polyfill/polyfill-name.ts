@@ -39,9 +39,10 @@ export declare type PolyfillName =
 	| "requestanimationframe"
 	| "requestidlecallback"
 	| "setimmediate"
-	| "globalthis"
 	| "formdata"
-	| "adopted-style-sheets";
+	| "adopted-style-sheets"
+	| "global-this"
+	| "globalthis";
 
 export declare type PolyfillDealiasedName =
 	| "es.object.assign"
@@ -307,6 +308,7 @@ export declare type PolyfillDealiasedName =
 	| "es.reflect.has-metadata"
 	| "es.reflect.has-own-metadata"
 	| "es.reflect.metadata"
+	| "es.global-this"
 	| "regenerator-runtime"
 	| "systemjs"
 	| "performance.now"
@@ -356,7 +358,6 @@ export declare type PolyfillDealiasedName =
 	| "pointer-event"
 	| "set-immediate"
 	| "web-animations"
-	| "global-this"
 	| "broadcast-channel"
 	| "form-data"
 	| "constructable-style-sheets"

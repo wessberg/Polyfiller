@@ -1,3 +1,12 @@
+## [0.0.159](https://github.com/wessberg/polyfiller/compare/v0.0.158...v0.0.159) (2022-05-05)
+
+
+### Features
+
+* add the 'lit' option that can be passed to the shadow-dom feature or any of its aliases such as web-components to include its polyfill support layer ([23e9a41](https://github.com/wessberg/polyfiller/commit/23e9a4153984847888269b37f79bc0cad764b269))
+
+
+
 ## [0.0.158](https://github.com/wessberg/polyfiller/compare/v0.0.157...v0.0.158) (2022-05-05)
 
 

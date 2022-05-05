@@ -1,3 +1,12 @@
+## [0.0.158](https://github.com/wessberg/polyfiller/compare/v0.0.157...v0.0.158) (2022-05-05)
+
+
+### Bug Fixes
+
+* include globalThis when es is requested ([3c8c5d8](https://github.com/wessberg/polyfiller/commit/3c8c5d804ab7a4796833337cee9653d84053781b))
+
+
+
 ## [0.0.157](https://github.com/wessberg/polyfiller/compare/v0.0.156...v0.0.157) (2022-01-31)
 
 

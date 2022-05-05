@@ -103,7 +103,7 @@
 		"construct-style-sheets-polyfill": "3.0.1",
 		"core-js": "3.18.0",
 		"crosspath": "0.0.9",
-		"esbuild": "0.13.2",
+		"esbuild": "0.14.38",
 		"events-polyfill": "2.1.2",
 		"express": "4.17.1",
 		"find-up": "5.0.0",
@@ -177,7 +177,8 @@
 		],
 		"environmentVariables": {
 			"NODE_OPTIONS": "--max_old_space_size=4096",
-			"TESTING": "true"
+			"TESTING": "true",
+			"CLEAR_CACHE": "true"
 		},
 		"require": [
 			"@wessberg/di-compiler/register"

@@ -146,4 +146,3 @@ export async function build({paths, features, browserslist, ecmaVersion, context
 		unlinkSync(tempInputFileLocation);
 	}
 }
-

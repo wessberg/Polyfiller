@@ -109,6 +109,18 @@ test("Will not generate polyfills for 'Element' on Chrome 69 for a Galaxy S5", a
 	t.true(result.status === StatusCodes.OK);
 });
 
+test("Supports >= es2022 as a target", async t => {
+	const result = await sendRequest({
+		path: `${constant.endpoint.polyfill}?features=es.global-this`,
+		headers: {
+			"User-Agent": chrome(100),
+			"Accept-Encoding": "none"
+		}
+	});
+
+	t.true(result.status === StatusCodes.OK);
+});
+
 test("Will compress with Brotli if the 'Accept-Encoding' header is set and it accepts Brotli compression", async t => {
 	const result = await sendRequest({
 		path: `${constant.endpoint.polyfill}?features=intersection-observer`,

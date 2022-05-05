@@ -1,3 +1,12 @@
+## [0.0.160](https://github.com/wessberg/polyfiller/compare/v0.0.159...v0.0.160) (2022-05-05)
+
+
+### Bug Fixes
+
+* fix lint ([5c65ab7](https://github.com/wessberg/polyfiller/commit/5c65ab7341345f11288254b5560c6cb5b0f1df89))
+
+
+
 ## [0.0.159](https://github.com/wessberg/polyfiller/compare/v0.0.158...v0.0.159) (2022-05-05)
 
 

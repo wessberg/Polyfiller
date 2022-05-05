@@ -3051,6 +3051,9 @@ export const constant: IConstant = {
 					"node_modules/@webcomponents/shadydom/src/shadydom.js",
 					"polyfill-lib/@webcomponents/shadycss-experimental/entrypoints/scoping-shim.js",
 					"polyfill-lib/@webcomponents/shadycss-experimental/entrypoints/custom-style-interface.js"
+				],
+				lit: [
+					"node_modules/lit/polyfill-support.js",
 				]
 			},
 			features: ["shadowdomv1"],

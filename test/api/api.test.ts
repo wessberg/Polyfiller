@@ -272,11 +272,11 @@ test("Accepts OPTIONS requests. #1", async t => {
 });
 
 test("Will correctly parse meta information for 'shadow-dom'. #1", async t => {
-	const polyfillRequest = getPolyfillRequestFromUrl(new URL("?features=shadow-dom|experimental", `https://my-polyfill-service.app${constant.endpoint.polyfill}`), chrome(70));
-	t.true([...polyfillRequest.features].some(({meta, name}) => name === "shadow-dom" && meta != null && meta.experimental === true));
+	const polyfillRequest = getPolyfillRequestFromUrl(new URL("?features=shadow-dom|experimental|lit", `https://my-polyfill-service.app${constant.endpoint.polyfill}`), chrome(70));
+	t.true([...polyfillRequest.features].some(({meta, name}) => name === "shadow-dom" && meta != null && meta.experimental === true && meta.lit === true));
 });
 
 test("Will correctly parse meta information for 'shadow-dom' when using the alias 'web-components'. #1", async t => {
-	const polyfillRequest = getPolyfillRequestFromUrl(new URL("?features=web-components|experimental", `https://my-polyfill-service.app${constant.endpoint.polyfill}`), chrome(70));
-	t.true([...polyfillRequest.features].some(({meta, name}) => name === "shadow-dom" && meta != null && meta.experimental === true));
+	const polyfillRequest = getPolyfillRequestFromUrl(new URL("?features=web-components|experimental|lit", `https://my-polyfill-service.app${constant.endpoint.polyfill}`), chrome(70));
+	t.true([...polyfillRequest.features].some(({meta, name}) => name === "shadow-dom" && meta != null && meta.experimental === true && meta.lit === true));
 });

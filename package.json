@@ -92,6 +92,7 @@
 		"@wessberg/di": "2.0.3",
 		"@wessberg/pointer-events": "1.0.9",
 		"@wessberg/stringutil": "1.0.19",
+		"lit": "2.2.3",
 		"Base64": "1.1.0",
 		"blob-polyfill": "5.0.20210201",
 		"browserslist": "4.17.1",

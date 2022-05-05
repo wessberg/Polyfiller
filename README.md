@@ -294,7 +294,10 @@ For example: `systemjs|variant=s` selects the _s_ variant, while `systemjs|varia
 
 #### Extra options for `shadow-dom`
 
-You can pass the `experimental` option to `shadow-dom` (or any of its aliases such as `web-components`) to base it on some experimental features that may reduce bugs in older browsers such as IE and Edge <= 15.
+| Option           | Description                                                                                        |
+| ---------------- | -------------------------------------------------------------------------------------------------- |
+| `experimental`   | You can pass the `experimental` option to `shadow-dom` (or any of its aliases such as `web-components`) to base it on some experimental features that may reduce bugs in older browsers such as IE and Edge <= 15.                                                                                  |
+| `lit`            | If you're going to be using [Lit](https://lit.dev/), you can also pass the `lit` option to `shadow-dom` (or any of its aliases such as `web-components`) to include its [polyfill support layer](https://lit.dev/docs/releases/upgrade/#load-polyfill-support-when-using-web-components-polyfills). |
 
 ### Usage in a Web Worker/Service Worker
 

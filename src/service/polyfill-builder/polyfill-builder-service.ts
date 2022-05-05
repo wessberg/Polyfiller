@@ -75,10 +75,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 						throw new ReferenceError(`Unresolved path: '${metaVariantPathInput}'`);
 					}
 				}
-			}
-
-			// If shadow-dom is requested, the variant to use may be provided as metadata. If so, we should use that one, rather than the relativePaths
-			else if (
+			} else if (
 				polyfillFeature.name === "shadow-dom" &&
 				meta != null &&
 				polyfillFeature.meta != null &&
@@ -106,6 +103,18 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 						absolutePaths.push(resolvedPath);
 					} else {
 						throw new ReferenceError(`Unresolved path: '${pathInput}'`);
+					}
+				}
+			}
+
+			if (meta != null && polyfillFeature.name === "shadow-dom" && polyfillFeature.meta?.lit === true) {
+				for (const filePath of selectMetaPaths(meta.lit, request.context)) {
+					const filePathInput = join(rootDirectory, filePath);
+					const resolvedFilePath = sync(filePathInput, SYNC_OPTIONS);
+					if (resolvedFilePath != null) {
+						absolutePaths.push(resolvedFilePath);
+					} else {
+						throw new ReferenceError(`Unresolved path: '${filePathInput}'`);
 					}
 				}
 			}

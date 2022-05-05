@@ -48,8 +48,9 @@ export function getPolyfillIdentifier(name: PolyfillFeature | PolyfillFeatureInp
 	const shasum = createHash("sha1");
 	const normalizedName = name instanceof Set ? name : new Set([name]);
 	const sortedName = [...normalizedName].sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
-	const namePart = sortedName.map(part => `${part.name}${JSON.stringify(part.meta)}${context}`).join(",");
-	shasum.update(`[${namePart}].${context.sourcemap}.${context.minify}.${context.ecmaVersion}.${context.encoding || "none"}`);
+	const namePart = sortedName.map(part => `{name:${part.name},meta:${JSON.stringify(part.meta)}}`).join(",");
+
+	shasum.update(`features:[${namePart}],sourcemap:${context.sourcemap},minify:${context.minify},ecmaversion:${context.ecmaVersion},module:${context.module},context:${context.context},encoding:${context.encoding || "none"}`);
 	return shasum.digest("hex");
 }
 
@@ -68,8 +69,10 @@ export function getPolyfillConfigChecksum(): string {
 export function getPolyfillSetIdentifier(polyfills: Set<PolyfillFeatureInput>, context: PolyfillCachingContext): string {
 	const shasum = createHash("sha1");
 	const sortedName = [...polyfills].sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
-	const namePart = sortedName.map(part => `${part.name}${JSON.stringify(part.meta)}${JSON.stringify(part.force)}${JSON.stringify(context)}`).join(",");
-	shasum.update(`[${namePart}].${context.userAgent}.${context.context}`);
+	const namePart = sortedName.map(part => `{name:${part.name},meta:${JSON.stringify(part.meta)},force:${JSON.stringify(part.force)}}`).join(",");
+
+	shasum.update(`features:[${namePart}],useragent:${context.userAgent},context:${context.context}`);
+
 	return shasum.digest("hex");
 }
 
@@ -82,10 +85,6 @@ function shouldIncludePolyfill(force: boolean, context: PolyfillContext, userAge
 
 /**
  * Gets the dependors of the given Polyfill name, including those that it must follow if they are - optionally - included
- *
- * @param polyfillName
- * @param includedPolyfillNames
- * @returns
  */
 function getEffectiveDependors(polyfillName: PolyfillDealiasedName, includedPolyfillNames: Set<PolyfillDealiasedName>): PolyfillDealiasedName[] {
 	const allOtherPolyfillNames = [...includedPolyfillNames].filter(name => name !== polyfillName);
@@ -237,7 +236,7 @@ export function getPolyfillRequestFromUrl(url: URL, userAgent: string | undefine
 
 	// Return the IPolyfillRequest
 	const browserslist = userAgent == null ? browsersWithSupportForEcmaVersion("es5") : generateBrowserslistFromUseragent(userAgent);
-	return { 
+	return {
 		userAgent,
 		browserslist,
 		ecmaVersion: getAppropriateEcmaVersionForBrowserslist(browserslist),

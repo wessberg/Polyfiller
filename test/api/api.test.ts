@@ -155,6 +155,17 @@ test("Will generate correct polyfills for IE11. #1", async t => {
 	t.true(result.status === StatusCodes.OK);
 });
 
+test("Will generate correct polyfills for IE11. #2", async t => {
+	const result = await sendRequest({
+		path: `${constant.endpoint.polyfill}?minify&features=web-components|experimental|lit,es,class-list,custom-event,url,fetch,object-fit,animation,requestanimationframe,requestidlecallback,resize-observer,pointer-event,dom.collections.iterable,scroll-behavior,intl|locale=cs-CZ~da~de~en~es~fi-FI~fr~hr-HR~hu-HU~it~ja~ko~nl~no~pl~pt-BR~ru~sk-SK~sv~zh-Hans~vi,formdata,broadcast-channel,systemjs|variant=s`,
+		headers: {
+			"User-Agent": ie("11")
+		}
+	});
+
+	t.true(result.status === StatusCodes.OK);
+});
+
 test("Won't crash for invalid URLs. #1", async t => {
 	const result = await sendRequest({
 		path: `//?foo`,
@@ -277,6 +288,9 @@ test("Will correctly parse meta information for 'shadow-dom'. #1", async t => {
 });
 
 test("Will correctly parse meta information for 'shadow-dom' when using the alias 'web-components'. #1", async t => {
-	const polyfillRequest = getPolyfillRequestFromUrl(new URL("?features=web-components|experimental|lit", `https://my-polyfill-service.app${constant.endpoint.polyfill}`), chrome(70));
+	const polyfillRequest = getPolyfillRequestFromUrl(
+		new URL("?features=web-components|experimental|lit", `https://my-polyfill-service.app${constant.endpoint.polyfill}`),
+		chrome(70)
+	);
 	t.true([...polyfillRequest.features].some(({meta, name}) => name === "shadow-dom" && meta != null && meta.experimental === true && meta.lit === true));
 });

@@ -1,3 +1,12 @@
+## [0.0.161](https://github.com/wessberg/polyfiller/compare/v0.0.160...v0.0.161) (2022-07-05)
+
+
+### Features
+
+* add new sponsor: scrubtheweb ([d0cdf18](https://github.com/wessberg/polyfiller/commit/d0cdf1851f1ff6a2754d161e36c017e9babce6b9))
+
+
+
 ## [0.0.160](https://github.com/wessberg/polyfiller/compare/v0.0.159...v0.0.160) (2022-05-05)
 
 

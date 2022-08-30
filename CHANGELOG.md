@@ -1,3 +1,12 @@
+## [0.0.162](https://github.com/wessberg/polyfiller/compare/v0.0.161...v0.0.162) (2022-08-30)
+
+
+### Reverts
+
+* build on master on push ([f160319](https://github.com/wessberg/polyfiller/commit/f160319266319442fd133058ece26125c63b7d0f))
+
+
+
 ## [0.0.161](https://github.com/wessberg/polyfiller/compare/v0.0.160...v0.0.161) (2022-07-05)
 
 

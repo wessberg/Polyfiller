@@ -203,6 +203,8 @@ server {
 	const lastDeploymentDataVolumes = lastDeploymentData == null || lastDeploymentData.VOLUMES == null ? [] : lastDeploymentData.VOLUMES.split(" ").map(p => p.trim()).filter(p => p.length > 0);
 	const newDeploymentDataVolumes = (VOLUMES || "").split(" ").map(p => p.trim()).filter(p => p.length > 0);
 
+	console.log({lastDeploymentDataVolumes, newDeploymentDataVolumes});
+
 	// It may need to update the logic for automatically mounting disks on boot
 	const needsMountingUpdate = lastDeploymentDataVolumes.length !== newDeploymentDataVolumes.length || newDeploymentDataVolumes.some((volume, i) => lastDeploymentDataVolumes[i] !== volume);
 
@@ -282,6 +284,8 @@ server {
 			await ssh.execCommand(`echo '/dev/disk/by-id/scsi-0DO_Volume_${volume.replace(/_/g, "-")} ${volume} ext4 defaults,nofail,discard 0 0' | sudo tee -a /etc/fstab`);
 		}
 
+	} else {
+		console.log(`Correct volumes are already mounted`);
 	}
 
 	// Clean up the remote root

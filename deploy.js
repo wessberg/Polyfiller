@@ -204,7 +204,7 @@ server {
 	const newDeploymentDataVolumes = (VOLUMES || "").split(" ").map(p => p.trim()).filter(p => p.length > 0);
 
 	// It may need to update the logic for automatically mounting disks on boot
-	const needsMountingUpdate = true; // lastDeploymentDataVolumes.length !== newDeploymentDataVolumes.length || newDeploymentDataVolumes.some((volume, i) => lastDeploymentDataVolumes[i] !== volume);
+	const needsMountingUpdate = lastDeploymentDataVolumes.length !== newDeploymentDataVolumes.length || newDeploymentDataVolumes.some((volume, i) => lastDeploymentDataVolumes[i] !== volume);
 
 	// If we have deployed in the past, check if the nginx config needs to be updated (for example if the ports or domain names changed)
 	const needsNginxUpdate =

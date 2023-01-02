@@ -32,7 +32,7 @@ export class Server implements IServer {
 		// Add request logging
 		app.use(
 			morgan("combined", {
-				skip: () => this.config.logLevel === "silent"
+				skip: req => this.config.logLevel === "silent" || req.path === "/healthz"
 			})
 		);
 

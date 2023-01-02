@@ -1,3 +1,13 @@
+## [0.0.164](https://github.com/wessberg/polyfiller/compare/v0.0.163...v0.0.164) (2023-01-02)
+
+
+### Features
+
+* add support for writing cached polyfill bundles to volumes other than /tmp ([a142881](https://github.com/wessberg/polyfiller/commit/a1428819bf456b99c73951149ff2d955b8fa0d6d))
+* add support for writing cached polyfill bundles to volumes other than /tmp ([ad3d113](https://github.com/wessberg/polyfiller/commit/ad3d1137fcdbd7efd18163a588680b2b4994b495))
+
+
+
 ## [0.0.163](https://github.com/wessberg/polyfiller/compare/v0.0.162...v0.0.163) (2023-01-02)
 
 

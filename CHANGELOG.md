@@ -1,3 +1,12 @@
+## [0.0.163](https://github.com/wessberg/polyfiller/compare/v0.0.162...v0.0.163) (2023-01-02)
+
+
+### Bug Fixes
+
+* don't log healthz requests to play nicer with Kubernetes ([2317064](https://github.com/wessberg/polyfiller/commit/231706483b5914b0f654cf8b6ed844ea61914af1))
+
+
+
 ## [0.0.162](https://github.com/wessberg/polyfiller/compare/v0.0.161...v0.0.162) (2022-08-30)
 
 

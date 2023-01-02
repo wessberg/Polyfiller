@@ -203,10 +203,8 @@ server {
 	const lastDeploymentDataVolumes = lastDeploymentData == null || lastDeploymentData.VOLUMES == null ? [] : lastDeploymentData.VOLUMES.split(" ").map(p => p.trim()).filter(p => p.length > 0);
 	const newDeploymentDataVolumes = (VOLUMES || "").split(" ").map(p => p.trim()).filter(p => p.length > 0);
 
-	console.log({lastDeploymentDataVolumes, newDeploymentDataVolumes, raw: process.env.VOLUMES});
-
 	// It may need to update the logic for automatically mounting disks on boot
-	const needsMountingUpdate = lastDeploymentDataVolumes.length !== newDeploymentDataVolumes.length || newDeploymentDataVolumes.some((volume, i) => lastDeploymentDataVolumes[i] !== volume);
+	const needsMountingUpdate = true; // lastDeploymentDataVolumes.length !== newDeploymentDataVolumes.length || newDeploymentDataVolumes.some((volume, i) => lastDeploymentDataVolumes[i] !== volume);
 
 	// If we have deployed in the past, check if the nginx config needs to be updated (for example if the ports or domain names changed)
 	const needsNginxUpdate =
@@ -273,7 +271,7 @@ server {
 		}
 
 		// Now, mount the new ones
-		for (const volume of VOLUMES) {
+		for (const volume of newDeploymentDataVolumes) {
 			// # Create a mount point for the volume if it doesn't already exist:
 			await ssh.execCommand(`mkdir -p ${volume}`);
 

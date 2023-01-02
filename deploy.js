@@ -1,7 +1,7 @@
 (async () => {
 	const {NodeSSH} = require("node-ssh");
 	const pkg = require("./package.json");
-	const {join, dirname} = require("path");
+	const {join, dirname, basename} = require("path");
 	const {writeFileSync, readFileSync, existsSync, mkdirSync, copyFileSync, chmodSync, readdirSync} = require("fs");
 
 	let {
@@ -276,10 +276,10 @@ server {
 			await ssh.execCommand(`mkdir -p ${volume}`);
 
 			// Mount the volume at the newly-created mount point:
-			await ssh.execCommand(`mount -o discard,defaults,noatime /dev/disk/by-id/scsi-0DO_Volume_${volume.replace(/_/g, "-")} ${volume}`);
+			await ssh.execCommand(`mount -o discard,defaults,noatime /dev/disk/by-id/scsi-0DO_Volume_${basename(volume).replace(/_/g, "-")} ${volume}`);
 
 			// Change fstab so the volume will be mounted after a reboot
-			await ssh.execCommand(`echo '/dev/disk/by-id/scsi-0DO_Volume_${volume.replace(/_/g, "-")} ${volume} ext4 defaults,nofail,discard 0 0' | sudo tee -a /etc/fstab`);
+			await ssh.execCommand(`echo '/dev/disk/by-id/scsi-0DO_Volume_${basename(volume).replace(/_/g, "-")} ${volume} ext4 defaults,nofail,discard 0 0' | sudo tee -a /etc/fstab`);
 		}
 
 	} else {

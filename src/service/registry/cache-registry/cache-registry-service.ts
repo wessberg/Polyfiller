@@ -13,6 +13,9 @@ import pkg from "../../../../package.json";
 import {Config} from "../../../config/config";
 import {IMetricsService} from "../../metrics/i-metrics-service";
 import {FileSystem} from "../../../common/lib/file-system/file-system";
+import {chooseRandom} from "../../../api/util/util";
+import {MaybeArray} from "../../../common/type/type-util";
+import {ensureArray} from "../../../api/util";
 
 /**
  * A class that can cache generated Polyfills on disk
@@ -47,7 +50,7 @@ export class CacheRegistryService implements ICacheRegistryService {
 		if (memoryHit != null) return memoryHit;
 
 		// Otherwise, attempt to get it from cache
-		const buffer = await this.getFromCache(this.getCachePath(name, context));
+		const buffer = await this.getFromCache(this.getCachePaths(name, context));
 		// If not possible, return undefined
 		if (buffer == null) return undefined;
 
@@ -64,8 +67,8 @@ export class CacheRegistryService implements ICacheRegistryService {
 		if (memoryHit != null) return memoryHit;
 
 		// Otherwise, attempt to get it from cache
-		const cachePath = this.getCachePathForPolyfillSet(input, context);
-		const buffer = await this.getFromCache(cachePath);
+		const cachePaths = this.getCachePathForPolyfillSet(input, context);
+		const buffer = await this.getFromCache(cachePaths);
 
 		// If not possible, return undefined
 		if (buffer == null) return undefined;
@@ -76,8 +79,8 @@ export class CacheRegistryService implements ICacheRegistryService {
 			return await this.memoryRegistry.setPolyfillFeatureSet(input, new Set(polyfillFeatures), context);
 		} catch (ex) {
 			// It wasn't possible to parse that buffer. The disk cache is in an invalid state, and should be cleaned up
-			await this.deleteFromCache(cachePath);
-			this.metricsService.captureMessage(`Wiped bad cache entry at path: ${cachePath}`);
+			await this.deleteFromCache(cachePaths);
+			this.metricsService.captureMessage(`Wiped bad cache entry at path: ${cachePaths}`);
 			return undefined;
 		}
 	}
@@ -101,7 +104,7 @@ export class CacheRegistryService implements ICacheRegistryService {
 	 */
 	async set(name: PolyfillFeature | Set<PolyfillFeature>, contents: Buffer, context: PolyfillCachingContext): Promise<IRegistryGetResult> {
 		// Add it to the memory cache as well as the disk cache
-		await this.writeToCache(this.getCachePath(name, context), contents);
+		await this.writeToCache(this.getCachePaths(name, context), contents);
 		return await this.memoryRegistry.set(name, contents, context);
 	}
 
@@ -217,21 +220,20 @@ export class CacheRegistryService implements ICacheRegistryService {
 	/**
 	 * Flushes the cache entirely
 	 */
-	private async flushCache(): Promise<boolean> {
-		return this.fileSystem.delete(constant.path.cacheRoot);
+	private async flushCache(): Promise<void> {
+		await Promise.all(constant.path.cacheRoots.map(async cacheRoot => this.fileSystem.delete(cacheRoot)));
 	}
 
 	/**
 	 * Writes the given Buffer to cache
 	 */
-	private async writeToCache(path: string, content: Buffer): Promise<void> {
-		return this.fileSystem.writeFile(path, content);
+	private async writeToCache(path: MaybeArray<string>, content: Buffer): Promise<void> {
+		const selectedPath = Array.isArray(path) ? chooseRandom(path) : path;
+		return this.fileSystem.writeFile(selectedPath, content);
 	}
 
 	/**
 	 * Gets the package version map from the cache. A new one will be created if it doesn't exist already
-	 *
-	 * @returns
 	 */
 	private async getPackageVersionMap(): Promise<{[key: string]: string}> {
 		const packageVersionMapRaw = await this.getFromCache(constant.path.cachePackageVersionMap);
@@ -257,28 +259,32 @@ export class CacheRegistryService implements ICacheRegistryService {
 	/**
 	 * Returns the contents on the given path from the cache
 	 */
-	private async getFromCache(path: string): Promise<Buffer | undefined> {
-		return this.fileSystem.readFile(path);
+	private async getFromCache(path: MaybeArray<string>): Promise<Buffer | undefined> {
+		for (const currentPath of ensureArray(path)) {
+			const match = this.fileSystem.readFile(currentPath);
+			if (match != null) return match;
+		}
+		return undefined;
 	}
 
 	/**
 	 * Deletes the contents on the given path from the cache
 	 */
-	private async deleteFromCache(path: string): Promise<boolean> {
-		return this.fileSystem.delete(path);
+	private async deleteFromCache(path: MaybeArray<string>): Promise<void> {
+		await Promise.all(ensureArray(path).map(async currentPath => this.fileSystem.delete(currentPath)));
 	}
 
 	/**
 	 * Gets the cache path to the given name and encoding
 	 */
-	private getCachePath(name: PolyfillFeature | Set<PolyfillFeature>, context: PolyfillCachingContext): string {
-		return join(constant.path.cacheRoot, getPolyfillIdentifier(name, context));
+	private getCachePaths(name: PolyfillFeature | Set<PolyfillFeature>, context: PolyfillCachingContext): string[] {
+		return constant.path.cacheRoots.map(cacheRoot => join(cacheRoot, getPolyfillIdentifier(name, context)));
 	}
 
 	/**
 	 * Gets the cache path to the given Polyfill Feature Set
 	 */
-	private getCachePathForPolyfillSet(input: Set<PolyfillFeatureInput>, context: PolyfillCachingContext): string {
-		return join(constant.path.cacheRoot, getPolyfillSetIdentifier(input, context));
+	private getCachePathForPolyfillSet(input: Set<PolyfillFeatureInput>, context: PolyfillCachingContext): string[] {
+		return constant.path.cacheRoots.map(cacheRoot => join(cacheRoot, getPolyfillSetIdentifier(input, context)));
 	}
 }

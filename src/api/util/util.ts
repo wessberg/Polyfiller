@@ -2,6 +2,10 @@ import {ApiMethod, ContentType} from "../server/i-server";
 import {ContentEncodingKind} from "../../encoding/content-encoding-kind";
 import {LogLevel} from "../../service/logger/i-logger-service";
 
+export function chooseRandom<T>(arr: readonly T[]): T {
+	return arr[Math.floor(Math.random() * arr.length)];
+}
+
 export function parseApiMethod(method: string): ApiMethod | undefined {
 	const uppercased = method.toUpperCase();
 	switch (uppercased) {

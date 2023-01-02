@@ -7,6 +7,7 @@ import {generateReleaseName, parseLogLevel} from "../api/util/util";
 import pkg from "../../package.json";
 
 export interface Config {
+	volumes: string[];
 	version: string;
 	sentryDsn: string | undefined;
 	environment: string;
@@ -27,6 +28,7 @@ export const config: Config = {
 	environment: environment.NODE_ENV,
 	production: environment.NODE_ENV != null && environment.NODE_ENV.toLowerCase() === "production",
 	testing: booleanize(environment.TESTING),
+	volumes: environment.VOLUMES.split(" ").map(part => part.trim()).filter(part => part.length > 0),
 	logLevel: parseLogLevel(environment.LOG_LEVEL) ?? "info",
 	clearCache: booleanize(environment.CLEAR_CACHE),
 	https: booleanize(environment.HTTPS),

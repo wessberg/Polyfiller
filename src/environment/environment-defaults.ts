@@ -9,5 +9,6 @@ export const environmentDefaults = {
 	HTTPS: "false",
 	CLEAR_CACHE: "false",
 	HOST: "0.0.0.0",
-	PORT: "3000"
+	PORT: "3000",
+	VOLUMES: ""
 };

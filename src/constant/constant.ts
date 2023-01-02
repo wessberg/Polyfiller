@@ -4,6 +4,7 @@ import {join} from "crosspath";
 import {ALL_CONTEXTS, WINDOW_CONTEXT, WINDOW_NODE_CONTEXT, WINDOW_WORKER_CONTEXT} from "../polyfill/polyfill-context";
 import pkg from "../../package.json";
 import {booleanize} from "../api/util";
+import { config } from "../config/config";
 
 const tempRoot = join(
 	tempDirectory,
@@ -31,7 +32,7 @@ export const constant: IConstant = {
 	},
 
 	path: {
-		cacheRoot: join(tempRoot),
+		cacheRoots: [join(tempRoot), ...config.volumes],
 		cachePackageVersionMap: join(tempRoot, "cache_package_version_map.json"),
 		configChecksum: join(tempRoot, "config_checksum")
 	},

@@ -12,7 +12,7 @@ export interface IMetaConstant {
 }
 
 export interface IPathConstant {
-	cacheRoot: string;
+	cacheRoots: string[];
 	cachePackageVersionMap: string;
 	configChecksum: string;
 }

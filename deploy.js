@@ -11,6 +11,7 @@
 		DEPLOY_KEY,
 		DEPLOY_KEY_LOCATION,
 		PRODUCTION,
+		VOLUMES,
 		INTERNAL_HOST_DEVELOPMENT,
 		INTERNAL_HOST_PRODUCTION,
 		INTERNAL_PORT_DEVELOPMENT,
@@ -86,6 +87,7 @@ server {
 		).join("\n")}
 }
 `;
+
 
 	const PREFERRED_NODE_VERSION = "16.x";
 	const APP_NAME = PRODUCTION ? "polyfiller" : "polyfiller-development";
@@ -198,6 +200,12 @@ server {
 	}
 	const lastDeploymentData = existsSync(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME) ? JSON.parse(readFileSync(LAST_DEPLOYMENT_DATA_LOCAL_FILE_NAME, "utf8")) : undefined;
 
+	const lastDeploymentDataVolumes = lastDeploymentData == null || lastDeploymentData.VOLUMES == null ? [] : lastDeploymentData.VOLUMES.split(" ").map(p => p.trim()).filter(p => p.length > 0);
+	const newDeploymentDataVolumes = (VOLUMES || "").split(" ").map(p => p.trim()).filter(p => p.length > 0);
+
+	// It may need to update the logic for automatically mounting disks on boot
+	const needsMountingUpdate = lastDeploymentDataVolumes.length !== newDeploymentDataVolumes.length || newDeploymentDataVolumes.some((volume, i) => lastDeploymentDataVolumes[i] !== volume);
+
 	// If we have deployed in the past, check if the nginx config needs to be updated (for example if the ports or domain names changed)
 	const needsNginxUpdate =
 		lastDeploymentData == null ||
@@ -229,7 +237,8 @@ server {
 			INTERNAL_PORT_DEVELOPMENT,
 			INTERNAL_PORT_PRODUCTION,
 			DOMAIN_NAMES_DEVELOPMENT,
-			DOMAIN_NAMES_PRODUCTION
+			DOMAIN_NAMES_PRODUCTION,
+			VOLUMES
 		};
 
 		// Now, update the deployment data
@@ -239,6 +248,40 @@ server {
 		console.log(`Successfully updated cached deployment stats`);
 	} else {
 		console.log(`Nginx config is up to date`);
+	}
+
+	if (needsMountingUpdate) {
+		console.log(`Mounted volumes has changed`);
+
+		// First remove previously mounted volumes if they exist
+		for (const volume of lastDeploymentDataVolumes) {
+			try {
+				// Unmount
+				await ssh.execCommand(`umount ${volume}`);
+
+				// Remove mounted folder
+				await ssh.execCommand(`rm -rf ${volume}`);
+
+				// Remove from fstab
+				await ssh.execCommand(`grep -vwE "${volume}" /etc/fstab > /etc/fstab`);
+			} catch {
+				// This is fine
+			}
+		
+		}
+
+		// Now, mount the new ones
+		for (const volume of VOLUMES) {
+			// # Create a mount point for the volume if it doesn't already exist:
+			await ssh.execCommand(`mkdir -p ${volume}`);
+
+			// Mount the volume at the newly-created mount point:
+			await ssh.execCommand(`mount -o discard,defaults,noatime /dev/disk/by-id/scsi-0DO_Volume_${volume.replace(/_/g, "-")} ${volume}`);
+
+			// Change fstab so the volume will be mounted after a reboot
+			await ssh.execCommand(`echo '/dev/disk/by-id/scsi-0DO_Volume_${volume.replace(/_/g, "-")} ${volume} ext4 defaults,nofail,discard 0 0' | sudo tee -a /etc/fstab`);
+		}
+
 	}
 
 	// Clean up the remote root

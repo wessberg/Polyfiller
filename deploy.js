@@ -203,7 +203,7 @@ server {
 	const lastDeploymentDataVolumes = lastDeploymentData == null || lastDeploymentData.VOLUMES == null ? [] : lastDeploymentData.VOLUMES.split(" ").map(p => p.trim()).filter(p => p.length > 0);
 	const newDeploymentDataVolumes = (VOLUMES || "").split(" ").map(p => p.trim()).filter(p => p.length > 0);
 
-	console.log({lastDeploymentDataVolumes, newDeploymentDataVolumes});
+	console.log({lastDeploymentDataVolumes, newDeploymentDataVolumes, raw: process.env.VOLUMES});
 
 	// It may need to update the logic for automatically mounting disks on boot
 	const needsMountingUpdate = lastDeploymentDataVolumes.length !== newDeploymentDataVolumes.length || newDeploymentDataVolumes.some((volume, i) => lastDeploymentDataVolumes[i] !== volume);

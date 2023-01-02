@@ -62,3 +62,4 @@ jobs:
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
           DEPLOY_USER_NAME: ${{ secrets.DEPLOY_USER_NAME }}
           DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+          VOLUMES: ${{ secrets.VOLUMES }}

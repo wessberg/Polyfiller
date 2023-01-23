@@ -170,12 +170,10 @@ if (needsNode || !hasAcceptableNodeVersion) {
 			: "Node.js is missing on the host machine. Installing"
 	);
 
-	if (!hasAcceptableNodeVersion) {
-		await ssh.execCommand(`sudo apt remove nodejs && sudo apt autoremove`);
-	}
 	await ssh.execCommand(`cd ~`);
 	await ssh.execCommand(`curl -sL https://deb.nodesource.com/setup_${PREFERRED_NODE_VERSION} -o nodesource_setup.sh`);
 	await ssh.execCommand(`sudo bash nodesource_setup.sh`);
+	await ssh.execCommand(`sudo apt --fix-broken install -y`);
 	await ssh.execCommand(`sudo apt install nodejs -y`);
 	await ssh.execCommand(`rm nodesource_setup.sh`);
 

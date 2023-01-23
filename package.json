@@ -161,7 +161,7 @@
 	"exports": {
 		"import": "./dist/esm/index.js",
 		"require": "./dist/cjs/index.cjs",
-		"types": "./dist/esm/index.d.ts",
+		"types": "./dist/esm/index.d.ts"
 	},
 	"type": "module",
 	"types": "./dist/esm/index.d.ts",

@@ -468,6 +468,9 @@ And, if you request `performance.now`, `date.now` will also be included since th
   - `es.array.sort`
   - `es.array.species`
   - `es.array.splice`
+  - `es.array.at`
+  - `es.array.find-last`
+  - `es.array.find-last-index`
 - **`es.array-buffer`**
   - `es.array-buffer.constructor`
   - `es.array-buffer.is-view`
@@ -503,6 +506,8 @@ And, if you request `performance.now`, `date.now` will also be included since th
   - `es.string.trim-start`
   - `es.string.trim-end`
   - `es.string.replace-all`
+  - `es.string.match-all`
+  - `es.string.at`
 - **`es.regexp`**
   - `es.regexp.constructor`
   - `es.regexp.flags`
@@ -600,6 +605,9 @@ And, if you request `performance.now`, `date.now` will also be included since th
   - `es.typed-array.uint8-clamped-array`
   - `es.typed-array.uint16-array`
   - `es.typed-array.uint32-array`
+  - `es.typed-array.at`
+  - `es.typed-array.find-last`
+  - `es.typed-array.find-last-index`
 - **`es.reflect`**
   - `es.reflect.apply`
   - `es.reflect.construct`
@@ -614,103 +622,6 @@ And, if you request `performance.now`, `date.now` will also be included since th
   - `es.reflect.prevent-extensions`
   - `es.reflect.set`
   - `es.reflect.set-prototype-of`
-- **`esnext`**
-  - `esnext.array`
-  - `esnext.collections`
-  - `esnext.math`
-  - `esnext.number`
-  - `esnext.object`
-  - `esnext.promise`
-  - `esnext.reflect`
-  - `esnext.string`
-  - `esnext.symbol`
-- **`es2016+`**
-  - `esnext`
-- **`esnext.array`**
-  - `es.array.last-index`
-  - `es.array.last-item`
-- **`esnext.object`**
-- **`esnext.collections`**
-  - `esnext.map`
-  - `esnext.weak-map`
-  - `esnext.set`
-  - `esnext.weak-set`
-- **`esnext.map`**
-  - `es.map.every`
-  - `es.map.filter`
-  - `es.map.find`
-  - `es.map.find-key`
-  - `es.map.from`
-  - `es.map.group-by`
-  - `es.map.includes`
-  - `es.map.key-by`
-  - `es.map.key-of`
-  - `es.map.map-keys`
-  - `es.map.map-values`
-  - `es.map.merge`
-  - `es.map.of`
-  - `es.map.reduce`
-  - `es.map.some`
-  - `es.map.update`
-  - `es.map.emplace`
-- **`esnext.weak-map`**
-  - `es.weak-map.from`
-  - `es.weak-map.of`
-- **`esnext.set`**
-  - `es.set.add-all`
-  - `es.set.delete-all`
-  - `es.set.difference`
-  - `es.set.every`
-  - `es.set.filter`
-  - `es.set.find`
-  - `es.set.from`
-  - `es.set.intersection`
-  - `es.set.join`
-  - `es.set.map`
-  - `es.set.of`
-  - `es.set.reduce`
-  - `es.set.some`
-  - `es.set.symmetric-difference`
-  - `es.set.union`
-  - `es.set.is-disjoint-from`
-  - `es.set.is-subset-of`
-  - `es.set.is-superset-of`
-- **`esnext.weak-set`**
-  - `es.weak-set.from`
-  - `es.weak-set.of`
-- **`esnext.math`**
-  - `es.math.clamp`
-  - `es.math.deg-per-rad`
-  - `es.math.degrees`
-  - `es.math.fscale`
-  - `es.math.iaddh`
-  - `es.math.imulh`
-  - `es.math.isubh`
-  - `es.math.rad-per-deg`
-  - `es.math.radians`
-  - `es.math.scale`
-  - `es.math.signbit`
-  - `es.math.umulh`
-- **`esnext.number`**
-  - `es.number.from-string`
-- **`esnext.promise`**
-  - `es.promise.try`
-- **`esnext.reflect`**
-  - `es.reflect.define-metadata`
-  - `es.reflect.delete-metadata`
-  - `es.reflect.get-metadata`
-  - `es.reflect.get-metadata-keys`
-  - `es.reflect.get-own-metadata`
-  - `es.reflect.get-own-metadata-keys`
-  - `es.reflect.has-metadata`
-  - `es.reflect.has-own-metadata`
-  - `es.reflect.metadata`
-- **`esnext.string`**
-  - `es.string.at`
-  - `es.string.code-points`
-  - `es.string.match-all`
-- **`esnext.symbol`**
-  - `es.symbol.pattern-match`
 - **`dom.collections.iterable`**
   - `dom.collections.iterator`
   - `dom.collections.for-each`
@@ -741,13 +652,17 @@ And, if you request `performance.now`, `date.now` will also be included since th
   - `es.global-this`
 - **`adopted-style-sheets`**
   - `constructable-style-sheets`
+- **`structuredclone`**
+  - `structured-clone`
+- **`base64`**
+  - `atob`
+  - `btoa`
 - `systemjs`
 - `zone`
 - `performance.now`
 - `url`
 - `object-fit`
 - `console`
-- `base64`
 - `blob`
 - `proxy`
 - `es.string.replace`

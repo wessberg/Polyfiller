@@ -2,7 +2,7 @@
 	"di": {
 		"identifier": "container"
 	},
-	"include": ["src/**/*.*", "test/**/*.*", "rollup.config.ts"],
+	"include": ["src/**/*.*", "test/**/*.*", "rollup.config.ts", "scripts/markdown-format-feature-names.ts"],
 	"extends": "@wessberg/ts-config",
 	"compilerOptions": {
 		"target": "es2020",

@@ -160,7 +160,7 @@ test("Is able to generate a bundle of every available polyfill", async t => {
 
 test("Will generate correct polyfills for IE11. #1", async t => {
 	const result = await sendRequest({
-		path: `${constant.endpoint.polyfill}?features=web-components,es,class-list,systemjs|variant=system,custom-event,url,fetch,object-fit,intersection-observer,animation,regenerator-runtime,requestanimationframe,requestidlecallback,resize-observer,pointer-event,dom.collections.iterable,scroll-behavior,zone|error|shadydom,esnext.reflect,intl|force|locale=en~da`,
+		path: `${constant.endpoint.polyfill}?features=web-components,es,class-list,systemjs|variant=system,custom-event,url,fetch,object-fit,intersection-observer,animation,regenerator-runtime,requestanimationframe,requestidlecallback,resize-observer,pointer-event,dom.collections.iterable,scroll-behavior,zone|error|shadydom.reflect,intl|force|locale=en~da`,
 		headers: {
 			"User-Agent": ie("11")
 		}

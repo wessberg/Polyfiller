@@ -90,7 +90,7 @@ export const constant: IConstant = {
 				worker: ["perfnow.js"],
 				node: ["lib/performance-now.js"]
 			},
-			features: ["high-resolution-time"],
+			features: ["api.Performance.now"],
 
 			dependencies: ["es.date.now"],
 			contexts: ALL_CONTEXTS
@@ -98,7 +98,7 @@ export const constant: IConstant = {
 		url: {
 			library: "url-polyfill",
 			relativePaths: ["url-polyfill.js"],
-			features: ["url", "urlsearchparams"],
+			features: ["api.URL", "api.URLSearchParams"],
 
 			dependencies: ["es.object.define-properties", "es.array.for-each"],
 			contexts: ALL_CONTEXTS
@@ -117,7 +117,7 @@ export const constant: IConstant = {
 		"object-fit": {
 			library: "@polyfiller/object-fit",
 			relativePaths: ["polyfill/index.js"],
-			features: ["object-fit"],
+			features: ["css.properties.object-fit"],
 
 			dependencies: [
 				"window",
@@ -149,15 +149,7 @@ export const constant: IConstant = {
 		console: {
 			library: "console-polyfill",
 			relativePaths: ["index.js"],
-			features: ["console-basic", "console-time"],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		base64: {
-			library: "Base64",
-			relativePaths: ["base64.js"],
-			features: ["atob-btoa"],
+			features: ["api.console.info", "api.console.time"],
 
 			dependencies: [],
 			contexts: ALL_CONTEXTS
@@ -165,7 +157,7 @@ export const constant: IConstant = {
 		blob: {
 			library: "blob-polyfill",
 			relativePaths: ["Blob.js"],
-			features: ["blobbuilder", "bloburls"],
+			features: ["api.Blob.Blob", "api.URL.createObjectURL"],
 
 			dependencies: ["base64", "url"],
 			contexts: ALL_CONTEXTS
@@ -179,7 +171,7 @@ export const constant: IConstant = {
 		"request-idle-callback": {
 			library: "requestidlecallback",
 			relativePaths: ["index.js"],
-			features: ["requestidlecallback"],
+			features: ["api.Window.requestIdleCallback"],
 
 			dependencies: ["requestanimationframe"],
 			contexts: WINDOW_CONTEXT
@@ -187,7 +179,7 @@ export const constant: IConstant = {
 		"request-animation-frame": {
 			library: "requestanimationframe",
 			relativePaths: ["app/requestAnimationFrame.js"],
-			features: ["requestanimationframe"],
+			features: ["api.Window.requestAnimationFrame"],
 
 			dependencies: ["es.date.now", "performance.now"],
 			contexts: WINDOW_CONTEXT
@@ -195,7 +187,7 @@ export const constant: IConstant = {
 		proxy: {
 			library: "proxy-polyfill",
 			relativePaths: ["proxy.min.js"],
-			features: ["proxy"],
+			features: ["javascript.builtins.Proxy"],
 
 			dependencies: ["es"],
 			contexts: ALL_CONTEXTS
@@ -230,7 +222,7 @@ export const constant: IConstant = {
 		"es.promise.constructor": {
 			library: "core-js",
 			relativePaths: ["modules/es.promise.js"],
-			features: ["promises"],
+			features: ["javascript.builtins.Promise"],
 
 			dependencies: [],
 			contexts: ALL_CONTEXTS
@@ -247,15 +239,6 @@ export const constant: IConstant = {
 			library: "core-js",
 			relativePaths: ["modules/es.promise.all-settled.js"],
 			features: ["javascript.builtins.Promise.allSettled"],
-
-			dependencies: ["es.promise.constructor"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.promise.try": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.promise.try.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
 
 			dependencies: ["es.promise.constructor"],
 			contexts: ALL_CONTEXTS
@@ -348,7 +331,7 @@ export const constant: IConstant = {
 		"es.object.values": {
 			library: "core-js",
 			relativePaths: ["modules/es.object.values.js"],
-			features: ["object-values"],
+			features: ["javascript.builtins.Object.values"],
 
 			dependencies: [],
 			contexts: ALL_CONTEXTS
@@ -544,7 +527,10 @@ export const constant: IConstant = {
 				"es.array.some",
 				"es.array.sort",
 				"es.array.species",
-				"es.array.splice"
+				"es.array.splice",
+				"es.array.at",
+				"es.array.find-last",
+				"es.array.find-last-index"
 			]
 		},
 		"es.array.concat": {
@@ -571,24 +557,7 @@ export const constant: IConstant = {
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
-		"es.array.last-index": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.array.last-index.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
 
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.array.last-item": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.array.last-item.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
 		"es.array.copy-within": {
 			library: "core-js",
 			relativePaths: ["modules/es.array.copy-within.js"],
@@ -800,6 +769,30 @@ export const constant: IConstant = {
 			dependencies: ["es.array-buffer.constructor"],
 			contexts: ALL_CONTEXTS
 		},
+		"es.array.at": {
+			library: "core-js",
+			relativePaths: ["modules/es.array.at.js"],
+			features: ["javascript.builtins.Array.at"],
+
+			dependencies: [],
+			contexts: ALL_CONTEXTS
+		},
+		"es.array.find-last": {
+			library: "core-js",
+			relativePaths: ["modules/es.array.find-last.js"],
+			features: ["javascript.builtins.Array.findLast"],
+
+			dependencies: [],
+			contexts: ALL_CONTEXTS
+		},
+		"es.array.find-last-index": {
+			library: "core-js",
+			relativePaths: ["modules/es.array.find-last-index.js"],
+			features: ["javascript.builtins.Array.findLastIndex"],
+
+			dependencies: [],
+			contexts: ALL_CONTEXTS
+		},
 		"es.string": {
 			polyfills: [
 				"es.string.anchor",
@@ -831,23 +824,15 @@ export const constant: IConstant = {
 				"es.string.trim",
 				"es.string.trim-start",
 				"es.string.trim-end",
-				"es.string.replace-all"
+				"es.string.replace-all",
+				"es.string.match-all",
+				"es.string.at"
 			]
 		},
 		"es.string.at": {
 			library: "core-js",
-			relativePaths: ["modules/esnext.string.at.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.string.code-points": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.string.code-points.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
+			relativePaths: ["modules/es.string.at-alternative.js"],
+			features: ["javascript.builtins.String.at"],
 
 			dependencies: [],
 			contexts: ALL_CONTEXTS
@@ -1151,15 +1136,7 @@ export const constant: IConstant = {
 				"es.number.to-precision"
 			]
 		},
-		"es.number.from-string": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.number.from-string.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
 
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
 		"es.number.constructor": {
 			library: "core-js",
 			relativePaths: ["modules/es.number.constructor.js"],
@@ -1276,114 +1253,6 @@ export const constant: IConstant = {
 				"es.math.tanh",
 				"es.math.trunc"
 			]
-		},
-		"es.math.clamp": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.math.clamp.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.math.deg-per-rad": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.math.deg-per-rad.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.math.degrees": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.math.degrees.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.math.fscale": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.math.fscale.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.math.iaddh": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.math.iaddh.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.math.imulh": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.math.imulh.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.math.isubh": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.math.isubh.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.math.rad-per-deg": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.math.rad-per-deg.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.math.radians": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.math.radians.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.math.scale": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.math.scale.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.math.signbit": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.math.signbit.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.math.umulh": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.math.umulh.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
 		},
 		"es.math.acosh": {
 			library: "core-js",
@@ -1599,15 +1468,6 @@ export const constant: IConstant = {
 			dependencies: ["es.symbol.constructor"],
 			contexts: ALL_CONTEXTS
 		},
-		"es.symbol.pattern-match": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.symbol.pattern-match.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.symbol.constructor"],
-			contexts: ALL_CONTEXTS
-		},
 		"es.symbol.constructor": {
 			library: "core-js",
 			relativePaths: ["modules/es.symbol.js"],
@@ -1731,183 +1591,12 @@ export const constant: IConstant = {
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
-		"es.map.every": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.map.every.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.map"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.map.filter": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.map.filter.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.map"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.map.find": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.map.find.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.map"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.map.find-key": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.map.find-key.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.map"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.map.from": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.map.from.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.map"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.map.group-by": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.map.group-by.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.map"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.map.includes": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.map.includes.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.map"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.map.key-by": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.map.key-by.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.map"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.map.key-of": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.map.key-of.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.map"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.map.map-keys": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.map.map-keys.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.map"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.map.map-values": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.map.map-values.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.map"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.map.merge": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.map.merge.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.map"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.map.of": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.map.of.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.map"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.map.reduce": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.map.reduce.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.map"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.map.some": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.map.some.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.map"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.map.update": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.map.update.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.map"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.map.emplace": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.map.emplace.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.map"],
-			contexts: ALL_CONTEXTS
-		},
 		"es.weak-map": {
 			library: "core-js",
 			relativePaths: ["modules/es.weak-map.js"],
 			features: ["javascript.builtins.WeakMap"],
 
 			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.weak-map.from": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.weak-map.from.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.weak-map"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.weak-map.of": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.weak-map.of.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.weak-map"],
 			contexts: ALL_CONTEXTS
 		},
 		"es.set": {
@@ -1918,192 +1607,12 @@ export const constant: IConstant = {
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
-		"es.set.add-all": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.set.add-all.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.set"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.set.delete-all": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.set.delete-all.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.set"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.set.difference": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.set.difference.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.set"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.set.every": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.set.every.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.set"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.set.filter": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.set.filter.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.set"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.set.find": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.set.find.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.set"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.set.from": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.set.from.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.set"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.set.intersection": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.set.intersection.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.set"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.set.join": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.set.join.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.set"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.set.map": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.set.map.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.set"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.set.of": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.set.of.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.set"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.set.reduce": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.set.reduce.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.set"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.set.some": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.set.some.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.set"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.set.symmetric-difference": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.set.symmetric-difference.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.set"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.set.union": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.set.union.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.set"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.set.is-disjoint-from": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.set.is-disjoint-from.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.set"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.set.is-subset-of": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.set.is-subset-of.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.set"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.set.is-superset-of": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.set.is-superset-of.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.set"],
-			contexts: ALL_CONTEXTS
-		},
 		"es.weak-set": {
 			library: "core-js",
 			relativePaths: ["modules/es.weak-set.js"],
 			features: ["javascript.builtins.WeakSet"],
 
 			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.weak-set.from": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.weak-set.from.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.weak-set"],
-			contexts: ALL_CONTEXTS
-		},
-		"es.weak-set.of": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.weak-set.of.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: ["es.weak-set"],
 			contexts: ALL_CONTEXTS
 		},
 		"es.typed-array": {
@@ -2141,7 +1650,10 @@ export const constant: IConstant = {
 				"es.typed-array.uint8-array",
 				"es.typed-array.uint8-clamped-array",
 				"es.typed-array.uint16-array",
-				"es.typed-array.uint32-array"
+				"es.typed-array.uint32-array",
+				"es.typed-array.at",
+				"es.typed-array.find-last",
+				"es.typed-array.find-last-index"
 			]
 		},
 		"es.typed-array.copy-within": {
@@ -2416,6 +1928,30 @@ export const constant: IConstant = {
 			dependencies: [],
 			contexts: ALL_CONTEXTS
 		},
+		"es.typed-array.at": {
+			library: "core-js",
+			relativePaths: ["modules/es.typed-array.at.js"],
+			features: ["javascript.builtins.TypedArray.at"],
+
+			dependencies: [],
+			contexts: ALL_CONTEXTS
+		},
+		"es.typed-array.find-last": {
+			library: "core-js",
+			relativePaths: ["modules/es.typed-array.find-last.js"],
+			features: ["javascript.builtins.TypedArray.findLast"],
+
+			dependencies: [],
+			contexts: ALL_CONTEXTS
+		},
+		"es.typed-array.find-last-index": {
+			library: "core-js",
+			relativePaths: ["modules/es.typed-array.find-last-index.js"],
+			features: ["javascript.builtins.TypedArray.findLastIndex"],
+
+			dependencies: [],
+			contexts: ALL_CONTEXTS
+		},
 		"es.reflect": {
 			polyfills: [
 				"es.reflect.apply",
@@ -2432,88 +1968,6 @@ export const constant: IConstant = {
 				"es.reflect.set",
 				"es.reflect.set-prototype-of"
 			]
-		},
-
-		"es.reflect.define-metadata": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.reflect.define-metadata.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.reflect.delete-metadata": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.reflect.delete-metadata.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.reflect.get-metadata": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.reflect.get-metadata.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.reflect.get-metadata-keys": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.reflect.get-metadata-keys.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.reflect.get-own-metadata": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.reflect.get-own-metadata.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.reflect.get-own-metadata-keys": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.reflect.get-own-metadata-keys.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.reflect.has-metadata": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.reflect.has-metadata.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.reflect.has-own-metadata": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.reflect.has-own-metadata.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
-		},
-		"es.reflect.metadata": {
-			library: "core-js",
-			relativePaths: ["modules/esnext.reflect.metadata.js"],
-			// TODO: Update when MDN or Caniuse Compatibility is added
-			features: [],
-
-			dependencies: [],
-			contexts: ALL_CONTEXTS
 		},
 		"es.reflect.apply": {
 			library: "core-js",
@@ -2619,112 +2073,6 @@ export const constant: IConstant = {
 			dependencies: ["proto"],
 			contexts: ALL_CONTEXTS
 		},
-		esnext: {
-			polyfills: ["esnext.array", "esnext.collections", "esnext.math", "esnext.number", "esnext.object", "esnext.promise", "esnext.reflect", "esnext.string", "esnext.symbol"]
-		},
-		// An alias for the alias 'esnext'
-		"es2016+": {
-			polyfills: ["esnext"]
-		},
-		"esnext.array": {
-			polyfills: ["es.array.last-index", "es.array.last-item"]
-		},
-		"esnext.object": {
-			polyfills: []
-		},
-		"esnext.collections": {
-			polyfills: ["esnext.map", "esnext.weak-map", "esnext.set", "esnext.weak-set"]
-		},
-		"esnext.map": {
-			polyfills: [
-				"es.map.every",
-				"es.map.filter",
-				"es.map.find",
-				"es.map.find-key",
-				"es.map.from",
-				"es.map.group-by",
-				"es.map.includes",
-				"es.map.key-by",
-				"es.map.key-of",
-				"es.map.map-keys",
-				"es.map.map-values",
-				"es.map.merge",
-				"es.map.of",
-				"es.map.reduce",
-				"es.map.some",
-				"es.map.update",
-				"es.map.emplace"
-			]
-		},
-		"esnext.weak-map": {
-			polyfills: ["es.weak-map.from", "es.weak-map.of"]
-		},
-		"esnext.set": {
-			polyfills: [
-				"es.set.add-all",
-				"es.set.delete-all",
-				"es.set.difference",
-				"es.set.every",
-				"es.set.filter",
-				"es.set.find",
-				"es.set.from",
-				"es.set.intersection",
-				"es.set.join",
-				"es.set.map",
-				"es.set.of",
-				"es.set.reduce",
-				"es.set.some",
-				"es.set.symmetric-difference",
-				"es.set.union",
-				"es.set.is-disjoint-from",
-				"es.set.is-subset-of",
-				"es.set.is-superset-of"
-			]
-		},
-		"esnext.weak-set": {
-			polyfills: ["es.weak-set.from", "es.weak-set.of"]
-		},
-		"esnext.math": {
-			polyfills: [
-				"es.math.clamp",
-				"es.math.deg-per-rad",
-				"es.math.degrees",
-				"es.math.fscale",
-				"es.math.iaddh",
-				"es.math.imulh",
-				"es.math.isubh",
-				"es.math.rad-per-deg",
-				"es.math.radians",
-				"es.math.scale",
-				"es.math.signbit",
-				"es.math.umulh"
-			]
-		},
-		"esnext.number": {
-			polyfills: ["es.number.from-string"]
-		},
-		"esnext.promise": {
-			polyfills: ["es.promise.try"]
-		},
-		"esnext.reflect": {
-			polyfills: [
-				"es.reflect.define-metadata",
-				"es.reflect.delete-metadata",
-				"es.reflect.get-metadata",
-				"es.reflect.get-metadata-keys",
-				"es.reflect.get-own-metadata",
-				"es.reflect.get-own-metadata-keys",
-				"es.reflect.has-metadata",
-				"es.reflect.has-own-metadata",
-				"es.reflect.metadata"
-			]
-		},
-		"esnext.string": {
-			polyfills: ["es.string.at", "es.string.code-points", "es.string.match-all"]
-		},
-		"esnext.symbol": {
-			polyfills: ["es.symbol.pattern-match"]
-		},
 		"es.global-this": {
 			library: "core-js",
 			relativePaths: ["modules/es.global-this.js"],
@@ -2756,7 +2104,7 @@ export const constant: IConstant = {
 		"pointer-event": {
 			library: "@wessberg/pointer-events",
 			relativePaths: ["dist/index.js"],
-			features: ["pointer"],
+			features: ["css.properties.pointer-events"],
 
 			dependencies: [
 				// TODO: Also relies on "elementFromPoint" which there isn't a polyfill for yet. Add it to the dependencies when the polyfill is ready
@@ -2778,14 +2126,14 @@ export const constant: IConstant = {
 		xhr: {
 			library: "xhr-polyfill",
 			relativePaths: ["dist/xhr-polyfill.js"],
-			features: ["xhr2"],
+			features: ["api.XMLHttpRequest"],
 
 			dependencies: [],
 			contexts: WINDOW_CONTEXT
 		},
 		fetch: {
 			localPaths: ["polyfill-lib/fetch/fetch.js"],
-			features: ["fetch"],
+			features: ["api.fetch"],
 			version: "1.0.0",
 			dependencies: ["es.array.for-each", "es.object.get-own-property-names", "es.promise", "xhr"],
 			contexts: WINDOW_CONTEXT
@@ -3009,7 +2357,7 @@ export const constant: IConstant = {
 		"web-animations": {
 			library: "web-animations-js",
 			relativePaths: ["web-animations.min.js"],
-			features: ["web-animation"],
+			features: ["api.Element.animate"],
 
 			dependencies: ["element", "requestanimationframe"],
 			contexts: WINDOW_CONTEXT
@@ -3025,7 +2373,7 @@ export const constant: IConstant = {
 		template: {
 			library: "@webcomponents/template",
 			relativePaths: ["template.js"],
-			features: ["template"],
+			features: ["html.elements.template"],
 
 			dependencies: ["es"],
 			contexts: WINDOW_CONTEXT
@@ -3036,7 +2384,7 @@ export const constant: IConstant = {
 		"custom-elements": {
 			library: "@webcomponents/custom-elements",
 			relativePaths: ["src/custom-elements.js"],
-			features: ["custom-elementsv1"],
+			features: ["api.CustomElementRegistry"],
 
 			dependencies: ["es", "mutation-observer"],
 			contexts: WINDOW_CONTEXT
@@ -3056,7 +2404,7 @@ export const constant: IConstant = {
 				],
 				lit: ["node_modules/lit/polyfill-support.js"]
 			},
-			features: ["shadowdomv1"],
+			features: ["api.ShadowRoot"],
 			version: pkg.dependencies["@webcomponents/shadydom"],
 			dependencies: ["es", "template", "mutation-observer", "event", "node.contains", "queryselector"],
 			contexts: WINDOW_CONTEXT,
@@ -3065,22 +2413,21 @@ export const constant: IConstant = {
 		queryselector: {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/document.querySelector/raw.js"],
-			features: ["queryselector"],
+			features: ["api.Document.querySelector"],
 			dependencies: ["element", "document", "document-fragment"],
 			contexts: WINDOW_CONTEXT
 		},
 		"document-fragment": {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/DocumentFragment/raw.js"],
-			features: ["queryselector"],
+			features: ["api.DocumentFragment"],
 			dependencies: [],
 			contexts: WINDOW_CONTEXT
 		},
 		"node.parentelement": {
 			library: "node.parentelement",
 			relativePaths: ["polyfill.js"],
-			// If 'addEventListener' isn't found, the Window interface shouldn't exist on the window
-			features: ["addeventlistener"],
+			features: ["api.Node.parentElement"],
 
 			dependencies: ["document"],
 			contexts: WINDOW_CONTEXT
@@ -3088,7 +2435,7 @@ export const constant: IConstant = {
 		"scroll-behavior": {
 			library: "scroll-behavior-polyfill",
 			relativePaths: ["dist/index.js"],
-			features: ["css-scroll-behavior", "scrollintoview"],
+			features: ["css.properties.scroll-behavior", "api.Element.scrollIntoView"],
 
 			dependencies: ["es.object.define-property", "es.object.get-own-property-descriptor", "requestanimationframe"],
 			contexts: WINDOW_CONTEXT
@@ -3096,30 +2443,28 @@ export const constant: IConstant = {
 		"focus-visible": {
 			library: "focus-visible",
 			relativePaths: ["dist/focus-visible.js"],
-			features: ["css-focus-visible"],
+			features: ["css.selectors.focus-visible"],
 			dependencies: ["class-list"],
 			contexts: WINDOW_CONTEXT
 		},
 		"node.contains": {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/Node.prototype.contains/raw.js"],
-			// If 'addEventListener' isn't found, the Window interface shouldn't exist on the window
-			features: ["addeventlistener"],
+			features: ["api.Node.contains"],
 			dependencies: ["element"],
 			contexts: WINDOW_CONTEXT
 		},
 		window: {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/Window/raw.js"],
-			features: ["addeventlistener"],
+			features: ["api.Window"],
 			dependencies: [],
 			contexts: WINDOW_CONTEXT
 		},
 		document: {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/document/raw.js"],
-			// If 'addEventListener' isn't found, the Document interface shouldn't exist on the window
-			features: ["addeventlistener"],
+			features: ["api.Document"],
 			dependencies: [],
 			contexts: WINDOW_CONTEXT
 		},
@@ -3140,8 +2485,7 @@ export const constant: IConstant = {
 		element: {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/Element/raw.js"],
-			// If 'addEventListener' isn't found, the Element interface shouldn't exist on the window
-			features: ["addeventlistener"],
+			features: ["api.Element"],
 
 			dependencies: ["document"],
 			contexts: WINDOW_CONTEXT
@@ -3160,7 +2504,7 @@ export const constant: IConstant = {
 		"event.focusin": {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/Event.focusin/raw.js"],
-			features: ["focusin-focusout-events"],
+			features: ["api.Element.focusin_event"],
 
 			dependencies: ["event.constructor"],
 			contexts: WINDOW_CONTEXT
@@ -3168,7 +2512,7 @@ export const constant: IConstant = {
 		"event.hashchange": {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/Event.hashchange/raw.js"],
-			features: ["hashchange"],
+			features: ["api.Window.hashchange_event"],
 
 			dependencies: ["event.constructor"],
 			contexts: WINDOW_CONTEXT
@@ -3176,7 +2520,7 @@ export const constant: IConstant = {
 		"custom-event": {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/CustomEvent/raw.js"],
-			features: ["customevent"],
+			features: ["api.CustomEvent", "api.CustomEvent.CustomEvent"],
 
 			dependencies: ["event"],
 			contexts: WINDOW_CONTEXT
@@ -3184,7 +2528,7 @@ export const constant: IConstant = {
 		"event-source": {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/EventSource/raw.js"],
-			features: ["eventsource"],
+			features: ["api.EventSource"],
 
 			dependencies: [],
 			contexts: WINDOW_CONTEXT
@@ -3192,7 +2536,7 @@ export const constant: IConstant = {
 		"get-computed-style": {
 			library: "polyfill-library",
 			relativePaths: ["polyfills/__dist/getComputedStyle/raw.js"],
-			features: ["getcomputedstyle"],
+			features: ["api.Window.getComputedStyle"],
 
 			dependencies: ["window"],
 			contexts: WINDOW_CONTEXT
@@ -3200,7 +2544,7 @@ export const constant: IConstant = {
 		"intersection-observer": {
 			library: "intersection-observer",
 			relativePaths: ["intersection-observer.js"],
-			features: ["intersectionobserver"],
+			features: ["api.IntersectionObserver"],
 
 			dependencies: [
 				"get-computed-style",
@@ -3219,21 +2563,21 @@ export const constant: IConstant = {
 		"mutation-observer": {
 			library: "mutationobserver-shim",
 			relativePaths: ["dist/mutationobserver.min.js"],
-			features: ["mutationobserver"],
+			features: ["api.MutationObserver"],
 
 			dependencies: [],
 			contexts: WINDOW_CONTEXT
 		},
 		"resize-observer": {
 			localPaths: ["polyfill-lib/resize-observer/resize-observer.js"],
-			features: ["resizeobserver"],
+			features: ["api.ResizeObserver"],
 			version: "1.0.0",
 			dependencies: ["es.weak-map", "es.object.create", "mutation-observer", "get-computed-style", "requestanimationframe"],
 			contexts: WINDOW_CONTEXT
 		},
 		"broadcast-channel": {
 			localPaths: ["polyfill-lib/broadcast-channel/broadcast-channel.js"],
-			features: ["broadcastchannel"],
+			features: ["api.BroadcastChannel"],
 			version: "1.0.0",
 			dependencies: [],
 			contexts: WINDOW_CONTEXT
@@ -3244,7 +2588,7 @@ export const constant: IConstant = {
 		"set-immediate": {
 			library: "setimmediate",
 			relativePaths: ["setImmediate.js"],
-			features: ["setimmediate"],
+			features: ["api.Window.setImmediate"],
 
 			dependencies: [],
 			contexts: ALL_CONTEXTS
@@ -3274,6 +2618,36 @@ export const constant: IConstant = {
 			version: "1.0.0",
 			dependencies: [],
 			contexts: ALL_CONTEXTS
+		},
+		"structured-clone": {
+			library: "core-js",
+			relativePaths: ["modules/web.structured-clone.js"],
+			features: ["api.structuredClone"],
+
+			dependencies: [],
+			contexts: ALL_CONTEXTS
+		},
+		structuredclone: {
+			polyfills: ["structured-clone"]
+		},
+		atob: {
+			library: "core-js",
+			relativePaths: ["modules/web.atob.js"],
+			features: ["api.atob"],
+
+			dependencies: [],
+			contexts: ALL_CONTEXTS
+		},
+		btoa: {
+			library: "core-js",
+			relativePaths: ["modules/web.btoa.js"],
+			features: ["api.btoa"],
+
+			dependencies: [],
+			contexts: ALL_CONTEXTS
+		},
+		base64: {
+			polyfills: ["atob", "btoa"]
 		}
 	}
 };

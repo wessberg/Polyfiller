@@ -1,6 +1,6 @@
-import {constant} from "../src/constant/constant";
-import {PolyfillName} from "../src/polyfill/polyfill-name";
-import {PolyfillDictEntry} from "../src/polyfill/polyfill-dict";
+import {constant} from "../src/constant/constant.js";
+import type {PolyfillName} from "../src/polyfill/polyfill-name.js";
+import type {PolyfillDictEntry} from "../src/polyfill/polyfill-dict.js";
 
 const seenPolyfills: Set<PolyfillName> = new Set();
 

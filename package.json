@@ -168,7 +168,7 @@
 	"main": "./dist/cjs/index.cjs",
 	"module": "./dist/esm/index.js",
 	"engines": {
-		"node": ">=16.14.0",
+		"node": ">=16.15.1",
 		"npm": ">=7.0.0",
 		"yarn": ">=1.13",
 		"pnpm": ">=3.2.0"

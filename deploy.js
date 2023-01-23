@@ -372,4 +372,6 @@ if (pm2NeverRan) {
 } else {
 	await ssh.execCommand(`${envVariables} npx pm2 reload ${APP_NAME} --update-env`, {cwd: REMOTE_ROOT});
 }
-console.log("`Done!");
+console.log("Done!");
+
+process.exit(0);

@@ -171,7 +171,7 @@ if (needsNode || !hasAcceptableNodeVersion) {
 	);
 
 	if (!hasAcceptableNodeVersion) {
-		await ssh.execCommand(`sudo apt remove node && sudo apt autoremove`);
+		await ssh.execCommand(`sudo apt remove nodejs && sudo apt autoremove`);
 	}
 	await ssh.execCommand(`cd ~`);
 	await ssh.execCommand(`curl -sL https://deb.nodesource.com/setup_${PREFERRED_NODE_VERSION} -o nodesource_setup.sh`);

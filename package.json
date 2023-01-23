@@ -1,6 +1,6 @@
 {
 	"name": "@wessberg/polyfiller",
-	"version": "0.0.164",
+	"version": "0.1.0",
 	"description": "Never worry about polyfills again.",
 	"files": [
 		"dist/**/*.*",
@@ -156,7 +156,6 @@
 			"twitter": "FredWessberg"
 		}
 	],
-	
 	"license": "MIT",
 	"exports": {
 		"import": "./dist/esm/index.js",

@@ -1,3 +1,23 @@
+# [0.1.0](https://github.com/wessberg/polyfiller/compare/v0.0.164...v0.1.0) (2023-01-23)
+
+
+### Bug Fixes
+
+* fix issues with incorrect matches for polyfills on Android based browsers such as Firefox ([f49238d](https://github.com/wessberg/polyfiller/commit/f49238d6cec1640ce6d3f8db060f50bfcf6ed28b))
+* fix issues with incorrect matches for polyfills on Android based browsers such as Firefox ([417a244](https://github.com/wessberg/polyfiller/commit/417a2445339d1903c842dfffab50b60d2f2266cc))
+* fix issues with incorrect matches for polyfills on Android based browsers such as Firefox ([6b66383](https://github.com/wessberg/polyfiller/commit/6b66383fc620401f21a8bd3d55c3075988b0dab6))
+* handle weirdness with @babel/template ([a31be0c](https://github.com/wessberg/polyfiller/commit/a31be0c02a0939724ace2413d5f53c14b534e711))
+* rewrite deploy script as esm ([d2488b7](https://github.com/wessberg/polyfiller/commit/d2488b749447e53bcaa429d094a3713b8760edbd))
+* rewrite deploy script as esm ([1949fbc](https://github.com/wessberg/polyfiller/commit/1949fbcd835c9f12a8a34ea6285ebb39d01d222d))
+* rewrite deploy script as esm ([fb83820](https://github.com/wessberg/polyfiller/commit/fb838204abadced43a6af0f0bd0f44833b57091a))
+* update package lock ([a707991](https://github.com/wessberg/polyfiller/commit/a7079916a6b13e52431129b6323ba2152037fc0a))
+* update package lock ([5c6cc5b](https://github.com/wessberg/polyfiller/commit/5c6cc5ba06383acdc338fc3e193f120b35e9c33f))
+* update package lock ([3915236](https://github.com/wessberg/polyfiller/commit/3915236d95eec74b2d624048695f594954352a7c))
+* update package lock ([5985980](https://github.com/wessberg/polyfiller/commit/598598058b1f68e45486e276a2a6395b5633f264))
+* update package lock ([14127bc](https://github.com/wessberg/polyfiller/commit/14127bcaedb565beb2f5f852e5340a6763266aea))
+
+
+
 ## [0.0.164](https://github.com/wessberg/polyfiller/compare/v0.0.163...v0.0.164) (2023-01-02)
 
 

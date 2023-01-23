@@ -116,7 +116,7 @@
 		"node.parentelement": "1.0.2",
 		"perfnow": "0.2.0",
 		"performance-now": "2.1.0",
-		"pm2": "5.2.0",
+		"pm2": "5.2.2",
 		"polyfill-library": "3.108.0",
 		"proxy-polyfill": "0.3.2",
 		"regenerator-runtime": "0.13.11",

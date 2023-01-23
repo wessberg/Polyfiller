@@ -1,3 +1,12 @@
+# [0.2.0](https://github.com/wessberg/polyfiller/compare/v0.1.0...v0.2.0) (2023-01-23)
+
+
+### Bug Fixes
+
+* use exit code 0 in deploy script after successful deployment ([6da3e89](https://github.com/wessberg/polyfiller/commit/6da3e89a0fd41891de620cd5cc6323a21a02375c))
+
+
+
 # [0.1.0](https://github.com/wessberg/polyfiller/compare/v0.0.164...v0.1.0) (2023-01-23)
 
 

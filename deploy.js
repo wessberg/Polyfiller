@@ -49,7 +49,7 @@ const generatePackageJson = () =>
 			...pkg,
 			devDependencies: {},
 			scripts: {
-				start: "node dist/index.js"
+				start: "node dist/esm/index.js"
 			},
 			dependencies: {
 				...pkg.dependencies

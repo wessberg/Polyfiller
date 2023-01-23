@@ -1,6 +1,7 @@
-import {ILoggerService, LogLevel, logLevelHierarchy} from "./i-logger-service";
+import type {ILoggerService, LogLevel} from "./i-logger-service.js";
+import {logLevelHierarchy} from "./i-logger-service.js";
 import chalk from "chalk";
-import {Config} from "../../config/config";
+import type {Config} from "../../config/config.js";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 

@@ -1,5 +1,5 @@
-import {ApiController, ApiMethod, ApiPaths} from "../../server/i-server";
-import {ensureArray} from "../../util";
+import type {ApiController, ApiMethod, ApiPaths} from "../../server/i-server.js";
+import {ensureArray} from "../../util.js";
 
 export interface ApiMethodDecoratorOptions {
 	path: ApiPaths;

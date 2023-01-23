@@ -315,9 +315,6 @@ You can also request polyfills from Node, if that's a thing you want to do. It i
 not include any polyfills that won't work in a Node environment.
 
 ```typescript
-// Could be anything, but let's use fetch for this example
-const fetch = require("node-fetch");
-
 (async () => {
 	// Remember to provide a user agent header if you want anything meaningful back
 	const response = await fetch("https://polyfill.app/api/polyfill?features=intl&context=node");

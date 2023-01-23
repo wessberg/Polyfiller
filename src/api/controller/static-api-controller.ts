@@ -1,12 +1,12 @@
 /**
  * A controller that can respond to requests for static resources
  */
-import {IStaticBl} from "../../bl/static/i-static-bl";
-import {GET} from "../decorator/api-method/get";
-import {ApiRequest, ApiResponse} from "../server/i-server";
+import type {IStaticBl} from "../../bl/static/i-static-bl.js";
+import {GET} from "../decorator/api-method/get.js";
+import type {ApiRequest, ApiResponse} from "../server/i-server.js";
 import {StatusCodes} from "http-status-codes";
-import {OPTIONS} from "../decorator/api-method/options";
-import {pickAccept} from "../util/util";
+import {OPTIONS} from "../decorator/api-method/options.js";
+import {pickAccept} from "../util/util.js";
 
 export class StaticApiController {
 	constructor(private readonly staticBl: IStaticBl) {}

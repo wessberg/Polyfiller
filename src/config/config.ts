@@ -1,10 +1,10 @@
-import {environment} from "../environment/environment";
+import {environment} from "../environment/environment.js";
 import {readFileSync} from "fs";
 import {Buffer} from "buffer";
-import {booleanize} from "../api/util";
-import {LogLevel} from "../service/logger/i-logger-service";
-import {generateReleaseName, parseLogLevel} from "../api/util/util";
-import pkg from "../../package.json";
+import {booleanize} from "../api/util.js";
+import type {LogLevel} from "../service/logger/i-logger-service.js";
+import {generateReleaseName, parseLogLevel} from "../api/util/util.js";
+import pkg from "../../package.json" assert {type: "json"};
 
 export interface Config {
 	volumes: string[];
@@ -28,7 +28,9 @@ export const config: Config = {
 	environment: environment.NODE_ENV,
 	production: environment.NODE_ENV != null && environment.NODE_ENV.toLowerCase() === "production",
 	testing: booleanize(environment.TESTING),
-	volumes: environment.VOLUMES.split(" ").map(part => part.trim()).filter(part => part.length > 0),
+	volumes: environment.VOLUMES.split(" ")
+		.map(part => part.trim())
+		.filter(part => part.length > 0),
 	logLevel: parseLogLevel(environment.LOG_LEVEL) ?? "info",
 	clearCache: booleanize(environment.CLEAR_CACHE),
 	https: booleanize(environment.HTTPS),

@@ -1,6 +1,6 @@
-import {IApiService} from "./i-api-service";
-import {IServer} from "../../api/server/i-server";
-import {Config} from "../../config/config";
+import type {IApiService} from "./i-api-service.js";
+import type {IServer} from "../../api/server/i-server.js";
+import type {Config} from "../../config/config.js";
 
 /**
  * Helps with working with the API

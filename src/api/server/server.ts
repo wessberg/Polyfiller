@@ -1,13 +1,16 @@
-import express, {Express} from "express";
+import type {Express} from "express";
+import express from "express";
 import morgan from "morgan";
-import {ApiControllers, IServer, ServerOptions} from "./i-server";
-import {IMetricsService} from "../../service/metrics/i-metrics-service";
-import {createServer as createHttpServer, Server as HttpServer} from "http";
-import {createServer as createHttpsServer, Server as HttpsServer} from "https";
-import {ILoggerService} from "../../service/logger/i-logger-service";
-import {errorMiddleware} from "../middleware/error-middleware";
-import {setupControllers} from "../middleware/setup-controllers";
-import {Config} from "../../config/config";
+import type {ApiControllers, IServer, ServerOptions} from "./i-server.js";
+import type {IMetricsService} from "../../service/metrics/i-metrics-service.js";
+import type {Server as HttpServer} from "http";
+import {createServer as createHttpServer} from "http";
+import type {Server as HttpsServer} from "https";
+import {createServer as createHttpsServer} from "https";
+import type {ILoggerService} from "../../service/logger/i-logger-service.js";
+import {errorMiddleware} from "../middleware/error-middleware.js";
+import {setupControllers} from "../middleware/setup-controllers.js";
+import type {Config} from "../../config/config.js";
 
 export class Server implements IServer {
 	private app: Express | undefined;

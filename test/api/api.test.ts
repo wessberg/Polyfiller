@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import test from "ava";
-import {constant} from "../../src/constant/constant";
-import {initializeTests} from "./setup";
+import {constant} from "../../src/constant/constant.js";
+import {initializeTests} from "./setup.js";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import {chrome, ie} from "useragent-generator";
-import {getPolyfillRequestFromUrl} from "../../src/util/polyfill/polyfill-util";
+import {getPolyfillRequestFromUrl} from "../../src/util/polyfill/polyfill-util.js";
 import {URL} from "url";
-import {PolyfillDictNormalizedEntry} from "../../src/polyfill/polyfill-dict";
-import {sendRequest} from "./util";
+import type {PolyfillDictNormalizedEntry} from "../../src/polyfill/polyfill-dict.js";
+import {sendRequest} from "./util.js";
 import {StatusCodes} from "http-status-codes";
-import {IMetricsService} from "../../src/service/metrics/i-metrics-service";
-import {container} from "../../src/services";
+import type {IMetricsService} from "../../src/service/metrics/i-metrics-service.js";
+import {container} from "../../src/services.js";
 
 test.before(initializeTests);
 
@@ -21,7 +21,8 @@ test(`Generates an HTML-formatted welcome page when a request is sent to '${cons
 		path: constant.endpoint.index
 	});
 
-	const buffer = await result.buffer();
+	const arrayBuffer = await result.arrayBuffer();
+	const buffer = Buffer.from(arrayBuffer);
 
 	if (!result.ok) {
 		t.fail(buffer.toString());
@@ -35,7 +36,8 @@ test(`Generates an HTML-formatted welcome page when a request is sent to '/'`, a
 		path: "/"
 	});
 
-	const buffer = await result.buffer();
+	const arrayBuffer = await result.arrayBuffer();
+	const buffer = Buffer.from(arrayBuffer);
 
 	if (!result.ok) {
 		t.fail(buffer.toString());
@@ -66,7 +68,7 @@ test(`Sends metrics data when an unsupported User-Agent header is discovered, bu
 	const result = await sendRequest({
 		path: `${constant.endpoint.polyfill}?features=intersection-observer`,
 		headers: {
-			"User-Agent": "Fake UA"
+			"User-Agent": "Lizard/5.0 (Doors; U; IEMS 90.0; Doors NT 90.0; en-US);"
 		}
 	});
 
@@ -167,6 +169,17 @@ test("Will generate correct polyfills for IE11. #1", async t => {
 	t.true(result.status === StatusCodes.OK);
 });
 
+test("Won't include web components polyfills for Firefox 109 on Android 13. #1", async t => {
+	const result = await sendRequest({
+		path: `${constant.endpoint.polyfill}?features=web-components`,
+		headers: {
+			"User-Agent": `Mozilla/5.0 (Android 13; Mobile; rv:109.0) Gecko/109/0 Firefox/109.0`
+		}
+	});
+
+	t.false(result.headers.get(constant.header.polyfills)?.includes("shadow-dom"));
+});
+
 test("Will generate correct polyfills for IE11. #2", async t => {
 	const result = await sendRequest({
 		path: `${constant.endpoint.polyfill}?minify&features=web-components|experimental|lit,es,class-list,custom-event,url,fetch,object-fit,animation,requestanimationframe,requestidlecallback,resize-observer,pointer-event,dom.collections.iterable,scroll-behavior,intl|locale=cs-CZ~da~de~en~es~fi-FI~fr~hr-HR~hu-HU~it~ja~ko~nl~no~pl~pt-BR~ru~sk-SK~sv~zh-Hans~vi,formdata,broadcast-channel,systemjs|variant=s`,
@@ -197,7 +210,8 @@ test("Will correctly escape unicode escape sequences. #1", async t => {
 		}
 	});
 
-	const body = await result.buffer();
+	const arrayBuffer = await result.arrayBuffer();
+	const body = Buffer.from(arrayBuffer);
 
 	if (!result.ok) {
 		t.fail(body.toString());
@@ -230,7 +244,8 @@ test("Will inline regenerator-runtime if required. #1", async t => {
 		}
 	});
 
-	const body = await result.buffer();
+	const arrayBuffer = await result.arrayBuffer();
+	const body = Buffer.from(arrayBuffer);
 
 	if (!result.ok) {
 		t.fail(body.toString());
@@ -247,7 +262,8 @@ test("Will inline regenerator-runtime if required. #2", async t => {
 		}
 	});
 
-	const body = await result.buffer();
+	const arrayBuffer = await result.arrayBuffer();
+	const body = Buffer.from(arrayBuffer);
 
 	if (!result.ok) {
 		t.fail(body.toString());
@@ -265,7 +281,8 @@ test("Generates SourceMap if required. #1", async t => {
 		}
 	});
 
-	const body = await result.buffer();
+	const arrayBuffer = await result.arrayBuffer();
+	const body = Buffer.from(arrayBuffer);
 
 	if (!result.ok) {
 		t.fail(body.toString());

@@ -1,4 +1,4 @@
-import {PolyfillFeatureInput} from "./polyfill-feature";
+import type {PolyfillFeatureInput} from "./polyfill-feature.js";
 
 /**
  * The name for the force argument within raw queries, immediately following the polyfill divider

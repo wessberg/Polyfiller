@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import {constant} from "../../constant/constant";
-import {GET} from "../decorator/api-method/get";
-import {ApiRequest, ApiResponse} from "../server/i-server";
-import {encodeFeatureSetForHttpHeader, getPolyfillRequestFromUrl} from "../../util/polyfill/polyfill-util";
+import {constant} from "../../constant/constant.js";
+import {GET} from "../decorator/api-method/get.js";
+import type {ApiRequest, ApiResponse} from "../server/i-server.js";
+import {encodeFeatureSetForHttpHeader, getPolyfillRequestFromUrl} from "../../util/polyfill/polyfill-util.js";
 import {StatusCodes} from "http-status-codes";
-import {IPolyfillBl} from "../../bl/polyfill/i-polyfill-bl";
-import {pickEncoding} from "../util/util";
-import {IMetricsService} from "../../service/metrics/i-metrics-service";
+import type {IPolyfillBl} from "../../bl/polyfill/i-polyfill-bl.js";
+import {pickEncoding} from "../util/util.js";
+import type {IMetricsService} from "../../service/metrics/i-metrics-service.js";
 import {generateBrowserslistFromUseragent} from "browserslist-generator";
 
 export class PolyfillApiController {

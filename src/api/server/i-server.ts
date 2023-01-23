@@ -1,6 +1,6 @@
-import {Request} from "express";
-import {MaybeArray} from "../../common/type/type-util";
-import {ContentEncodingKind} from "../../encoding/content-encoding-kind";
+import type {Request} from "express";
+import type {MaybeArray} from "../../common/type/type-util.js";
+import type {ContentEncodingKind} from "../../encoding/content-encoding-kind.js";
 
 export interface HttpServerOptions {
 	host: string;

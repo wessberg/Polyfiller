@@ -1,6 +1,6 @@
-import {IStaticBl} from "./i-static-bl";
-import {constant} from "../../constant/constant";
-import {generateHtml} from "../../util/html/generate-html";
+import type {IStaticBl} from "./i-static-bl.js";
+import {constant} from "../../constant/constant.js";
+import {generateHtml} from "../../util/html/generate-html.js";
 
 /**
  * Business logic for static files

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {IMetricsService} from "./i-metrics-service";
-import {Express} from "express";
+import type {IMetricsService} from "./i-metrics-service.js";
+import type {Express} from "express";
 
 export class NoopMetricsService implements IMetricsService {
 	#hasCapturedEvents = false;

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {NextFunction, Request, Response} from "express";
-import {ApiError} from "../lib/api-error";
-import {generateErrorHtml} from "../../util/html/generate-html";
-import {pickAccept} from "../util/util";
+import type {NextFunction, Request, Response} from "express";
+import {ApiError} from "../lib/api-error.js";
+import {generateErrorHtml} from "../../util/html/generate-html.js";
+import {pickAccept} from "../util/util.js";
 
 interface ErrorMiddlewareOptions {
 	removeStackTrace: boolean;

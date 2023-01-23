@@ -1,6 +1,6 @@
-import {ApiMethod, ContentType} from "../server/i-server";
-import {ContentEncodingKind} from "../../encoding/content-encoding-kind";
-import {LogLevel} from "../../service/logger/i-logger-service";
+import type {ApiMethod, ContentType} from "../server/i-server.js";
+import type {ContentEncodingKind} from "../../encoding/content-encoding-kind.js";
+import type {LogLevel} from "../../service/logger/i-logger-service.js";
 
 export function chooseRandom<T>(arr: readonly T[]): T {
 	return arr[Math.floor(Math.random() * arr.length)];

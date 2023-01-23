@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import {ApiController} from "../../server/i-server";
-import {ApiMethodDecoratorOptions, apiMethodDecorator} from "./api-method-decorator";
+import type {ApiController} from "../../server/i-server.js";
+import type {ApiMethodDecoratorOptions} from "./api-method-decorator.js";
+import {apiMethodDecorator} from "./api-method-decorator.js";
 
 export interface GetDecoratorOptions extends ApiMethodDecoratorOptions {}
 

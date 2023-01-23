@@ -1,8 +1,9 @@
-import {IMetricsService} from "./i-metrics-service";
-import {Handlers, init, Event, Integrations, captureException, captureEvent, captureMessage} from "@sentry/node";
+import type {IMetricsService} from "./i-metrics-service.js";
+import type {Event} from "@sentry/node";
+import {Handlers, init, Integrations, captureException, captureEvent, captureMessage} from "@sentry/node";
 import {Integrations as TracingIntegrations} from "@sentry/tracing";
-import {Express} from "express";
-import {Config} from "../../config/config";
+import type {Express} from "express";
+import type {Config} from "../../config/config.js";
 
 export class SentryService implements IMetricsService {
 	#initialized = false;

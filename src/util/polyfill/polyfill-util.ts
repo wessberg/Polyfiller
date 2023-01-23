@@ -1,23 +1,24 @@
-import {PolyfillRequest} from "../../polyfill/polyfill-request";
-import {polyfillRawSeparator} from "../../polyfill/polyfill-raw-separator";
-import {PolyfillFeature, PolyfillFeatureInput, PolyfillFeatureMeta} from "../../polyfill/polyfill-feature";
-import {PolyfillDealiasedName, PolyfillName} from "../../polyfill/polyfill-name";
-import {ContentEncodingKind} from "../../encoding/content-encoding-kind";
-import {polyfillRawDivider} from "../../polyfill/polyfill-raw-divider";
-import {polyfillOptionKeyValueDivider} from "../../polyfill/polyfill-option-key-value-divider";
-import {polyfillRawForceName} from "../../polyfill/polyfill-raw-force-name";
-import {polyfillOptionValueSeparator} from "../../polyfill/polyfill-option-value-separator";
+import type {PolyfillRequest} from "../../polyfill/polyfill-request.js";
+import {polyfillRawSeparator} from "../../polyfill/polyfill-raw-separator.js";
+import type {PolyfillFeature, PolyfillFeatureInput, PolyfillFeatureMeta} from "../../polyfill/polyfill-feature.js";
+import type {PolyfillDealiasedName, PolyfillName} from "../../polyfill/polyfill-name.js";
+import type {ContentEncodingKind} from "../../encoding/content-encoding-kind.js";
+import {polyfillRawDivider} from "../../polyfill/polyfill-raw-divider.js";
+import {polyfillOptionKeyValueDivider} from "../../polyfill/polyfill-option-key-value-divider.js";
+import {polyfillRawForceName} from "../../polyfill/polyfill-raw-force-name.js";
+import {polyfillOptionValueSeparator} from "../../polyfill/polyfill-option-value-separator.js";
 import {createHash} from "crypto";
-import {constant} from "../../constant/constant";
+import {constant} from "../../constant/constant.js";
 import {generateBrowserslistFromUseragent, browsersWithSupportForEcmaVersion, getAppropriateEcmaVersionForBrowserslist, userAgentSupportsFeatures} from "browserslist-generator";
 import {truncate} from "@wessberg/stringutil";
-import {IPolyfillLibraryDictEntry, IPolyfillLocalDictEntry} from "../../polyfill/polyfill-dict";
+import type {IPolyfillLibraryDictEntry, IPolyfillLocalDictEntry} from "../../polyfill/polyfill-dict.js";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import toposort from "toposort";
-import {POLYFILL_CONTEXTS, PolyfillContext} from "../../polyfill/polyfill-context";
-import {PolyfillCachingContext} from "../../service/registry/polyfill-registry/i-memory-registry-service";
-import {booleanize} from "../../api/util";
+import type {PolyfillContext} from "../../polyfill/polyfill-context.js";
+import {POLYFILL_CONTEXTS} from "../../polyfill/polyfill-context.js";
+import type {PolyfillCachingContext} from "../../service/registry/polyfill-registry/i-memory-registry-service.js";
+import {booleanize} from "../../api/util.js";
 
 /**
  * Traces all polyfill names that matches the given name. It may be an alias, and it may refer to additional aliases
@@ -50,7 +51,11 @@ export function getPolyfillIdentifier(name: PolyfillFeature | PolyfillFeatureInp
 	const sortedName = [...normalizedName].sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
 	const namePart = sortedName.map(part => `{name:${part.name},meta:${JSON.stringify(part.meta)}}`).join(",");
 
-	shasum.update(`features:[${namePart}],sourcemap:${context.sourcemap},minify:${context.minify},ecmaversion:${context.ecmaVersion},module:${context.module},context:${context.context},encoding:${context.encoding || "none"}`);
+	shasum.update(
+		`features:[${namePart}],sourcemap:${context.sourcemap},minify:${context.minify},ecmaversion:${context.ecmaVersion},module:${context.module},context:${
+			context.context
+		},encoding:${context.encoding || "none"}`
+	);
 	return shasum.digest("hex");
 }
 

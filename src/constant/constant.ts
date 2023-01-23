@@ -1,10 +1,11 @@
-import {IConstant} from "./i-constant";
+/* eslint-disable @typescript-eslint/naming-convention */
+import type {IConstant} from "./i-constant.js";
 import tempDirectory from "temp-dir";
 import {join} from "crosspath";
-import {ALL_CONTEXTS, WINDOW_CONTEXT, WINDOW_NODE_CONTEXT, WINDOW_WORKER_CONTEXT} from "../polyfill/polyfill-context";
-import pkg from "../../package.json";
-import {booleanize} from "../api/util";
-import { config } from "../config/config";
+import {ALL_CONTEXTS, WINDOW_CONTEXT, WINDOW_NODE_CONTEXT, WINDOW_WORKER_CONTEXT} from "../polyfill/polyfill-context.js";
+import pkg from "../../package.json" assert {type: "json"};
+import {booleanize} from "../api/util.js";
+import {config} from "../config/config.js";
 
 const tempRoot = join(
 	tempDirectory,
@@ -3053,9 +3054,7 @@ export const constant: IConstant = {
 					"polyfill-lib/@webcomponents/shadycss-experimental/entrypoints/scoping-shim.js",
 					"polyfill-lib/@webcomponents/shadycss-experimental/entrypoints/custom-style-interface.js"
 				],
-				lit: [
-					"node_modules/lit/polyfill-support.js",
-				]
+				lit: ["node_modules/lit/polyfill-support.js"]
 			},
 			features: ["shadowdomv1"],
 			version: pkg.dependencies["@webcomponents/shadydom"],
@@ -3256,7 +3255,7 @@ export const constant: IConstant = {
 		"global-this": {
 			polyfills: ["es.global-this"]
 		},
-		
+
 		"adopted-style-sheets": {
 			polyfills: ["constructable-style-sheets"]
 		},

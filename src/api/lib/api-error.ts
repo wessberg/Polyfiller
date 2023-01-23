@@ -36,7 +36,7 @@ export class ApiError extends Error {
 	static ensureApiError(data: Error | ApiError | ApiErrorRecord): ApiError {
 		if (data instanceof ApiError) return data;
 		const status = "status" in data && typeof data.status === "number" ? data.status : StatusCodes.INTERNAL_SERVER_ERROR;
-		const message = data.message || ("name" in data ? data.name : undefined) || "Unknown Error";
+		const message = data.message || (("name" in data ? data.name : undefined) ?? "") || "Unknown Error";
 		const stack = data.stack;
 
 		return ApiError.fromJSON({status, message, stack});

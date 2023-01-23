@@ -1,10 +1,13 @@
 {
-	"include": ["src/**/*.*", "test/**/*.*"],
+	"di": {
+		"identifier": "container"
+	},
+	"include": ["src/**/*.*", "test/**/*.*", "rollup.config.ts"],
 	"extends": "@wessberg/ts-config",
 	"compilerOptions": {
-		"module": "commonjs",
 		"target": "es2020",
 		"skipLibCheck": true,
-		"resolveJsonModule": true
+		"allowJs": true,
+		"moduleResolution": "node"
 	}
 }

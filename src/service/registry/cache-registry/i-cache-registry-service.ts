@@ -1,5 +1,5 @@
-import {IMemoryRegistryService} from "../polyfill-registry/i-memory-registry-service";
-import {PolyfillName} from "../../../polyfill/polyfill-name";
+import type {IMemoryRegistryService} from "../polyfill-registry/i-memory-registry-service.js";
+import type {PolyfillName} from "../../../polyfill/polyfill-name.js";
 
 export interface ICacheRegistryService extends IMemoryRegistryService {
 	initialize(): Promise<void>;

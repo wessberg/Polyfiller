@@ -1,21 +1,21 @@
-import {ICacheRegistryService} from "./i-cache-registry-service";
-import {PolyfillFeature, PolyfillFeatureInput} from "../../../polyfill/polyfill-feature";
-import {getPolyfillConfigChecksum, getPolyfillIdentifier, getPolyfillSetIdentifier} from "../../../util/polyfill/polyfill-util";
+import type {ICacheRegistryService} from "./i-cache-registry-service.js";
+import type {PolyfillFeature, PolyfillFeatureInput} from "../../../polyfill/polyfill-feature.js";
+import {getPolyfillConfigChecksum, getPolyfillIdentifier, getPolyfillSetIdentifier} from "../../../util/polyfill/polyfill-util.js";
 import {join} from "crosspath";
-import {constant} from "../../../constant/constant";
-import {IMemoryRegistryService, PolyfillCachingContext} from "../polyfill-registry/i-memory-registry-service";
-import {PolyfillName} from "../../../polyfill/polyfill-name";
+import {constant} from "../../../constant/constant.js";
+import type {IMemoryRegistryService, PolyfillCachingContext} from "../polyfill-registry/i-memory-registry-service.js";
+import type {PolyfillName} from "../../../polyfill/polyfill-name.js";
 import {coerce, gt} from "semver";
-import {IRegistryGetResult} from "../polyfill-registry/i-registry-get-result";
-import {ILoggerService} from "../../logger/i-logger-service";
-import {PolyfillDictEntry, PolyfillDictNormalizedEntry} from "../../../polyfill/polyfill-dict";
-import pkg from "../../../../package.json";
-import {Config} from "../../../config/config";
-import {IMetricsService} from "../../metrics/i-metrics-service";
-import {FileSystem} from "../../../common/lib/file-system/file-system";
-import {chooseRandom} from "../../../api/util/util";
-import {MaybeArray} from "../../../common/type/type-util";
-import {ensureArray} from "../../../api/util";
+import type {IRegistryGetResult} from "../polyfill-registry/i-registry-get-result.js";
+import type {ILoggerService} from "../../logger/i-logger-service.js";
+import type {PolyfillDictEntry, PolyfillDictNormalizedEntry} from "../../../polyfill/polyfill-dict.js";
+import pkg from "../../../../package.json" assert {type: "json"};
+import type {Config} from "../../../config/config.js";
+import type {IMetricsService} from "../../metrics/i-metrics-service.js";
+import type {FileSystem} from "../../../common/lib/file-system/file-system.js";
+import {chooseRandom} from "../../../api/util/util.js";
+import type {MaybeArray} from "../../../common/type/type-util.js";
+import {ensureArray} from "../../../api/util.js";
 
 /**
  * A class that can cache generated Polyfills on disk

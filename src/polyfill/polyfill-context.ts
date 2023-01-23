@@ -1,4 +1,4 @@
-import {ElementOf} from "../util/type/element-of";
+import type {ElementOf} from "../util/type/element-of.js";
 
 export const POLYFILL_CONTEXTS = ["node", "window", "worker"] as const;
 

@@ -1,11 +1,11 @@
-import {IPolyfillBl} from "./i-polyfill-bl";
-import {PolyfillRequest} from "../../polyfill/polyfill-request";
-import {constant} from "../../constant/constant";
-import {ICacheRegistryService} from "../../service/registry/cache-registry/i-cache-registry-service";
-import {getOrderedPolyfillsWithDependencies} from "../../util/polyfill/polyfill-util";
-import {ILoggerService} from "../../service/logger/i-logger-service";
-import {IPolyfillBuilderService} from "../../service/polyfill-builder/i-polyfill-builder-service";
-import {PolyfillResponse} from "../../polyfill/polyfill-response";
+import type {IPolyfillBl} from "./i-polyfill-bl.js";
+import type {PolyfillRequest} from "../../polyfill/polyfill-request.js";
+import {constant} from "../../constant/constant.js";
+import type {ICacheRegistryService} from "../../service/registry/cache-registry/i-cache-registry-service.js";
+import {getOrderedPolyfillsWithDependencies} from "../../util/polyfill/polyfill-util.js";
+import type {ILoggerService} from "../../service/logger/i-logger-service.js";
+import type {IPolyfillBuilderService} from "../../service/polyfill-builder/i-polyfill-builder-service.js";
+import type {PolyfillResponse} from "../../polyfill/polyfill-response.js";
 
 /**
  * Business logic for polyfills

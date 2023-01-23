@@ -1,5 +1,6 @@
 (async () => {
 	const {NodeSSH} = require("node-ssh");
+	const {satisfies} = require("semver");
 	const pkg = require("./package.json");
 	const {join, dirname, basename} = require("path");
 	const {writeFileSync, readFileSync, existsSync, mkdirSync, copyFileSync, chmodSync, readdirSync} = require("fs");
@@ -89,7 +90,7 @@ server {
 `;
 
 
-	const PREFERRED_NODE_VERSION = "16.x";
+	const PREFERRED_NODE_VERSION = "19.x";
 	const APP_NAME = PRODUCTION ? "polyfiller" : "polyfiller-development";
 	const LOCAL_WRITE_ROOT = RUNNER_TEMP ?? "temp";
 	const REMOTE_ROOT = `/var/www/${APP_NAME}`;
@@ -156,8 +157,11 @@ server {
 
 	console.log("Checking for Node.js support");
 	const needsNode = (await ssh.execCommand("which node")).stdout === "";
-	if (needsNode) {
-		console.log("Node.js is missing on the host machine. Installing");
+	const nodeVersion = needsNode ? undefined : (await ssh.execCommand("node -v")).stdout.slice(1);
+	const hasAcceptableNodeVersion = nodeVersion != null && satisfies(nodeVersion, PREFERRED_NODE_VERSION);
+	if (needsNode || !hasAcceptableNodeVersion) {
+		console.log(!needsNode ? `v${nodeVersion} of Node.js is installed on the host machine, which is lower than the requested v${PREFERRED_NODE_VERSION}. Node.js will need to be updated.` : "Node.js is missing on the host machine. Installing");
+		
 		await ssh.execCommand(`cd ~`);
 		await ssh.execCommand(`curl -sL https://deb.nodesource.com/setup_${PREFERRED_NODE_VERSION} -o nodesource_setup.sh`);
 		await ssh.execCommand(`sudo bash nodesource_setup.sh`);

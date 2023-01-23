@@ -1,6 +1,6 @@
-import {container} from "../../src/services";
-import {IApiService} from "../../src/service/api/i-api-service";
-import {ICacheRegistryService} from "../../src/service/registry/cache-registry/i-cache-registry-service";
+import {container} from "../../src/services.js";
+import type {IApiService} from "../../src/service/api/i-api-service.js";
+import type {ICacheRegistryService} from "../../src/service/registry/cache-registry/i-cache-registry-service.js";
 
 const apiService = container.get<IApiService>();
 const cacheRegistry = container.get<ICacheRegistryService>();

@@ -1,11 +1,8 @@
-import {constant} from "../../constant/constant";
-import {ApiError} from "../../api/lib/api-error";
+import {constant} from "../../constant/constant.js";
+import type {ApiError} from "../../api/lib/api-error.js";
 
 /**
  * Generates some HTML contents with the given message
- *
- * @param message
- * @returns
  */
 export function generateHtml(message: string): string {
 	// language=HTML

@@ -1,5 +1,5 @@
 import {randomBytes} from "crypto";
-import {UppercaseKeys} from "../common/type/type-util";
+import type {UppercaseKeys} from "../common/type/type-util.js";
 
 export function generateRandomHash(complexity = 6): string {
 	return randomBytes(complexity).toString("hex");
@@ -46,7 +46,7 @@ export function uppercaseKeys<T extends Record<PropertyKey, unknown>>(obj: T): U
 	const entries = Object.entries(obj) as [keyof T & string, T[keyof T]][];
 	entries.forEach(([key, value]) => {
 		const uppercasedKey = key.toUpperCase() as Uppercase<string & keyof T>;
-		newObject[uppercasedKey] = value as UppercaseKeys<T>[keyof UppercaseKeys<T>];
+		newObject[uppercasedKey] = value as unknown as (typeof newObject)[typeof uppercasedKey];
 	});
 	return newObject;
 }

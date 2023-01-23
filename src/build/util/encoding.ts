@@ -1,4 +1,5 @@
-import {brotliCompress, BrotliOptions, gzip, ZlibOptions} from "zlib";
+import type {BrotliOptions, ZlibOptions} from "zlib";
+import {brotliCompress, gzip} from "zlib";
 
 /**
  * Brotli-Encodes the given Buffer based on the given options

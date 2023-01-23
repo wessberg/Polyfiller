@@ -1,6 +1,6 @@
-import {PolyfillFeature} from "../polyfill/polyfill-feature";
-import {PolyfillContext} from "../polyfill/polyfill-context";
-import {EcmaVersion} from "../util/type/ecma-version";
+import type {PolyfillFeature} from "../polyfill/polyfill-feature.js";
+import type {PolyfillContext} from "../polyfill/polyfill-context.js";
+import type {EcmaVersion} from "../util/type/ecma-version.js";
 
 export interface BuildOptions {
 	context: PolyfillContext;

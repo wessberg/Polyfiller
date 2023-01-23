@@ -1,6 +1,6 @@
-import {PolyfillDealiasedName, PolyfillName} from "./polyfill-name";
-import {PolyfillContext} from "./polyfill-context";
-import pkg from "../../package.json";
+import type {PolyfillDealiasedName, PolyfillName} from "./polyfill-name.js";
+import type {PolyfillContext} from "./polyfill-context.js";
+import type pkg from "../../package.json";
 
 export type PkgDependency = keyof typeof pkg.dependencies;
 

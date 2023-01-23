@@ -1,7 +1,7 @@
-import {IMemoryRegistryService, PolyfillCachingContext} from "./i-memory-registry-service";
-import {PolyfillFeature, PolyfillFeatureInput} from "../../../polyfill/polyfill-feature";
-import {getPolyfillIdentifier, getPolyfillSetIdentifier} from "../../../util/polyfill/polyfill-util";
-import {IRegistryGetResult} from "./i-registry-get-result";
+import type {IMemoryRegistryService, PolyfillCachingContext} from "./i-memory-registry-service.js";
+import type {PolyfillFeature, PolyfillFeatureInput} from "../../../polyfill/polyfill-feature.js";
+import {getPolyfillIdentifier, getPolyfillSetIdentifier} from "../../../util/polyfill/polyfill-util.js";
+import type {IRegistryGetResult} from "./i-registry-get-result.js";
 
 /**
  * A Registry of polyfills living in-memory

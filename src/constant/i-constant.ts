@@ -1,4 +1,4 @@
-import {PolyfillDict} from "../polyfill/polyfill-dict";
+import type {PolyfillDict} from "../polyfill/polyfill-dict.js";
 
 export interface IEndpointConstant {
 	index: string;

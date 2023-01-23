@@ -1,3 +1,3 @@
-import {BrotliOptions} from "zlib";
+import type {BrotliOptions} from "zlib";
 
 export const BROTLI_OPTIONS: BrotliOptions = {};

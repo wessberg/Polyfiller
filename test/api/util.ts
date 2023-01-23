@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import fetch, {Response} from "node-fetch";
-import {container} from "../../src/services";
-import {ApiMethod} from "../../src/api/server/i-server";
-import {Config} from "../../src/config/config";
+import {container} from "../../src/services.js";
+import {ApiMethod} from "../../src/api/server/i-server.js";
+import {Config} from "../../src/config/config.js";
 
 const config = container.get<Config>();
 

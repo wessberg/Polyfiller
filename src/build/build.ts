@@ -1,17 +1,17 @@
-import {BuildOptions} from "./build-options";
-import {BuildResult} from "./build-result";
-import {brotliEncode, gzipEncode} from "./util/encoding";
-import {BROTLI_OPTIONS} from "./options/brotli-options";
-import {ZLIB_OPTIONS} from "./options/zlib-options";
-import {PolyfillFeature} from "../polyfill/polyfill-feature";
+import type {BuildOptions} from "./build-options.js";
+import type {BuildResult} from "./build-result.js";
+import {brotliEncode, gzipEncode} from "./util/encoding.js";
+import {BROTLI_OPTIONS} from "./options/brotli-options.js";
+import {ZLIB_OPTIONS} from "./options/zlib-options.js";
+import type {PolyfillFeature} from "../polyfill/polyfill-feature.js";
 import {build as esbuild} from "esbuild";
 import {tmpdir} from "os";
 import {join, normalize} from "crosspath";
 import {unlinkSync, writeFileSync} from "fs";
 import {transform as swc} from "@swc/core";
 import {transformAsync as babel} from "@babel/core";
-import {generateRandomHash} from "../api/util";
-import pluginTransformInlineRegenerator from "./plugin/babel/plugin-transform-inline-regenerator";
+import {generateRandomHash} from "../api/util.js";
+import pluginTransformInlineRegenerator from "./plugin/babel/plugin-transform-inline-regenerator.js";
 
 function stringifyPolyfillFeature(feature: PolyfillFeature): string {
 	const metaEntries = Object.entries(feature.meta);

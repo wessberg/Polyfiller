@@ -1,4 +1,4 @@
-import {PolyfillDealiasedName} from "./polyfill-name";
+import type {PolyfillDealiasedName} from "./polyfill-name.js";
 
 export interface PolyfillFeatureMeta {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any

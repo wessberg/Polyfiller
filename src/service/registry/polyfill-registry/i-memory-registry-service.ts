@@ -1,6 +1,6 @@
-import {PolyfillFeature, PolyfillFeatureInput} from "../../../polyfill/polyfill-feature";
-import {IRegistryGetResult} from "./i-registry-get-result";
-import {PolyfillRequest} from "../../../polyfill/polyfill-request";
+import type {PolyfillFeature, PolyfillFeatureInput} from "../../../polyfill/polyfill-feature.js";
+import type {IRegistryGetResult} from "./i-registry-get-result.js";
+import type {PolyfillRequest} from "../../../polyfill/polyfill-request.js";
 
 export interface PolyfillCachingContext extends Omit<PolyfillRequest, "features"> {}
 

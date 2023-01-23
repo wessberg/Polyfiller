@@ -1,4 +1,7 @@
 {
+	"di": {
+		"identifier": "container"
+	},
 	"include": ["src/**/*.*"],
 	"extends": "./tsconfig.json",
 	"compilerOptions": {

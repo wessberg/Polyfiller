@@ -1,16 +1,16 @@
-import {IPolyfillBuilderService} from "./i-polyfill-builder-service";
-import {constant} from "../../constant/constant";
-import {PolyfillFeature} from "../../polyfill/polyfill-feature";
-import {join} from "crosspath";
-import {ICompressedPolyfillSetResult} from "./i-compressed-polyfill-set-result";
-import {sync} from "find-up";
-import {build} from "../../build/build";
-import {IPolyfillDictEntryBase} from "../../polyfill/polyfill-dict";
-import {PolyfillContext} from "../../polyfill/polyfill-context";
-import {PolyfillRequest} from "../../polyfill/polyfill-request";
-import {ensureArray} from "../../api/util";
-
-const SYNC_OPTIONS = {cwd: __dirname};
+import type {IPolyfillBuilderService} from "./i-polyfill-builder-service.js";
+import {constant} from "../../constant/constant.js";
+import type {PolyfillFeature} from "../../polyfill/polyfill-feature.js";
+import {join, dirname} from "crosspath";
+import type {ICompressedPolyfillSetResult} from "./i-compressed-polyfill-set-result.js";
+import {findUpSync} from "find-up";
+import {build} from "../../build/build.js";
+import type {IPolyfillDictEntryBase} from "../../polyfill/polyfill-dict.js";
+import type {PolyfillContext} from "../../polyfill/polyfill-context.js";
+import type {PolyfillRequest} from "../../polyfill/polyfill-request.js";
+import {ensureArray} from "../../api/util.js";
+import {fileURLToPath} from "url";
+const SYNC_OPTIONS = {cwd: dirname(fileURLToPath(import.meta.url)), type: "file"} as const;
 
 function normalizeLocale(locale: string): string {
 	switch (locale) {
@@ -68,7 +68,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 			) {
 				for (const variant of selectMetaPaths(meta[polyfillFeature.meta.variant], request.context)) {
 					const metaVariantPathInput = join(rootDirectory, variant);
-					const resolvedMetaVariantPath = sync(metaVariantPathInput, SYNC_OPTIONS);
+					const resolvedMetaVariantPath = findUpSync(metaVariantPathInput, SYNC_OPTIONS);
 					if (resolvedMetaVariantPath != null) {
 						absolutePaths.push(resolvedMetaVariantPath);
 					} else {
@@ -84,7 +84,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 			) {
 				for (const variant of selectMetaPaths(meta.experimental, request.context)) {
 					const metaVariantPathInput = join(rootDirectory, variant);
-					const resolvedMetaVariantPath = sync(metaVariantPathInput, SYNC_OPTIONS);
+					const resolvedMetaVariantPath = findUpSync(metaVariantPathInput, SYNC_OPTIONS);
 					if (resolvedMetaVariantPath != null) {
 						absolutePaths.push(resolvedMetaVariantPath);
 					} else {
@@ -98,7 +98,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				// For each of the relative paths, compute the absolute path
 				for (const path of localPaths) {
 					const pathInput = join(rootDirectory, path);
-					const resolvedPath = sync(pathInput, SYNC_OPTIONS);
+					const resolvedPath = findUpSync(pathInput, SYNC_OPTIONS);
 					if (resolvedPath != null) {
 						absolutePaths.push(resolvedPath);
 					} else {
@@ -110,7 +110,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 			if (meta != null && polyfillFeature.name === "shadow-dom" && polyfillFeature.meta?.lit === true) {
 				for (const filePath of selectMetaPaths(meta.lit, request.context)) {
 					const filePathInput = join(rootDirectory, filePath);
-					const resolvedFilePath = sync(filePathInput, SYNC_OPTIONS);
+					const resolvedFilePath = findUpSync(filePathInput, SYNC_OPTIONS);
 					if (resolvedFilePath != null) {
 						absolutePaths.push(resolvedFilePath);
 					} else {
@@ -124,7 +124,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				if (polyfillFeature.meta != null && polyfillFeature.meta.error === true) {
 					for (const errorPath of selectMetaPaths(meta.error, request.context)) {
 						const errorPathInput = join(rootDirectory, errorPath);
-						const resolvedErrorPath = sync(errorPathInput, SYNC_OPTIONS);
+						const resolvedErrorPath = findUpSync(errorPathInput, SYNC_OPTIONS);
 						if (resolvedErrorPath != null) {
 							absolutePaths.push(resolvedErrorPath);
 						} else {
@@ -138,7 +138,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				if (polyfillFeature.meta != null && polyfillFeature.meta.shadydom === true) {
 					for (const shadydomPath of selectMetaPaths(meta.shadydom, request.context)) {
 						const shadyDomExtensionPathInput = join(rootDirectory, shadydomPath);
-						const resolvedShadyDomExtensionPath = sync(shadyDomExtensionPathInput, SYNC_OPTIONS);
+						const resolvedShadyDomExtensionPath = findUpSync(shadyDomExtensionPathInput, SYNC_OPTIONS);
 						if (resolvedShadyDomExtensionPath != null) {
 							absolutePaths.push(resolvedShadyDomExtensionPath);
 						} else {
@@ -151,7 +151,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				if (polyfillFeature.meta != null && polyfillFeature.meta.mediaquery === true) {
 					for (const mediaqueryPath of selectMetaPaths(meta.mediaquery, request.context)) {
 						const mediaQueryExtensionPathInput = join(rootDirectory, mediaqueryPath);
-						const resolvedMediaQueryExtensionPath = sync(mediaQueryExtensionPathInput, SYNC_OPTIONS);
+						const resolvedMediaQueryExtensionPath = findUpSync(mediaQueryExtensionPathInput, SYNC_OPTIONS);
 						if (resolvedMediaQueryExtensionPath != null) {
 							absolutePaths.push(resolvedMediaQueryExtensionPath);
 						} else {
@@ -164,7 +164,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				if (polyfillFeature.meta != null && polyfillFeature.meta.fetch === true) {
 					for (const fetchPath of selectMetaPaths(meta.fetch, request.context)) {
 						const fetchExtensionPathInput = join(rootDirectory, fetchPath);
-						const resolvedFetchExtensionPath = sync(fetchExtensionPathInput, SYNC_OPTIONS);
+						const resolvedFetchExtensionPath = findUpSync(fetchExtensionPathInput, SYNC_OPTIONS);
 						if (resolvedFetchExtensionPath != null) {
 							absolutePaths.push(resolvedFetchExtensionPath);
 						} else {
@@ -177,7 +177,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 				if (polyfillFeature.meta != null && polyfillFeature.meta.resizeobserver === true) {
 					for (const resizeobserverPath of selectMetaPaths(meta.resizeobserver, request.context)) {
 						const resizeObserverExtensionPathInput = join(rootDirectory, resizeobserverPath);
-						const resolvedResizeObserverExtensionPath = sync(resizeObserverExtensionPathInput, SYNC_OPTIONS);
+						const resolvedResizeObserverExtensionPath = findUpSync(resizeObserverExtensionPathInput, SYNC_OPTIONS);
 						if (resolvedResizeObserverExtensionPath != null) {
 							absolutePaths.push(resolvedResizeObserverExtensionPath);
 						} else {
@@ -202,7 +202,7 @@ export class PolyfillBuilderService implements IPolyfillBuilderService {
 							let addedLocale = false;
 							for (const currentLocale of new Set([locale.baseName, normalizeLocale(locale.baseName), locale.language, normalizeLocale(locale.language)])) {
 								const localePathInput = join(rootDirectory, localeDir, `${currentLocale}.js`);
-								const resolvedLocalePath = sync(localePathInput, SYNC_OPTIONS);
+								const resolvedLocalePath = findUpSync(localePathInput, SYNC_OPTIONS);
 								if (resolvedLocalePath != null) {
 									addedLocale = true;
 									absolutePaths.push(resolvedLocalePath);

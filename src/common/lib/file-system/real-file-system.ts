@@ -1,4 +1,4 @@
-import {FileSystem} from "./file-system";
+import type {FileSystem} from "./file-system.js";
 import {promises} from "fs";
 import {dirname} from "crosspath";
 

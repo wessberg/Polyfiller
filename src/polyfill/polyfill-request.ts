@@ -1,7 +1,7 @@
-import {PolyfillFeatureInput} from "./polyfill-feature";
-import {ContentEncodingKind} from "../encoding/content-encoding-kind";
-import {PolyfillContext} from "./polyfill-context";
-import {EcmaVersion} from "../util/type/ecma-version";
+import type {PolyfillFeatureInput} from "./polyfill-feature.js";
+import type {ContentEncodingKind} from "../encoding/content-encoding-kind.js";
+import type {PolyfillContext} from "./polyfill-context.js";
+import type {EcmaVersion} from "../util/type/ecma-version.js";
 
 export interface PolyfillRequest {
 	// If true, the output will be in ESM-format

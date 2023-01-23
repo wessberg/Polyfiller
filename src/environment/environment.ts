@@ -1,5 +1,5 @@
-import {environmentDefaults} from "./environment-defaults";
-import {uppercaseKeys} from "../api/util";
+import {environmentDefaults} from "./environment-defaults.js";
+import {uppercaseKeys} from "../api/util.js";
 
 export const environment = uppercaseKeys({
 	...environmentDefaults,

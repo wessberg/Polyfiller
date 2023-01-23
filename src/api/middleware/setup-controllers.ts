@@ -1,11 +1,11 @@
-import {Express, NextFunction, Request, Response} from "express";
-import {ApiControllers, ApiMethod, ApiRequest, ApiRequestHandler, ApiResponse} from "../server/i-server";
+import type {Express, NextFunction, Request, Response} from "express";
+import type {ApiControllers, ApiMethod, ApiRequest, ApiRequestHandler, ApiResponse} from "../server/i-server.js";
 import {StatusCodes} from "http-status-codes";
 import {URL} from "url";
-import {ContentEncodingKind} from "../../encoding/content-encoding-kind";
-import {parseContentEncodingKind} from "../util/util";
-import {isDefined} from "../util";
-import {ApiError} from "../lib/api-error";
+import type {ContentEncodingKind} from "../../encoding/content-encoding-kind.js";
+import {parseContentEncodingKind} from "../util/util.js";
+import {isDefined} from "../util.js";
+import {ApiError} from "../lib/api-error.js";
 
 export const SUPPORTED_API_METHODS: ApiMethod[] = ["GET", "PUT", "POST", "OPTIONS", "DELETE"];
 
@@ -74,7 +74,6 @@ export const setupControllers = (options: SetupControllersOptions) => {
 			if (map == null) continue;
 
 			const lowercasedMethod = method.toLowerCase() as Lowercase<typeof method>;
-			
 
 			for (const [path, methodName] of map) {
 				options.app[lowercasedMethod](path, async (req, res, next) => {

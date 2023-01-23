@@ -1,4 +1,4 @@
-import * as NodeSSH from "node-ssh";
+import {NodeSSH} from "node-ssh";
 import {satisfies} from "semver";
 import pkg from "./package.json" assert {type: "json"};
 import {join, dirname, basename} from "path";

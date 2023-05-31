@@ -689,4 +689,3 @@ And, if you request `performance.now`, `date.now` will also be included since th
 - `resize-observer`
 - `broadcast-channel`
 - `proto`
- 

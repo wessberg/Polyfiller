@@ -1,0 +1,11 @@
+{
+	"name": "polyfill",
+	"private": true,
+	"main": "start.js",
+	"scripts": {
+		"start": "node start.js"
+	},
+	"engines": {
+		"node": ">=10.1.0"
+	}
+}

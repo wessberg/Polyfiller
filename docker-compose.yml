@@ -1,0 +1,26 @@
+version: '3'
+
+networks:
+    polyfiller:
+
+services:
+    api-service:
+        image: polyfiller/api-service
+        environment:
+            - NODE_ENV=production
+        ports:
+            - 3000:3000
+        networks:
+            - polyfiller
+        restart: always
+    caddy:
+        depends_on:
+            - api-service
+        image: caddy
+        ports:
+            - 80:80
+            - 443:443
+        networks:
+            - polyfiller
+        restart: always
+        command: caddy reverse-proxy --from polyfiller.app --to api-service:3000

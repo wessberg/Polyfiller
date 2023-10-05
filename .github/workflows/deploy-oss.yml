@@ -1,0 +1,63 @@
+# reference:
+#   1. https://github.com/docker/build-push-action/blob/master/docs/advanced/push-multi-registries.md
+#   2. https://github.com/docker/build-push-action/blob/master/docs/advanced/share-image-jobs.md
+
+name: Deploy to Production environment
+on:
+    push:
+        tags:
+            - v*
+env:
+    ARTIFACT_PATH: /tmp/artifact.tar
+    BOX_NAME: api-service
+    BOX_URL: polyfiller/api-service
+
+jobs:
+    deploy_docker_image:
+        name: Deploy Docker image
+        runs-on: ubuntu-latest
+        permissions:
+            packages: write
+            contents: read
+        steps:
+            - uses: actions/checkout@v3
+
+            - uses: docker/setup-qemu-action@v2
+            - uses: docker/setup-buildx-action@v2
+
+            - name: Build Image
+              uses: docker/build-push-action@v3
+              with:
+                  context: .
+                  platforms: linux/amd64
+                  tags: ${{ env.BOX_URL }}:latest
+                  outputs: type=docker,dest=${{ env.ARTIFACT_PATH }}
+
+            - name: Pick Docker Compose
+              run: |
+                  cat > .env <<EOF
+                  ${{ secrets.ENV_FILE }}
+                  EOF
+                  mkdir build
+                  mv ${{ env.ARTIFACT_PATH }} docker-compose.yml .env start-docker.sh build/
+
+            - name: Transport Image
+              uses: garygrossgarten/github-action-scp@release
+              with:
+                  local: ./build
+                  remote: /tmp
+                  host: ${{ secrets.HOST }}
+                  username: ${{ secrets.USER }}
+                  privateKey: ${{ secrets.SSH_KEY }}
+
+            - name: Run Image
+              uses: garygrossgarten/github-action-ssh@release
+              with:
+                  host: ${{ secrets.HOST }}
+                  username: ${{ secrets.USER }}
+                  privateKey: ${{ secrets.SSH_KEY }}
+                  command: |
+                      cd /tmp
+                      mv docker-compose.yml .env start-docker.sh ~/
+                      chmod +x ~/start-docker.sh
+                      sudo ~/start-docker.sh ${{ env.ARTIFACT_PATH }}

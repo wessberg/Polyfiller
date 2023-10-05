@@ -1,5 +1,16 @@
 version: '3'
 
+volumes:
+  polyfill-cache:
+    driver: juicedata/juicefs
+    driver_opts:
+      name: polyfill-cache
+      metaurl: sqlite3://polyfill-cache.db
+      storage: ${STORAGE_TYPE}
+      bucket: ${BUCKET}
+      access-key: ${ACCESS_KEY}
+      secret-key: ${SECRET_KEY}
+
 networks:
     polyfiller:
 
@@ -10,6 +21,8 @@ services:
             - NODE_ENV=production
         ports:
             - 3000:3000
+        volumes:
+            - polyfill-cache:/tmp/@wessberg/polyfiller
         networks:
             - polyfiller
         restart: always

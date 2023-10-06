@@ -11,6 +11,7 @@ COPY package.json package-lock.json file-content-injector.js /home/node/app/
 RUN npm i
 
 COPY . /home/node/app
+RUN npm run build
 
 RUN npm prune --production || true \
     npm cache clean -f

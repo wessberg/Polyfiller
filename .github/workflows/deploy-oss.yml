@@ -59,5 +59,6 @@ jobs:
                   command: |
                       cd /tmp
                       mv docker-compose.yml .env start-docker.sh ~/
+                      cd ~/
                       chmod +x ~/start-docker.sh
                       sudo ~/start-docker.sh ${{ env.ARTIFACT_PATH }}

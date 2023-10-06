@@ -362,6 +362,63 @@ These two services are very much alike. In fact, `Polyfiller` depends on the lib
 The server is built with support for both HTTP2 and HTTP. The environment variable `HTTP2=[true|false]` decides whether a HTTP2 server will be hosted or not.
 If you use a load balancer and something like `nginx` in a reverse proxy setup, please know that `nginx` doesn't support HTTP2 via its proxy module, so you have to use HTTP1.1 there. Thankfully, it is as easy as setting `HTTP2=false` before launching the server and setting `HTTPS=false`.
 
+#### Docker
+
+> This guide has been tested in the deployment process of China mirror: https://polyfiller.kaiyuanshe.cn
+
+##### Simple container
+
+Run shown commands in the Project Root folder:
+
+```shell
+docker build -t polyfiller/api-service .
+docker run --name polyfiller -e NODE_ENV=production -p 3000:3000 polyfiller/api-service
+```
+
+##### Composed services with Object Storage
+
+Install Docker plugins in Cloud Server at first:
+
+```shell
+sudo apt install docker-compose
+sudo docker plugin install juicedata/juicefs
+```
+
+###### 1. Manual deployment
+
+1. Write [JuiceFS environment variables](https://juicefs.com/docs/community/juicefs_on_docker/#using-docker-compose) into `.env` file in the Project Root folder:
+
+```ini
+STORAGE_TYPE =
+BUCKET =
+ACCESS_KEY =
+SECRET_KEY =
+```
+
+2. Run shown commands in the Project Root folder:
+
+```shell
+docker-compose up -d
+```
+
+###### 2. Automatic deployment
+
+1. Set GitHub Repository secrets:
+
+|    name    |               value               |
+| :--------: | :-------------------------------: |
+| `ENV_FILE` |      `.env` file shown above      |
+|   `HOST`   | IP or Domain Name of Cloud Server |
+|   `USER`   |   Account Name of Cloud Server    |
+| `SSH_KEY`  |  SSH Private Key of Cloud Server  |
+
+2. Push a Git tag:
+
+```shell
+git tag v0.2.3-oss  # the version number is the value of "version" field in "package.json"
+git push origin --tags
+```
+
 ## Logo
 
 All credits go to [Andreas Mehlsen (@andreasbm)](https://github.com/andreasbm/) for the awesome logo design.

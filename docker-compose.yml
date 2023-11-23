@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 volumes:
   polyfill-cache:
@@ -12,28 +12,46 @@ volumes:
       secret-key: ${SECRET_KEY}
 
 networks:
-    polyfiller:
+  polyfiller:
 
 services:
-    api-service:
-        image: polyfiller/api-service
-        environment:
-            - NODE_ENV=production
-        ports:
-            - 3000:3000
-        volumes:
-            - polyfill-cache:/tmp/@wessberg/polyfiller
-        networks:
-            - polyfiller
-        restart: always
-    caddy:
-        depends_on:
-            - api-service
-        image: caddy
-        ports:
-            - 80:80
-            - 443:443
-        networks:
-            - polyfiller
-        restart: always
-        command: caddy reverse-proxy --from polyfiller.app --to api-service:3000
+  api-service:
+    image: polyfiller/api-service
+    environment:
+      - NODE_ENV=production
+    ports:
+      - 3000:3000
+    volumes:
+      - polyfill-cache:/tmp/@wessberg/polyfiller
+    networks:
+      - polyfiller
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/ || exit 1"]
+      interval: 3s
+      retries: 5
+      start_period: 30s
+    labels:
+      - autoheal=true
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+
+  autoheal:
+    image: willfarrell/autoheal:1.2.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+
+  caddy:
+    depends_on:
+      - api-service
+    image: caddy
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - polyfiller
+    restart: always
+    command: caddy reverse-proxy --from polyfiller.app --to api-service:3000

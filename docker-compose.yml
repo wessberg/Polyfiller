@@ -5,7 +5,7 @@ volumes:
     driver: juicedata/juicefs
     driver_opts:
       name: polyfill-cache
-      metaurl: postgres://postgres:${METADATA_PASSWORD}@meta-server:5432/juicefs
+      metaurl: postgres://postgres:${SECRET_KEY}@meta-server:5432/postgres
       storage: ${STORAGE_TYPE}
       bucket: ${BUCKET}
       access-key: ${ACCESS_KEY}
@@ -15,14 +15,38 @@ networks:
   polyfiller:
 
 services:
+  autoheal:
+    image: willfarrell/autoheal:1.2.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+
+  meta-server:
+    depends_on:
+      - autoheal
+    image: postgres
+    user: postgres
+    environment:
+      - POSTGRES_PASSWORD=${SECRET_KEY}
+    volumes:
+      - ./data:/var/lib/postgresql/data/
+    networks:
+      - polyfiller
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      retries: 5
+    labels:
+      - autoheal=true
+    restart: always
+
   api-service:
     depends_on:
+      - autoheal
       - meta-server
     image: polyfiller/api-service
     environment:
       - NODE_ENV=production
-    ports:
-      - 3000:3000
     volumes:
       - polyfill-cache:/tmp/@wessberg/polyfiller
     networks:
@@ -39,29 +63,6 @@ services:
       driver: json-file
       options:
         max-size: 10m
-  
-  meta-server:
-    image: postgres
-    user: postgres
-    environment:
-      - POSTGRES_PASSWORD=${METADATA_PASSWORD}
-    volumes:
-      - ./data:/var/lib/postgresql/data/
-    networks:
-      - polyfiller
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready  -U postgres" ]
-      interval: 3s
-      retries: 5
-    labels:
-      - autoheal=true
-    restart: always
-
-  autoheal:
-    image: willfarrell/autoheal:1.2.0
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    restart: always
 
   caddy:
     depends_on:

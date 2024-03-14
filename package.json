@@ -26,7 +26,9 @@
 		"version": "npm run generate:all && git add .",
 		"release": "np --no-cleanup --no-yarn --no-tests",
 		"update:check": "npx npm-check-updates -x np --dep dev,prod",
-		"update:commit": "npx npm-check-updates -u -x np,find-up --dep dev,prod && npm update && npm install"
+		"update:commit": "npx npm-check-updates -u -x np,find-up --dep dev,prod && npm update && npm install",
+		"pack-image": "docker build -t polyfiller/api-service:latest .",
+		"container": "docker rm -f api-service  &&  docker run --name api-service -p 3000:3000 -d polyfiller/api-service:latest"
 	},
 	"keywords": [
 		"polyfills",

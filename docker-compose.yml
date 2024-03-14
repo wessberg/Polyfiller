@@ -5,7 +5,7 @@ volumes:
     driver: juicedata/juicefs
     driver_opts:
       name: polyfill-cache
-      metaurl: sqlite3://polyfill-cache.db
+      metaurl: postgres://postgres:${METADATA_PASSWORD}@meta-server:5432/juicefs
       storage: ${STORAGE_TYPE}
       bucket: ${BUCKET}
       access-key: ${ACCESS_KEY}
@@ -16,6 +16,8 @@ networks:
 
 services:
   api-service:
+    depends_on:
+      - meta-server
     image: polyfiller/api-service
     environment:
       - NODE_ENV=production
@@ -37,6 +39,23 @@ services:
       driver: json-file
       options:
         max-size: 10m
+  
+  meta-server:
+    image: postgres
+    user: postgres
+    environment:
+      - POSTGRES_PASSWORD=${METADATA_PASSWORD}
+    volumes:
+      - ./data:/var/lib/postgresql/data/
+    networks:
+      - polyfiller
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready  -U postgres" ]
+      interval: 3s
+      retries: 5
+    labels:
+      - autoheal=true
+    restart: always
 
   autoheal:
     image: willfarrell/autoheal:1.2.0

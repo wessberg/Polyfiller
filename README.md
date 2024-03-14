@@ -115,6 +115,11 @@ Polyfiller is kindly supported by [JetBrains](https://www.jetbrains.com/?from=Po
 - [FAQ](#faq)
   - [What's the difference from polyfill.io](#whats-the-difference-from-polyfillio)
   - [Hosting](#hosting)
+    - [Docker](#docker)
+      - [Simple container](#simple-container)
+      - [Composed services with Object Storage](#composed-services-with-object-storage)
+        - [1. Manual deployment](#1-manual-deployment)
+        - [2. Automatic deployment](#2-automatic-deployment)
 - [Logo](#logo)
 - [License](#license)
   - [Feature names](#feature-names)
@@ -386,7 +391,7 @@ sudo docker plugin install juicedata/juicefs
 
 ###### 1. Manual deployment
 
-1. Write [JuiceFS environment variables](https://juicefs.com/docs/community/juicefs_on_docker/#using-docker-compose) into `.env` file in the Project Root folder:
+1. Write [JuiceFS object storage variables](https://juicefs.com/docs/community/reference/how_to_set_up_object_storage/) into `.env` file in the Project Root folder:
 
 ```ini
 STORAGE_TYPE =

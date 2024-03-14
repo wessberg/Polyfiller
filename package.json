@@ -26,7 +26,9 @@
 		"version": "npm run generate:all && git add .",
 		"release": "np --no-cleanup --no-yarn --no-tests",
 		"update:check": "npx npm-check-updates -x np --dep dev,prod",
-		"update:commit": "npx npm-check-updates -u -x np,find-up --dep dev,prod && npm update && npm install"
+		"update:commit": "npx npm-check-updates -u -x np,find-up --dep dev,prod && npm update && npm install",
+		"pack-image": "docker build -t polyfiller/api-service:latest .",
+		"container": "docker rm -f api-service  &&  docker run --name api-service -p 3000:3000 -d polyfiller/api-service:latest"
 	},
 	"keywords": [
 		"polyfills",
@@ -48,7 +50,6 @@
 		"@typescript-eslint/parser": "5.48.2",
 		"@wessberg/di-compiler": "3.2.0",
 		"@rollup/plugin-json": "6.0.0",
-		"@wessberg/ts-config": "3.1.0",
 		"@wessberg/prettier-config": "1.0.0",
 		"ava": "5.1.1",
 		"eslint": "8.32.0",
@@ -93,6 +94,7 @@
 		"@wessberg/di": "2.1.0",
 		"@wessberg/pointer-events": "1.0.9",
 		"@wessberg/stringutil": "1.0.19",
+		"@wessberg/ts-config": "3.1.0",
 		"lit": "2.6.1",
 		"blob-polyfill": "5.0.20210201",
 		"browserslist": "4.21.5",

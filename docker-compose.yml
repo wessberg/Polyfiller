@@ -1,0 +1,77 @@
+version: "3"
+
+volumes:
+  polyfill-cache:
+    driver: juicedata/juicefs
+    driver_opts:
+      name: polyfill-cache
+      metaurl: postgres://postgres:${SECRET_KEY}@meta-server:5432/postgres
+      storage: ${STORAGE_TYPE}
+      bucket: ${BUCKET}
+      access-key: ${ACCESS_KEY}
+      secret-key: ${SECRET_KEY}
+
+networks:
+  polyfiller:
+
+services:
+  autoheal:
+    image: willfarrell/autoheal:1.2.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+
+  meta-server:
+    depends_on:
+      - autoheal
+    image: postgres
+    user: postgres
+    environment:
+      - POSTGRES_PASSWORD=${SECRET_KEY}
+    volumes:
+      - ./data:/var/lib/postgresql/data/
+    networks:
+      - polyfiller
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      retries: 5
+    labels:
+      - autoheal=true
+    restart: always
+
+  api-service:
+    depends_on:
+      - autoheal
+      - meta-server
+    image: polyfiller/api-service
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - polyfill-cache:/tmp/@wessberg/polyfiller
+    networks:
+      - polyfiller
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/ || exit 1"]
+      interval: 3s
+      retries: 5
+      start_period: 30s
+    labels:
+      - autoheal=true
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+
+  caddy:
+    depends_on:
+      - api-service
+    image: caddy
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - polyfiller
+    restart: always
+    command: caddy reverse-proxy --from polyfiller.app --to api-service:3000

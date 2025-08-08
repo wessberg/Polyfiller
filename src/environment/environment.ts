@@ -1,7 +1,6 @@
-import {environmentDefaults} from "./environment-defaults.js";
+import "dotenv/config";
+
 import {uppercaseKeys} from "../api/util.js";
 
-export const environment = uppercaseKeys({
-	...environmentDefaults,
-	...process.env
-});
+// load .env file
+export const environment = uppercaseKeys(process.env as Record<string, unknown>);

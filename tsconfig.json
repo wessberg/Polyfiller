@@ -5,9 +5,12 @@
 	"include": ["src/**/*.*", "test/**/*.*", "rollup.config.ts", "scripts/markdown-format-feature-names.ts"],
 	"extends": "@wessberg/ts-config",
 	"compilerOptions": {
-		"target": "es2020",
+		"target": "es2022",
 		"skipLibCheck": true,
 		"allowJs": true,
-		"moduleResolution": "node"
+		"moduleResolution": "node",
+		"experimentalDecorators": false,
+		"emitDecoratorMetadata": false,
+		"useDefineForClassFields": true
 	}
 }

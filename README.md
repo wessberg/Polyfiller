@@ -115,6 +115,12 @@ Polyfiller is kindly supported by [JetBrains](https://www.jetbrains.com/?from=Po
 - [FAQ](#faq)
   - [What's the difference from polyfill.io](#whats-the-difference-from-polyfillio)
   - [Hosting](#hosting)
+    - [Docker](#docker)
+      - [Install Docker in Cloud Server at first](#install-docker-in-cloud-server-at-first)
+      - [Simple container](#simple-container)
+      - [Composed services with Object Storage](#composed-services-with-object-storage)
+        - [1. Rclone config](#1-rclone-config)
+        - [2. Automatic deployment](#2-automatic-deployment)
 - [Logo](#logo)
 - [License](#license)
   - [Feature names](#feature-names)
@@ -361,6 +367,139 @@ These two services are very much alike. In fact, `Polyfiller` depends on the lib
 `Polyfiller` is already hosted at `https://polyfill.app/api` as a **free** web service, but feel free to host it yourself.
 The server is built with support for both HTTP2 and HTTP. The environment variable `HTTP2=[true|false]` decides whether a HTTP2 server will be hosted or not.
 If you use a load balancer and something like `nginx` in a reverse proxy setup, please know that `nginx` doesn't support HTTP2 via its proxy module, so you have to use HTTP1.1 there. Thankfully, it is as easy as setting `HTTP2=false` before launching the server and setting `HTTPS=false`.
+
+#### Docker
+
+> This guide has been tested in the deployment process of China mirror: https://polyfiller.kaiyuanshe.cn
+
+##### Install Docker in Cloud Server at first
+
+In the development environment, use installation script
+
+```shell
+curl -fsSL https://get.docker.com | sudo sh
+```
+
+add the current user to the `docker` user group
+
+```shell
+sudo gpasswd -a ${USER} docker
+```
+
+You need to press <kbd>CTRL</kbd> + <kbd>D</kbd> to log out of the session, then use SSH to log back into the system.
+
+[Docker-install-script](https://github.com/docker/docker-install) says `It is not recommended to depend on this script for deployment to production systems`.
+**So depend on your choice**.
+Find more information in the [Docker install document](https://docs.docker.com/engine/install/).
+
+Rclone use `FUSE` mount the Rclone's cloud storage systems, you need to install it.
+
+In Debian(Ubuntu)
+
+```shell
+sudo apt install fuse3 -y
+```
+
+In CentOS
+
+```shell
+sudo yum install epel-release
+sudo yum update
+sudo yum install fuse3
+```
+
+In Fedora
+
+```shell
+sudo dnf install fuse3
+```
+
+In Arch
+
+```shell
+sudo pacman -Syu fuse3
+```
+
+##### Simple container
+
+Run shown commands in the Project Root folder:
+
+```shell
+docker build -t polyfiller/api-service .
+docker run --name polyfiller -e NODE_ENV=production -p 3000:3000 polyfiller/api-service
+```
+
+##### Composed services with Object Storage
+
+###### 1. Rclone config
+
+1. Write [Rclone config](https://rclone.org/install/) into `config/rclone/rclone.conf` file of your Project:
+
+```ini
+[azure]
+type = azureblob
+account = xxxx
+key = xxxx
+endpoint = https://xxx
+```
+
+How to configure quickly? Use `rclone config` command? It needs to know a lot of things. Open [Document](https://rclone.org/docs/), choose an instructions, like [Dropbox](https://rclone.org/dropbox/).
+
+Look for
+
+```ini
+[remote]
+app_key =
+app_secret =
+token = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX_XXXX_XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+```
+
+It is the configuration for Dropbox.
+
+```ini
+[dropbox]
+type = dropbox
+app_key = xxxxxxxxx
+app_secret = xxxxxxxxx
+token = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX_XXXX_XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+```
+
+If you use Dropbox, in `docker-compose.yml`：
+
+```yaml
+command: "mount azure:/ /polyfill-cache --allow-other --allow-non-empty --vfs-cache-mode writes"
+```
+
+It should be changed to：
+
+```yml
+command: "mount dropbox:/ /polyfill-cache --allow-other --allow-non-empty --vfs-cache-mode writes"
+```
+
+2. Run shown commands in the Project Root folder:
+
+```shell
+docker compose up -d
+```
+
+###### 2. Automatic deployment
+
+1. Set GitHub Repository secrets:
+
+|     name      |               value               |
+| :-----------: | :-------------------------------: |
+| `RCLONE_FILE` |     rclone configuration file     |
+|  `ENV_FILE`   |      `.env` file shown above      |
+|    `HOST`     | IP or Domain Name of Cloud Server |
+|    `USER`     |   Account Name of Cloud Server    |
+|   `SSH_KEY`   |  SSH Private Key of Cloud Server  |
+
+2. Push a Git tag:
+
+```shell
+git tag v0.2.3-oss  # the version number is the value of "version" field in "package.json"
+git push origin --tags
+```
 
 ## Logo
 

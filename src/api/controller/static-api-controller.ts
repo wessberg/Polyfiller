@@ -7,6 +7,7 @@ import type {ApiRequest, ApiResponse} from "../server/i-server.js";
 import {StatusCodes} from "http-status-codes";
 import {OPTIONS} from "../decorator/api-method/options.js";
 import {pickAccept} from "../util/util.js";
+import {constant} from "../../constant/constant.js";
 
 export class StaticApiController {
 	constructor(private readonly staticBl: IStaticBl) {}
@@ -15,6 +16,17 @@ export class StaticApiController {
 	async onOptionsRequested(): Promise<ApiResponse> {
 		return {
 			statusCode: 200
+		};
+	}
+
+	@GET({path: "/index.json"})
+	async onIndexJsonRequest({}: ApiRequest): Promise<ApiResponse> {
+		return {
+			statusCode: StatusCodes.OK,
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(constant.polyfill)
 		};
 	}
 
